@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlThemes">
+    <!--#region Button-->
+    <SolidColorBrush x:Key="BtnConfirmBackground" Color="#21adff"/>
+    <SolidColorBrush x:Key="BtnConfirmMouseOverBackground" Color="#65c5ff"/>
+    <SolidColorBrush x:Key="BtnConfirmIsEnabledBackground" Color="#f6f5fa"/>
+    <SolidColorBrush x:Key="BtnConfirmIsEnabledForeground" Color="#d5d6db"/>
+    <!--#endregion-->
+</ResourceDictionary>

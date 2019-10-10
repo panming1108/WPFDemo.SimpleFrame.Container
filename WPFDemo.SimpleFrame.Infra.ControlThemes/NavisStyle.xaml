@@ -1,0 +1,276 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlThemes"
+                    xmlns:Navis="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/Fonts/FontStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region Button -->
+    <Style TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="{StaticResource BtnConfirmBackground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="确定"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{StaticResource BtnConfirmMouseOverBackground}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="{StaticResource BtnConfirmIsEnabledBackground}"/>
+                            <Setter Property="Foreground" Value="{StaticResource BtnConfirmIsEnabledForeground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Btn_Urgent" TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="#F55860"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="加急"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#f98a91"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f6f5fa"/>
+                            <Setter Property="Foreground" Value="#d5d6db"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Btn_Buy" TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="#ffb31a"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="购买"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#ffca61"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f6f5fa"/>
+                            <Setter Property="Foreground" Value="#d5d6db"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Btn_Save" TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="#4bd4bf"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="保存"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#81e1d3"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f6f5fa"/>
+                            <Setter Property="Foreground" Value="#d5d6db"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Btn_Cancel" TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="#c5cdd9"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="取消"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#22aefd"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f6f5fa"/>
+                            <Setter Property="Foreground" Value="#d5d6db"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Btn_Back" TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="#39434d"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="BACK"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#777c82"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f6f5fa"/>
+                            <Setter Property="Foreground" Value="#d5d6db"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Btn_Search" TargetType="Navis:EMCButton">
+        <Setter Property="Background" Value="#39434d"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Content" Value="BACK"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Navis:EMCButton">
+                    <Grid>
+
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#777c82"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#f6f5fa"/>
+                            <Setter Property="Foreground" Value="#d5d6db"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
+</ResourceDictionary>
