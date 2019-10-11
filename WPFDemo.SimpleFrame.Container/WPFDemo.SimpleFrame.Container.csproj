@@ -235,13 +235,25 @@
       <Project>{B6D7DC35-3978-4E0B-948E-753218E718C5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.MVVM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.DMs\WPFDemo.SimpleFrame.IViewModels.DMs.csproj">
+      <Project>{d27fb9fa-9c09-4272-9b88-021d24b8409e}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModels.DMs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.Test\WPFDemo.SimpleFrame.IViewModels.Test.csproj">
       <Project>{44bf97a2-b208-4215-a9d3-add8e27676cb}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.Test</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.DMs\WPFDemo.SimpleFrame.ViewModels.DMs.csproj">
+      <Project>{9ec2d6ab-e1a3-4909-9011-213efd255586}</Project>
+      <Name>WPFDemo.SimpleFrame.ViewModels.DMs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.Test\WPFDemo.SimpleFrame.ViewModels.Test.csproj">
       <Project>{a2b637c2-911f-45ea-b889-dc349b46fe5a}</Project>
       <Name>WPFDemo.SimpleFrame.ViewModels.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.DMs\WPFDemo.SimpleFrame.Views.DMs.csproj">
+      <Project>{067b2fb2-137f-4e34-8eb8-229f0ade89af}</Project>
+      <Name>WPFDemo.SimpleFrame.Views.DMs</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Navis\WPFDemo.SimpleFrame.Views.Navis.csproj">
       <Project>{bad89178-2743-4e4e-91d6-a8c067ac820f}</Project>

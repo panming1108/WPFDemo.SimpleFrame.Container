@@ -16,6 +16,12 @@
     <SolidColorBrush x:Key="ItemMouseOverForeground" Color="Black"/>
     <SolidColorBrush x:Key="ItemsContentBackground" Color="White"/>
 
+    <SolidColorBrush x:Key="BaseDataGridHeaderForeground" Color="#888B91"/>
+    <SolidColorBrush x:Key="BaseDataGridHeaderBorderBrush" Color="#E3E4E7"/>
+    <SolidColorBrush x:Key="BaseDataGridHeaderBackground" Color="#E9EAEF"/>
+    <SolidColorBrush x:Key="BaseDataGridRowForeground" Color="#57565B"/>
+    <SolidColorBrush x:Key="BaseDataGridRowMouseOverBackground" Color="#F1F9FE"/>
+
     <system:Double x:Key="DisableOpacity">0.5</system:Double>
 
 </ResourceDictionary>

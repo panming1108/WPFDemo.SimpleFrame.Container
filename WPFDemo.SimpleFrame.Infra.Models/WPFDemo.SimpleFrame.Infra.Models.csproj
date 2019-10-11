@@ -40,7 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataGridModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
+      <Project>{1EFDA8F3-F261-4C04-B069-67DACAE8BBE5}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
