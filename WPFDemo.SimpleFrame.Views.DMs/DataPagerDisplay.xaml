@@ -33,6 +33,7 @@
             </DataGrid.Columns>
         </EMCDataGrid:EMCDataGrid>
         <EMCDataPager:EMCDataPager Grid.Row="1"
+                                   Margin="0,10,0,0"
                                    HorizontalAlignment="Right"
                                    PageSize="{Binding PageSize,Mode=TwoWay}"
                                    PageNo="{Binding PageNo,Mode=TwoWay}"

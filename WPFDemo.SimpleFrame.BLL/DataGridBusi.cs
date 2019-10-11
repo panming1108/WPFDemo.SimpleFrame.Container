@@ -13,7 +13,7 @@ namespace WPFDemo.SimpleFrame.BLL
         public List<DataGridModel> GetDataGridSource()
         {
             List<DataGridModel> persons = new List<DataGridModel>();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 DataGridModel person = new DataGridModel()
                 {
@@ -23,7 +23,7 @@ namespace WPFDemo.SimpleFrame.BLL
                     Name = "测试" + i,
                     Product = "Product" + i,
                     Quantity = 300 + i,
-                    Status = (StatusEnum)i,
+                    Status = (StatusEnum)(i % 4),
                 };
                 persons.Add(person);
             }
