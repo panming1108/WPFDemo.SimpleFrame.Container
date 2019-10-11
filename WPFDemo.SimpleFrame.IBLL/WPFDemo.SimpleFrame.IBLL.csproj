@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDataGridBusi.cs" />
+    <Compile Include="IListBoxBusi.cs" />
     <Compile Include="ITestBusi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataGridBusi.cs" />
+    <Compile Include="ListBoxBusi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBusi.cs" />
   </ItemGroup>

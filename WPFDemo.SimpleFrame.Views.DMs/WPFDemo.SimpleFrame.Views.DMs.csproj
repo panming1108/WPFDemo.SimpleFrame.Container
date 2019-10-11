@@ -50,6 +50,9 @@
     <Compile Include="DataTableGrid.xaml.cs">
       <DependentUpon>DataTableGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EMCListBoxs.xaml.cs">
+      <DependentUpon>EMCListBoxs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +61,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DataTableGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EMCListBoxs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,6 +90,12 @@
       <Project>{D27FB9FA-9C09-4272-9B88-021D24B8409E}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.DMs</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\critical.png" />
+    <Resource Include="Images\time.png" />
+    <Resource Include="Images\u189.png" />
+    <Resource Include="Images\urgent_1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

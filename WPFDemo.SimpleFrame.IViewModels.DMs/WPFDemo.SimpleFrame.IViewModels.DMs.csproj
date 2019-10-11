@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IBasicDataGridViewModel.cs" />
     <Compile Include="IDataTableGridViewModel.cs" />
+    <Compile Include="IListBoxViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

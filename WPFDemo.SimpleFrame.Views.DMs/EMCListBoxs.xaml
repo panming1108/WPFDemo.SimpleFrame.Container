@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.DMs.EMCListBoxs"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.DMs"
+             xmlns:EMCListBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.ListBox;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM;assembly=WPFDemo.SimpleFrame.Infra.MVVM"
+             mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
+             mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DMsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="tbStyle_Base" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="#223B53"/>
+            </Style>
+            <Style x:Key="listBox_Btn_Style" TargetType="Button">
+                <Setter Property="Width" Value="50"/>
+                <Setter Property="Height" Value="36"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="#00CC99"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <TextBlock Text="{TemplateBinding Content}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate x:Key="ListBoxItemTemplate">
+                <Grid Height="127">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            Margin="20,10">
+                        <TextBlock Text="{Binding Name}"
+                               FontSize="16"
+                               Foreground="#223B53"/>
+                        <Image Source="/WPFDemo.SimpleFrame.Views.DMs;component/Images/u189.png" Margin="10,0"/>
+                        <TextBlock>
+                        <TextBlock Text="{Binding Age}"
+                                   FontSize="16"
+                                   Foreground="#223B53"/>
+                        <TextBlock Text="{Binding AgeUnit}"
+                                   FontSize="16"
+                                   Foreground="#223B53"/>
+                    </TextBlock>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Margin="20,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Style="{StaticResource tbStyle_Base}">
+                            <TextBlock Text="来源："/>
+                            <TextBlock Text="{Binding Path=Source}"/>
+                        </TextBlock>
+                            <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   Style="{StaticResource tbStyle_Base}">
+                            <TextBlock Text="标识："/>
+                            <TextBlock Text="{Binding Flag}"/>
+                        </TextBlock>
+                            <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Style="{StaticResource tbStyle_Base}">
+                            <TextBlock Text="检查时间："/>
+                            <TextBlock Text="{Binding CheckTime,StringFormat='HH:mm'}"/>
+                            <TextBlock Text="{Binding CheckTime,StringFormat='yyyy-MM-dd'}"
+                                       Foreground="#9FABBC"/>
+                        </TextBlock>
+                            <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Style="{StaticResource tbStyle_Base}">
+                            <TextBlock Text="检查机构："/>
+                            <TextBlock Text="{Binding CheckDepartment}"
+                                       Foreground="#9FABBC"/>
+                        </TextBlock>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="待受理"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center"
+                                   Foreground="#1890FF"/>
+                            <Grid Grid.Row="1" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/WPFDemo.SimpleFrame.Views.DMs;component/Images/urgent_1.png" Height="26"/>
+                                    <Image Source="/WPFDemo.SimpleFrame.Views.DMs;component/Images/critical.png" Height="26" Margin="10,0"/>
+                                    <Image Source="/WPFDemo.SimpleFrame.Views.DMs;component/Images/time.png" Height="26"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                        <Button Grid.Column="2"
+                            Content="置顶"
+                            Style="{StaticResource listBox_Btn_Style}"/>
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="10,0">
+        <EMCListBox:EMCListBox ItemsSource="{Binding ListBoxSource}"
+                               Style="{StaticResource ReadEMCListBoxStyle}"
+                               ItemTemplate="{StaticResource ListBoxItemTemplate}"/>
+    </Grid>
+</UserControl>
