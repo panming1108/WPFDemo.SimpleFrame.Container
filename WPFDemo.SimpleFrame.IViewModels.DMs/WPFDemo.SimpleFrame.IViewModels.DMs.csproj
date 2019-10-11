@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBasicDataGridViewModel.cs" />
+    <Compile Include="IDataPagerViewModel.cs" />
     <Compile Include="IDataTableGridViewModel.cs" />
     <Compile Include="IListBoxViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

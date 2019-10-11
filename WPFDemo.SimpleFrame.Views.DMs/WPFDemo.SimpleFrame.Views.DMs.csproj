@@ -47,6 +47,9 @@
     <Compile Include="BasicDataGrid.xaml.cs">
       <DependentUpon>BasicDataGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataPagerDisplay.xaml.cs">
+      <DependentUpon>DataPagerDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataTableGrid.xaml.cs">
       <DependentUpon>DataTableGrid.xaml</DependentUpon>
     </Compile>
@@ -57,6 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="BasicDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataPagerDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

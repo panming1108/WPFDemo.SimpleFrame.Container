@@ -43,6 +43,7 @@
     <Compile Include="DataGridBusi.cs" />
     <Compile Include="ListBoxBusi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudentBusi.cs" />
     <Compile Include="TestBusi.cs" />
   </ItemGroup>
   <ItemGroup>

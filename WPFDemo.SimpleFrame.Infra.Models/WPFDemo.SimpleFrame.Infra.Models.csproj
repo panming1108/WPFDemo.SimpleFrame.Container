@@ -43,6 +43,8 @@
     <Compile Include="DataGridModel.cs" />
     <Compile Include="ListBoxModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryResult.cs" />
+    <Compile Include="Student.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">

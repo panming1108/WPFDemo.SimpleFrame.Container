@@ -3,6 +3,10 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <SolidColorBrush x:Key="ControlBorderBrush" Color="#C8C8C8"/>
+    <SolidColorBrush x:Key="MouseOverBrush" Color="#4BD4BF"/>
+    <SolidColorBrush x:Key="IsCheckedBrush" Color="#21ADFF"/>
+    <SolidColorBrush x:Key="DisabledBrush" Color="#F5F8F9"/>
+    <SolidColorBrush x:Key="CommonForeground" Color="#223B53"/>
     <!--#region Button-->
     <SolidColorBrush x:Key="BtnConfirmBackground" Color="#21adff"/>
     <SolidColorBrush x:Key="BtnConfirmMouseOverBackground" Color="#65c5ff"/>
@@ -25,5 +29,16 @@
     <SolidColorBrush x:Key="BaseDataGridRowMouseOverBackground" Color="#F1F9FE"/>
 
     <system:Double x:Key="DisableOpacity">0.5</system:Double>
+    <PathGeometry x:Key="ExpanderClose">M0,0 L8,8 16,0</PathGeometry>
+    <PathGeometry x:Key="ExpanderOpen">M0,8 L8,0 16,8</PathGeometry>
+    <PathGeometry x:Key="WindowClosePathGeometry">M0,0 L16,16 M16,0 0,16</PathGeometry>
+    <PathGeometry x:Key="WindowMaxPathGeometry">M0,0 12,0 12,12 0,12Z</PathGeometry>
+    <PathGeometry x:Key="WindowMinPathGeometry">M0,0 14,0</PathGeometry>
+    <PathGeometry x:Key="WindowNomalPathGeometry">M0,12 6,12 6,6 0,6Z M6,9 9,9 9,3 3,3 3,6</PathGeometry>
+    <PathGeometry x:Key="CalendarPrevPagePathGeometry">M6,0 L0,6 6,12</PathGeometry>
+    <PathGeometry x:Key="CalendarNextPagePathGeometry">M0,0 L6,6 0,12</PathGeometry>
+    <RotateTransform x:Key="LeftDirection" Angle="90"/>
+    <RotateTransform x:Key="RightDirection" Angle="-90"/>
+    <DropShadowEffect x:Key="DefaultDropShadowEffect" Color="#21ADFF" Opacity="0.4" ShadowDepth="2"/>
 
 </ResourceDictionary>

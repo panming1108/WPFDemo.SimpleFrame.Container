@@ -44,12 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DMs\DataGrid\EMCDataGrid.cs" />
+    <Compile Include="DMs\DataPager\DataPagerCommands.cs" />
+    <Compile Include="DMs\DataPager\EMCDataPager.cs" />
+    <Compile Include="DMs\DataPager\SelectedBackgroundConverter.cs" />
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
     <Compile Include="Navis\Button\EMCButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DMs\DataPager\" />
     <Folder Include="DVs\ChartView\" />
     <Folder Include="Editors\AutoCompleteBox\" />
     <Folder Include="Editors\CheckBox\" />
