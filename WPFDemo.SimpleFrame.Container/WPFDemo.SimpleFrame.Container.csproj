@@ -84,14 +84,37 @@
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="IViewModels\IMainViewModel.cs" />
+    <Compile Include="IViewModels\INaviPageViewModel.cs" />
     <Compile Include="NaviPage.xaml.cs">
       <DependentUpon>NaviPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\DMsPage.xaml.cs">
+      <DependentUpon>DMsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\DVsPage.xaml.cs">
+      <DependentUpon>DVsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\EditorsPage.xaml.cs">
+      <DependentUpon>EditorsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\LayOutPage.xaml.cs">
+      <DependentUpon>LayOutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\NavisPage.xaml.cs">
+      <DependentUpon>NavisPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\SchedulesPage.xaml.cs">
+      <DependentUpon>SchedulesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NaviPages\UXsPage.xaml.cs">
+      <DependentUpon>UXsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NaviPageViewModel.cs" />
     <Page Include="HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -105,6 +128,34 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NaviPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\DMsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\DVsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\EditorsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\LayOutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\NavisPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\SchedulesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\UXsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

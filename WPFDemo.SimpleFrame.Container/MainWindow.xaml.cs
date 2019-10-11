@@ -80,7 +80,7 @@ namespace WPFDemo.SimpleFrame.Container
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MessagerInstance.GetMessager().Send(MessagerKeyEnum.MainPageNavi, PageKeyEnum.HomePage);
+            MessagerInstance.GetMessager().Send(MessagerKeyEnum.MainPageNavi, PageKeyEnum.NaviPage);
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)

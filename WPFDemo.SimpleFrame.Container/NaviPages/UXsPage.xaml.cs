@@ -11,20 +11,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFDemo.SimpleFrame.Container.IViewModels;
-using WPFDemo.SimpleFrame.Infra.Ioc;
 
-namespace WPFDemo.SimpleFrame.Container
+namespace WPFDemo.SimpleFrame.Container.NaviPages
 {
     /// <summary>
-    /// NaviPage.xaml 的交互逻辑
+    /// UXsPage.xaml 的交互逻辑
     /// </summary>
-    public partial class NaviPage : Page
+    public partial class UXsPage : Page
     {
-        public NaviPage()
+        public UXsPage()
         {
             InitializeComponent();
-            DataContext = IocManagerInstance.ResolveType<INaviPageViewModel>();
         }
     }
 }

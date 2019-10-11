@@ -7,9 +7,10 @@ using WPFDemo.SimpleFrame.Infra.Helper;
 
 namespace WPFDemo.SimpleFrame.Container.IViewModels
 {
-    public interface IMainViewModel
+    public interface INaviPageViewModel
     {
-        ICommand PageNaviCommand { get; set; }
+        EnumStructInfo SelectedNavi { get; set; }
         List<EnumStructInfo> PageNaviSource { get; set; }
+        Uri NaviSource { get; set; }
     }
 }

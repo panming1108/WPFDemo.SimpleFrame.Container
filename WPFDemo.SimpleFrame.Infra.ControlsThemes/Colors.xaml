@@ -1,10 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes">
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <SolidColorBrush x:Key="ControlBorderBrush" Color="#C8C8C8"/>
     <!--#region Button-->
     <SolidColorBrush x:Key="BtnConfirmBackground" Color="#21adff"/>
     <SolidColorBrush x:Key="BtnConfirmMouseOverBackground" Color="#65c5ff"/>
     <SolidColorBrush x:Key="BtnConfirmIsEnabledBackground" Color="#f6f5fa"/>
     <SolidColorBrush x:Key="BtnConfirmIsEnabledForeground" Color="#d5d6db"/>
     <!--#endregion-->
+
+    <SolidColorBrush x:Key="ItemSelectedBackground" Color="#007ACC"/>
+    <SolidColorBrush x:Key="ItemSelectedForeground" Color="White"/>
+    <SolidColorBrush x:Key="ItemMouseOverBackground" Color="#65c5ff"/>
+    <SolidColorBrush x:Key="ItemMouseOverForeground" Color="Black"/>
+    <SolidColorBrush x:Key="ItemsContentBackground" Color="White"/>
+
+    <system:Double x:Key="DisableOpacity">0.5</system:Double>
+
 </ResourceDictionary>

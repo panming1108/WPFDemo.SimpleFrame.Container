@@ -4,19 +4,38 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Container"
+      xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM;assembly=WPFDemo.SimpleFrame.Infra.MVVM"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
+      mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
       Title="NaviPage">
-    
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DMsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0">
-            
+        <ListBox Grid.Column="0"
+                 ItemsSource="{Binding PageNaviSource}"
+                 ItemContainerStyle="{StaticResource DefaultListBoxItem}"
+                 SelectedItem="{Binding SelectedNavi, Mode=OneWayToSource}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <Frame Grid.Column="1"
-               NavigationUIVisibility="Hidden"/>
+               NavigationUIVisibility="Hidden"
+               Source="{Binding NaviSource}"/>
     </Grid>
 </Page>
