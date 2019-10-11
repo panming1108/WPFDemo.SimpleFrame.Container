@@ -152,9 +152,9 @@
       <Project>{828e8730-9ffe-4801-be00-5013aa5ea1a5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Cache</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlThemes\WPFDemo.SimpleFrame.Infra.ControlThemes.csproj">
-      <Project>{e4dcc3a4-049f-4f24-a761-a75d68ded947}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.ControlThemes</Name>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlsThemes\WPFDemo.SimpleFrame.Infra.ControlsThemes.csproj">
+      <Project>{d399f467-fc99-413c-ae99-8f2b9aeec34b}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.ControlsThemes</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
       <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>

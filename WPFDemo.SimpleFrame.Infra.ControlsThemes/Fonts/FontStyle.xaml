@@ -1,12 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlThemes"
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes.Fonts"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/Colors.xaml"/>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <Style x:Key="FIcon" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/Fonts/fontawesome-webfont.ttf#Fontawesome"/>
+        <Setter Property="FontFamily" Value="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/fontawesome-webfont.ttf#Fontawesome"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -800,4 +800,5 @@
     <system:String x:Key="fa-superpowers">&#xf2dd;</system:String>
     <system:String x:Key="fa-wpexplorer">&#xf2de;</system:String>
     <system:String x:Key="fa-meetup">&#xf2e0;</system:String>
+    
 </ResourceDictionary>

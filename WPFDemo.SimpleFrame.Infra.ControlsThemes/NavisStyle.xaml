@@ -1,12 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlThemes"
-                    xmlns:Navis="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
+                    xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/Fonts/FontStyle.xaml"/>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <!--#region Button -->
-    <Style TargetType="Navis:EMCButton">
+    <Style TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="{StaticResource BtnConfirmBackground}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -18,7 +18,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="2"
@@ -44,7 +44,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Btn_Urgent" TargetType="Navis:EMCButton">
+    <Style x:Key="Btn_Urgent" TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="#F55860"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -56,7 +56,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="2"
@@ -82,7 +82,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Btn_Buy" TargetType="Navis:EMCButton">
+    <Style x:Key="Btn_Buy" TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="#ffb31a"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -94,7 +94,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="2"
@@ -120,7 +120,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Btn_Save" TargetType="Navis:EMCButton">
+    <Style x:Key="Btn_Save" TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="#4bd4bf"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -132,7 +132,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="2"
@@ -158,7 +158,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Btn_Cancel" TargetType="Navis:EMCButton">
+    <Style x:Key="Btn_Cancel" TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="#c5cdd9"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -170,7 +170,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="2"
@@ -196,7 +196,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Btn_Back" TargetType="Navis:EMCButton">
+    <Style x:Key="Btn_Back" TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="#39434d"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -208,7 +208,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
                         <Border Background="{TemplateBinding Background}"
                                 CornerRadius="2"
@@ -234,7 +234,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Btn_Search" TargetType="Navis:EMCButton">
+    <Style x:Key="Btn_Search" TargetType="EMCButton:EMCButton">
         <Setter Property="Background" Value="#39434d"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -246,7 +246,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Navis:EMCButton">
+                <ControlTemplate TargetType="EMCButton:EMCButton">
                     <Grid>
 
                         <Border Background="{TemplateBinding Background}"

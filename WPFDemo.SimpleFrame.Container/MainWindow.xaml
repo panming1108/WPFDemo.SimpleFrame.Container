@@ -4,15 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:test="clr-namespace:WPFDemo.SimpleFrame.Views.Test;assembly=WPFDemo.SimpleFrame.Views.Test"
-        xmlns:Navis="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+        xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
         xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Container"
         mc:Ignorable="d" Loaded="Window_Loaded" Unloaded="Window_Unloaded"
         Title="MainWindow" AllowsTransparency="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/Fonts/FontStyle.xaml"/>
-                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/NavisStyle.xaml"/>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -26,13 +26,13 @@
                           ItemsSource="{Binding PageNaviSource}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Navis:EMCButton Height="30" 
-                                         Width="100"
-                                         VerticalAlignment="Center"
-                                         Margin="10"
-                                         Content="{Binding Description}"
-                                         Command="{Binding ElementName=Root, Path=DataContext.PageNaviCommand}"
-                                         CommandParameter="{Binding Id}"/>
+                        <EMCButton:EMCButton Height="30" 
+                                             Width="100"
+                                             VerticalAlignment="Center"
+                                             Margin="10"
+                                             Content="{Binding Description}"
+                                             Command="{Binding ElementName=Root, Path=DataContext.PageNaviCommand}"
+                                             CommandParameter="{Binding Id}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.ItemsPanel>
@@ -43,22 +43,22 @@
             </ItemsControl>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <Navis:EMCButton Height="30" 
-                                 Width="30"
-                                 x:Name="min_btn"
-                                 Click="Min_btn_Click">
+                <EMCButton:EMCButton Height="30" 
+                                     Width="30"
+                                     x:Name="min_btn"
+                                     Click="Min_btn_Click">
                     <TextBlock Style="{StaticResource FIcon}"
                                Text="{StaticResource fa-minus}"/>
-                </Navis:EMCButton>
-                <Navis:EMCButton Height="30"
-                                 Margin="10,0"
-                                 Width="30"
-                                 Style="{StaticResource Btn_Urgent}"
-                                 x:Name="close_btn"
-                                 Click="Close_btn_Click">
+                </EMCButton:EMCButton>
+                <EMCButton:EMCButton Height="30"
+                                     Margin="10,0"
+                                     Width="30"
+                                     Style="{StaticResource Btn_Urgent}"
+                                     x:Name="close_btn"
+                                     Click="Close_btn_Click">
                     <TextBlock Style="{StaticResource FIcon}"
                                Text="{StaticResource fa-remove}"/>
-                </Navis:EMCButton>
+                </EMCButton:EMCButton>
             </StackPanel>
         </Grid>
         <Frame Grid.Row="1"

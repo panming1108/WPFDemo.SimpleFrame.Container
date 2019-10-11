@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlThemes;component/Fonts/FontStyle.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

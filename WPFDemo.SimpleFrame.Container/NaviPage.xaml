@@ -7,8 +7,16 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="NaviPage">
-
+    
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0">
+            
+        </ListBox>
+        <Frame Grid.Column="1"
+               NavigationUIVisibility="Hidden"/>
     </Grid>
 </Page>
