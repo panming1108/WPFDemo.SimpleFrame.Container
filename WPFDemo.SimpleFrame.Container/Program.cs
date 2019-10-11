@@ -20,6 +20,7 @@ namespace WPFDemo.SimpleFrame.Container
                     "WPFDemo.SimpleFrame.BLL",
                     "WPFDemo.SimpleFrame.ViewModels.Test",
                     "WPFDemo.SimpleFrame.ViewModels.DMs",
+                    "WPFDemo.SimpleFrame.ViewModels.DVs",
                     "WPFDemo.SimpleFrame.Container",
                 };
 

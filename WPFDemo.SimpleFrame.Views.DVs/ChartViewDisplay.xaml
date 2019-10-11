@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.DVs.ChartViewDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.DVs"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM;assembly=WPFDemo.SimpleFrame.Infra.MVVM"
+             mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
+             mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
+             xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="900">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DVsStyle.xaml"/>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="DateRangeTemplate">
+                <Border BorderThickness="0,1,0,0"
+                        BorderBrush="{StaticResource EMCListBoxItemBorderBrush}">
+                    <TextBlock Margin="0,10">
+                        <TextBlock Text="2018-03"/>
+                        <TextBlock Text="~"/>
+                        <TextBlock Text="2019-03"/>
+                    </TextBlock>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Height="800"
+          Width="900">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="85"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="85"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <EMCChartView:EMCChartView Grid.Row="0"
+                             Grid.Column="0"
+                             Unit="例"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartData="{Binding FixChartData}"/>
+        <EMCChartView:EMCChartView Grid.Row="0"
+                             Grid.Column="1"
+                             Unit="分"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartBackground="#975FE4"
+                             ViewMode="LineChart"
+                             ChartData="{Binding FixChartData}"/>
+        <EMCChartView:EMCChartView Grid.Row="0"
+                             Grid.Column="2"
+                             Header="月诊断平均时长"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartBackground="#CCEAFE"
+                             LineBrush="#26A6FB"
+                             ViewMode="AverageLineChart"
+                             ChartData="{Binding FixChartData}"
+                             AverageData="{Binding FixAverageData}"/>
+
+        <EMCChartView:EMCChartView Grid.Row="2"
+                             Grid.Column="0"
+                             Unit="例"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartData="{Binding SmallChartData}"/>
+        <EMCChartView:EMCChartView Grid.Row="2"
+                             Grid.Column="1"
+                             Unit="分"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartBackground="#975FE4"
+                             ViewMode="LineChart"
+                             ChartData="{Binding SmallChartData}"/>
+        <EMCChartView:EMCChartView Grid.Row="2"
+                             Grid.Column="2"
+                             Header="月诊断平均时长"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartBackground="#CCEAFE"
+                             LineBrush="#26A6FB"
+                             ViewMode="AverageLineChart"
+                             ChartData="{Binding SmallChartData}"
+                             AverageData="{Binding SmallAverageData}"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    VerticalAlignment="Top"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    Grid.ColumnSpan="3">
+            <EMCButton:EMCButton Height="36" 
+                                 Width="100" 
+                                 Content="Change" 
+                                 Command="{Binding SmallChartDataChangeCommand}"/>
+        </StackPanel>
+
+
+        <EMCChartView:EMCChartView Grid.Row="4"
+                             Grid.Column="0"
+                             Unit="例"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartData="{Binding BigChartData}"/>
+        <EMCChartView:EMCChartView Grid.Row="4"
+                             Grid.Column="1"
+                             Unit="分"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartBackground="#975FE4"
+                             ViewMode="LineChart"
+                             ChartData="{Binding BigChartData}"/>
+        <EMCChartView:EMCChartView Grid.Row="4"
+                             Grid.Column="2"
+                             Header="月诊断平均时长"
+                             DateRangeTemplate="{StaticResource DateRangeTemplate}"
+                             ChartBackground="#CCEAFE"
+                             LineBrush="#26A6FB"
+                             ViewMode="AverageLineChart"
+                             ChartData="{Binding BigChartData}"
+                             AverageData="{Binding BigAverageData}"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="5"
+                    HorizontalAlignment="Center"
+                    Grid.ColumnSpan="3">
+            <EMCButton:EMCButton Height="36" 
+                                 Width="100"
+                                 VerticalAlignment="Top"
+                                 Margin="0,10,0,0"
+                                 Content="Change" 
+                                 Command="{Binding BigChartDataChangeCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

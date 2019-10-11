@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E1243FF9-B052-4AC7-AE55-80460B828599}</ProjectGuid>
+    <ProjectGuid>{83E3786B-5C01-4411-8F41-7C0CE3B6AA6A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WPFDemo.SimpleFrame.IBLL</RootNamespace>
-    <AssemblyName>WPFDemo.SimpleFrame.IBLL</AssemblyName>
+    <RootNamespace>WPFDemo.SimpleFrame.Views.DVs</RootNamespace>
+    <AssemblyName>WPFDemo.SimpleFrame.Views.DVs</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,27 +31,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IChartViewBusi.cs" />
-    <Compile Include="IDataGridBusi.cs" />
-    <Compile Include="IListBoxBusi.cs" />
-    <Compile Include="IStudentBusi.cs" />
-    <Compile Include="ITestBusi.cs" />
+    <Compile Include="ChartViewDisplay.xaml.cs">
+      <DependentUpon>ChartViewDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
-      <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlsThemes\WPFDemo.SimpleFrame.Infra.ControlsThemes.csproj">
+      <Project>{d399f467-fc99-413c-ae99-8f2b9aeec34b}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.ControlsThemes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
+      <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Ioc\WPFDemo.SimpleFrame.Infra.Ioc.csproj">
+      <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM\WPFDemo.SimpleFrame.Infra.MVVM.csproj">
+      <Project>{b6d7dc35-3978-4e0b-948e-753218e718c5}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.MVVM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.DVs\WPFDemo.SimpleFrame.IViewModels.DVs.csproj">
+      <Project>{E75B1BD8-8447-4CDD-BF8E-110F0C16C125}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModels.DVs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ChartViewDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

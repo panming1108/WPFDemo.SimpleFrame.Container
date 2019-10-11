@@ -35,6 +35,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,11 +49,12 @@
     <Compile Include="DMs\DataPager\EMCDataPager.cs" />
     <Compile Include="DMs\DataPager\SelectedBackgroundConverter.cs" />
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
+    <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
+    <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="Navis\Button\EMCButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DVs\ChartView\" />
     <Folder Include="Editors\AutoCompleteBox\" />
     <Folder Include="Editors\CheckBox\" />
     <Folder Include="Editors\ComboBox\" />
