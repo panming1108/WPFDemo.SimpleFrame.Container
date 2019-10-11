@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.Navis.ButtonDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Navis"
+             xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+            <EMCButton:EMCButton Margin="10,0"/>
+            <EMCButton:EMCButton Style="{StaticResource Btn_Back}" Margin="10,0"/>
+            <EMCButton:EMCButton Style="{StaticResource Btn_Buy}" Margin="10,0"/>
+            <EMCButton:EMCButton Style="{StaticResource Btn_Cancel}" Margin="10,0"/>
+            <EMCButton:EMCButton Style="{StaticResource Btn_Save}" Margin="10,0"/>
+            <EMCButton:EMCButton Style="{StaticResource Btn_Search}" Margin="10,0"/>
+            <EMCButton:EMCButton Style="{StaticResource Btn_Urgent}" Margin="10,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -243,6 +243,10 @@
       <Project>{a2b637c2-911f-45ea-b889-dc349b46fe5a}</Project>
       <Name>WPFDemo.SimpleFrame.ViewModels.Test</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Navis\WPFDemo.SimpleFrame.Views.Navis.csproj">
+      <Project>{bad89178-2743-4e4e-91d6-a8c067ac820f}</Project>
+      <Name>WPFDemo.SimpleFrame.Views.Navis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Test\WPFDemo.SimpleFrame.Views.Test.csproj">
       <Project>{096aa23b-7e2b-4c25-822d-c62bc88e2e43}</Project>
       <Name>WPFDemo.SimpleFrame.Views.Test</Name>
