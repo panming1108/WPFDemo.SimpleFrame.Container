@@ -53,7 +53,7 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
         {
             if(selectedNavi != null)
             {
-                NaviSource = new Uri(@"NaviPages\" + selectedNavi.Name + "Page.xaml", UriKind.RelativeOrAbsolute);
+                NaviSource = new Uri(@"NaviPages\" + selectedNavi.Description, UriKind.RelativeOrAbsolute);
             }
         }
 

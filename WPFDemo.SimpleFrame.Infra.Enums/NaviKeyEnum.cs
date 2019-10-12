@@ -8,19 +8,19 @@ namespace WPFDemo.SimpleFrame.Infra.Enums
 {
     public enum NaviKeyEnum
     {
-        [Description("DMs")]
+        [Description("DMsPage.xaml")]
         DMs,
-        [Description("DVs")]
+        [Description("DVsPage.xaml")]
         DVs,
-        [Description("Editors")]
+        [Description("EditorsPage.xaml")]
         Editors,
-        [Description("LayOut")]
+        [Description("LayOutPage.xaml")]
         LayOut,
-        [Description("Navis")]
+        [Description("NavisPage.xaml")]
         Navis,
-        [Description("Schedules")]
+        [Description("SchedulesPage.xaml")]
         Schedules,
-        [Description("UXs")]
+        [Description("UXsPage.xaml")]
         UXs
     }
 }
