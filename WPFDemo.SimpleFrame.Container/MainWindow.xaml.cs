@@ -17,6 +17,7 @@ using WPFDemo.SimpleFrame.Infra.Cache;
 using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Messager;
+using WPFDemo.SimpleFrame.Infra.MVVM;
 
 namespace WPFDemo.SimpleFrame.Container
 {
@@ -25,6 +26,7 @@ namespace WPFDemo.SimpleFrame.Container
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IBusyIndicatorConsumer _busyIndicatorConsumer;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +36,8 @@ namespace WPFDemo.SimpleFrame.Container
             this.Height = SystemParameters.WorkArea.Height;
             CacheManagerInstance.Init(new CacheManager());
             MessagerInstance.Init(new Messager());
+
+            _busyIndicatorConsumer = IocManagerInstance.ResolveType<IBusyIndicatorConsumer>();
             MessagerInstance.GetMessager().Register<PageKeyEnum>(this, MessagerKeyEnum.MainPageNavi, Navi);
             DataContext = IocManagerInstance.ResolveType<IMainViewModel>();
         }
@@ -80,6 +84,8 @@ namespace WPFDemo.SimpleFrame.Container
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            _busyIndicatorConsumer.Init(this);
+
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.MainPageNavi, PageKeyEnum.NaviPage);
         }
 

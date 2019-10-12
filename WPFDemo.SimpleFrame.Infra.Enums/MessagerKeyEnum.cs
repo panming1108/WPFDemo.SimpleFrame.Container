@@ -13,5 +13,8 @@ namespace WPFDemo.SimpleFrame.Infra.Enums
 
         [Description("NaviPage导航")]
         public static readonly string NaviPageNavi = nameof(NaviPageNavi);
+
+        [Description("是否繁忙")]
+        public static readonly string IsBusy = nameof(IsBusy);
     }
 }

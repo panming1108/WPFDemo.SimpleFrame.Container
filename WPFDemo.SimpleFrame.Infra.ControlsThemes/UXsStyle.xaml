@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCDialog="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCBusyIndicator="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
@@ -68,6 +69,39 @@
                                              Margin="0,0,10,0"/>
                     </Grid>
                 </Border>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="BusyTextBlockStyle">
+        <TextBlock Style="{StaticResource FIcon}"
+                   Text="{StaticResource fa-spinner}"
+                   RenderTransformOrigin="0.5,0.5">
+            <TextBlock.RenderTransform>
+                <RotateTransform x:Name="angle" Angle="0"/>
+            </TextBlock.RenderTransform>
+            <TextBlock.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Angle"
+                                             Storyboard.TargetName="angle"
+                                             To="360" 
+                                             RepeatBehavior="Forever" 
+                                             Duration="0:0:2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </TextBlock.Triggers>
+        </TextBlock>
+    </DataTemplate>
+    <Style x:Key="EMCBusyIndicatorStyle" TargetType="EMCBusyIndicator:EMCBusyIndicator" BasedOn="{StaticResource BaseDialogStyle}">
+        <Setter Property="Content">
+            <Setter.Value>
+                <Viewbox Height="100"
+                         Width="100">
+                    <ContentControl ContentTemplate="{StaticResource BusyTextBlockStyle}"/>
+                </Viewbox>
             </Setter.Value>
         </Setter>
     </Style>
