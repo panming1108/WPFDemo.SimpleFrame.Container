@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A2A98D7A-25E9-4BE2-8E13-ED244DECBB18}</ProjectGuid>
+    <ProjectGuid>{5A2CE5F7-D82A-4D6B-AD2C-F3CEC44A11C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WPFDemo.SimpleFrame.Views.LayOut</RootNamespace>
-    <AssemblyName>WPFDemo.SimpleFrame.Views.LayOut</AssemblyName>
+    <RootNamespace>WPFDemo.SimpleFrame.ViewModels.LayOut</RootNamespace>
+    <AssemblyName>WPFDemo.SimpleFrame.ViewModels.LayOut</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -32,48 +32,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LayOutDisplay.xaml.cs">
-      <DependentUpon>LayOutDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MVVMEMCWindow.xaml.cs">
-      <DependentUpon>MVVMEMCWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="LayOutViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="LayOutDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MVVMEMCWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlsThemes\WPFDemo.SimpleFrame.Infra.ControlsThemes.csproj">
-      <Project>{d399f467-fc99-413c-ae99-8f2b9aeec34b}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.ControlsThemes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
-      <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Ioc\WPFDemo.SimpleFrame.Infra.Ioc.csproj">
       <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM\WPFDemo.SimpleFrame.Infra.MVVM.csproj">
+      <Project>{B6D7DC35-3978-4E0B-948E-753218E718C5}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.MVVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.LayOut\WPFDemo.SimpleFrame.IViewModels.LayOut.csproj">
       <Project>{BC4B313D-D80D-4CAC-B2DA-9DAD04FEC137}</Project>
@@ -83,13 +61,6 @@
       <Project>{5FA2B589-4B8B-4A2B-B29F-C0C9A687EAEF}</Project>
       <Name>WPFDemo.SimpleFrame.IViews.LayOut</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Navis\WPFDemo.SimpleFrame.Views.Navis.csproj">
-      <Project>{bad89178-2743-4e4e-91d6-a8c067ac820f}</Project>
-      <Name>WPFDemo.SimpleFrame.Views.Navis</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\urgent_1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

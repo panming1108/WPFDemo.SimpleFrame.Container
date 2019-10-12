@@ -250,9 +250,17 @@
       <Project>{e75b1bd8-8447-4cdd-bf8e-110f0c16c125}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.DVs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.LayOut\WPFDemo.SimpleFrame.IViewModels.LayOut.csproj">
+      <Project>{bc4b313d-d80d-4cac-b2da-9dad04fec137}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModels.LayOut</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.Test\WPFDemo.SimpleFrame.IViewModels.Test.csproj">
       <Project>{44bf97a2-b208-4215-a9d3-add8e27676cb}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViews.LayOut\WPFDemo.SimpleFrame.IViews.LayOut.csproj">
+      <Project>{5fa2b589-4b8b-4a2b-b29f-c0c9a687eaef}</Project>
+      <Name>WPFDemo.SimpleFrame.IViews.LayOut</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.DMs\WPFDemo.SimpleFrame.ViewModels.DMs.csproj">
       <Project>{9ec2d6ab-e1a3-4909-9011-213efd255586}</Project>
@@ -261,6 +269,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.DVs\WPFDemo.SimpleFrame.ViewModels.DVs.csproj">
       <Project>{149de941-caa6-4ebe-abc0-29185c39c61b}</Project>
       <Name>WPFDemo.SimpleFrame.ViewModels.DVs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.LayOut\WPFDemo.SimpleFrame.ViewModels.LayOut.csproj">
+      <Project>{5a2ce5f7-d82a-4d6b-ad2c-f3cec44a11c6}</Project>
+      <Name>WPFDemo.SimpleFrame.ViewModels.LayOut</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.Test\WPFDemo.SimpleFrame.ViewModels.Test.csproj">
       <Project>{a2b637c2-911f-45ea-b889-dc349b46fe5a}</Project>

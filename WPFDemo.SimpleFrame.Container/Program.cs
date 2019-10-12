@@ -18,9 +18,14 @@ namespace WPFDemo.SimpleFrame.Container
                 string[] list = new string[]
                 {
                     "WPFDemo.SimpleFrame.BLL",
+
                     "WPFDemo.SimpleFrame.ViewModels.Test",
                     "WPFDemo.SimpleFrame.ViewModels.DMs",
                     "WPFDemo.SimpleFrame.ViewModels.DVs",
+                    "WPFDemo.SimpleFrame.ViewModels.LayOut",
+
+                    "WPFDemo.SimpleFrame.Views.LayOut",
+
                     "WPFDemo.SimpleFrame.Container",
                 };
 

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Container.NaviPages"
       xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+      xmlns:LayOut="clr-namespace:WPFDemo.SimpleFrame.Views.LayOut;assembly=WPFDemo.SimpleFrame.Views.LayOut"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LayOutPage">
@@ -28,6 +29,7 @@
             <EMCButton:EMCButton Content="弹出窗口2"
                                  Margin="10,0,0,0"
                                  Click="EMCButton_Click_1"/>
+            <LayOut:LayOutDisplay/>
         </StackPanel>
     </Grid>
 </Page>

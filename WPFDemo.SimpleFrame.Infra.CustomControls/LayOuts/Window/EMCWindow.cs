@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window
 {
-    public class EMCWindow : System.Windows.Window
+    public class EMCWindow : System.Windows.Window ,IEMCWindow
     {
         private CommandBinding MinimizeCommandBinding;
         private CommandBinding MaximizeCommandBinding;

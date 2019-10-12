@@ -55,8 +55,11 @@
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="LayOuts\Window\EMCWindow.cs" />
+    <Compile Include="LayOuts\Window\IEMCWindow.cs" />
     <Compile Include="Navis\Button\EMCButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UXs\BusyIndicator\EMCBusyIndicator.cs" />
+    <Compile Include="UXs\Dialog\DialogBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Editors\AutoCompleteBox\" />
@@ -76,9 +79,7 @@
     <Folder Include="Schedules\Calendar\" />
     <Folder Include="Schedules\DatePicker\" />
     <Folder Include="Schedules\DateTimePicker\" />
-    <Folder Include="UXs\BusyIndicator\" />
     <Folder Include="UXs\DesktopAlert\" />
-    <Folder Include="UXs\Dialog\" />
     <Folder Include="UXs\ProgressBar\" />
     <Folder Include="UXs\ToolTip\" />
   </ItemGroup>

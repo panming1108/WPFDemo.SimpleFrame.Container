@@ -11,20 +11,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFDemo.SimpleFrame.Infra.Ioc;
-using WPFDemo.SimpleFrame.IViewModels.LayOut;
+using WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window;
+using WPFDemo.SimpleFrame.IViews.LayOut;
 
 namespace WPFDemo.SimpleFrame.Views.LayOut
 {
     /// <summary>
-    /// LayOutDisplay.xaml 的交互逻辑
+    /// MVVMEMCWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class LayOutDisplay : UserControl
+    public partial class MVVMEMCWindow : EMCWindow, IMVVMEMCWindow
     {
-        public LayOutDisplay()
+        public MVVMEMCWindow()
         {
             InitializeComponent();
-            DataContext = IocManagerInstance.ResolveType<ILayOutViewModel>();
         }
     }
 }

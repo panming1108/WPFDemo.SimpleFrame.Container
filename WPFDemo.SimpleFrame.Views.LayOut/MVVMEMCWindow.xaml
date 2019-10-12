@@ -1,0 +1,30 @@
+﻿<EMCWindow:EMCWindow x:Class="WPFDemo.SimpleFrame.Views.LayOut.MVVMEMCWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.LayOut"
+                     xmlns:EMCWindow="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                     mc:Ignorable="d" 
+                     Icon="/WPFDemo.SimpleFrame.Views.LayOut;component/Images/urgent_1.png"
+                     Title="TestEMCWindow" Height="450" Width="800">
+    <Grid Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Background="Yellow"/>
+        <Border Grid.Row="0"
+                Grid.Column="0"
+                Background="CadetBlue"/>
+        <Border Grid.Row="0"
+                Grid.Column="1"
+                Background="GreenYellow"/>
+    </Grid>
+</EMCWindow:EMCWindow>
