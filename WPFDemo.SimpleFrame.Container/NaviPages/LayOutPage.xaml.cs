@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window;
 
 namespace WPFDemo.SimpleFrame.Container.NaviPages
 {
@@ -22,6 +23,20 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
         public LayOutPage()
         {
             InitializeComponent();
+        }
+
+        private void EMCButton_Click(object sender, RoutedEventArgs e)
+        {
+            EMCWindow eMCWindow = new EMCWindow();
+            eMCWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            eMCWindow.ShowDialog();
+        }
+
+        private void EMCButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            TestEMCWindow eMCWindow = new TestEMCWindow();
+            eMCWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            eMCWindow.ShowDialog();
         }
     }
 }

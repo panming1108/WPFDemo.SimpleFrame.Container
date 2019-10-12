@@ -5,7 +5,7 @@
                     xmlns:EMCDataGrid="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCDataPager="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Colors.xaml"/>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <!--#region ListBox -->
     <Style x:Key="DefaultListBoxItem" TargetType="ListBoxItem">

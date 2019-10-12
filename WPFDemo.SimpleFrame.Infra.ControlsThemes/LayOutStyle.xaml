@@ -1,5 +1,150 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes">
-    
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
+                    xmlns:EMCWindow="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="WindowButton" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#686868"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="WindowCloseButton" TargetType="{x:Type Button}" BasedOn="{StaticResource WindowButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}">
+                        <TextBlock Style="{StaticResource FIcon}"
+                                   Text="{StaticResource fa-remove}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Red"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="EMCWindowStyle" TargetType="EMCWindow:EMCWindow">
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="Background" Value="{StaticResource EMCWindowBackground}"/>
+        <Setter Property="Width" Value="800"/>
+        <Setter Property="Height" Value="500"/>
+        <Setter Property="MaxHeight" Value="{x:Static SystemParameters.MaximizedPrimaryScreenHeight}"/>
+        <Setter Property="MaxWidth" Value="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource IsCheckedBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="ResizeMode" Value="CanResize"/>
+        <Setter Property="HeadBackground" Value="{StaticResource IsCheckedBrush}"/>
+        <Setter Property="shell:WindowChrome.WindowChrome">
+            <Setter.Value>
+                <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="5"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCWindow:EMCWindow">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Effect="{StaticResource DefaultDropShadowEffect}">
+                        <Grid Background="Transparent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0"
+                                    Background="{TemplateBinding HeadBackground}"
+                                    BorderThickness="0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0"
+                                          HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{TemplateBinding Icon}" Stretch="Uniform" Margin="5"/>
+                                            <TextBlock Text="{TemplateBinding Title}" VerticalAlignment="Center" FontSize="16" Foreground="White"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Grid.Column="1"
+                                          HorizontalAlignment="Right">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Style="{StaticResource WindowButton}"
+                                                    Command="{x:Static shell:SystemCommands.MinimizeWindowCommand}">
+                                                <TextBlock Style="{StaticResource FIcon}"
+                                                           Text="{StaticResource fa-window-minimize}"/>
+                                            </Button>
+                                            <Button Style="{StaticResource WindowButton}"
+                                                    Command="{x:Static shell:SystemCommands.MaximizeWindowCommand}">
+                                                <TextBlock Style="{StaticResource FIcon}"
+                                                           x:Name="icon_WindowStates"
+                                                           Text="{StaticResource fa-window-maximize}"/>
+                                            </Button>
+                                            <Button Style="{StaticResource WindowCloseButton}"
+                                                    Command="{x:Static shell:SystemCommands.CloseWindowCommand}">
+                                                <TextBlock Style="{StaticResource FIcon}"
+                                                           Text="{StaticResource fa-remove}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="1"
+                                    BorderThickness="0"
+                                    Background="{TemplateBinding Background}">
+                                <AdornerDecorator>
+                                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                                </AdornerDecorator>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="icon_WindowStates" Property="Text" Value="{StaticResource fa-window-restore}"/>
+                        </Trigger>
+                        <Trigger Property="WindowState" Value="Normal">
+                            <Setter TargetName="icon_WindowStates" Property="Text" Value="{StaticResource fa-window-maximize}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

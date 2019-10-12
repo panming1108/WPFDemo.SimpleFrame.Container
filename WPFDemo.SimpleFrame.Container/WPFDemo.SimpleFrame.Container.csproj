@@ -110,6 +110,9 @@
       <DependentUpon>UXsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="TestEMCWindow.xaml.cs">
+      <DependentUpon>TestEMCWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NaviPages\UXsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestEMCWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -267,6 +274,10 @@
       <Project>{83e3786b-5c01-4411-8f41-7c0ce3b6aa6a}</Project>
       <Name>WPFDemo.SimpleFrame.Views.DVs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.LayOut\WPFDemo.SimpleFrame.Views.LayOut.csproj">
+      <Project>{a2a98d7a-25e9-4be2-8e13-ed244decbb18}</Project>
+      <Name>WPFDemo.SimpleFrame.Views.LayOut</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Navis\WPFDemo.SimpleFrame.Views.Navis.csproj">
       <Project>{bad89178-2743-4e4e-91d6-a8c067ac820f}</Project>
       <Name>WPFDemo.SimpleFrame.Views.Navis</Name>
@@ -275,6 +286,10 @@
       <Project>{096aa23b-7e2b-4c25-822d-c62bc88e2e43}</Project>
       <Name>WPFDemo.SimpleFrame.Views.Test</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\urgent_1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

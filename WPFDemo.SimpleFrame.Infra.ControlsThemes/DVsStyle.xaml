@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Colors.xaml"/>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <!--#region ColumnChart -->
     <Style x:Key="ColumnChartStyle" TargetType="EMCChartView:EMCChartView">

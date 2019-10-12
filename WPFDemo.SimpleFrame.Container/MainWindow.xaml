@@ -11,7 +11,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
+                <!--<ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>-->
                 <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -48,7 +48,7 @@
                                      x:Name="min_btn"
                                      Click="Min_btn_Click">
                     <TextBlock Style="{StaticResource FIcon}"
-                               Text="{StaticResource fa-minus}"/>
+                               Text="{StaticResource fa-window-minimize}"/>
                 </EMCButton:EMCButton>
                 <EMCButton:EMCButton Height="30"
                                      Margin="10,0"

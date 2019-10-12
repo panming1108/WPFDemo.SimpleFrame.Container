@@ -28,6 +28,8 @@
     <SolidColorBrush x:Key="BaseDataGridRowForeground" Color="#57565B"/>
     <SolidColorBrush x:Key="BaseDataGridRowMouseOverBackground" Color="#F1F9FE"/>
 
+    <SolidColorBrush x:Key="EMCWindowBackground" Color="#F9F9F9"/>
+
     <system:Double x:Key="DisableOpacity">0.5</system:Double>
     <PathGeometry x:Key="ExpanderClose">M0,0 L8,8 16,0</PathGeometry>
     <PathGeometry x:Key="ExpanderOpen">M0,8 L8,0 16,8</PathGeometry>
