@@ -26,6 +26,8 @@ namespace WPFDemo.SimpleFrame.Container
 
                     "WPFDemo.SimpleFrame.Views.LayOut",
 
+                    "WPFDemo.SimpleFrame.Infra.CustomControls",
+
                     "WPFDemo.SimpleFrame.Container",
                 };
 

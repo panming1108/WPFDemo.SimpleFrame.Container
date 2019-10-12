@@ -12,7 +12,8 @@ namespace WPFDemo.SimpleFrame.Container
         {
             string[] lists = new string[]
             {
-                "/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/LayOutStyle.xaml"
+                "/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/LayOutStyle.xaml",
+                "/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/UXsStyle.xaml"
             };
             LoadResources(lists);
             base.OnStartup(e);

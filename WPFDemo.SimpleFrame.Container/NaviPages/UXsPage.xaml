@@ -6,9 +6,26 @@
       xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Container.NaviPages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+      xmlns:EMCDialog="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
       Title="UXsPage">
-
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/UXsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
-        <TextBlock Text="UXs"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <EMCButton:EMCButton Content="弹窗"
+                                 Margin="10,0,0,0"
+                                 Click="EMCButton_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

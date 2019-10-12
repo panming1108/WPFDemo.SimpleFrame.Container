@@ -59,7 +59,10 @@
     <Compile Include="Navis\Button\EMCButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UXs\BusyIndicator\EMCBusyIndicator.cs" />
+    <Compile Include="UXs\Dialog\ConfirmDialog.cs" />
     <Compile Include="UXs\Dialog\DialogBase.cs" />
+    <Compile Include="UXs\Dialog\DialogCommands.cs" />
+    <Compile Include="UXs\Dialog\IConfirmDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Editors\AutoCompleteBox\" />

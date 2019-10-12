@@ -30,6 +30,8 @@
 
     <SolidColorBrush x:Key="EMCWindowBackground" Color="#F9F9F9"/>
 
+    <SolidColorBrush x:Key="MaskBackground" Color="#44000000"/>
+
     <system:Double x:Key="DisableOpacity">0.5</system:Double>
     <PathGeometry x:Key="ExpanderClose">M0,0 L8,8 16,0</PathGeometry>
     <PathGeometry x:Key="ExpanderOpen">M0,8 L8,0 16,8</PathGeometry>
@@ -42,5 +44,6 @@
     <RotateTransform x:Key="LeftDirection" Angle="90"/>
     <RotateTransform x:Key="RightDirection" Angle="-90"/>
     <DropShadowEffect x:Key="DefaultDropShadowEffect" Color="#21ADFF" Opacity="0.4" ShadowDepth="2"/>
+    <Rect x:Key="WorkArea" Size="{x:Static SystemParameters.WorkArea}"/>
 
 </ResourceDictionary>
