@@ -3,7 +3,8 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCDialog="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCBusyIndicator="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCToolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -104,5 +105,133 @@
                 </Viewbox>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="BottomToolTip" TargetType="EMCToolTip:EMCToolTip">
+        <Border Effect="{StaticResource DefaultDropShadowEffect}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition MinHeight="25" Height="{Binding ElementName=PART_Content, Path=ActualHeight}"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition MinWidth="25" Width="{Binding ElementName=PART_Content, Path=ActualWidth}"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <Grid Panel.ZIndex="1"
+                      Grid.Row="0"
+                      x:Name="PART_Top_Angle"
+                      Visibility="Collapsed"
+                      Grid.Column="1">
+                    <Path Stroke="{TemplateBinding BorderBrush}"
+                          StrokeThickness="1"
+                          Stretch="UniformToFill"
+                          Fill="{TemplateBinding Background}"
+                          Data="M50,10 60,0 70,10Z">
+                    </Path>
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="1"/>
+                    </Grid.RenderTransform>
+                </Grid>
+                <Grid Panel.ZIndex="1"
+                      Grid.Row="2"
+                      x:Name="PART_Bottom_Angle"
+                      Visibility="Collapsed"
+                      Grid.Column="1">
+                    <Path Stroke="{TemplateBinding BorderBrush}"
+                          StrokeThickness="1"
+                          Stretch="UniformToFill"
+                          VerticalAlignment="Bottom"
+                          Fill="{TemplateBinding Background}"
+                          Data="M50,0 60,10 70,0Z">
+                    </Path>
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="-1.5"/>
+                    </Grid.RenderTransform>
+                </Grid>
+                <Grid Panel.ZIndex="1"
+                      Grid.Row="1"
+                      x:Name="PART_Left_Angle"
+                      Visibility="Collapsed"
+                      Grid.Column="0">
+                    <Path Stroke="{TemplateBinding BorderBrush}"
+                          StrokeThickness="1"
+                          Stretch="UniformToFill"
+                          Fill="{TemplateBinding Background}"
+                          Data="M10,25 0,35 10,45Z">
+                    </Path>
+                    <Grid.RenderTransform>
+                        <TranslateTransform X="1"/>
+                    </Grid.RenderTransform>
+                </Grid>
+                <Grid Panel.ZIndex="1"
+                      Grid.Row="1"
+                      x:Name="PART_Right_Angle"
+                      Visibility="Collapsed"
+                      Grid.Column="2">
+                    <Path Stroke="{TemplateBinding BorderBrush}"
+                          StrokeThickness="1"
+                          Stretch="UniformToFill"
+                          Fill="{TemplateBinding Background}"
+                          HorizontalAlignment="Right"
+                          Data="M110,25 120,35 110,45Z">
+                    </Path>
+                    <Grid.RenderTransform>
+                        <TranslateTransform X="-1.5"/>
+                    </Grid.RenderTransform>
+                </Grid>
+                <Path Stroke="{TemplateBinding BorderBrush}"
+                      Stretch="Fill"
+                      Fill="{TemplateBinding Background}"
+                      StrokeThickness="1"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Data="M50,0 5,0 A5,5 0,0,0 0,5 L0,55 A5,5 0,0,0 5,60 L115,60 A5,5 0,0,0 120,55 L120,5 A5,5 0,0,0 115,0Z">
+                </Path>
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Padding="5"
+                        x:Name="PART_Content"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                </Border>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Placement" Value="Bottom">
+                <Setter TargetName="PART_Top_Angle" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_Bottom_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Left_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Right_Angle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Placement" Value="Top">
+                <Setter TargetName="PART_Top_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Bottom_Angle" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_Left_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Right_Angle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Placement" Value="Left">
+                <Setter TargetName="PART_Top_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Bottom_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Left_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Right_Angle" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="Placement" Value="Right">
+                <Setter TargetName="PART_Top_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Bottom_Angle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_Left_Angle" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_Right_Angle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style TargetType="EMCToolTip:EMCToolTip">
+        <Setter Property="Placement" Value="Bottom"/>
+        <Setter Property="Background" Value="{StaticResource ToolTipBackground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ToolTipBorderBrush}"/>
+        <Setter Property="Template" Value="{StaticResource BottomToolTip}"/>
     </Style>
 </ResourceDictionary>

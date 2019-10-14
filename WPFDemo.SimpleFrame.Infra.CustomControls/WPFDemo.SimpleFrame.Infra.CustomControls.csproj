@@ -64,6 +64,7 @@
     <Compile Include="UXs\Dialog\DialogBase.cs" />
     <Compile Include="UXs\Dialog\DialogCommands.cs" />
     <Compile Include="UXs\Dialog\IConfirmDialog.cs" />
+    <Compile Include="UXs\ToolTip\EMCToolTip.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Editors\AutoCompleteBox\" />
@@ -85,7 +86,6 @@
     <Folder Include="Schedules\DateTimePicker\" />
     <Folder Include="UXs\DesktopAlert\" />
     <Folder Include="UXs\ProgressBar\" />
-    <Folder Include="UXs\ToolTip\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
