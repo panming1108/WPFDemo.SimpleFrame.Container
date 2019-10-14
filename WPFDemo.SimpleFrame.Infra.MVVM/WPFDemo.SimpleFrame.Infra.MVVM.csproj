@@ -47,7 +47,6 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DispatcherHelper.cs" />
     <Compile Include="FELifeAttachCommand.cs" />
-    <Compile Include="IBusyIndicatorConsumer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

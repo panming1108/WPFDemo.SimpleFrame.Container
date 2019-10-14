@@ -80,7 +80,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusyIndicatorConsumer.cs" />
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -218,6 +217,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
       <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.DialogConsumer\WPFDemo.SimpleFrame.Infra.DialogConsumer.csproj">
+      <Project>{8057A5DB-DF5C-4485-95AD-A4CCBB4AF631}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.DialogConsumer</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
       <Project>{1efda8f3-f261-4c04-b069-67dacae8bbe5}</Project>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace WPFDemo.SimpleFrame.Infra.MVVM
+namespace WPFDemo.SimpleFrame.Infra.DialogConsumer.Interfaces
 {
     public interface IBusyIndicatorConsumer : IDisposable
     {

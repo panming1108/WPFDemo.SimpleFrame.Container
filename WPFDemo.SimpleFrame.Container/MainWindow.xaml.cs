@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFDemo.SimpleFrame.Container.IViewModels;
 using WPFDemo.SimpleFrame.Infra.Cache;
+using WPFDemo.SimpleFrame.Infra.DialogConsumer.Interfaces;
 using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Messager;

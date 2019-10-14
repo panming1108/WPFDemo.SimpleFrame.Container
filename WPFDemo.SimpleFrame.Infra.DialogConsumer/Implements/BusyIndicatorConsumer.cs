@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;
+using WPFDemo.SimpleFrame.Infra.DialogConsumer.Interfaces;
 using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Messager;
-using WPFDemo.SimpleFrame.Infra.MVVM;
 
-namespace WPFDemo.SimpleFrame.Container
+namespace WPFDemo.SimpleFrame.Infra.DialogConsumer.Implements
 {
     public class BusyIndicatorConsumer : IBusyIndicatorConsumer
     {
