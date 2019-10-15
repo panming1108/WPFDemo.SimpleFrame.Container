@@ -85,34 +85,33 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
 
         private void InitCommands()
         {
-            SmallChartDataChangeCommand = new DelegateCommand(OnSmallChartDataChanged);
-            BigChartDataChangeCommand = new DelegateCommand(OnBigChartDataChanged);
+            SmallChartDataChangeCommand = new AsyncDelegateCommand(OnSmallChartDataChanged);
+            BigChartDataChangeCommand = new AsyncDelegateCommand(OnBigChartDataChanged);
         }
 
-        private void OnFixChartDataChanged()
+        private async Task OnFixChartDataChanged()
         {
-            FixChartData = _chartViewBusi.GetFixChartDatas();
-            FixAverageData = _chartViewBusi.GetFixAverageDatas();
+            FixChartData = await _chartViewBusi.GetFixChartDatas();
+            FixAverageData = await _chartViewBusi.GetFixAverageDatas();
         }
 
-        private void OnBigChartDataChanged()
+        private async Task OnBigChartDataChanged()
         {
-            BigChartData = _chartViewBusi.GetBigChartDatas();
-            BigAverageData = _chartViewBusi.GetBigAverageDatas();
+            BigChartData = await _chartViewBusi.GetBigChartDatas();
+            BigAverageData = await _chartViewBusi.GetBigAverageDatas();
         }
 
-        private void OnSmallChartDataChanged()
+        private async Task OnSmallChartDataChanged()
         {
-            SmallChartData = _chartViewBusi.GetSmallChartDatas();
-            SmallAverageData = _chartViewBusi.GetSmallAverageDatas();
+            SmallChartData = await _chartViewBusi.GetSmallChartDatas();
+            SmallAverageData = await _chartViewBusi.GetSmallAverageDatas();
         }
 
         protected async override Task Loaded()
         {
-            await TaskEx.FromResult(0);
-            OnSmallChartDataChanged();
-            OnFixChartDataChanged();
-            OnBigChartDataChanged();
+            await OnSmallChartDataChanged();
+            await OnFixChartDataChanged();
+            await OnBigChartDataChanged();
         }
 
         protected async override Task UnLoaded()

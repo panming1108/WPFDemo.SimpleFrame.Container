@@ -10,85 +10,29 @@ using WPFDemo.SimpleFrame.IViewModels.DMs;
 
 namespace WPFDemo.SimpleFrame.ViewModels.DMs
 {
-    public class DataPagerViewModel : BaseViewModel, IDataPagerViewModel
+    public class DataPagerViewModel : DataPagerQueryViewModel<Student>, IDataPagerViewModel
     {
-        private List<Student> _students;
-        private int _pageNo;
-        private int _pageSize;
-        private int _itemCount;
-
-        private IStudentBusi _studentBusi;
-
-        public List<Student> Students
-        {
-            get => _students;
-            set
-            {
-                _students = value;
-                OnPropertyChanged(() => Students);
-            }
-        }
-
-        public int ItemCount
-        {
-            get { return _itemCount; }
-            set
-            {
-                _itemCount = value;
-                OnPropertyChanged(() => ItemCount);
-            }
-        }
-        public int PageNo
-        {
-            get { return _pageNo; }
-            set
-            {
-                if (_pageNo != value)
-                {
-                    _pageNo = value;
-                    PageSearch(_pageSize, _pageNo);
-                    OnPropertyChanged(() => PageNo);
-                }
-            }
-        }
-
-        public int PageSize
-        {
-            get
-            {
-                return _pageSize;
-            }
-            set
-            {
-                if (_pageSize != value)
-                {
-                    _pageSize = value;
-                    PageSearch(_pageSize, 1);
-                    OnPropertyChanged(() => PageSize);
-                }
-            }
-        }
+        private IStudentBusi _studentBusi;       
 
         public DataPagerViewModel(IStudentBusi studentBusi)
         {
             _studentBusi = studentBusi;
-            _pageNo = 1;
-            _pageSize = 5;
+            PageSize = 10;
+            PageSizeSource = new int[] { 10, 20, 30 };
         }
 
-        private void PageSearch(int pageSize, int pageNo)
+        protected override async Task PageSearch(int pageSize, int pageNo)
         {
-            var result = _studentBusi.GetStudents(pageNo, pageSize);
+            var result = await _studentBusi.GetStudents(pageNo, pageSize);
             ItemCount = 9999;
             PageSize = result.PageSize;
             PageNo = result.PageNo;
-            Students = result.Students;
+            DataSource = result.Students;
         }
 
         protected async override Task Loaded()
         {
-            await TaskEx.FromResult(0);
-            PageSearch(_pageSize, _pageNo);
+            await PageSearch(PageSize, PageNo);
         }
 
         protected async override Task UnLoaded()

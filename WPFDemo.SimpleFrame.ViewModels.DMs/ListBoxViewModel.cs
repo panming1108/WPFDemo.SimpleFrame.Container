@@ -31,8 +31,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         protected async override Task Loaded()
         {
-            await TaskEx.FromResult(0);
-            ListBoxSource = _listBoxBusi.GetListBoxSource();
+            ListBoxSource = await _listBoxBusi.GetListBoxSource();
         }
 
         protected async override Task UnLoaded()

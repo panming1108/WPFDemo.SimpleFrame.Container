@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="AsyncDelegateCommand.cs" />
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="DataPagerQueryViewModel.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

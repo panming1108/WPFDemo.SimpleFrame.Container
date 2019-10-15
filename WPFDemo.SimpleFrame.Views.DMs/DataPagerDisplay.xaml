@@ -20,12 +20,15 @@
     </UserControl.Resources>
     <Grid Margin="10,0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
         <EMCDataGrid:EMCDataGrid RowHeight="50"
                                  BorderThickness="1"
-                                 ItemsSource="{Binding Students}">
+                                 Height="292"
+                                 ItemsSource="{Binding DataSource}"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Disabled">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"></DataGridTextColumn>
                 <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Name}"></DataGridTextColumn>
@@ -38,6 +41,7 @@
                                    PageSize="{Binding PageSize,Mode=TwoWay}"
                                    PageNo="{Binding PageNo,Mode=TwoWay}"
                                    NumericButtonCount="7"
+                                   PageSizeSource="{Binding PageSizeSource}"
                                    ItemCount="{Binding ItemCount}"/>
     </Grid>
 </UserControl>
