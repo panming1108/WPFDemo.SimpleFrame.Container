@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.DMs"
              xmlns:EMCDataGrid="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCDataPager="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM;assembly=WPFDemo.SimpleFrame.Infra.MVVM"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              mc:Ignorable="d" 

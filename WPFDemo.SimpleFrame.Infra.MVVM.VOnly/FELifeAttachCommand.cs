@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-namespace WPFDemo.SimpleFrame.Infra.MVVM
+namespace WPFDemo.SimpleFrame.Infra.MVVM.VOnly
 {
     public class FELifeAttachCommand
     {

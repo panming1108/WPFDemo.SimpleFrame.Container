@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace WPFDemo.SimpleFrame.Infra.MVVM
+namespace WPFDemo.SimpleFrame.Infra.Helper
 {
     public class DispatcherHelper
     {
         public static void InvokeOnUIThread(Action action)
         {
-            if(action == null)
+            if (action == null)
             {
                 throw new ArgumentNullException("action is null");
             }
 
-            if(Application.Current.Dispatcher.CheckAccess())
+            if (Application.Current.Dispatcher.CheckAccess())
             {
                 action();
             }

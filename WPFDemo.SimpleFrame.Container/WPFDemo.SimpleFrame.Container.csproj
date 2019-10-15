@@ -242,6 +242,14 @@
       <Project>{c9ad9862-4539-4eea-ba4d-1b01301263eb}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.csproj">
+      <Project>{ef814e43-2ace-4122-a1c9-b3bad2193e96}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VMOnly</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VOnly\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.csproj">
+      <Project>{90fdc46b-bd46-475e-9ff1-56e0c0b65ad1}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VOnly</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM\WPFDemo.SimpleFrame.Infra.MVVM.csproj">
       <Project>{B6D7DC35-3978-4E0B-948E-753218E718C5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.MVVM</Name>
