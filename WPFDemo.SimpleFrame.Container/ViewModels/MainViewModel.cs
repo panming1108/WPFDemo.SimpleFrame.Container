@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WPFDemo.SimpleFrame.Container.IViewModels;
 using WPFDemo.SimpleFrame.IBLL;
 using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Helper;
 using WPFDemo.SimpleFrame.Infra.Messager;
-using WPFDemo.SimpleFrame.Infra.MVVM;
+using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
 
 namespace WPFDemo.SimpleFrame.Container.ViewModels
 {
@@ -43,14 +44,14 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.MainPageNavi, (PageKeyEnum)int.Parse(pageNaviId));
         }
 
-        protected override void Loaded()
+        protected async override Task Loaded()
         {
-            
+            await TaskEx.FromResult(0);
         }
 
-        protected override void UnLoaded()
+        protected async override Task UnLoaded()
         {
-            
+            await TaskEx.FromResult(0);
         }
 
     }

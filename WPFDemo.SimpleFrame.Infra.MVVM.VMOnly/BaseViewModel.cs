@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WPFDemo.SimpleFrame.Infra.MVVM
+namespace WPFDemo.SimpleFrame.Infra.MVVM.VMOnly
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
@@ -20,13 +21,13 @@ namespace WPFDemo.SimpleFrame.Infra.MVVM
 
         public BaseViewModel()
         {
-            _loadedCommand = new DelegateCommand(Loaded);
-            _unLoadedCommand = new DelegateCommand(UnLoaded);
+            _loadedCommand = new AsyncDelegateCommand(Loaded);
+            _unLoadedCommand = new AsyncDelegateCommand(UnLoaded);
         }
 
-        protected abstract void UnLoaded();
+        protected abstract Task UnLoaded();
 
-        protected abstract void Loaded();
+        protected abstract Task Loaded();
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

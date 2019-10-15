@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using WPFDemo.SimpleFrame.IBLL;
 using WPFDemo.SimpleFrame.Infra.Models;
-using WPFDemo.SimpleFrame.Infra.MVVM;
+using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
 using WPFDemo.SimpleFrame.IViewModels.DMs;
 
 namespace WPFDemo.SimpleFrame.ViewModels.DMs
@@ -84,14 +85,15 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             Students = result.Students;
         }
 
-        protected override void Loaded()
+        protected async override Task Loaded()
         {
+            await TaskEx.FromResult(0);
             PageSearch(_pageSize, _pageNo);
         }
 
-        protected override void UnLoaded()
+        protected async override Task UnLoaded()
         {
-            
+            await TaskEx.FromResult(0);
         }
     }
 }

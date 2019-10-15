@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WPFDemo.SimpleFrame.IBLL;
-using WPFDemo.SimpleFrame.Infra.MVVM;
+using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
 using WPFDemo.SimpleFrame.IViewModels.DVs;
 
 namespace WPFDemo.SimpleFrame.ViewModels.DVs
@@ -106,16 +107,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
             SmallAverageData = _chartViewBusi.GetSmallAverageDatas();
         }
 
-        protected override void Loaded()
+        protected async override Task Loaded()
         {
+            await TaskEx.FromResult(0);
             OnSmallChartDataChanged();
             OnFixChartDataChanged();
             OnBigChartDataChanged();
         }
 
-        protected override void UnLoaded()
+        protected async override Task UnLoaded()
         {
-            
+            await TaskEx.FromResult(0);
         }
     }
 }

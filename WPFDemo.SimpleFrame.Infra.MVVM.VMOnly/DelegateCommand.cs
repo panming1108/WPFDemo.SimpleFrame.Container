@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace WPFDemo.SimpleFrame.Infra.MVVM
+namespace WPFDemo.SimpleFrame.Infra.MVVM.VMOnly
 {
     public class DelegateCommand : ICommand
     {

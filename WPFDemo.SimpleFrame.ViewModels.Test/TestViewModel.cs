@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WPFDemo.SimpleFrame.IBLL;
-using WPFDemo.SimpleFrame.Infra.MVVM;
+using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
 using WPFDemo.SimpleFrame.IViewModels.Test;
 
 namespace WPFDemo.SimpleFrame.ViewModels.Test
@@ -44,14 +45,14 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             TestViewText = "TestView:" + _testBusi.GetTestString();
         }
 
-        protected override void UnLoaded()
+        protected async override Task UnLoaded()
         {
-            throw new NotImplementedException();
+            await TaskEx.FromResult(0);
         }
 
-        protected override void Loaded()
+        protected async override Task Loaded()
         {
-            throw new NotImplementedException();
+            await TaskEx.FromResult(0);
         }
     }
 }
