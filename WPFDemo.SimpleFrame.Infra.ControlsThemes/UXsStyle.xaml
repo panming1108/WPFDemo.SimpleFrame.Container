@@ -107,7 +107,7 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="BottomToolTip" TargetType="EMCToolTip:EMCToolTip">
+    <ControlTemplate x:Key="ToolTipTemplate" TargetType="EMCToolTip:EMCToolTip">
         <Border Effect="{StaticResource DefaultDropShadowEffect}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -232,6 +232,6 @@
         <Setter Property="Background" Value="{StaticResource ToolTipBackground}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{StaticResource ToolTipBorderBrush}"/>
-        <Setter Property="Template" Value="{StaticResource BottomToolTip}"/>
+        <Setter Property="Template" Value="{StaticResource ToolTipTemplate}"/>
     </Style>
 </ResourceDictionary>
