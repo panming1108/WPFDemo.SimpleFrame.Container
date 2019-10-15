@@ -44,7 +44,9 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <EMCToolTip:EMCToolTip Placement="Top">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </EMCToolTip:EMCToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
@@ -53,7 +55,9 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <EMCToolTip:EMCToolTip Placement="Left">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </EMCToolTip:EMCToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
@@ -62,17 +66,20 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <EMCToolTip:EMCToolTip Placement="Right">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </EMCToolTip:EMCToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
             <TextBlock Text="ToolTip在下边"
                        FontSize="16"
-                       Margin="10,0"
-                       Effect="{StaticResource DefaultDropShadowEffect}">
+                       Margin="10,0">
                 <TextBlock.ToolTip>
                     <EMCToolTip:EMCToolTip Placement="Bottom" HasDropShadow="True">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </EMCToolTip:EMCToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
@@ -85,7 +92,9 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <ToolTip Placement="Left" HasDropShadow="True">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </ToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
@@ -94,7 +103,9 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <ToolTip Placement="Top">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </ToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
@@ -103,7 +114,9 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <ToolTip Placement="Right">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </ToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
@@ -112,334 +125,12 @@
                        Margin="10,0">
                 <TextBlock.ToolTip>
                     <ToolTip Placement="Bottom">
-                        <TextBlock Text="这里是ToolTip"/>
+                        <TextBlock Width="80"
+                                   Height="40"
+                                   Text="这里是ToolTip"/>
                     </ToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="3"
-                    Margin="0,10,0,0">
-            <Grid Height="70"
-                  Width="120"
-                  Effect="{StaticResource DefaultDropShadowEffect}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="10"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="10"/>
-                </Grid.ColumnDefinitions>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="0"
-                      Visibility="Visible"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,10 60,0 70,10Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="2"
-                      Visibility="Collapsed"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          VerticalAlignment="Bottom"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,0 60,10 70,0Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Collapsed"
-                      Grid.Column="0">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M10,25 0,35 10,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Collapsed"
-                      Grid.Column="2">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          HorizontalAlignment="Right"
-                          Data="M110,25 120,35 110,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                      Stretch="Fill"
-                      Fill="{StaticResource ToolTipBackground}"
-                      StrokeThickness="1"
-                      Grid.Row="1"
-                      Grid.Column="1"
-                      Data="M50,0 5,0 A5,5 0,0,0 0,5 L0,55 A5,5 0,0,0 5,60 L115,60 A5,5 0,0,0 120,55 L120,5 A5,5 0,0,0 115,0Z">
-                </Path>
-            </Grid>
-            <Grid Height="70"
-                  Width="120"
-                  Effect="{StaticResource DefaultDropShadowEffect}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="10"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="10"/>
-                </Grid.ColumnDefinitions>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="0"
-                      Visibility="Collapsed"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,10 60,0 70,10Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="2"
-                      Visibility="Visible"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          VerticalAlignment="Bottom"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,0 60,10 70,0Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Collapsed"
-                      Grid.Column="0">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M10,25 0,35 10,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Collapsed"
-                      Grid.Column="2">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          HorizontalAlignment="Right"
-                          Data="M110,25 120,35 110,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                      Stretch="Fill"
-                      Fill="{StaticResource ToolTipBackground}"
-                      StrokeThickness="1"
-                      Grid.Row="1"
-                      Grid.Column="1"
-                      Data="M50,0 5,0 A5,5 0,0,0 0,5 L0,55 A5,5 0,0,0 5,60 L115,60 A5,5 0,0,0 120,55 L120,5 A5,5 0,0,0 115,0Z">
-                </Path>
-            </Grid>
-            <Grid Height="70"
-                  Width="120"
-                  Effect="{StaticResource DefaultDropShadowEffect}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="10"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="10"/>
-                </Grid.ColumnDefinitions>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="0"
-                      Visibility="Collapsed"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,10 60,0 70,10Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="2"
-                      Visibility="Collapsed"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          VerticalAlignment="Bottom"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,0 60,10 70,0Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Visible"
-                      Grid.Column="0">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M10,25 0,35 10,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Collapsed"
-                      Grid.Column="2">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          HorizontalAlignment="Right"
-                          Data="M110,25 120,35 110,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                      Stretch="Fill"
-                      Fill="{StaticResource ToolTipBackground}"
-                      StrokeThickness="1"
-                      Grid.Row="1"
-                      Grid.Column="1"
-                      Data="M50,0 5,0 A5,5 0,0,0 0,5 L0,55 A5,5 0,0,0 5,60 L115,60 A5,5 0,0,0 120,55 L120,5 A5,5 0,0,0 115,0Z">
-                </Path>
-            </Grid>
-            <Grid Height="70"
-                  Width="120"
-                  Effect="{StaticResource DefaultDropShadowEffect}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="10"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="10"/>
-                </Grid.ColumnDefinitions>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="0"
-                      Visibility="Collapsed"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,10 60,0 70,10Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="2"
-                      Visibility="Collapsed"
-                      Grid.Column="1">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          VerticalAlignment="Bottom"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M50,0 60,10 70,0Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform Y="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Collapsed"
-                      Grid.Column="0">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          Data="M10,25 0,35 10,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Grid Panel.ZIndex="1"
-                      Grid.Row="1"
-                      Visibility="Visible"
-                      Grid.Column="2">
-                    <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                          StrokeThickness="1"
-                          Stretch="UniformToFill"
-                          Fill="{StaticResource ToolTipBackground}"
-                          HorizontalAlignment="Right"
-                          Data="M110,25 120,35 110,45Z">
-                    </Path>
-                    <Grid.RenderTransform>
-                        <TranslateTransform X="-1"/>
-                    </Grid.RenderTransform>
-                </Grid>
-                <Path Stroke="{StaticResource ToolTipBorderBrush}"
-                      Stretch="Fill"
-                      Fill="{StaticResource ToolTipBackground}"
-                      StrokeThickness="1"
-                      Grid.Row="1"
-                      Grid.Column="1"
-                      Data="M50,0 5,0 A5,5 0,0,0 0,5 L0,55 A5,5 0,0,0 5,60 L115,60 A5,5 0,0,0 120,55 L120,5 A5,5 0,0,0 115,0Z">
-                </Path>
-            </Grid>
         </StackPanel>
     </Grid>
 </Page>
