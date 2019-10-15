@@ -49,5 +49,11 @@
     <DropShadowEffect x:Key="DefaultDropShadowEffect" Color="#21ADFF" Opacity="0.4" ShadowDepth="2"/>
     <DropShadowEffect x:Key="ToolTipDropShadowEffect" Color="#C5CDD9" Opacity="0.4" ShadowDepth="2"/>
     <Rect x:Key="WorkArea" Size="{x:Static SystemParameters.WorkArea}"/>
-
+    
+    <system:Double x:Key="ScrollBarSize">12</system:Double>
+    <SolidColorBrush x:Key="ScrollBarBackground" Color="#F1F1F1"/>
+    <SolidColorBrush x:Key="ScrollBarRepeatBtnMouseOverBackground" Color="#787878"/>
+    <SolidColorBrush x:Key="ScrollBarRepeatBtnPressedBackground" Color="Black"/>
+    <SolidColorBrush x:Key="ScrollBarThumbBackground" Color="#C1C1C1"/>
+    <SolidColorBrush x:Key="ScrollBarThumbMouseOverBackground" Color="#A8A8A8"/>
 </ResourceDictionary>
