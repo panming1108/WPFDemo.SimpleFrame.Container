@@ -16,5 +16,8 @@ namespace WPFDemo.SimpleFrame.Infra.Enums
 
         [Description("是否繁忙")]
         public static readonly string IsBusy = nameof(IsBusy);
+
+        [Description("弹出通知框")]
+        public static readonly string PopupNotifyBox = nameof(PopupNotifyBox);
     }
 }

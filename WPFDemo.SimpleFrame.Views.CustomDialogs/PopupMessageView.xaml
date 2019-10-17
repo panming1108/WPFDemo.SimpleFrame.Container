@@ -7,6 +7,8 @@
                                 xmlns:EMCNotifyBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                                 mc:Ignorable="d"
                                 x:Name="PART_Root"
+                                Placement="Absolute"
+                                PopupAnimation="Fade"
                                 Width="350" 
                                 Height="250">
     <EMCNotifyBox:EMCPopupNotifyBox.Resources>
@@ -31,7 +33,7 @@
                     Click="Button_Click" />
         </Grid>
         <Grid Grid.Row="1"
-                  Background="{StaticResource NotifycationBackground}">
+              Background="AliceBlue">
             <TextBlock Cursor="Hand"
                        Foreground="#289FE3"
                        TextWrapping="Wrap"

@@ -20,6 +20,7 @@ using WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;
 using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Messager;
+using WPFDemo.SimpleFrame.Infra.Models;
 using WPFDemo.SimpleFrame.IViews.CustomDialogs;
 
 namespace WPFDemo.SimpleFrame.Container.NaviPages
@@ -49,8 +50,7 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
 
         private void EMCButton_Click_2(object sender, RoutedEventArgs e)
         {
-            var notifyBox = IocManagerInstance.ResolveType<IPopupMessageView>();
-            notifyBox.Show("提示", "阿斯顿发送到发送到");
+            MessagerInstance.GetMessager().Send(MessagerKeyEnum.PopupNotifyBox, new PopupNotifyObject(PopupNotifyEnum.Message, "通知", "阿阿斯顿发斯蒂芬"));
         }
     }
 }

@@ -40,6 +40,7 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,7 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implements\BusyIndicatorConsumer.cs" />
+    <Compile Include="Implements\PopupNotifyBoxConsumer.cs" />
     <Compile Include="Interfaces\IBusyIndicatorConsumer.cs" />
+    <Compile Include="Interfaces\IPopupNotifyBoxConsumer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -74,9 +77,21 @@
       <Project>{1EFDA8F3-F261-4C04-B069-67DACAE8BBE5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Ioc\WPFDemo.SimpleFrame.Infra.Ioc.csproj">
+      <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Messager\WPFDemo.SimpleFrame.Infra.Messager.csproj">
       <Project>{0CA40CEA-AE5C-425D-8556-CBBABFDE5CFC}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Messager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
+      <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViews.CustomDialogs\WPFDemo.SimpleFrame.IViews.CustomDialogs.csproj">
+      <Project>{37BB477B-6CA3-42DD-872C-0BFC15E179BB}</Project>
+      <Name>WPFDemo.SimpleFrame.IViews.CustomDialogs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

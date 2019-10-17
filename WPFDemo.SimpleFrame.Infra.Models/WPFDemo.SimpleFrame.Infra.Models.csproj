@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DataGridModel.cs" />
     <Compile Include="ListBoxModel.cs" />
+    <Compile Include="PopupNotifyObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="Student.cs" />

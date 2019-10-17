@@ -28,6 +28,7 @@ namespace WPFDemo.SimpleFrame.Container
     public partial class MainWindow : Window
     {
         private IBusyIndicatorConsumer _busyIndicatorConsumer;
+        private IPopupNotifyBoxConsumer _popupNotifyBoxConsumer;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,6 +40,7 @@ namespace WPFDemo.SimpleFrame.Container
             MessagerInstance.Init(new Messager());
 
             _busyIndicatorConsumer = IocManagerInstance.ResolveType<IBusyIndicatorConsumer>();
+            _popupNotifyBoxConsumer = IocManagerInstance.ResolveType<IPopupNotifyBoxConsumer>();
             MessagerInstance.GetMessager().Register<PageKeyEnum>(this, MessagerKeyEnum.MainPageNavi, Navi);
             DataContext = IocManagerInstance.ResolveType<IMainViewModel>();
         }
@@ -86,7 +88,7 @@ namespace WPFDemo.SimpleFrame.Container
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _busyIndicatorConsumer.Init(this);
-
+            _popupNotifyBoxConsumer.Init(this);
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.MainPageNavi, PageKeyEnum.NaviPage);
         }
 
