@@ -74,28 +74,24 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert
 
         public virtual void Show(string title, string content)
         {
-            DispatcherHelper.InvokeOnUIThread(
-                () =>
+            lock (_notifyBoxs)
+            {
+                if (_notifyBoxs.Contains(this))
                 {
-                    lock (_notifyBoxs)
-                    {
-                        if (_notifyBoxs.Contains(this))
-                        {
-                            _notifyBoxs.Remove(this);
-                        }
+                    _notifyBoxs.Remove(this);
+                }
 
-                        Title = title;
-                        Info = content;
+                Title = title;
+                Info = content;
 
-                        _notifyBoxs.Add(this);
-                        SetPosition();
+                _notifyBoxs.Add(this);
+                SetPosition();
 
-                        this.IsOpen = true;
+                this.IsOpen = true;
 
-                        Timer.Interval = TimeSpan.FromSeconds(Interval);
-                        Timer.Start();
-                    }
-                });
+                Timer.Interval = TimeSpan.FromSeconds(Interval);
+                Timer.Start();
+            }
         }
 
         private void SetPosition()

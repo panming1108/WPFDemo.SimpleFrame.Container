@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WPFDemo.SimpleFrame.Infra.DialogConsumer.Interfaces;
 using WPFDemo.SimpleFrame.Infra.Enums;
+using WPFDemo.SimpleFrame.Infra.Helper;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Models;
 using WPFDemo.SimpleFrame.IViews.CustomDialogs;
@@ -23,17 +24,21 @@ namespace WPFDemo.SimpleFrame.Infra.DialogConsumer.Implements
 
         private async Task OnPopupNotify(PopupNotifyObject popupNotifyObject)
         {
-            switch (popupNotifyObject.PopupNotifyEnum)
-            {
-                case PopupNotifyEnum.Message:
-                    var messageView = IocManagerInstance.ResolveType<IPopupMessageView>();
-                    messageView.PlacementTarget = _window;
-                    messageView.Show(popupNotifyObject.Title, popupNotifyObject.Info);
-                    break;
-                default:
-                    break;
-            }
             await TaskEx.FromResult(0);
+            DispatcherHelper.InvokeOnUIThread(
+                () =>
+                {
+                    switch (popupNotifyObject.PopupNotifyEnum)
+                    {
+                        case PopupNotifyEnum.Message:
+                            var messageView = IocManagerInstance.ResolveType<IPopupMessageView>();
+                            messageView.PlacementTarget = _window;
+                            messageView.Show(popupNotifyObject.Title, popupNotifyObject.Info);
+                            break;
+                        default:
+                            break;
+                    }
+                });
         }
 
         public void Dispose()

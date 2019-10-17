@@ -5,7 +5,7 @@
                     xmlns:EMCBusyIndicator="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCToolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:EMCNotifyBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCProgressBar="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ProgressBar;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -270,6 +270,43 @@
                             <Setter TargetName="border"
                                         Property="Background"
                                         Value="Red" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="EMCProgressBar:EMCProgressBar">
+        <Setter Property="Background" Value="{StaticResource ProgressBarBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource ProgressBarForeground}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCProgressBar:EMCProgressBar">
+                    <Grid x:Name="Root" >
+                        <Border x:Name="PART_Track" 
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        <Border x:Name="PART_Indicator" 
+                                HorizontalAlignment="Left" 
+                                Background="{TemplateBinding Foreground}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter Property="LayoutTransform" TargetName="Root" >
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

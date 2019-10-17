@@ -23,6 +23,7 @@ namespace WPFDemo.SimpleFrame.Container
                     "WPFDemo.SimpleFrame.ViewModels.DMs",
                     "WPFDemo.SimpleFrame.ViewModels.DVs",
                     "WPFDemo.SimpleFrame.ViewModels.LayOut",
+                    "WPFDemo.SimpleFrame.ViewModels.UXs",
 
                     "WPFDemo.SimpleFrame.Views.LayOut",
                     "WPFDemo.SimpleFrame.Views.CustomDialogs",

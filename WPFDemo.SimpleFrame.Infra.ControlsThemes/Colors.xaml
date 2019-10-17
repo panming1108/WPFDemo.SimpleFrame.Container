@@ -67,4 +67,19 @@
         <GradientStop Offset="1"
                           Color="#FEFEFF"></GradientStop>
     </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ProgressBarBackground"
+                         StartPoint="0,0" 
+                         EndPoint="0,1">
+        <GradientStop Offset="0" Color="#CEEBFD"></GradientStop>
+        <GradientStop Offset="0.5" Color="#CCE8FD"></GradientStop>
+        <GradientStop Offset="1" Color="#CEEBFD"></GradientStop>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ProgressBarForeground" 
+                         StartPoint="0,0" 
+                         EndPoint="1,1">
+        <GradientStop Offset="0" Color="#CEEBFD"></GradientStop>
+        <GradientStop Offset="0.5" Color="#7ACDFC"></GradientStop>
+        <GradientStop Offset="1" Color="#44B1FB"></GradientStop>
+    </LinearGradientBrush>
 </ResourceDictionary>

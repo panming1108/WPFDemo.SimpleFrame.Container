@@ -9,6 +9,7 @@
       xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
       xmlns:EMCDialog="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
       xmlns:EMCToolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+      xmlns:EMCUXs="clr-namespace:WPFDemo.SimpleFrame.Views.UXs;assembly=WPFDemo.SimpleFrame.Views.UXs"
       Title="UXsPage">
     <Page.Resources>
         <ResourceDictionary>
@@ -24,6 +25,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
@@ -135,6 +137,10 @@
                     </ToolTip>
                 </TextBlock.ToolTip>
             </TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3">
+            <EMCUXs:EMCProgressBarDisplay Margin="10"/>
         </StackPanel>
     </Grid>
 </Page>
