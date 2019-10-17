@@ -12,7 +12,7 @@ namespace WPFDemo.SimpleFrame.Infra.Models
         {
 
         }
-        public PopupNotifyObject(PopupNotifyEnum popupNotifyEnum, string title, string info)
+        public PopupNotifyObject(string title, string info, PopupNotifyEnum popupNotifyEnum = PopupNotifyEnum.Message)
         {
             PopupNotifyEnum = popupNotifyEnum;
             Title = title;

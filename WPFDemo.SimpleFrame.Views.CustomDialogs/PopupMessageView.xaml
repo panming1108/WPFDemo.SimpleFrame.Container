@@ -7,9 +7,8 @@
                                 xmlns:EMCNotifyBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                                 mc:Ignorable="d"
                                 x:Name="PART_Root"
-                                Placement="Absolute"
-                                PopupAnimation="Fade"
                                 Width="350" 
+                                Interval="5"
                                 Height="250">
     <EMCNotifyBox:EMCPopupNotifyBox.Resources>
         <ResourceDictionary>
@@ -33,7 +32,7 @@
                     Click="Button_Click" />
         </Grid>
         <Grid Grid.Row="1"
-              Background="AliceBlue">
+              Background="{StaticResource NotifycationBackground}">
             <TextBlock Cursor="Hand"
                        Foreground="#289FE3"
                        TextWrapping="Wrap"
@@ -41,7 +40,7 @@
                        HorizontalAlignment="Center"
                        Padding="20"
                        Text="{Binding ElementName=PART_Root, Path=Info}">
-                <TextBlock.Style>
+                <!--<TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver"
@@ -51,7 +50,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </TextBlock.Style>
+                </TextBlock.Style>-->
             </TextBlock>
         </Grid>
     </Grid>

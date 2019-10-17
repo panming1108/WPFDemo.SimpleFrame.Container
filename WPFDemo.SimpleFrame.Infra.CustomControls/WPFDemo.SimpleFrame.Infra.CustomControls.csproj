@@ -91,5 +91,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Helper\WPFDemo.SimpleFrame.Infra.Helper.csproj">
+      <Project>{DF6BFA02-30DF-4ABF-B335-58F3DD78B757}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

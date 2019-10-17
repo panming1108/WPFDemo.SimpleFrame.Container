@@ -50,7 +50,7 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
 
         private void EMCButton_Click_2(object sender, RoutedEventArgs e)
         {
-            MessagerInstance.GetMessager().Send(MessagerKeyEnum.PopupNotifyBox, new PopupNotifyObject(PopupNotifyEnum.Message, "通知", "阿阿斯顿发斯蒂芬"));
+            MessagerInstance.GetMessager().Send(MessagerKeyEnum.PopupNotifyBox, new PopupNotifyObject("通知", "阿阿斯顿发斯蒂芬"));
         }
     }
 }
