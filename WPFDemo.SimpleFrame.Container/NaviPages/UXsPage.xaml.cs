@@ -15,10 +15,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;
+using WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert;
 using WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;
 using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Messager;
+using WPFDemo.SimpleFrame.IViews.CustomDialogs;
 
 namespace WPFDemo.SimpleFrame.Container.NaviPages
 {
@@ -43,6 +45,12 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.IsBusy, BusyStateEnum.IsBusy);
             await Task.Factory.StartNew(() => { Thread.Sleep(5000); });
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.IsBusy, BusyStateEnum.NotBusy);
+        }
+
+        private void EMCButton_Click_2(object sender, RoutedEventArgs e)
+        {
+            var notifyBox = IocManagerInstance.ResolveType<IPopupMessageView>();
+            notifyBox.Show("提示", "阿斯顿发送到发送到");
         }
     }
 }

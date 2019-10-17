@@ -56,4 +56,15 @@
     <SolidColorBrush x:Key="ScrollBarRepeatBtnPressedBackground" Color="Black"/>
     <SolidColorBrush x:Key="ScrollBarThumbBackground" Color="#C1C1C1"/>
     <SolidColorBrush x:Key="ScrollBarThumbMouseOverBackground" Color="#A8A8A8"/>
+
+    <LinearGradientBrush x:Key="NotifycationBackground"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+        <GradientStop Offset="0"
+                          Color="#D5EBF9"></GradientStop>
+        <GradientStop Offset="0.5"
+                          Color="#EDF8FE"></GradientStop>
+        <GradientStop Offset="1"
+                          Color="#FEFEFF"></GradientStop>
+    </LinearGradientBrush>
 </ResourceDictionary>

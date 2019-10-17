@@ -266,6 +266,10 @@
       <Project>{44bf97a2-b208-4215-a9d3-add8e27676cb}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.Test</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViews.CustomDialogs\WPFDemo.SimpleFrame.IViews.CustomDialogs.csproj">
+      <Project>{37bb477b-6ca3-42dd-872c-0bfc15e179bb}</Project>
+      <Name>WPFDemo.SimpleFrame.IViews.CustomDialogs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViews.LayOut\WPFDemo.SimpleFrame.IViews.LayOut.csproj">
       <Project>{5fa2b589-4b8b-4a2b-b29f-c0c9a687eaef}</Project>
       <Name>WPFDemo.SimpleFrame.IViews.LayOut</Name>
@@ -285,6 +289,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.Test\WPFDemo.SimpleFrame.ViewModels.Test.csproj">
       <Project>{a2b637c2-911f-45ea-b889-dc349b46fe5a}</Project>
       <Name>WPFDemo.SimpleFrame.ViewModels.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.CustomDialogs\WPFDemo.SimpleFrame.Views.CustomDialogs.csproj">
+      <Project>{df04a179-e94e-43fe-ab35-5cbdfc3797bd}</Project>
+      <Name>WPFDemo.SimpleFrame.Views.CustomDialogs</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.DMs\WPFDemo.SimpleFrame.Views.DMs.csproj">
       <Project>{067b2fb2-137f-4e34-8eb8-229f0ade89af}</Project>

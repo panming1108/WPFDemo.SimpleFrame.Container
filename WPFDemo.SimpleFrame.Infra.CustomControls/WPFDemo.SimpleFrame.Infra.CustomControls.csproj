@@ -60,6 +60,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UXs\BusyIndicator\EMCBusyIndicator.cs" />
     <Compile Include="UXs\BusyIndicator\IEMCBusyIndicator.cs" />
+    <Compile Include="UXs\DesktopAlert\EMCPopupNotifyBox.cs" />
+    <Compile Include="UXs\DesktopAlert\IPopupNotifyBox.cs" />
     <Compile Include="UXs\Dialog\ConfirmDialog.cs" />
     <Compile Include="UXs\Dialog\DialogBase.cs" />
     <Compile Include="UXs\Dialog\DialogCommands.cs" />
@@ -84,7 +86,6 @@
     <Folder Include="Schedules\Calendar\" />
     <Folder Include="Schedules\DatePicker\" />
     <Folder Include="Schedules\DateTimePicker\" />
-    <Folder Include="UXs\DesktopAlert\" />
     <Folder Include="UXs\ProgressBar\" />
   </ItemGroup>
   <ItemGroup>

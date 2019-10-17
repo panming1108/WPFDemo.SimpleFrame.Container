@@ -4,7 +4,8 @@
                     xmlns:EMCDialog="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Dialog;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCBusyIndicator="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:EMCToolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCToolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCNotifyBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -234,4 +235,46 @@
         <Setter Property="BorderBrush" Value="{StaticResource ToolTipBorderBrush}"/>
         <Setter Property="Template" Value="{StaticResource ToolTipTemplate}"/>
     </Style>
+
+    <Style x:Key="CloseBtnStyle"
+               TargetType="Button">
+        <Setter Property="Background"
+                    Value="Transparent" />
+        <Setter Property="Height"
+                    Value="20" />
+        <Setter Property="BorderThickness"
+                    Value="0" />
+        <Setter Property="Width"
+                    Value="20" />
+        <Setter Property="Margin"
+                    Value="0,0,5,0" />
+        <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+        <Setter Property="Cursor"
+                    Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                x:Name="border">
+                        <Path Stroke="White"
+                                  x:Name="Close_path"
+                                  StrokeThickness="1"
+                                  Data="M5,5 15,15 M5,15 15,5" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                     Value="True">
+                            <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="Red" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

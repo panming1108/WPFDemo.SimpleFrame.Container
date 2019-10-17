@@ -35,6 +35,10 @@
                                  Margin="10,0,0,0"
                                  Width="100"
                                  Click="EMCButton_Click_1"/>
+            <EMCButton:EMCButton Content="通知弹窗"
+                                 Margin="10,0,0,0"
+                                 Width="100"
+                                 Click="EMCButton_Click_2"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="1"

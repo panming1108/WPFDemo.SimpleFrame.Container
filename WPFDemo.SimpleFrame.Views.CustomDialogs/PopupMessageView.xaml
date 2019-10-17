@@ -1,0 +1,56 @@
+﻿<EMCNotifyBox:EMCPopupNotifyBox x:Class="WPFDemo.SimpleFrame.Views.CustomDialogs.PopupMessageView"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.CustomDialogs"
+                                xmlns:EMCNotifyBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.DesktopAlert;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                                mc:Ignorable="d"
+                                x:Name="PART_Root"
+                                Width="350" 
+                                Height="250">
+    <EMCNotifyBox:EMCPopupNotifyBox.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/UXsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </EMCNotifyBox:EMCPopupNotifyBox.Resources>
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Background="#289FE3">
+            <TextBlock x:Name="tb_title"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Margin="10,0" 
+                       Text="{Binding ElementName=PART_Root, Path=Title}"/>
+            <Button Style="{StaticResource CloseBtnStyle}"
+                    Click="Button_Click" />
+        </Grid>
+        <Grid Grid.Row="1"
+                  Background="{StaticResource NotifycationBackground}">
+            <TextBlock Cursor="Hand"
+                       Foreground="#289FE3"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Padding="20"
+                       Text="{Binding ElementName=PART_Root, Path=Info}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="TextDecorations"
+                                        Value="Underline" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </Grid>
+</EMCNotifyBox:EMCPopupNotifyBox>
