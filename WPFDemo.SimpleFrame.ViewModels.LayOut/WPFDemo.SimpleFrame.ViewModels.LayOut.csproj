@@ -62,11 +62,28 @@
   <ItemGroup>
     <Compile Include="LayOutViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeViewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IBLL\WPFDemo.SimpleFrame.IBLL.csproj">
+      <Project>{E1243FF9-B052-4AC7-AE55-80460B828599}</Project>
+      <Name>WPFDemo.SimpleFrame.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
+      <Project>{1EFDA8F3-F261-4C04-B069-67DACAE8BBE5}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Ioc\WPFDemo.SimpleFrame.Infra.Ioc.csproj">
       <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Messager\WPFDemo.SimpleFrame.Infra.Messager.csproj">
+      <Project>{0CA40CEA-AE5C-425D-8556-CBBABFDE5CFC}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Messager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
+      <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.csproj">
       <Project>{EF814E43-2ACE-4122-A1C9-B3BAD2193E96}</Project>

@@ -45,6 +45,7 @@
     <Compile Include="IListBoxBusi.cs" />
     <Compile Include="IStudentBusi.cs" />
     <Compile Include="ITestBusi.cs" />
+    <Compile Include="ITreeViewBusi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

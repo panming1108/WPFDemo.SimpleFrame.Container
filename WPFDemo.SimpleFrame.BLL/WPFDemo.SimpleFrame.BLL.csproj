@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StudentBusi.cs" />
     <Compile Include="TestBusi.cs" />
+    <Compile Include="TreeViewBusi.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IBLL\WPFDemo.SimpleFrame.IBLL.csproj">

@@ -20,6 +20,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
@@ -31,5 +32,9 @@
                                  Click="EMCButton_Click_1"/>
             <LayOut:LayOutDisplay/>
         </StackPanel>
+        <LayOut:TreeViewDisplay Grid.Row="1" 
+                                Height="500"
+                                HorizontalAlignment="Left"
+                                Margin="10,0,0,0"/>
     </Grid>
 </Page>
