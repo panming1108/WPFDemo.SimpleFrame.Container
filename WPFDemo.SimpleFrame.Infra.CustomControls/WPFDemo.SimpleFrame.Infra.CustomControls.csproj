@@ -54,6 +54,8 @@
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
+    <Compile Include="Editors\EditorsAttachProperty.cs" />
+    <Compile Include="Editors\Input\EMCInput.cs" />
     <Compile Include="LayOuts\Window\EMCWindow.cs" />
     <Compile Include="LayOuts\Window\IEMCWindow.cs" />
     <Compile Include="Navis\Button\EMCButton.cs" />
@@ -73,7 +75,6 @@
     <Folder Include="Editors\AutoCompleteBox\" />
     <Folder Include="Editors\CheckBox\" />
     <Folder Include="Editors\ComboBox\" />
-    <Folder Include="Editors\Input\" />
     <Folder Include="Editors\NumbericUpDown\" />
     <Folder Include="Editors\RadioButton\" />
     <Folder Include="Editors\Slider\" />

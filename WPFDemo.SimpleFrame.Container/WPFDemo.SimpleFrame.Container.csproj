@@ -310,6 +310,10 @@
       <Project>{83e3786b-5c01-4411-8f41-7c0ce3b6aa6a}</Project>
       <Name>WPFDemo.SimpleFrame.Views.DVs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Editors\WPFDemo.SimpleFrame.Views.Editors.csproj">
+      <Project>{a3b05639-b6fe-405b-a7c8-9ad84c4163e4}</Project>
+      <Name>WPFDemo.SimpleFrame.Views.Editors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.LayOut\WPFDemo.SimpleFrame.Views.LayOut.csproj">
       <Project>{a2a98d7a-25e9-4be2-8e13-ed244decbb18}</Project>
       <Name>WPFDemo.SimpleFrame.Views.LayOut</Name>

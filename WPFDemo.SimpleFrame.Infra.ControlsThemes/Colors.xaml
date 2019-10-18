@@ -82,4 +82,9 @@
         <GradientStop Offset="0.5" Color="#7ACDFC"></GradientStop>
         <GradientStop Offset="1" Color="#44B1FB"></GradientStop>
     </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#CED7CE"/>
+    <SolidColorBrush x:Key="TextBoxMouseOverBorderBrush" Color="#337AB7"/>
+    <SolidColorBrush x:Key="TextBoxFocusBorderBrush" Color="#299EE3"/>
+    <SolidColorBrush x:Key="TextBoxWatermarkForeground" Color="#808080"/>
 </ResourceDictionary>

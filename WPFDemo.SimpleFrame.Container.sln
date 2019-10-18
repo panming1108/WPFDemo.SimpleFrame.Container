@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.IViewMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.ViewModels.UXs", "WPFDemo.SimpleFrame.ViewModels.UXs\WPFDemo.SimpleFrame.ViewModels.UXs.csproj", "{EB820EAA-348C-45D5-8E84-E0BD119F2858}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.Views.Editors", "WPFDemo.SimpleFrame.Views.Editors\WPFDemo.SimpleFrame.Views.Editors.csproj", "{A3B05639-B6FE-405B-A7C8-9AD84C4163E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -227,6 +229,10 @@ Global
 		{EB820EAA-348C-45D5-8E84-E0BD119F2858}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB820EAA-348C-45D5-8E84-E0BD119F2858}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB820EAA-348C-45D5-8E84-E0BD119F2858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B05639-B6FE-405B-A7C8-9AD84C4163E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B05639-B6FE-405B-A7C8-9AD84C4163E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B05639-B6FE-405B-A7C8-9AD84C4163E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B05639-B6FE-405B-A7C8-9AD84C4163E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -270,6 +276,7 @@ Global
 		{214ED45A-C403-4A2B-BCAB-0F873B2B81B1} = {DD5D3BD8-339F-4807-864C-0B70C6EA6579}
 		{9D023480-7F0C-42BD-9DC9-DC2C1C04A3C7} = {B64691E5-47AE-4A02-BD8A-9C6E662558B2}
 		{EB820EAA-348C-45D5-8E84-E0BD119F2858} = {32E4B991-EC41-4B3D-B20C-56E089F1B6E1}
+		{A3B05639-B6FE-405B-A7C8-9AD84C4163E4} = {DD5D3BD8-339F-4807-864C-0B70C6EA6579}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65EBE67F-9EF2-4F47-A70E-1A7EAB195C63}
