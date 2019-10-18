@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.TreeView
 {
     public class EMCTreeView : System.Windows.Controls.TreeView
     {
+        public Orientation Orientation
+        {
+            get { return (Orientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Orientation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OrientationProperty =
+            DependencyProperty.Register("Orientation", typeof(Orientation), typeof(EMCTreeView), new PropertyMetadata(Orientation.Vertical));
+
         public object SelectedTreeViewItem
         {
             get { return (object)GetValue(SelectedTreeViewItemProperty); }
@@ -26,7 +37,10 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.TreeView
         protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
         {
             base.OnSelectedItemChanged(e);
-            SelectedTreeViewItem = e.NewValue;
-        }
+            if(e.NewValue != null)
+            {
+                SelectedTreeViewItem = e.NewValue;
+            }
+        }        
     }
 }

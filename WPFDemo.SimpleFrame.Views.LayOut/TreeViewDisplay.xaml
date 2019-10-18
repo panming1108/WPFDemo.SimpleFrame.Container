@@ -10,7 +10,7 @@
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              xmlns:nodes="clr-namespace:WPFDemo.SimpleFrame.Infra.Models;assembly=WPFDemo.SimpleFrame.Infra.Models"
-             d:DesignHeight="450" d:DesignWidth="800" x:Name="Root">
+             d:DesignHeight="450" d:DesignWidth="1000" x:Name="Root">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -66,6 +66,28 @@
                                Margin="20,0,0,0"/>
                 </Grid>
             </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="HorizontalIconItemNodeTemplate"
+                                      DataType="{x:Type nodes:TreeViewNode}"
+                                      ItemsSource="{Binding Children}">
+                <Grid Height="40" Width="120">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontFamily="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/fontawesome-webfont.ttf#Fontawesome" 
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="28"
+                               Text="{Binding Icon}"/>
+                    <TextBlock Text="{Binding Name}"
+                               Grid.Column="1"
+                               FontSize="15"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"/>
+                </Grid>
+            </HierarchicalDataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -79,6 +101,12 @@
                                      ItemsSource="{Binding IconNodes}"
                                      ItemTemplate="{StaticResource IconItemNodeTemplate}"
                                      SelectedTreeViewItem="{Binding CurrentNode, Mode=TwoWay}"/>
+            <EMCTreeView:EMCTreeView ItemsSource="{Binding IconNodes}"
+                                     ItemTemplate="{StaticResource HorizontalIconItemNodeTemplate}"
+                                     SelectedTreeViewItem="{Binding CurrentNode, Mode=TwoWay}"
+                                     Width="700"
+                                     Orientation="Horizontal"
+                                     Height="50"/>
         </StackPanel>
     </Grid>
 </UserControl>

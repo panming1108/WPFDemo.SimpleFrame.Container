@@ -222,6 +222,89 @@
         </Setter>
     </Style>
 
+    <Style x:Key="HorizontalTreeViewItem" TargetType="{x:Type TreeViewItem}">
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="Foreground" Value="{StaticResource TreeViewItemsForeground}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                    <Grid>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
+                                MinHeight="{TemplateBinding MinHeight}" UseLayoutRounding="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <!--多层级间隔，暂缓-->
+                            <!--<Grid Margin="{Binding Converter={StaticResource LengthConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"-->
+                            <Grid Margin="{TemplateBinding Margin}" VerticalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--展开收缩按钮-->
+                                <ToggleButton x:Name="ExpanderBtn"
+                                              Width="20"
+                                              IsChecked="{Binding Path=IsExpanded, RelativeSource={x:Static RelativeSource.TemplatedParent}, Mode=TwoWay}"
+                                              ClickMode="Press" >
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border>
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                    <ToggleButton.Content>
+                                        <TextBlock x:Name="ExpanderIcon"  Foreground="{TemplateBinding Foreground}" Text="{StaticResource fa-caret-right}" Style="{StaticResource FIcon}"/>
+                                    </ToggleButton.Content>
+                                </ToggleButton>
+                                <!--内容-->
+                                <ContentPresenter x:Name="PART_Header" Grid.Column="1" ContentSource="Header"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Grid>
+                        </Border>
+                        <Popup Placement="Bottom" 
+                               PlacementTarget="{Binding ElementName=Bd}" 
+                               IsOpen="{Binding ElementName=ExpanderBtn, Path=IsChecked}"
+                               StaysOpen="True">
+                            <Border Background="{Binding RelativeSource={RelativeSource AncestorType=EMCTreeView:EMCTreeView}, Path=Background}"
+                                    BorderThickness="1"
+                                    BorderBrush="{Binding RelativeSource={RelativeSource AncestorType=EMCTreeView:EMCTreeView}, Path=Background}">
+                                <ItemsPresenter x:Name="ItemsHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="ExpanderIcon" Property="Text" Value="{StaticResource fa-caret-down}" />
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="ExpanderBtn" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource TreeViewItemsSelectedBackground}" />
+                            <Setter Property="Foreground" Value="{StaticResource TreeViewItemsSelectedForeground}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="False">
+                            <Setter Property="IsExpanded" Value="False"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource TreeViewItemsSelectedBackground}" />
+                            <Setter Property="Foreground" Value="{StaticResource TreeViewItemsSelectedForeground}" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--TreeView样式-->
     <Style x:Key="DefaultTreeView" TargetType="{x:Type EMCTreeView:EMCTreeView}">
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
@@ -230,14 +313,26 @@
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
         <Setter Property="Background" Value="{StaticResource TreeViewBackground}"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultTreeViewItem}"></Setter>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsItemsHost="True" IsVirtualizing="False" VirtualizationMode="Standard"  Margin="0"/>
+                    <VirtualizingStackPanel IsItemsHost="True" 
+                                            Orientation="{Binding RelativeSource={RelativeSource AncestorType=EMCTreeView:EMCTreeView}, Path=Orientation}" 
+                                            IsVirtualizing="False" 
+                                            VirtualizationMode="Standard" 
+                                            Margin="0"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Orientation}" Value="Horizontal">
+                <Setter Property="ItemContainerStyle" Value="{StaticResource HorizontalTreeViewItem}"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="EMCTreeView:EMCTreeView" BasedOn="{StaticResource DefaultTreeView}"/>
+
 </ResourceDictionary>
