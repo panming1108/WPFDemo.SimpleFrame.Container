@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCWindow="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCTreeView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.TreeView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCMenu="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Menu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
@@ -221,7 +222,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style x:Key="HorizontalTreeViewItem" TargetType="{x:Type TreeViewItem}">
         <Setter Property="MinWidth" Value="30"/>
         <Setter Property="Foreground" Value="{StaticResource TreeViewItemsForeground}" />
@@ -332,7 +332,256 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-
     <Style TargetType="EMCTreeView:EMCTreeView" BasedOn="{StaticResource DefaultTreeView}"/>
 
+    <!--Menu样式-->
+    <Style x:Key="DefaultEMCNaviMeunItem" TargetType="MenuItem">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource TreeViewBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource TreeViewItemsForeground}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Command" Value="{x:Static EMCMenu:MenuCommands.SelectedCommand}"/>
+        <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Header}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="PART_border"
+                            Background="Transparent"
+                            Height="{TemplateBinding Height}"
+                            VerticalAlignment="Center">
+                            <Grid VerticalAlignment="Center"
+                              Margin="{TemplateBinding Margin}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="arrow_col" Width="Auto" MaxWidth="35" SharedSizeGroup="MenumItemArrow"/>
+                                    <ColumnDefinition x:Name="icon_col" Width="Auto" MaxWidth="35" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                    <ColumnDefinition SharedSizeGroup="MenuTextColumnGroup"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Margin="3,0,0,0"
+                                       x:Name="PART_Arrow"
+                                       Style="{StaticResource FIcon}"
+                                       Text="{StaticResource fa-caret-right}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       Width="20"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Visibility="Collapsed"/>
+                                <TextBlock x:Name="PART_Icon"
+                                       Grid.Column="1"
+                                       Text="{TemplateBinding Icon}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Margin="0"
+                                       Style="{StaticResource FIcon}"
+                                       FontSize="16"/>
+                                <ContentPresenter Grid.Column="2"
+                                              x:Name="txtHeader"
+                                              Margin="3,0,5,0"
+                                              MinWidth="90"
+                                              RecognizesAccessKey="True"
+                                              VerticalAlignment="Center"
+                                              ContentSource="Header"/>
+
+                                <Popup x:Name="SubMenuPopup"
+                                   AllowsTransparency="True"
+                                   IsOpen="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSubmenuOpen}"
+                                   Placement="Bottom"
+                                   Focusable="False"
+                                   PlacementTarget="{Binding ElementName=PART_border}"
+                                   VerticalOffset="0"
+                                   PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
+                                    <Border Background="{TemplateBinding Background}"
+                                        Margin="5"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True">
+                                            <StackPanel Margin="0"
+                                                    IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                        </Grid>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="Separator_border"
+                                BorderThickness="1" 
+                                Width="1"
+                                Margin="5"
+                                BorderBrush="White"/>
+                    </StackPanel>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter TargetName="PART_Arrow" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuItem">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="Separator_border"/>
+                        </Trigger>
+                        <!--SubmenuHeader:子菜单，有子菜单-->
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_Arrow"/>
+                            <Setter Property="Placement" Value="Right" TargetName="SubMenuPopup"/>
+                        </Trigger>
+                        <!--选中状态，优先级将高于Icon-->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Value="{StaticResource TreeViewItemsSelectedForeground}" Property="Foreground"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_border" Value="{StaticResource DisableOpacity}" Property="Opacity"></Setter>
+                        </Trigger>
+                        <!--高亮状态-->
+                        <Trigger Property="IsHighlighted" Value="true">
+                            <Setter Property="Background" TargetName="PART_border" Value="{StaticResource TreeViewItemsSelectedBackground}"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource TreeViewItemsSelectedForeground}"></Setter>
+                        </Trigger>
+                        <!--子菜单打开状态-->
+                        <Trigger Property="IsSubmenuOpen" Value="true" >
+                            <Setter TargetName="PART_Arrow" Value="{StaticResource TreeViewItemsSelectedForeground}" Property="Foreground"></Setter>
+                            <Setter TargetName="PART_Arrow" Property="Text" Value="{StaticResource fa-caret-down}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="VerticalEMCNaviMeunItem" TargetType="MenuItem">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource TreeViewBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource TreeViewItemsForeground}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Command" Value="{x:Static EMCMenu:MenuCommands.SelectedCommand}"/>
+        <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Header}"/>
+        <Setter Property="StaysOpenOnClick" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <StackPanel>
+                        <Border x:Name="PART_border"
+                                Background="Transparent"
+                                Height="{TemplateBinding Height}"
+                                VerticalAlignment="Center">
+                            <Grid VerticalAlignment="Center"
+                                  HorizontalAlignment="Left"
+                                  Margin="{TemplateBinding Margin}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="arrow_col" Width="Auto" MinWidth="25"/>
+                                    <ColumnDefinition x:Name="icon_col" Width="Auto" MaxWidth="35"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="PART_Arrow"
+                                           Style="{StaticResource FIcon}"
+                                           Text="{StaticResource fa-caret-right}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           Width="20"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Visibility="Collapsed"/>
+                                <TextBlock x:Name="PART_Icon"
+                                           Grid.Column="1"
+                                           Text="{TemplateBinding Icon}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Margin="0"
+                                           HorizontalAlignment="Left"
+                                           Style="{StaticResource FIcon}"
+                                           FontSize="16"/>
+                                <ContentPresenter Grid.Column="2"
+                                                  x:Name="txtHeader"
+                                                  Margin="3,0,5,0"
+                                                  MinWidth="90"
+                                                  RecognizesAccessKey="True"
+                                                  VerticalAlignment="Center"
+                                                  ContentSource="Header"/>
+                            </Grid>
+                        </Border>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                x:Name="SubMenuBorder"
+                                Visibility="Collapsed">
+                            <Grid x:Name="SubMenu">
+                                <StackPanel Margin="0"
+                                            KeyboardNavigation.DirectionalNavigation="Cycle">
+                                    <ItemsPresenter/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter TargetName="PART_Arrow" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <!--SubmenuHeader:子菜单，有子菜单-->
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_Arrow"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuItem">
+                            <Setter Property="Margin" Value="10,0,0,0" TargetName="PART_Arrow"/>
+                            <Setter Property="Margin" Value="10,0,0,0" TargetName="PART_Icon"/>
+                        </Trigger>
+                        <!--选中状态，优先级将高于Icon-->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Value="{StaticResource TreeViewItemsSelectedForeground}" Property="Foreground"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_border" Value="{StaticResource DisableOpacity}" Property="Opacity"></Setter>
+                        </Trigger>
+                        <!--高亮状态-->
+                        <Trigger Property="IsHighlighted" Value="true">
+                            <Setter Property="Background" TargetName="PART_border" Value="{StaticResource TreeViewItemsSelectedBackground}"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource TreeViewItemsSelectedForeground}"></Setter>
+                        </Trigger>
+                        <!--子菜单打开状态-->
+                        <Trigger Property="IsSubmenuOpen" Value="true" >
+                            <Setter TargetName="SubMenuBorder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Arrow" Value="{StaticResource TreeViewItemsSelectedForeground}" Property="Foreground"></Setter>
+                            <Setter TargetName="PART_Arrow" Property="Text" Value="{StaticResource fa-caret-down}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--默认Menu样式-->
+    <Style x:Key="DefaultMenu" TargetType="{x:Type EMCMenu:EMCNaviMenu}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        <Setter Property="Background" Value="{StaticResource TreeViewBackground}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultEMCNaviMeunItem}"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel IsItemsHost="True" 
+                                Orientation="{Binding RelativeSource={RelativeSource AncestorType=EMCMenu:EMCNaviMenu}, Path=Orientation}" 
+                                Margin="0"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type EMCMenu:EMCNaviMenu}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ItemsPresenter Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        </ItemsPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Orientation}" Value="Vertical">
+                <Setter Property="ItemContainerStyle" Value="{StaticResource VerticalEMCNaviMeunItem}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

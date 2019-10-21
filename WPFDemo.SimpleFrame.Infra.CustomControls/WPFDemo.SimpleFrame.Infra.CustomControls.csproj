@@ -56,6 +56,8 @@
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />
+    <Compile Include="LayOuts\Menu\EMCNaviMenu.cs" />
+    <Compile Include="LayOuts\Menu\MenuCommands.cs" />
     <Compile Include="LayOuts\TreeView\EMCTreeView.cs" />
     <Compile Include="LayOuts\Window\EMCWindow.cs" />
     <Compile Include="LayOuts\Window\IEMCWindow.cs" />
@@ -81,7 +83,6 @@
     <Folder Include="Editors\Slider\" />
     <Folder Include="Editors\ToggleSwitch\" />
     <Folder Include="LayOuts\Expander\" />
-    <Folder Include="LayOuts\NaviMenu\" />
     <Folder Include="Navis\BreadcrumbItem\" />
     <Folder Include="Navis\Breadcrumb\" />
     <Folder Include="Navis\ContextMenu\" />

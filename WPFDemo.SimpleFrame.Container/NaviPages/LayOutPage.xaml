@@ -21,6 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
@@ -33,8 +34,12 @@
             <LayOut:LayOutDisplay/>
         </StackPanel>
         <LayOut:TreeViewDisplay Grid.Row="1" 
-                                Height="500"
+                                Height="400"
                                 HorizontalAlignment="Left"
                                 Margin="10,0,0,0"/>
+        <LayOut:EMCNaviMenuDisplay Grid.Row="2"
+                                   Height="400"
+                                   HorizontalAlignment="Left"
+                                   Margin="10,0,0,0"/>
     </Grid>
 </Page>
