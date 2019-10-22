@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <SolidColorBrush x:Key="ErrorTemplateBackground" Color="#003865"/>
+
     <SolidColorBrush x:Key="ControlBorderBrush" Color="#C8C8C8"/>
     <SolidColorBrush x:Key="MouseOverBrush" Color="#4BD4BF"/>
     <SolidColorBrush x:Key="IsCheckedBrush" Color="#21ADFF"/>

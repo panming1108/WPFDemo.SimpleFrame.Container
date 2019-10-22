@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFDemo.SimpleFrame.Container.IViewModels;
+using WPFDemo.SimpleFrame.Infra.Ioc;
 
 namespace WPFDemo.SimpleFrame.Container.NaviPages
 {
@@ -22,6 +24,7 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
         public SchedulesPage()
         {
             InitializeComponent();
+            DataContext = IocManagerInstance.ResolveType<ISchedulesPageViewModel>();
         }
     }
 }

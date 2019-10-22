@@ -4,11 +4,42 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Container.NaviPages"
+      xmlns:main="clr-namespace:WPFDemo.SimpleFrame.Container"
+      xmlns:EMCDatePicker="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Schedules.DateTimePicker;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+      xmlns:attach="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SchedulesPage">
-
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/SchedulesStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
-        <TextBlock Text="Schedules"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <EMCDatePicker:EMCDateTimePicker Height="36"
+                                         Margin="10,0,0,0"
+                                         FontSize="16"
+                                         Background="White"
+                                         Padding="9,0"
+                                         Width="210"
+                                         VerticalContentAlignment="Center"
+                                         attach:EditorsAttachProperty.Watermark="请输入时间和日期"
+                                         BorderBrush="#DBE0E3"
+                                         ContentStringFormat="yyyy-MM-dd HH:mm">
+            <EMCDatePicker:EMCDateTimePicker.Content>
+                <Binding Path="TestDateTime" Mode="TwoWay" ValidatesOnDataErrors="True" UpdateSourceTrigger="LostFocus">
+                    <Binding.ValidationRules>
+                        <main:DateTimeValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </EMCDatePicker:EMCDateTimePicker.Content>
+        </EMCDatePicker:EMCDateTimePicker>
+        <TextBox HorizontalAlignment="Left" Width="100"/>
     </Grid>
 </Page>

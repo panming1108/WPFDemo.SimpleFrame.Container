@@ -80,11 +80,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeValidationRule.cs" />
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="IViewModels\IMainViewModel.cs" />
     <Compile Include="IViewModels\INaviPageViewModel.cs" />
+    <Compile Include="IViewModels\ISchedulesPageViewModel.cs" />
     <Compile Include="NaviPage.xaml.cs">
       <DependentUpon>NaviPage.xaml</DependentUpon>
     </Compile>
@@ -118,6 +120,7 @@
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NaviPageViewModel.cs" />
+    <Compile Include="ViewModels\SchedulesViewModel.cs" />
     <Page Include="HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
