@@ -71,7 +71,7 @@
                              SelectedItem="{Binding CurrentNode, Mode=TwoWay}"
                              ItemsSource="{Binding IconNodes}">
         </EMCMenu:EMCNaviMenu>
-        <EMCMenu:EMCNaviMenu Style="{StaticResource DefaultMenu}" 
+        <!--<EMCMenu:EMCNaviMenu Style="{StaticResource DefaultMenu}" 
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Margin="400,0,0,0"
@@ -80,6 +80,21 @@
                              ItemTemplate="{StaticResource HorizontalMenuItemTemplate}"
                              SelectedItem="{Binding CurrentNode, Mode=TwoWay}"
                              ItemsSource="{Binding IconNodes}">
-        </EMCMenu:EMCNaviMenu>
+        </EMCMenu:EMCNaviMenu>-->
+        <EMCMenu:EMCMenu Width="250" 
+                         Orientation="Vertical"
+                         ItemTemplate="{StaticResource VerticalMenuItemTemplate}"
+                         SelectedItem="{Binding CurrentNode, Mode=TwoWay}"
+                         ItemsSource="{Binding IconNodes}"
+                         HorizontalAlignment="Left"/>
+        <EMCMenu:EMCMenu Width="620"
+                         Height="42"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Left"
+                         Orientation="Horizontal"
+                         Margin="400,0,0,0"
+                         ItemTemplate="{StaticResource HorizontalMenuItemTemplate}"
+                         SelectedItem="{Binding CurrentNode, Mode=TwoWay}"
+                         ItemsSource="{Binding IconNodes}"/>
     </Grid>
 </UserControl>

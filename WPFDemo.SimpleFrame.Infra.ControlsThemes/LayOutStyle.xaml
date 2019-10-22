@@ -584,4 +584,50 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="EMCMenu:EMCMenu">
+        <Setter Property="Background" Value="{StaticResource TreeViewBackground}"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCMenu:EMCMenu">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <EMCTreeView:EMCTreeView x:Name="PART_VerticalMode"
+                                                     Width="{TemplateBinding Width}"
+                                                     Height="{TemplateBinding Height}"
+                                                     Orientation="Vertical"
+                                                     Background="Transparent"
+                                                     ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                     ItemsSource="{TemplateBinding ItemsSource}"
+                                                     SelectedTreeViewItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"
+                                                     Visibility="Visible"/>
+                            <EMCMenu:EMCNaviMenu x:Name="PART_HorizontalMode"
+                                                 Width="{TemplateBinding Width}"
+                                                 Height="{TemplateBinding Height}"
+                                                 Orientation="Horizontal"
+                                                 Background="Transparent"
+                                                 Style="{StaticResource DefaultMenu}"
+                                                 ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                 ItemsSource="{TemplateBinding ItemsSource}"
+                                                 SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"
+                                                 Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="PART_VerticalMode" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_HorizontalMode" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="PART_VerticalMode" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_HorizontalMode" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
