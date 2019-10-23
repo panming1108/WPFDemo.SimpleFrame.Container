@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Container.NaviPages"
-      xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Views.Navis;assembly=WPFDemo.SimpleFrame.Views.Navis"
+      xmlns:EMCNavis="clr-namespace:WPFDemo.SimpleFrame.Views.Navis;assembly=WPFDemo.SimpleFrame.Views.Navis"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="NavisPage">
@@ -13,9 +13,11 @@
         <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <EMCButton:ButtonDisplay/>
+            <EMCNavis:ButtonDisplay/>
+            <EMCNavis:MenuDisplay Grid.Row="1"/>
         </Grid>
     </ScrollViewer>
 </Page>

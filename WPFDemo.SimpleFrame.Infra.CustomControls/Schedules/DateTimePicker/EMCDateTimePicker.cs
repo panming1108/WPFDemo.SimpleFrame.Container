@@ -71,10 +71,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Schedules.DateTimePicker
                     Calendar.TextBox_Second.Text = $"{Calendar.SelectedDate.Value.Second:D2}";
                 }
             }
-            else
-            {
-                Content = new DateTime(1880, 1, 1);
-            }
         }
     }
 }

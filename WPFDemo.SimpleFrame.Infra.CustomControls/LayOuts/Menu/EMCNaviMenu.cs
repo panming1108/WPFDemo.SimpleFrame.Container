@@ -16,7 +16,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Menu
             get { return (object)GetValue(SelectedItemProperty); }
             set { SetValue(SelectedItemProperty, value); }
         }
-
+        
         // Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register("SelectedItem", typeof(object), typeof(EMCNaviMenu), new PropertyMetadata(null));

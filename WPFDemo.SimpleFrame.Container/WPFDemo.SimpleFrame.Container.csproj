@@ -265,6 +265,10 @@
       <Project>{bc4b313d-d80d-4cac-b2da-9dad04fec137}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.LayOut</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.Navis\WPFDemo.SimpleFrame.IViewModels.Navis.csproj">
+      <Project>{e8d122aa-95c9-433c-be0d-c324fa122b20}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModels.Navis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.Test\WPFDemo.SimpleFrame.IViewModels.Test.csproj">
       <Project>{44bf97a2-b208-4215-a9d3-add8e27676cb}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.Test</Name>
@@ -292,6 +296,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.LayOut\WPFDemo.SimpleFrame.ViewModels.LayOut.csproj">
       <Project>{5a2ce5f7-d82a-4d6b-ad2c-f3cec44a11c6}</Project>
       <Name>WPFDemo.SimpleFrame.ViewModels.LayOut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.Navis\WPFDemo.SimpleFrame.ViewModels.Navis.csproj">
+      <Project>{f86a130b-211e-4724-b843-c2758e5905cf}</Project>
+      <Name>WPFDemo.SimpleFrame.ViewModels.Navis</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.Test\WPFDemo.SimpleFrame.ViewModels.Test.csproj">
       <Project>{a2b637c2-911f-45ea-b889-dc349b46fe5a}</Project>

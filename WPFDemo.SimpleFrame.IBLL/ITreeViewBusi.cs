@@ -11,5 +11,7 @@ namespace WPFDemo.SimpleFrame.IBLL
     {
         Task<List<TreeViewNode>> GetTreeViewIconSource();
         Task<List<TreeViewNode>> GetTreeViewImageSource();
+
+        Task<List<TreeViewNode>> GetMenuSource();
     }
 }

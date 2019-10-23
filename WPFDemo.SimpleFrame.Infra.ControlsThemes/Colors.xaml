@@ -96,4 +96,11 @@
     <SolidColorBrush x:Key="TreeViewItemsMouseOverForeground" Color="#299EE3"/>
     <SolidColorBrush x:Key="TreeViewItemsMouseOverBackground" Color="#AFCDEB"/>
     <SolidColorBrush x:Key="TreeViewBackground" Color="#299EE3"/>
+
+
+    <SolidColorBrush x:Key="ContextMenuItemBorderBrush" Color="#306FB2"/>
+    <SolidColorBrush x:Key="ContextMenuItemBackground" Color="White"/>
+    <SolidColorBrush x:Key="ContextMenuItemForeground" Color="#306FB2"/>
+    <SolidColorBrush x:Key="ContextMenuItemMouseOverBackground" Color="#AFCCEB"/>
+    <system:Double x:Key="ContextMenuFontSize">14</system:Double> 
 </ResourceDictionary>

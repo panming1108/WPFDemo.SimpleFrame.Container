@@ -63,6 +63,7 @@
     <Compile Include="LayOuts\Window\EMCWindow.cs" />
     <Compile Include="LayOuts\Window\IEMCWindow.cs" />
     <Compile Include="Navis\Button\EMCButton.cs" />
+    <Compile Include="Navis\Menu\MenuItemAttachProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedules\Calendar\CalendarWithHourAndMin.cs" />
     <Compile Include="Schedules\DateTimePicker\EMCDateTimePicker.cs" />
@@ -89,7 +90,6 @@
     <Folder Include="Navis\BreadcrumbItem\" />
     <Folder Include="Navis\Breadcrumb\" />
     <Folder Include="Navis\ContextMenu\" />
-    <Folder Include="Navis\Menu\" />
     <Folder Include="Navis\TabControl\" />
     <Folder Include="Schedules\DatePicker\" />
   </ItemGroup>
