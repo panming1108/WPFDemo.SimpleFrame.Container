@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IButtonGroupBusi.cs" />
     <Compile Include="IChartViewBusi.cs" />
     <Compile Include="IDataGridBusi.cs" />
     <Compile Include="IListBoxBusi.cs" />

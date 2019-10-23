@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCInput="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.Input;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:attach="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:attach="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ScrollViewerStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -85,5 +86,123 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <ItemsPanelTemplate x:Key="HorizontalItemsPanel">
+        <StackPanel Orientation="Horizontal"/>
+    </ItemsPanelTemplate>
+    <ItemsPanelTemplate x:Key="VerticalItemsPanel">
+        <StackPanel Orientation="Vertical"/>
+    </ItemsPanelTemplate>
+
+    <Style x:Key="RadioButtonBaseStyle" TargetType="RadioButton">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid SnapsToDevicePixels="true">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" 
+                                    Width="16" 
+                                    Height="16" 
+                                    CornerRadius="7" 
+                                    BorderBrush="{StaticResource RadioButtonBorderBrush}" 
+                                    BorderThickness="1" 
+                                    Background="{TemplateBinding Background}" x:Name="Border">
+                            <Ellipse x:Name="checkedEll" Width="8" Height="8" 
+                                         Fill="{StaticResource RadioButtonFillBrush}" 
+                                         Visibility="Collapsed"/>
+                        </Border>
+                        <ContentPresenter Grid.Column="1" x:Name="Cp" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="checkedEll" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter TargetName="checkedEll" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="HasContent" Value="true">
+                            <Setter Property="Padding" Value="4,0,0,0"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" ></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DefaultRadioButtonGroupItem" TargetType="ListBoxItem">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border" 
+                            Background="{TemplateBinding Background}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Margin="0,10,10,10">
+                        <Grid>
+                            <RadioButton HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         Style="{StaticResource RadioButtonBaseStyle}"
+                                         IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
+                                <ContentPresenter/>
+                            </RadioButton>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="{StaticResource DisableOpacity}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="EMCRadioButton:RadioButtonGroup">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultRadioButtonGroupItem}"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCRadioButton:RadioButtonGroup">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="ItemsPanel" Value="{StaticResource HorizontalItemsPanel}"/>
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="ItemsPanel" Value="{StaticResource VerticalItemsPanel}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

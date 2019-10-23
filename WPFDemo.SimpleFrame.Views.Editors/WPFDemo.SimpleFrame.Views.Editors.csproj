@@ -44,12 +44,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonGroupDisplay.xaml.cs">
+      <DependentUpon>ButtonGroupDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EMCInputDisplay.xaml.cs">
       <DependentUpon>EMCInputDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ButtonGroupDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EMCInputDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -63,6 +70,18 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
       <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Ioc\WPFDemo.SimpleFrame.Infra.Ioc.csproj">
+      <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VOnly\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.csproj">
+      <Project>{90fdc46b-bd46-475e-9ff1-56e0c0b65ad1}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VOnly</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModelsEditors\WPFDemo.SimpleFrame.IViewModelsEditors.csproj">
+      <Project>{46CEC59E-0758-4582-8E73-85E785BFD96D}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModelsEditors</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -102,5 +102,8 @@
     <SolidColorBrush x:Key="ContextMenuItemBackground" Color="White"/>
     <SolidColorBrush x:Key="ContextMenuItemForeground" Color="#306FB2"/>
     <SolidColorBrush x:Key="ContextMenuItemMouseOverBackground" Color="#AFCCEB"/>
-    <system:Double x:Key="ContextMenuFontSize">14</system:Double> 
+    <system:Double x:Key="ContextMenuFontSize">14</system:Double>
+
+    <SolidColorBrush x:Key="RadioButtonBorderBrush" Color="#0071CC"/>
+    <SolidColorBrush x:Key="RadioButtonFillBrush" Color="#0063B2"/>
 </ResourceDictionary>

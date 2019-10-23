@@ -11,6 +11,18 @@ namespace WPFDemo.SimpleFrame.Infra.Models
         public string Name { get; set; }
         public int Age { get; set; }
 
+        public Student()
+        {
+
+        }
+
+        public Student(int id, string name, int age)
+        {
+            Id = id;
+            Name = name;
+            Age = age;
+        }
+
         public override string ToString()
         {
             return Id + "," + Name + "," + Age;

@@ -12,8 +12,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <EMCEditors:EMCInputDisplay HorizontalAlignment="Left" Margin="10,0"/>
+        <EMCEditors:ButtonGroupDisplay Grid.Row="1" HorizontalAlignment="Left" Margin="10,0"/>
     </Grid>
 </Page>

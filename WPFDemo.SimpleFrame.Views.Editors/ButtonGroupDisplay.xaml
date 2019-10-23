@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.Editors.ButtonGroupDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Editors"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
+             mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
+             mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
+             xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/EditorsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <EMCRadioButton:RadioButtonGroup ItemsSource="{Binding RadioButtonsSource}"
+                                             Orientation="Horizontal"
+                                             FontSize="14"
+                                             SelectedItem="{Binding RadioButtonSelectedString}"
+                                             Background="AliceBlue"/>
+            <TextBlock Margin="10,0,0,0">
+                <Run Text="选中的值:"/>
+                <Run Text="{Binding RadioButtonSelectedString}"/>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1">
+            <EMCRadioButton:RadioButtonGroup ItemsSource="{Binding RadioStudentSource}"
+                                             Orientation="Horizontal"
+                                             FontSize="14"
+                                             SelectedItem="{Binding SelectedStudent}"
+                                             DisplayMemberPath="Name"
+                                             Background="AliceBlue"/>
+            <TextBlock Margin="10,0,0,0">
+                <Run Text="选中的值:"/>
+                <Run Text="{Binding SelectedStudent.Age}"/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

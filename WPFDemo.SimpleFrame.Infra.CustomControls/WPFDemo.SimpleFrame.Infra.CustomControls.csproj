@@ -56,6 +56,7 @@
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />
+    <Compile Include="Editors\RadioButton\RadioButtonGroup.cs" />
     <Compile Include="LayOuts\Menu\EMCMenu.cs" />
     <Compile Include="LayOuts\Menu\EMCNaviMenu.cs" />
     <Compile Include="LayOuts\Menu\MenuCommands.cs" />
@@ -83,7 +84,6 @@
     <Folder Include="Editors\CheckBox\" />
     <Folder Include="Editors\ComboBox\" />
     <Folder Include="Editors\NumbericUpDown\" />
-    <Folder Include="Editors\RadioButton\" />
     <Folder Include="Editors\Slider\" />
     <Folder Include="Editors\ToggleSwitch\" />
     <Folder Include="LayOuts\Expander\" />
