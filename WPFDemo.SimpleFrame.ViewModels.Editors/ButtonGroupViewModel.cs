@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WPFDemo.SimpleFrame.IBLL;
 using WPFDemo.SimpleFrame.Infra.Models;
 using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
@@ -88,6 +90,8 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             }
         }    
 
+        public ICommand RadioButtonCommand { get; set; }
+
         public ButtonGroupViewModel(IButtonGroupBusi buttonGroupBusi)
         {
             _buttonGroupBusi = buttonGroupBusi;
@@ -95,6 +99,13 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             _checkBoxsSource = new List<string>();
             _radioButtonUnSelected = new List<string>();
             _notSelectedStudents = new List<Student>();
+            RadioButtonCommand = new AsyncDelegateCommand<Student>(OnRadioButtonChecked);
+        }
+
+        private async Task OnRadioButtonChecked(Student student)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine(student.ToString());
         }
 
         protected async override Task Loaded()

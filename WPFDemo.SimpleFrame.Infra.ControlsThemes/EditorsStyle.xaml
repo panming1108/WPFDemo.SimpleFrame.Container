@@ -150,7 +150,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -165,8 +165,10 @@
                                          VerticalAlignment="Center"
                                          VerticalContentAlignment="Center"
                                          HorizontalContentAlignment="Center"
-                                         Style="{StaticResource RadioButtonBaseStyle}"
-                                         IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
+                                         Style="{Binding RelativeSource={RelativeSource AncestorType=EMCRadioButton:RadioButtonGroup}, Path=RadioButtonStyle}"
+                                         IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}"
+                                         Command="{Binding RelativeSource={RelativeSource AncestorType=EMCRadioButton:RadioButtonGroup}, Path=Command}"
+                                         CommandParameter="{Binding}">
                                 <ContentPresenter/>
                             </RadioButton>
                         </Grid>
@@ -185,6 +187,7 @@
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="RadioButtonStyle" Value="{StaticResource RadioButtonBaseStyle}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCRadioButton:RadioButtonGroup">

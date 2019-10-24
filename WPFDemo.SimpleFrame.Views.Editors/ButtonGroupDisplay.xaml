@@ -27,6 +27,7 @@
             <EMCRadioButton:RadioButtonGroup ItemsSource="{Binding RadioButtonsSource}"
                                              Orientation="Horizontal"
                                              FontSize="14"
+                                             NotSelectedItems="{Binding RadioButtonUnSelected,Mode=TwoWay}"
                                              SelectedItem="{Binding RadioButtonSelectedString}"
                                              Background="AliceBlue"/>
             <TextBlock Margin="10,0,0,0">
@@ -39,8 +40,10 @@
             <EMCRadioButton:RadioButtonGroup ItemsSource="{Binding RadioStudentSource}"
                                              Orientation="Horizontal"
                                              FontSize="14"
+                                             NotSelectedItems="{Binding NotSelectedStudents,Mode=TwoWay}"
                                              SelectedItem="{Binding SelectedStudent}"
                                              DisplayMemberPath="Name"
+                                             Command="{Binding RadioButtonCommand}"
                                              Background="AliceBlue"/>
             <TextBlock Margin="10,0,0,0">
                 <Run Text="选中的值:"/>
