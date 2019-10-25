@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WPFDemo.SimpleFrame.IBLL;
 using WPFDemo.SimpleFrame.Infra.Models;
 
@@ -15,34 +16,68 @@ namespace WPFDemo.SimpleFrame.BLL
             return Task.Factory.StartNew(
                 () =>
                 {
+                    //string imgSource = "/WPFDemo.SimpleFrame.Views.Navis;component/Images/function_3.png";
+                    //List<TreeViewNode> nodes = new List<TreeViewNode>();
+                    //var node11 = new TreeViewNode(imgSource, "菜单");
+                    //nodes.Add(node11);
+
+                    //node11.Children = new List<TreeViewNode>();
+                    //node11.Children.Add(new TreeViewNode(imgSource, "跳转到全图"));
+                    //node11.Children.Add(new TreeViewNode(imgSource, "跳转到诊断图"));
+                    //node11.Children.Add(new TreeViewNode(imgSource, "删除心搏"));
+                    //node11.Children.Add(new TreeViewNode(imgSource, "室上性"));
+                    //node11.Children.Add(new TreeViewNode(imgSource, "正常(N)"));
+                    //node11.Children.Add(new TreeViewNode(imgSource, "房早(S)"));
+
+                    //    var qibo = new TreeViewNode(imgSource, "起搏(P)");
+                    //    qibo.Children = new List<TreeViewNode>();
+                    //    qibo.Children.Add(new TreeViewNode(imgSource, "室上性"));
+                    //    qibo.Children.Add(new TreeViewNode(imgSource, "正常"));
+                    //    qibo.Children.Add(new TreeViewNode(imgSource, "房早"));
+                    //    qibo.Children.Add(new TreeViewNode(imgSource, "室上性"));
+                    //    qibo.Children.Add(new TreeViewNode(imgSource, "室上性"));
+
+                    //        var yujibo = new TreeViewNode(imgSource, "预激波");
+                    //        yujibo.Children = new List<TreeViewNode>();
+                    //        yujibo.Children.Add(new TreeViewNode(imgSource, "窦性(N(B))"));
+                    //        yujibo.Children.Add(new TreeViewNode(imgSource, "房性(N(B))"));
+
+                    //    qibo.Children.Add(yujibo);
+
+                    //node11.Children.Add(qibo);
+
+                    //return nodes;
+
                     List<TreeViewNode> nodes = new List<TreeViewNode>();
-                    var node11 = new TreeViewNode("\uf000", "菜单");
+                    var node11 = new TreeViewNode("跳转到全图") { InputGestureText = ModifierKeys.Control.ToString() + "+" + Key.Q.ToString() };
+                    var node12 = new TreeViewNode("跳转到诊断图") { InputGestureText = ModifierKeys.Control.ToString() + "+" + Key.T.ToString() };
+                    var node13 = new TreeViewNode("删除心搏") { InputGestureText = Key.Q.ToString() };
+                    var node14 = new TreeViewNode("室上性") { InputGestureText = Key.K.ToString() };
+                    var node15 = new TreeViewNode("正常(N)");
+                    var node16 = new TreeViewNode("房早(S)");
+                    var qibo = new TreeViewNode("起搏(P)");
                     nodes.Add(node11);
+                    nodes.Add(node12);
+                    nodes.Add(node13);
+                    nodes.Add(node14);
+                    nodes.Add(node15);
+                    nodes.Add(node16);
 
-                    node11.Children = new List<TreeViewNode>();
-                    node11.Children.Add(new TreeViewNode("\uf001", "跳转到全图"));
-                    node11.Children.Add(new TreeViewNode("\uf002", "跳转到诊断图"));
-                    node11.Children.Add(new TreeViewNode("\uf003", "删除心搏"));
-                    node11.Children.Add(new TreeViewNode("\uf004", "室上性"));
-                    node11.Children.Add(new TreeViewNode("\uf005", "正常(N)"));
-                    node11.Children.Add(new TreeViewNode("\uf006", "房早(S)"));
+                    qibo.Children = new List<TreeViewNode>();
+                    qibo.Children.Add(new TreeViewNode("室上性"));
+                    qibo.Children.Add(new TreeViewNode("正常"));
+                    qibo.Children.Add(new TreeViewNode("房早"));
+                    qibo.Children.Add(new TreeViewNode("室上性"));
+                    qibo.Children.Add(new TreeViewNode("室上性"));
 
-                        var qibo = new TreeViewNode("\uf007", "起搏(P)");
-                        qibo.Children = new List<TreeViewNode>();
-                        qibo.Children.Add(new TreeViewNode("\uf008", "室上性"));
-                        qibo.Children.Add(new TreeViewNode("\uf009", "正常"));
-                        qibo.Children.Add(new TreeViewNode("\uf010", "房早"));
-                        qibo.Children.Add(new TreeViewNode("\uf011", "室上性"));
-                        qibo.Children.Add(new TreeViewNode("\uf012", "室上性"));
+                    var yujibo = new TreeViewNode("预激波");
+                    yujibo.Children = new List<TreeViewNode>();
+                    yujibo.Children.Add(new TreeViewNode("窦性(N(B))"));
+                    yujibo.Children.Add(new TreeViewNode("房性(N(B))"));
 
-                            var yujibo = new TreeViewNode("\uf013", "预激波");
-                            yujibo.Children = new List<TreeViewNode>();
-                            yujibo.Children.Add(new TreeViewNode("\uf014", "窦性(N(B))"));
-                            yujibo.Children.Add(new TreeViewNode("\uf015", "房性(N(B))"));
+                    qibo.Children.Add(yujibo);
 
-                        qibo.Children.Add(yujibo);
-
-                    node11.Children.Add(qibo);
+                    nodes.Add(qibo);
 
                     return nodes;
                 });

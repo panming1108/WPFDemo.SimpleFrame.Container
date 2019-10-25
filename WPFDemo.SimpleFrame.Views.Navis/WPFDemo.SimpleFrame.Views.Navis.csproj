@@ -88,5 +88,8 @@
       <Name>WPFDemo.SimpleFrame.IViewModels.Navis</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\function_3.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

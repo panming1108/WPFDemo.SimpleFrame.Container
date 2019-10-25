@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Navis"
              xmlns:model="clr-namespace:WPFDemo.SimpleFrame.Infra.Models;assembly=WPFDemo.SimpleFrame.Infra.Models"
              xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
+             xmlns:EMCMenu="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:EMCContextMenu="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              mc:Ignorable="d" 
@@ -20,15 +22,27 @@
                                       ItemsSource="{Binding Children}">
                 <ContentPresenter Content="{Binding}"/>
             </HierarchicalDataTemplate>
+            <EMCContextMenu:EMCContextMenu x:Key="MenuContextMenu"
+                                           ItemTemplate="{StaticResource MenuItemTemplate}"
+                                           ItemCommand="{Binding ItemCommand}"
+                                           ItemsSource="{Binding MenuSource}">
+                <EMCContextMenu:EMCContextMenu.Resources>
+                    <KeyBinding x:Key="sdf" Gesture="Ctrl+K" Command="{Binding ItemCommand}" CommandParameter="123"/>
+                </EMCContextMenu:EMCContextMenu.Resources>
+            </EMCContextMenu:EMCContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Menu Style="{StaticResource DefaultMenu}"
-              HorizontalAlignment="Left"
-              VerticalAlignment="Bottom"
-              Margin="10,10,0,0"
-              ItemTemplate="{StaticResource MenuItemTemplate}"
-              ItemsSource="{Binding MenuSource}">
-        </Menu>
+    <Grid ContextMenu="{StaticResource MenuContextMenu}" 
+          Background="AliceBlue"
+          Height="50">
+        <!--<EMCMenu:EMCMenu Style="{StaticResource DefaultMenu}"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Bottom"
+                         Margin="10,10,0,0"
+                         ItemTemplate="{StaticResource MenuItemTemplate}"
+                         ItemCommand="{Binding ItemCommand}"
+                         ItemMouseOverCommand="{Binding ItemMouseOverCommand}"
+                         ItemsSource="{Binding MenuSource}"/>-->
+
     </Grid>
 </UserControl>
