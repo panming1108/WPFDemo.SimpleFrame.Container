@@ -336,7 +336,7 @@
                                         FontStyle="Normal" 
                                         IsHitTestVisible="False" 
                                         Foreground="#FFA9B2B7" 
-                                        Content="{TemplateBinding ext:EditorsAttachProperty.Watermark}"
+                                        Content="{Binding RelativeSource={RelativeSource AncestorType=EMCDatePicker:EMCDateTimePicker}, Path=WaterMark}"
                                         Padding="{TemplateBinding Padding}" 
                                         BorderThickness="{TemplateBinding BorderThickness}" 
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
@@ -585,7 +585,6 @@
                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" IsHitTestVisible="True"
                                      Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" VerticalContentAlignment="Center"
                                      VerticalAlignment="Center" BorderThickness="0" Style="{StaticResource TextBox_Style_Base}" 
-                                     ext:EditorsAttachProperty.Watermark="{TemplateBinding ext:EditorsAttachProperty.Watermark}"
                                      Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
                                             UpdateSourceTrigger=LostFocus, Mode=TwoWay, Path=Content, 
                                             StringFormat='yyyy-MM-dd HH:mm'}">

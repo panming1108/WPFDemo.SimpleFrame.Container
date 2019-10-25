@@ -12,6 +12,17 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Schedules.DateTimePicker
 {
     public class EMCDateTimePicker : ContentControl
     {
+        public string WaterMark
+        {
+            get { return (string)GetValue(WaterMarkProperty); }
+            set { SetValue(WaterMarkProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for WaterMark.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty WaterMarkProperty =
+            DependencyProperty.Register("WaterMark", typeof(string), typeof(EMCDateTimePicker));
+
+
         private CalendarWithHourAndMin Calendar { get; set; }
         private ToggleButton ToggleButton { get; set; }
 

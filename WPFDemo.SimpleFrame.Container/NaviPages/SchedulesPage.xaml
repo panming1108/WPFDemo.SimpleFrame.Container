@@ -29,7 +29,7 @@
                                          Padding="9,0"
                                          Width="210"
                                          VerticalContentAlignment="Center"
-                                         attach:EditorsAttachProperty.Watermark="请输入时间和日期"
+                                         WaterMark="请输入时间和日期"
                                          BorderBrush="#DBE0E3"
                                          ContentStringFormat="yyyy-MM-dd HH:mm">
             <EMCDatePicker:EMCDateTimePicker.Content>

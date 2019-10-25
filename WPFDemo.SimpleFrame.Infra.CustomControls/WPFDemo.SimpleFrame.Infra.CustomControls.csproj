@@ -54,6 +54,7 @@
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
+    <Compile Include="Editors\CheckBox\CheckBoxGroup.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />
     <Compile Include="Editors\RadioButton\RadioButtonGroup.cs" />
@@ -81,7 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Editors\AutoCompleteBox\" />
-    <Folder Include="Editors\CheckBox\" />
     <Folder Include="Editors\ComboBox\" />
     <Folder Include="Editors\NumbericUpDown\" />
     <Folder Include="Editors\Slider\" />

@@ -8,6 +8,7 @@
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:EMCCheckBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.CheckBox;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -19,6 +20,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -45,6 +47,21 @@
                                              DisplayMemberPath="Name"
                                              Command="{Binding RadioButtonCommand}"
                                              Background="AliceBlue"/>
+            <TextBlock Margin="10,0,0,0">
+                <Run Text="选中的值:"/>
+                <Run Text="{Binding SelectedStudent.Age}"/>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="2">
+            <EMCCheckBox:CheckBoxGroup ItemsSource="{Binding RadioStudentSource}"
+                                       Orientation="Horizontal"
+                                       FontSize="14"
+                                       HaveSelectedItems="{Binding HaveCheckStudent, Mode=TwoWay}"
+                                       NotSelectedItems="{Binding NotSelectedStudents,Mode=TwoWay}"
+                                       DisplayMemberPath="Name"
+                                       Command="{Binding RadioButtonCommand}"
+                                       Background="AliceBlue"/>
             <TextBlock Margin="10,0,0,0">
                 <Run Text="选中的值:"/>
                 <Run Text="{Binding SelectedStudent.Age}"/>

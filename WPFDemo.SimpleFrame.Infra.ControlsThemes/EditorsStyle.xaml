@@ -3,7 +3,8 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCInput="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.Input;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:attach="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCCheckBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.CheckBox;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ScrollViewerStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -191,6 +192,122 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCRadioButton:RadioButtonGroup">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="ItemsPanel" Value="{StaticResource HorizontalItemsPanel}"/>
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="ItemsPanel" Value="{StaticResource VerticalItemsPanel}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CheckBoxBaseStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="15" Height="15" 
+                                    Name="checkedBorder"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1" 
+                                    Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Path x:Name="checkedPath" Stroke="White" StrokeThickness="2" 
+                                          Panel.ZIndex="2" 
+                                          Visibility="Collapsed" Data="M2,5 L4,8 9,2"/>
+                                <Rectangle x:Name="nullRec" Width="15" Height="15" Panel.ZIndex="-1"
+                                                Fill="#21adff" Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter Grid.Column="1" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              RecognizesAccessKey="True" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="nullRec" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="checkedPath" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="checkedBorder" Property="BorderBrush" Value="#21adff"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter TargetName="checkedBorder" Property="BorderBrush" Value="#c5cdd9"/>
+                        </Trigger>
+                        <Trigger Property="HasContent" Value="true">
+                            <Setter Property="Padding" Value="4,0,0,0"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" ></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DefaultCheckBoxGroupItem" TargetType="ListBoxItem">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border" 
+                            Background="{TemplateBinding Background}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Margin="0,10,10,10">
+                        <Grid>
+                            <CheckBox HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      HorizontalContentAlignment="Center"
+                                      Style="{Binding RelativeSource={RelativeSource AncestorType=EMCCheckBox:CheckBoxGroup}, Path=CheckBoxStyle}"
+                                      IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}"
+                                      Command="{Binding RelativeSource={RelativeSource AncestorType=EMCCheckBox:CheckBoxGroup}, Path=Command}"
+                                      CommandParameter="{Binding}">
+                                <ContentPresenter/>
+                            </CheckBox>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="{StaticResource DisableOpacity}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="EMCCheckBox:CheckBoxGroup">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultCheckBoxGroupItem}"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SelectionMode" Value="Multiple"/>
+        <Setter Property="CheckBoxStyle" Value="{StaticResource CheckBoxBaseStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCCheckBox:CheckBoxGroup">
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}">

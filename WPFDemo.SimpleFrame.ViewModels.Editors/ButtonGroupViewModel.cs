@@ -22,6 +22,16 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         private Student _selectedStudent;
         private List<Student> _radioStudentSource;
         private List<Student> _notSelectedStudents;
+        private List<Student> _haveCheckedStudent;
+        public List<Student> HaveCheckStudent
+        {
+            get => _haveCheckedStudent;
+            set
+            {
+                _haveCheckedStudent = value;
+                OnPropertyChanged(()=>HaveCheckStudent);
+            }
+        }
         public List<Student> NotSelectedStudents
         {
             get => _notSelectedStudents;
