@@ -19,6 +19,8 @@ namespace WPFDemo.SimpleFrame.Infra.Models
 
         public bool IsGroupEnd { get; set; }
 
+        public string GroupName { get; set; }
+
         public TreeViewNode()
         {
 

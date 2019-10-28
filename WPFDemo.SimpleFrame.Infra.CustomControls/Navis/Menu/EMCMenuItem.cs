@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,7 +15,10 @@ using WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu;
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu
 {
     public class EMCMenuItem : MenuItem
-    {        
+    {
+        private object _lastMenuItem;
+        private Dictionary<string, List<EMCMenuItem>> _groupList = new Dictionary<string, List<EMCMenuItem>>();
+
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
             return item is EMCMenuItem;
@@ -141,6 +145,37 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu
         public static readonly DependencyProperty GroupNameProperty =
             DependencyProperty.Register("GroupName", typeof(string), typeof(EMCMenuItem));
 
+        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+        {
+            base.PrepareContainerForItemOverride(element, item);
+            var menuItem = element as EMCMenuItem;
+            if (!string.IsNullOrEmpty(menuItem.GroupName))
+            {
+                if (!_groupList.Keys.Contains(menuItem.GroupName))
+                {
+                    _groupList.Add(menuItem.GroupName, new List<EMCMenuItem>());
+                }
+                _groupList[menuItem.GroupName].Add(menuItem);
+            }
 
+            if (item == _lastMenuItem)
+            {
+                foreach (var group in _groupList)
+                {
+                    group.Value.Last().IsGroupEnd = true;
+                }
+
+                menuItem.IsGroupEnd = false;
+            }
+        }
+
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            base.OnItemsSourceChanged(oldValue, newValue);
+            foreach (var item in newValue)
+            {
+                _lastMenuItem = item;
+            }
+        }
     }
 }

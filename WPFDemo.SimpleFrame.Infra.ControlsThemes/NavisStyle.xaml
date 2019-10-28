@@ -435,6 +435,7 @@
         <Setter Property="Icon" Value="{Binding Icon}"/>
         <Setter Property="InputGestureText" Value="{Binding InputGestureText}"/>
         <Setter Property="IsGroupEnd" Value="{Binding IsGroupEnd}"/>
+        <Setter Property="GroupName" Value="{Binding GroupName}"/>
         <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}, Path=ItemCommand}"/>
         <Setter Property="CommandParameter" Value="{Binding}"/>
         <Setter Property="MouseOverCommand" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}, Path=ItemMouseOverCommand}"/>

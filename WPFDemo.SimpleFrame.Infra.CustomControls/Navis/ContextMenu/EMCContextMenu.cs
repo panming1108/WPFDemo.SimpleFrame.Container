@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu;
 
@@ -13,6 +15,10 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu
     public class EMCContextMenu : System.Windows.Controls.ContextMenu
     {
         public event EventHandler<KeyEventArgs> InputGestureKeyDown;
+
+        private object _lastMenuItem;
+        private Dictionary<string, List<EMCMenuItem>> _groupList = new Dictionary<string, List<EMCMenuItem>>();
+
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
             return item is EMCMenuItem;
@@ -33,8 +39,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu
         public static readonly DependencyProperty ItemCommandProperty =
             DependencyProperty.Register("ItemCommand", typeof(ICommand), typeof(EMCContextMenu));
 
-
-
         public ICommand ItemMouseOverCommand
         {
             get { return (ICommand)GetValue(ItemMouseOverCommandProperty); }
@@ -50,6 +54,39 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu
             base.OnKeyDown(e);
 
             InputGestureKeyDown?.Invoke(this, e);
+        }
+
+        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+        {
+            base.PrepareContainerForItemOverride(element, item);
+            var menuItem = element as EMCMenuItem;
+            if(!string.IsNullOrEmpty(menuItem.GroupName))
+            {
+                if(!_groupList.Keys.Contains(menuItem.GroupName))
+                { 
+                    _groupList.Add(menuItem.GroupName, new List<EMCMenuItem>());
+                }
+                _groupList[menuItem.GroupName].Add(menuItem);
+            }
+
+            if(item == _lastMenuItem)
+            {
+                foreach (var group in _groupList)
+                {
+                    group.Value.Last().IsGroupEnd = true;
+                }
+
+                menuItem.IsGroupEnd = false;
+            }
+        }
+
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            base.OnItemsSourceChanged(oldValue, newValue);
+            foreach (var item in newValue)
+            {
+                _lastMenuItem = item;
+            }
         }
     }
 }
