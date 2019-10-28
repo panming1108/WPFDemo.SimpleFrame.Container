@@ -9,6 +9,15 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.TreeView
 {
     public class EMCTreeView : System.Windows.Controls.TreeView
     {
+        protected override DependencyObject GetContainerForItemOverride()
+        {
+            return new EMCTreeViewItem();
+        }
+
+        protected override bool IsItemItsOwnContainerOverride(object item)
+        {
+            return item is EMCTreeViewItem;
+        }
         public Orientation Orientation
         {
             get { return (Orientation)GetValue(OrientationProperty); }

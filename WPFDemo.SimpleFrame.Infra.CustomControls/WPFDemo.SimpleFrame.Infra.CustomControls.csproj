@@ -62,6 +62,7 @@
     <Compile Include="LayOuts\Menu\EMCNaviMenu.cs" />
     <Compile Include="LayOuts\Menu\MenuCommands.cs" />
     <Compile Include="LayOuts\TreeView\EMCTreeView.cs" />
+    <Compile Include="LayOuts\TreeView\EMCTreeViewItem.cs" />
     <Compile Include="LayOuts\Window\EMCWindow.cs" />
     <Compile Include="LayOuts\Window\IEMCWindow.cs" />
     <Compile Include="Navis\Button\EMCButton.cs" />

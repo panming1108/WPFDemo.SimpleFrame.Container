@@ -151,7 +151,7 @@
     </Style>
 
     <!--TreeViewItem默认样式-->
-    <Style  x:Key="DefaultTreeViewItem" TargetType="{x:Type TreeViewItem}">
+    <Style  x:Key="DefaultTreeViewItem" TargetType="{x:Type EMCTreeView:EMCTreeViewItem}">
         <Setter Property="MinHeight" Value="25" />
         <Setter Property="Foreground" Value="{StaticResource TreeViewItemsForeground}" />
         <Setter Property="Background" Value="Transparent" />
@@ -159,7 +159,7 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                <ControlTemplate TargetType="{x:Type EMCTreeView:EMCTreeViewItem}">
                     <StackPanel>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
