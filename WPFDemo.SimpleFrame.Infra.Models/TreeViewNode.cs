@@ -17,6 +17,8 @@ namespace WPFDemo.SimpleFrame.Infra.Models
 
         public List<TreeViewNode> Children { get; set; }
 
+        public bool IsGroupEnd { get; set; }
+
         public TreeViewNode()
         {
 

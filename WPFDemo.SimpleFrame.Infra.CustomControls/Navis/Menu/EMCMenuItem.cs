@@ -119,6 +119,28 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu
         public static readonly DependencyProperty RootContextMenuProperty =
             DependencyProperty.Register("RootContextMenu", typeof(object), typeof(EMCMenuItem));
 
+        public bool IsGroupEnd
+        {
+            get { return (bool)GetValue(IsGroupEndProperty); }
+            set { SetValue(IsGroupEndProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsGroupEnd.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsGroupEndProperty =
+            DependencyProperty.Register("IsGroupEnd", typeof(bool), typeof(EMCMenuItem), new PropertyMetadata(false));
+
+
+
+        public string GroupName
+        {
+            get { return (string)GetValue(GroupNameProperty); }
+            set { SetValue(GroupNameProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for GroupName.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GroupNameProperty =
+            DependencyProperty.Register("GroupName", typeof(string), typeof(EMCMenuItem));
+
 
     }
 }

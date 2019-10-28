@@ -51,10 +51,10 @@ namespace WPFDemo.SimpleFrame.BLL
                     List<TreeViewNode> nodes = new List<TreeViewNode>();
                     var node11 = new TreeViewNode("跳转到全图") { InputGestureText = ModifierKeys.Control.ToString() + "+" + Key.Q.ToString() };
                     var node12 = new TreeViewNode("跳转到诊断图") { InputGestureText = ModifierKeys.Control.ToString() + "+" + Key.T.ToString() };
-                    var node13 = new TreeViewNode("删除心搏") { InputGestureText = Key.Q.ToString() };
+                    var node13 = new TreeViewNode("删除心搏") { InputGestureText = Key.Q.ToString(), IsGroupEnd = true };
                     var node14 = new TreeViewNode("室上性") { InputGestureText = Key.K.ToString() };
                     var node15 = new TreeViewNode("正常(N)");
-                    var node16 = new TreeViewNode("房早(S)");
+                    var node16 = new TreeViewNode("房早(S)") { IsGroupEnd = true };
                     var qibo = new TreeViewNode("起搏(P)");
                     nodes.Add(node11);
                     nodes.Add(node12);

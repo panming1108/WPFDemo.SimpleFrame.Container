@@ -428,12 +428,13 @@
         <Setter Property="Background" Value="{StaticResource ContextMenuItemBackground}"/>
         <Setter Property="Foreground" Value="{StaticResource ContextMenuItemForeground}"/>
         <Setter Property="FontSize" Value="{StaticResource ContextMenuFontSize}"/>
-        <Setter Property="Height" Value="28"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0,4"/>
         <Setter Property="Header" Value="{Binding Name}"/>
         <Setter Property="Icon" Value="{Binding Icon}"/>
         <Setter Property="InputGestureText" Value="{Binding InputGestureText}"/>
+        <Setter Property="IsGroupEnd" Value="{Binding IsGroupEnd}"/>
         <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}, Path=ItemCommand}"/>
         <Setter Property="CommandParameter" Value="{Binding}"/>
         <Setter Property="MouseOverCommand" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}, Path=ItemMouseOverCommand}"/>
@@ -441,72 +442,81 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCMenu:EMCMenuItem">
-                    <Border x:Name="border"
-                            Background="Transparent"
-                            Height="{TemplateBinding Height}">
-                        <Grid VerticalAlignment="Center"
-                              Margin="{TemplateBinding Margin}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="icon_col" MaxWidth="35" SharedSizeGroup="MenuItemIconColumnGroup"/>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
-                                <ColumnDefinition x:Name="arrow_col" Width="16" SharedSizeGroup="MenuItemArrow"/>
-                            </Grid.ColumnDefinitions>
-                            <!--icon-->
-                            <Image x:Name="PART_Icon" 
-                                   Margin="5,1,1,1"
-                                   Source="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Icon}"
-                                   Stretch="Uniform"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                            <!--header-->
-                            <ContentPresenter Grid.Column="1"
-                                              x:Name="txtHeader"
-                                              Margin="3,1,5,1"
-                                              MinWidth="90"
-                                              RecognizesAccessKey="True"
-                                              VerticalAlignment="Center"
-                                              ContentSource="Header"/>
-                            <!--快捷键-->
-                            <TextBlock Grid.Column="2"
-                                       Margin="3,1"
-                                       x:Name="IGTHost"
-                                       Text="{TemplateBinding InputGestureText}"
-                                       FontSize="{TemplateBinding FontSize}"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="border"
+                                Background="Transparent">
+                            <Grid VerticalAlignment="Center"
+                                  Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="icon_col" MaxWidth="35" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                    <ColumnDefinition x:Name="arrow_col" Width="16" SharedSizeGroup="MenuItemArrow"/>
+                                </Grid.ColumnDefinitions>
+                                <!--icon-->
+                                <Image x:Name="PART_Icon" 
+                                       Margin="5,1,1,1"
+                                       Source="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Icon}"
+                                       Stretch="Uniform"
                                        VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Visibility="Visible"
-                                       Foreground="{TemplateBinding Foreground}"/>
-                            <!--右指针-->
-                            <TextBlock x:Name="PART_Arrow"
-                                       Grid.Column="3"
-                                       Text="{StaticResource fa-angle-right}"
-                                       Style="{StaticResource FIcon}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       FontSize="{TemplateBinding FontSize}"/>
-                            <!--淡出子集菜单容器-->
-                            <Popup x:Name="SubMenuPopup"
-                                   AllowsTransparency="True"
-                                   IsOpen="{TemplateBinding IsSubmenuOpen}"
-                                   Placement="Bottom"
-                                   PlacementTarget="{Binding ElementName=border}"
-                                   Focusable="True"                                   
-                                   VerticalOffset="0"
-                                   PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
-                                <Border Background="{TemplateBinding Background}"
-                                        Margin="5"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                    <Grid x:Name="SubMenu"
-                                          Grid.IsSharedSizeScope="True">
-                                        <StackPanel Margin="0"
-                                                    IsItemsHost="True"
-                                                    KeyboardNavigation.DirectionalNavigation="Cycle"/>
-                                    </Grid>
-                                </Border>
-                            </Popup>
-                        </Grid>
-                    </Border>
+                                       HorizontalAlignment="Center"/>
+                                <!--header-->
+                                <ContentPresenter Grid.Column="1"
+                                                  x:Name="txtHeader"
+                                                  Margin="3,1,5,1"
+                                                  MinWidth="90"
+                                                  RecognizesAccessKey="True"
+                                                  VerticalAlignment="Center"
+                                                  ContentSource="Header"/>
+                                <!--快捷键-->
+                                <TextBlock Grid.Column="2"
+                                           Margin="3,1"
+                                           x:Name="IGTHost"
+                                           Text="{TemplateBinding InputGestureText}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Visibility="Visible"
+                                           Foreground="{TemplateBinding Foreground}"/>
+                                <!--右指针-->
+                                <TextBlock x:Name="PART_Arrow"
+                                           Grid.Column="3"
+                                           Text="{StaticResource fa-angle-right}"
+                                           Style="{StaticResource FIcon}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontSize="{TemplateBinding FontSize}"/>
+                                <!--淡出子集菜单容器-->
+                                <Popup x:Name="SubMenuPopup"
+                                       AllowsTransparency="True"
+                                       IsOpen="{TemplateBinding IsSubmenuOpen}"
+                                       Placement="Bottom"
+                                       PlacementTarget="{Binding ElementName=border}"
+                                       Focusable="True"                                   
+                                       VerticalOffset="0"
+                                       PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            Margin="5"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <Grid x:Name="SubMenu"
+                                              Grid.IsSharedSizeScope="True">
+                                            <StackPanel Margin="0"
+                                                        IsItemsHost="True"
+                                                        KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                        </Grid>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <Separator Grid.Row="1"
+                                   x:Name="PART_Separator"
+                                   Foreground="{StaticResource ContextMenuItemBorderBrush}"
+                                   Visibility="Collapsed"/>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <!--最顶级头部（最顶级，有子项）-->
                         <Trigger Property="Role" Value="TopLevelHeader">
@@ -537,6 +547,9 @@
                         <Trigger Property="IsHighlighted" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{StaticResource ContextMenuItemMouseOverBackground}"/>
                         </Trigger>
+                        <Trigger Property="IsGroupEnd" Value="True">
+                            <Setter TargetName="PART_Separator" Property="Visibility" Value="Visible"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -563,7 +576,7 @@
                                 Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle"
                                                 Grid.IsSharedSizeScope="True" Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                KeyboardNavigation.TabNavigation="Cycle" />
+                                                KeyboardNavigation.TabNavigation="Cycle"/>
                         </Border>
                     </Grid>
                 </ControlTemplate>
