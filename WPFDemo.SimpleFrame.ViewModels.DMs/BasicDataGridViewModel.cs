@@ -31,7 +31,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         protected async override Task Loaded()
         {
-            DataGridSource = await _dataGridBusi.GetDataGridSource();
+            DataGridSource = await _dataGridBusi.GetDataGridSource(5);
         }
 
         protected async override Task UnLoaded()

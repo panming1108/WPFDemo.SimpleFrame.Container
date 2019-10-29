@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DMs\DataGrid\EMCDataGrid.cs" />
+    <Compile Include="DMs\DataGrid\NewDataGrid.cs" />
     <Compile Include="DMs\DataPager\DataPagerCommands.cs" />
     <Compile Include="DMs\DataPager\EMCDataPager.cs" />
     <Compile Include="DMs\DataPager\SelectedBackgroundConverter.cs" />

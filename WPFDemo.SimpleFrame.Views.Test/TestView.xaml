@@ -4,25 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Test"
+             xmlns:DMs="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
+             mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
+             mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DMsStyle.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <StackPanel>
-            <Button Width="100"
-                    Height="30"
-                    Command="{Binding TestViewClickCommand}">
-                <TextBlock Style="{StaticResource FIcon}" Foreground="Black" Text="{StaticResource fa-500px}"/>
-            </Button>
-            <TextBlock Text="{Binding TestViewText}"
-                       HorizontalAlignment="Center"
-                       FontSize="16"/>
-        </StackPanel>
+        <DMs:NewDataGrid Style="{StaticResource HaveDataPagerDataGridStyle}" 
+                         Margin="10,0,10,10"   
+                         RowHeight="50"
+                         Height="592"
+                         BorderThickness="1"
+                         Total="{Binding ItemCount}"
+                         PageSize="{Binding PageSize,Mode=TwoWay}"
+                         PageNo="{Binding PageNo,Mode=TwoWay}"
+                         NumericButtonCount="7"
+                         PageSizeSource="{Binding PageSizeSource}"
+                         ItemsSource="{Binding DataSource}"
+                         IsUseDataPager="True">
+            <DMs:NewDataGrid.Columns>
+                <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"></DataGridTextColumn>
+                <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Age" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"></DataGridTextColumn>
+            </DMs:NewDataGrid.Columns>
+        </DMs:NewDataGrid>
     </Grid>
 </UserControl>

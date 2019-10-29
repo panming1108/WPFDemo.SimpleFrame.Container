@@ -9,6 +9,6 @@ namespace WPFDemo.SimpleFrame.IBLL
 {
     public interface IDataGridBusi
     {
-        Task<List<DataGridModel>> GetDataGridSource();
+        Task<List<DataGridModel>> GetDataGridSource(int count);
     }
 }

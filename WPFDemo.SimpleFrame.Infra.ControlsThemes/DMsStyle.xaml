@@ -7,6 +7,386 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ScrollViewerStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+    <!--#region DataPager -->
+    <ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
+        <Border Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                BorderBrush="{TemplateBinding BorderBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Path Grid.Column="1"                      
+                      Stroke="#9FABBC"
+                      StrokeThickness="2"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Stretch="Uniform"
+                      Margin="5,0"
+                      Data="{StaticResource ExpanderClose}"
+                      RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <RotateTransform x:Name="PART_Icon" Angle="0"/>
+                    </Path.RenderTransform>
+                </Path>
+                <ContentPresenter Grid.Column="0"
+                                  Margin="{TemplateBinding Padding}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource IsCheckedBrush}"/>
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="PART_Icon"
+                                             Storyboard.TargetProperty="Angle"
+                                             To="180"
+                                             Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="PART_Icon"
+                                             Storyboard.TargetProperty="Angle"
+                                             To="0"
+                                             Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="ComboBoxToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="#E4E6E5"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="#767779"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Template" Value="{StaticResource ComboBoxToggleButtonTemplate}"/>
+    </Style>
+    <Style TargetType="ComboBoxItem" x:Key="ComboBoxItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Grid Background="{TemplateBinding Background}" Margin="0,0.5">
+                        <Border x:Name="ItemBackground" IsHitTestVisible="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}" />
+                        <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--<Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="ItemBackground" Property="Background" Value="#1C9DE7" />
+                        </Trigger>-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ItemBackground" Property="Background" Value="#1C9DE7" />
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type ComboBox}" x:Key="DefaultComboBox">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Foreground" Value="#9FABBC" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="#DBE0E3" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="MaxDropDownHeight" Value="400" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid x:Name="PART_Root">
+                        <Border x:Name="Bg" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                CornerRadius="3"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" />
+                        <Grid>
+                            <!--下拉按钮-->
+                            <ToggleButton x:Name="PART_DropDownToggle" IsTabStop="False" HorizontalAlignment="Right"
+                                         IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                         IsEnabled="{TemplateBinding IsEnabled}" Style="{StaticResource ComboBoxToggleButtonStyle}"
+                                         BorderThickness="0" VerticalAlignment="Center" Foreground="#9FABBC"
+                                         Padding="2" Width="{TemplateBinding Width}"/>
+                            <!--主内容区域-->
+                            <Grid x:Name="ContentSite" Margin="2 0 0 0" >
+                                <ContentPresenter x:Name="PART_SelectedItem" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                  Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                                  HorizontalAlignment="Stretch" Margin="10,0,2,0" 
+                                                  IsHitTestVisible="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </Grid>
+                        </Grid>
+                        <!--弹出下拉控件-->
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                  MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border x:Name="PopupBorder" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="Stretch"
+                                        Height="Auto" BorderBrush="{TemplateBinding BorderBrush}"
+                                        Background="White">
+                                </Border>
+                                <ScrollViewer x:Name="DropDownScrollViewer" BorderThickness="0" Margin="1">
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                </ScrollViewer>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <!--触发器-->
+                    <ControlTemplate.Triggers>
+                        <!--编辑模式-->
+                        <Trigger Property="IsEditable" Value="True">
+                            <Setter TargetName="PART_SelectedItem" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_DropDownToggle" Property="Grid.Column" Value="3" />
+                            <Setter TargetName="PART_DropDownToggle" Property="Grid.ColumnSpan" Value="1" />
+                            <Setter TargetName="PART_DropDownToggle" Property="Background" Value="Transparent" />
+                            <Setter Property="IsTabStop" Value="false" />
+                            <Setter TargetName="PART_DropDownToggle" Property="Focusable" Value="False" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="#FF7EB4EA"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter  Property="BorderBrush" Value="#FF569DE5"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter  Property="BorderBrush" Value="#FF569DE5"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Root" Property="Opacity" Value="0.6"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Pager_Button_Style" TargetType="Button">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Background" Value="{StaticResource DisabledBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource CommonForeground}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="5">
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger>
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{x:Static EMCDataPager:DataPagerConverter.SelectedBackgroundConverter}">
+                                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Content"/>
+                                    <Binding RelativeSource="{RelativeSource AncestorType=EMCDataPager:EMCDataPager}" Path="PageNo"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Value>true</DataTrigger.Value>
+                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="#D5D6DB"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DataPagerStyle" TargetType="EMCDataPager:EMCDataPager">
+        <Setter Property="PageButtonStyle" Value="{StaticResource Pager_Button_Style}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCDataPager:EMCDataPager">
+                    <Border x:Name="PART_ROOT"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <WrapPanel HorizontalAlignment="Right">
+                            <!--共 400 条记录 第 1 / 80 页-->
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="14"
+                                       Foreground="#9FABBC"
+                                       HorizontalAlignment="Right"
+                                       Margin="10,0">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}共 {0} 条记录 第 {1} / {2} 页">
+                                        <Binding Path="ItemCount" 
+                                                 RelativeSource="{RelativeSource TemplatedParent}" />
+                                        <Binding Path="PageNo" 
+                                                 RelativeSource="{RelativeSource TemplatedParent}" />
+                                        <Binding Path="PageCount" 
+                                                 RelativeSource="{RelativeSource TemplatedParent}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{TemplateBinding PageButtonStyle}"
+                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToPreviousPage}">
+                                        <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
+                                              StrokeThickness="2"
+                                              Data="{StaticResource CalendarPrevPagePathGeometry}"/>
+                                    </Button>
+                                    <Button Style="{TemplateBinding PageButtonStyle}"
+                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToFirstPage}"
+                                            Content="1"/>
+                                    <Border Margin="2" 
+                                            Width="32" 
+                                            Height="32"
+                                            Visibility="{TemplateBinding FirstEllipsisVisibility}">
+                                        <TextBlock Text="···"                                               
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource CommonForeground}"
+                                                   FontSize="20"/>
+                                    </Border>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DisplayButtons}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                            </StackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Style="{Binding RelativeSource={RelativeSource AncestorType=EMCDataPager:EMCDataPager}, Path=PageButtonStyle}"
+                                                    Content="{Binding}"
+                                                    x:Name="btn"
+                                                    Command="{x:Static EMCDataPager:DataPagerCommands.MoveToPage}" 
+                                                    CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Margin="2" 
+                                            Width="32" 
+                                            Height="32"
+                                            Visibility="{TemplateBinding LastEllipsisVisibility}">
+                                        <TextBlock Text="···"                                             
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource CommonForeground}"
+                                                   FontSize="20"/>
+                                    </Border>
+                                    <Button Style="{TemplateBinding PageButtonStyle}"
+                                            Visibility="{Binding Path=MoveToLastPageVisibility,RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToLastPage}"
+                                            Content="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PageCount}"/>
+                                    <Button Style="{TemplateBinding PageButtonStyle}"
+                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToNextPage}">
+                                        <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
+                                              StrokeThickness="2"
+                                              Data="{StaticResource CalendarNextPagePathGeometry}"/>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                            <Border BorderThickness="1" 
+                                    CornerRadius="5" 
+                                    BorderBrush="#E3E6EA"
+                                    Margin="10,0">
+                                <ComboBox MinWidth="90" 
+                                          BorderBrush="Transparent" 
+                                          BorderThickness="0"
+                                          Style="{StaticResource DefaultComboBox}"
+                                          ItemsSource="{TemplateBinding PageSizeSource}" 
+                                          SelectedItem="{Binding Path=PageSize, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" 
+                                                        VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding}" />
+                                                <TextBlock Text="条/页" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" 
+                                        Margin="0,0,10,0">
+                                <TextBlock VerticalAlignment="Center" Text="跳至" FontSize="14" Foreground="#9FABBC" />
+
+                                <Border BorderThickness="1" 
+                                        Margin="10,0" 
+                                        CornerRadius="5" 
+                                        BorderBrush="#E3E6EA">
+                                    <TextBox x:Name="Part_TextBox" 
+                                             BorderBrush="Transparent" 
+                                             VerticalAlignment="Center"
+                                             FontSize="14"
+                                             Foreground="#9FABBC"
+                                             BorderThickness="0" 
+                                             Width="48" />
+                                </Border>
+
+                                <TextBlock VerticalAlignment="Center" Text="页"  FontSize="14" Foreground="#9FABBC" />
+                            </StackPanel>
+                        </WrapPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="EMCDataPager:EMCDataPager" BasedOn="{StaticResource DataPagerStyle}"/>
+    <!--#endregion-->
+
     <!--#region ListBox -->
     <Style x:Key="DefaultListBoxItem" TargetType="ListBoxItem">
         <Setter Property="Foreground" Value="Black" />
@@ -440,385 +820,192 @@
     </Style>
     <!--#endregion-->
     <Style TargetType="EMCDataGrid:EMCDataGrid" BasedOn="{StaticResource BasicDataGrid}"/>
-    <!--#endregion-->
 
-    <!--#region DataPager -->
-    <ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
-        <Border Background="{TemplateBinding Background}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                BorderBrush="{TemplateBinding BorderBrush}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Path Grid.Column="1"                      
-                      Stroke="#9FABBC"
-                      StrokeThickness="2"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Center"
-                      Stretch="Uniform"
-                      Margin="5,0"
-                      Data="{StaticResource ExpanderClose}"
-                      RenderTransformOrigin="0.5,0.5">
-                    <Path.RenderTransform>
-                        <RotateTransform x:Name="PART_Icon" Angle="0"/>
-                    </Path.RenderTransform>
-                </Path>
-                <ContentPresenter Grid.Column="0"
-                                  Margin="{TemplateBinding Padding}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
-            </Grid>
+    <!--#region NewDataGrid-->
+    <ControlTemplate x:Key="ScrollViewerDataGridTemplate" TargetType="EMCDataGrid:NewDataGrid">
+        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" x:Name="border"
+                            Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                <ScrollViewer.Template>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="col_rowheader" Width="1" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <!--表格头部-->
+                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Grid.ColumnSpan="2"
+                                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                            <!--主数据区-->
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" />
+                            </Grid>
+                            <!--垂直滑动条-->
+                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}"
+                                                   Orientation="Vertical" Grid.Row="0" Grid.RowSpan="3" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                                   Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                   ViewportSize="{TemplateBinding ViewportHeight}" />
+                            <!--横向滑动条-->
+                            <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                                                       Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal"
+                                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       ViewportSize="{TemplateBinding ViewportWidth}" />
+                        </Grid>
+                    </ControlTemplate>
+                </ScrollViewer.Template>
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </ScrollViewer>
         </Border>
         <ControlTemplate.Triggers>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource IsCheckedBrush}"/>
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="PART_Icon"
-                                             Storyboard.TargetProperty="Angle"
-                                             To="180"
-                                             Duration="0:0:0.2"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="PART_Icon"
-                                             Storyboard.TargetProperty="Angle"
-                                             To="0"
-                                             Duration="0:0:0.2"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource MouseOverBrush}"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" Value="0.6" TargetName="border" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Style x:Key="ComboBoxToggleButtonStyle" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Width" Value="Auto"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="#E4E6E5"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Foreground" Value="#767779"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="10"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Template" Value="{StaticResource ComboBoxToggleButtonTemplate}"/>
-    </Style>
-    <Style TargetType="ComboBoxItem" x:Key="ComboBoxItemStyle">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Height" Value="28" />
-        <Setter Property="Padding" Value="10,0,0,0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ComboBoxItem">
-                    <Grid Background="{TemplateBinding Background}" Margin="0,0.5">
-                        <Border x:Name="ItemBackground" IsHitTestVisible="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                Background="{TemplateBinding Background}" />
-                        <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <!--<Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="ItemBackground" Property="Background" Value="#1C9DE7" />
-                        </Trigger>-->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ItemBackground" Property="Background" Value="#1C9DE7" />
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="{x:Type ComboBox}" x:Key="DefaultComboBox">
-        <Setter Property="Height" Value="30" />
-        <Setter Property="Width" Value="100" />
-        <Setter Property="Foreground" Value="#9FABBC" />
-        <Setter Property="Background" Value="White" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="#DBE0E3" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="MaxDropDownHeight" Value="400" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ComboBox}">
-                    <Grid x:Name="PART_Root">
-                        <Border x:Name="Bg" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                CornerRadius="3"
-                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" />
-                        <Grid>
-                            <!--下拉按钮-->
-                            <ToggleButton x:Name="PART_DropDownToggle" IsTabStop="False" HorizontalAlignment="Right"
-                                         IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                         IsEnabled="{TemplateBinding IsEnabled}" Style="{StaticResource ComboBoxToggleButtonStyle}"
-                                         BorderThickness="0" VerticalAlignment="Center" Foreground="#9FABBC"
-                                         Padding="2" Width="{TemplateBinding Width}"/>
-                            <!--主内容区域-->
-                            <Grid x:Name="ContentSite" Margin="2 0 0 0" >
-                                <ContentPresenter x:Name="PART_SelectedItem" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                  Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
-                                                  HorizontalAlignment="Stretch" Margin="10,0,2,0" 
-                                                  IsHitTestVisible="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+    <ControlTemplate x:Key="DataPagerDataGridTemplate" TargetType="EMCDataGrid:NewDataGrid">
+        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                x:Name="border">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                    <ScrollViewer.Template>
+                        <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="col_rowheader" Width="1" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <!--表格头部-->
+                                <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Grid.ColumnSpan="2"
+                                                        Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                <!--主数据区-->
+                                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" />
+                                </Grid>
+                                <!--垂直滑动条-->
+                                <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}"
+                                                       Orientation="Vertical" Grid.Row="0" Grid.RowSpan="3" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       ViewportSize="{TemplateBinding ViewportHeight}" />
+                                <!--横向滑动条-->
+                                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                                                           Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal"
+                                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                           Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                           ViewportSize="{TemplateBinding ViewportWidth}" />
                             </Grid>
-                        </Grid>
-                        <!--弹出下拉控件-->
-                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False"
-                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
-                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                  MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
-                                <Border x:Name="PopupBorder" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="Stretch"
-                                        Height="Auto" BorderBrush="{TemplateBinding BorderBrush}"
-                                        Background="White">
-                                </Border>
-                                <ScrollViewer x:Name="DropDownScrollViewer" BorderThickness="0" Margin="1">
-                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                </ScrollViewer>
-                            </Grid>
-                        </Popup>
-                    </Grid>
-                    <!--触发器-->
-                    <ControlTemplate.Triggers>
-                        <!--编辑模式-->
-                        <Trigger Property="IsEditable" Value="True">
-                            <Setter TargetName="PART_SelectedItem" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="PART_DropDownToggle" Property="Grid.Column" Value="3" />
-                            <Setter TargetName="PART_DropDownToggle" Property="Grid.ColumnSpan" Value="1" />
-                            <Setter TargetName="PART_DropDownToggle" Property="Background" Value="Transparent" />
-                            <Setter Property="IsTabStop" Value="false" />
-                            <Setter TargetName="PART_DropDownToggle" Property="Focusable" Value="False" />
-                        </Trigger>
+                        </ControlTemplate>
+                    </ScrollViewer.Template>
+                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </ScrollViewer>
+                <EMCDataPager:EMCDataPager Grid.Row="1" 
+                                           FontWeight="Normal"
+                                           x:Name="PART_DataPager"
+                                           PageNo="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PageNo,Mode=TwoWay}"
+                                           PageSize="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PageSize,Mode=TwoWay}"
+                                           PageSizeComboBoxVisibity="{TemplateBinding PageSizeComboBoxVisibity}"
+                                           PageButtonStyle="{TemplateBinding PageButtonStyle}"
+                                           PageSizeSource="{TemplateBinding PageSizeSource}"
+                                           ItemCount="{TemplateBinding Total}"
+                                           NumericButtonCount="{TemplateBinding NumericButtonCount}"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsUseDataPager" Value="False">
+                <Setter TargetName="PART_DataPager" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" Value="0.6" TargetName="border" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="#FF7EB4EA"/>
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter  Property="BorderBrush" Value="#FF569DE5"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter  Property="BorderBrush" Value="#FF569DE5"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="PART_Root" Property="Opacity" Value="0.6"></Setter>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="Pager_Button_Style" TargetType="Button">
-        <Setter Property="Width" Value="32"/>
-        <Setter Property="Height" Value="32"/>
-        <Setter Property="Background" Value="{StaticResource DisabledBrush}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Cursor" Value="Hand"/>
+    <Style x:Key="HaveDataPagerDataGridStyle" TargetType="EMCDataGrid:NewDataGrid">
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource CommonForeground}"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="2"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="5">
-                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger>
-                            <DataTrigger.Binding>
-                                <MultiBinding Converter="{x:Static EMCDataPager:DataPagerConverter.SelectedBackgroundConverter}">
-                                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Content"/>
-                                    <Binding RelativeSource="{RelativeSource AncestorType=EMCDataPager:EMCDataPager}" Path="PageNo"/>
-                                </MultiBinding>
-                            </DataTrigger.Binding>
-                            <DataTrigger.Value>true</DataTrigger.Value>
-                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </DataTrigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="#D5D6DB"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="DataPagerStyle" TargetType="EMCDataPager:EMCDataPager">
+        <Setter Property="FontWeight" Value="Heavy"/>
+        <Setter Property="Foreground" Value="{StaticResource BaseDataGridRowForeground}"/>
+        <Setter Property="MinRowHeight" Value="25" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="#EEF3F7" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="#E9E9E9" />
+        <Setter Property="VerticalGridLinesBrush" Value="#EBEBEB" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource BasicDataGridColumnHeader}" />
+        <Setter Property="RowHeaderStyle" Value="{StaticResource DefaultDataGridRowHeader}" />
+        <Setter Property="CellStyle" Value="{StaticResource BasicDataGridCell}" />
+        <Setter Property="RowStyle" Value="{StaticResource BasicDataGridRow}" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="EnableColumnVirtualization" Value="False" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="CanUserResizeColumns" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="CanUserSortColumns" Value="False"/>
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="AlternationCount" Value="2"></Setter>
         <Setter Property="PageButtonStyle" Value="{StaticResource Pager_Button_Style}"/>
-        <Setter Property="Template">
+        <!--列头移动列时候分割线样式-->
+        <Setter Property="DropLocationIndicatorStyle">
             <Setter.Value>
-                <ControlTemplate TargetType="EMCDataPager:EMCDataPager">
-                    <Border x:Name="PART_ROOT"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                        <WrapPanel HorizontalAlignment="Right">
-                            <!--共 400 条记录 第 1 / 80 页-->
-                            <TextBlock VerticalAlignment="Center"
-                                       FontSize="14"
-                                       Foreground="#9FABBC"
-                                       HorizontalAlignment="Right"
-                                       Margin="10,0">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}共 {0} 条记录 第 {1} / {2} 页">
-                                        <Binding Path="ItemCount" 
-                                                 RelativeSource="{RelativeSource TemplatedParent}" />
-                                        <Binding Path="PageNo" 
-                                                 RelativeSource="{RelativeSource TemplatedParent}" />
-                                        <Binding Path="PageCount" 
-                                                 RelativeSource="{RelativeSource TemplatedParent}" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Style="{TemplateBinding PageButtonStyle}"
-                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToPreviousPage}">
-                                        <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
-                                              StrokeThickness="2"
-                                              Data="{StaticResource CalendarPrevPagePathGeometry}"/>
-                                    </Button>
-                                    <Button Style="{TemplateBinding PageButtonStyle}"
-                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToFirstPage}"
-                                            Content="1"/>
-                                    <Border Margin="2" 
-                                            Width="32" 
-                                            Height="32"
-                                            Visibility="{TemplateBinding FirstEllipsisVisibility}">
-                                        <TextBlock Text="···"                                               
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   Foreground="{StaticResource CommonForeground}"
-                                                   FontSize="20"/>
-                                    </Border>
-                                </StackPanel>
-                                <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DisplayButtons}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                            </StackPanel>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{Binding RelativeSource={RelativeSource AncestorType=EMCDataPager:EMCDataPager}, Path=PageButtonStyle}"
-                                                    Content="{Binding}"
-                                                    x:Name="btn"
-                                                    Command="{x:Static EMCDataPager:DataPagerCommands.MoveToPage}" 
-                                                    CommandParameter="{Binding}"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <StackPanel Orientation="Horizontal">
-                                    <Border Margin="2" 
-                                            Width="32" 
-                                            Height="32"
-                                            Visibility="{TemplateBinding LastEllipsisVisibility}">
-                                        <TextBlock Text="···"                                             
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   Foreground="{StaticResource CommonForeground}"
-                                                   FontSize="20"/>
-                                    </Border>
-                                    <Button Style="{TemplateBinding PageButtonStyle}"
-                                            Visibility="{Binding Path=MoveToLastPageVisibility,RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToLastPage}"
-                                            Content="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PageCount}"/>
-                                    <Button Style="{TemplateBinding PageButtonStyle}"
-                                            Command="{x:Static EMCDataPager:DataPagerCommands.MoveToNextPage}">
-                                        <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
-                                              StrokeThickness="2"
-                                              Data="{StaticResource CalendarNextPagePathGeometry}"/>
-                                    </Button>
-                                </StackPanel>
-                            </StackPanel>
-                            <Border BorderThickness="1" 
-                                    CornerRadius="5" 
-                                    BorderBrush="#E3E6EA"
-                                    Margin="10,0">
-                                <ComboBox MinWidth="90" 
-                                          BorderBrush="Transparent" 
-                                          BorderThickness="0"
-                                          Style="{StaticResource DefaultComboBox}"
-                                          ItemsSource="{TemplateBinding PageSizeSource}" 
-                                          SelectedItem="{Binding Path=PageSize, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" 
-                                                        VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding}" />
-                                                <TextBlock Text="条/页" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </Border>
-
-                            <StackPanel Orientation="Horizontal" 
-                                        Margin="0,0,10,0">
-                                <TextBlock VerticalAlignment="Center" Text="跳至" FontSize="14" Foreground="#9FABBC" />
-
-                                <Border BorderThickness="1" 
-                                        Margin="10,0" 
-                                        CornerRadius="5" 
-                                        BorderBrush="#E3E6EA">
-                                    <TextBox x:Name="Part_TextBox" 
-                                             BorderBrush="Transparent" 
-                                             VerticalAlignment="Center"
-                                             FontSize="14"
-                                             Foreground="#9FABBC"
-                                             BorderThickness="0" 
-                                             Width="48" />
-                                </Border>
-
-                                <TextBlock VerticalAlignment="Center" Text="页"  FontSize="14" Foreground="#9FABBC" />
-                            </StackPanel>
-                        </WrapPanel>
-                    </Border>
-                </ControlTemplate>
+                <Style TargetType="Separator">
+                    <Setter Property="Background" Value="#EBEBEB" />
+                    <Setter Property="Width" Value="2.5" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Separator">
+                                <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
             </Setter.Value>
         </Setter>
+        <!--DataGrid控件模板-->
+        <Setter Property="Template" Value="{StaticResource ScrollViewerDataGridTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="IsGrouping" Value="true">
+                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+            </Trigger>
+            <Trigger Property="IsUseDataPager" Value="False">
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"></Setter>
+                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+                <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
+                <Setter Property="Template" Value="{StaticResource ScrollViewerDataGridTemplate}"/>
+            </Trigger>
+            <Trigger Property="IsUseDataPager" Value="True">
+                <Setter Property="Template" Value="{StaticResource DataPagerDataGridTemplate}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
-    <Style TargetType="EMCDataPager:EMCDataPager" BasedOn="{StaticResource DataPagerStyle}"/>
+    <!--#endregion-->
+    
+    
     <!--#endregion-->
 </ResourceDictionary>

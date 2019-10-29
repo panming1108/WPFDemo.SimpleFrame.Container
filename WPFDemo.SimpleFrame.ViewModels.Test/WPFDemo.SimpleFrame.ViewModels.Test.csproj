@@ -68,6 +68,10 @@
       <Project>{E1243FF9-B052-4AC7-AE55-80460B828599}</Project>
       <Name>WPFDemo.SimpleFrame.IBLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
+      <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.csproj">
       <Project>{EF814E43-2ACE-4122-A1C9-B3BAD2193E96}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.MVVM.VMOnly</Name>

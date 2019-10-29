@@ -11,13 +11,13 @@ namespace WPFDemo.SimpleFrame.BLL
 {
     public class DataGridBusi : IDataGridBusi
     {
-        public Task<List<DataGridModel>> GetDataGridSource()
+        public Task<List<DataGridModel>> GetDataGridSource(int count)
         {
             return Task.Factory.StartNew(
                 ()=> 
                 {
                     List<DataGridModel> persons = new List<DataGridModel>();
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < count; i++)
                     {
                         DataGridModel person = new DataGridModel()
                         {

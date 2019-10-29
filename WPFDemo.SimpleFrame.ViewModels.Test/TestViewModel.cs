@@ -5,44 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WPFDemo.SimpleFrame.IBLL;
+using WPFDemo.SimpleFrame.Infra.Models;
 using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
 using WPFDemo.SimpleFrame.IViewModels.Test;
 
 namespace WPFDemo.SimpleFrame.ViewModels.Test
 {
-    public class TestViewModel : BaseViewModel, ITestViewModel
+    public class TestViewModel : DataPagerQueryViewModel<Student>, ITestViewModel
     {
-        private ITestBusi _testBusi;
-        private string _testViewText;
-        public string TestViewText
+        private IStudentBusi _studentBusi;
+
+        public TestViewModel(IStudentBusi studentBusi)
         {
-            get => _testViewText;
-            set
-            {
-                if (_testViewText != value)
-                {
-                    _testViewText = value;
-                    OnPropertyChanged(() => TestViewText);
-                }
-            }
+            _studentBusi = studentBusi;
+            PageSize = 10;
+            PageSizeSource = new int[] { 10, 20, 30 };
         }
-
-        public ICommand TestViewClickCommand { get; set; }
-
-        public TestViewModel(ITestBusi testBusi)
+        protected async override Task Loaded()
         {
-            _testBusi = testBusi;
-            InitCommands();
-        }
-
-        private void InitCommands()
-        {
-            TestViewClickCommand = new DelegateCommand(OnTestViewClick);
-        }
-
-        private void OnTestViewClick()
-        {
-            TestViewText = "TestView:" + _testBusi.GetTestString();
+            await PageSearch(PageSize, PageNo);
         }
 
         protected async override Task UnLoaded()
@@ -50,9 +31,13 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             await TaskEx.FromResult(0);
         }
 
-        protected async override Task Loaded()
+        protected async override Task PageSearch(int pageSize, int pageNo)
         {
-            await TaskEx.FromResult(0);
+            var result = await _studentBusi.GetStudents(pageNo, pageSize);
+            ItemCount = 9999;
+            PageSize = result.PageSize;
+            PageNo = result.PageNo;
+            DataSource = result.Students;
         }
     }
 }
