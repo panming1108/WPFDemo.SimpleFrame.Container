@@ -8,6 +8,32 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ScrollViewerStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+    <ControlTemplate x:Key="ErrorTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <AdornedElementPlaceholder x:Name="adorner"/>
+            <Path Grid.Column="1"
+                  Stroke="{StaticResource ErrorTemplateBackground}" 
+                  Fill="{StaticResource ErrorTemplateBackground}" 
+                  StrokeThickness="1" 
+                  Data="M0,5 10,0 10,10Z" 
+                  VerticalAlignment="Center" 
+                  HorizontalAlignment="Right"/>
+            <Border Grid.Column="2" 
+                    Background="{StaticResource ErrorTemplateBackground}"
+                    VerticalAlignment="Center"
+                    Padding="5">
+                <TextBlock VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           Text="{Binding ElementName=adorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}"
+                           Foreground="White"/>
+            </Border>
+        </Grid>
+    </ControlTemplate>
     <Style TargetType="EMCInput:EMCInput">
         <Setter Property="Width" Value="200"/>
         <Setter Property="Height" Value="30"/>
@@ -19,6 +45,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCInput:EMCInput">
@@ -27,9 +54,8 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="True"
-                                Effect="{x:Null}"/>
-                        <Grid Effect="{x:Null}">
+                                SnapsToDevicePixels="True"/>
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
@@ -40,8 +66,7 @@
                                           IsTabStop="False"
                                           Margin="2"
                                           VerticalAlignment="Stretch"
-                                          Background="{x:Null}"
-                                           Effect="{x:Null}"/>
+                                          Background="{x:Null}"/>
                             <TextBlock x:Name="PART_Watermark"
                                        Padding="{TemplateBinding Padding}"
                                        Visibility="Collapsed"
@@ -51,18 +76,15 @@
                                        IsHitTestVisible="False"
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                       Margin="5,2"
-                                       Effect="{x:Null}"/>
+                                       Margin="5,2"/>
                             <Border x:Name="PART_AttachContent"
                                     Grid.Column="1"
                                     Margin="2"
                                     VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    Effect="{x:Null}">
+                                    HorizontalAlignment="Center">
                                 <ContentControl VerticalAlignment="Center"
                                                 VerticalContentAlignment="Center"
-                                                Template="{TemplateBinding attach:EditorsAttachProperty.AttachContent}"
-                                                Effect="{x:Null}"/>
+                                                Template="{TemplateBinding attach:EditorsAttachProperty.AttachContent}"/>
                             </Border>
                         </Grid>
                     </Grid>
@@ -75,7 +97,6 @@
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter Property="BorderBrush" Value="{StaticResource TextBoxFocusBorderBrush}"/>
-                            <Setter Property="Effect" TargetName="PART_Root" Value="{StaticResource DefaultDropShadowEffect}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" TargetName="PART_Root" Value="{StaticResource DisableOpacity}"/>

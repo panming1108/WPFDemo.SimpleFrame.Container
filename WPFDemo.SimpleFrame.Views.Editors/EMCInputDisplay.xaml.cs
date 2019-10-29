@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFDemo.SimpleFrame.Infra.Ioc;
+using WPFDemo.SimpleFrame.IViewModelsEditors;
 
 namespace WPFDemo.SimpleFrame.Views.Editors
 {
@@ -22,6 +24,7 @@ namespace WPFDemo.SimpleFrame.Views.Editors
         public EMCInputDisplay()
         {
             InitializeComponent();
+            DataContext = IocManagerInstance.ResolveType<IInputViewModel>();
         }
     }
 }
