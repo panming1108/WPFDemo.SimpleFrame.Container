@@ -15,6 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DMsStyle.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <DMs:TextLengthConverter x:Key="textConverter" DisplayCharactorsCount="1" ReplaceString="..."/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -31,8 +32,17 @@
                          ItemsSource="{Binding DataSource}"
                          IsUseDataPager="True">
             <DMs:NewDataGrid.Columns>
+                <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
                 <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"></DataGridTextColumn>
-                <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Name">
+                            <Binding.Converter>
+                                <DMs:TextLengthConverter ReplaceString="***" DisplayCharactorsCount="3"/>
+                            </Binding.Converter>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="Age" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"></DataGridTextColumn>
             </DMs:NewDataGrid.Columns>
         </DMs:NewDataGrid>

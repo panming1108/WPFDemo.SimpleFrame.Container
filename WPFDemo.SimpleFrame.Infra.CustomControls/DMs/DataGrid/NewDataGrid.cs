@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 {
     public class NewDataGrid : System.Windows.Controls.DataGrid
     {
+        private bool _isDisplayIndexColumn = false;
+
+        // Using a DependencyProperty as the backing store for IsDisplayIndexColumn.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsDisplayIndexColumnProperty =
+            DependencyProperty.Register("IsDisplayIndexColumn", typeof(bool), typeof(NewDataGrid), new PropertyMetadata(false));
+
         public bool IsUseDataPager
         {
             get { return (bool)GetValue(IsUseDataPagerProperty); }
@@ -87,5 +94,30 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         // Using a DependencyProperty as the backing store for PageSizeComboBoxVisibity.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PageSizeComboBoxVisibityProperty =
             DependencyProperty.Register("PageSizeComboBoxVisibity", typeof(Visibility), typeof(NewDataGrid));
+
+        protected override void OnLoadingRow(DataGridRowEventArgs e)
+        {
+            base.OnLoadingRow(e);
+            InitIndexNum(e);
+        }
+
+        private void InitIndexNum(DataGridRowEventArgs e)
+        {
+            if (!_isDisplayIndexColumn)
+            {
+                foreach (var column in Columns)
+                {
+                    if (column is EMCDataGridIndexColumn)
+                    {
+                        _isDisplayIndexColumn = true;
+                        break;
+                    }
+                }
+            }
+            if (_isDisplayIndexColumn)
+            {
+                e.Row.Header = e.Row.GetIndex() + 1;
+            }
+        }
     }
 }
