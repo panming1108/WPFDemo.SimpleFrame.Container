@@ -31,7 +31,8 @@
                          PageSizeSource="{Binding PageSizeSource}"
                          ItemsSource="{Binding DataSource}"
                          IsUseDataPager="True"
-                         IsOpenCopyButton="True">
+                         IsOpenCopyButton="True"
+                         MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}">
             <DMs:NewDataGrid.Columns>
                 <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
                 <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"/>
@@ -45,7 +46,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Age" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"/>
-                <DataGridTemplateColumn Header="Test" Width="*" ClipboardContentBinding="{Binding Name}">
+                <DataGridTemplateColumn Header="Test" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

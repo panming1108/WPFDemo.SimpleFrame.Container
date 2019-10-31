@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 {
@@ -115,12 +117,28 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         public static readonly DependencyProperty CopyButtonStyleProperty =
             DependencyProperty.Register("CopyButtonStyle", typeof(Style), typeof(NewDataGrid));
 
+        public ICommand MouseDoubleClickCommand
+        {
+            get { return (ICommand)GetValue(MouseDoubleClickCommandProperty); }
+            set { SetValue(MouseDoubleClickCommandProperty, value); }
+        }
 
+        // Using a DependencyProperty as the backing store for MouseDoubleClickCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MouseDoubleClickCommandProperty =
+            DependencyProperty.Register("MouseDoubleClickCommand", typeof(ICommand), typeof(NewDataGrid));
 
         protected override void OnLoadingRow(DataGridRowEventArgs e)
         {
             base.OnLoadingRow(e);
             InitIndexNum(e);
+            e.Row.MouseDoubleClick -= RaiseMouseDoubleClick;
+            e.Row.MouseDoubleClick += RaiseMouseDoubleClick;
+        }
+
+        private void RaiseMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = sender as DataGridRow;
+            MouseDoubleClickCommand?.Execute(row.DataContext);
         }
 
         private void InitIndexNum(DataGridRowEventArgs e)

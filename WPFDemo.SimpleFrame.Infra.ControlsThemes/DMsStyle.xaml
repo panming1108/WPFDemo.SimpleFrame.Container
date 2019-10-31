@@ -917,7 +917,6 @@
                                     EMCDataGrid:DataGridAttachProperty.IsCopyEnabled="True"
                                     Command="{x:Static EMCDataGrid:DataGridAttachProperty.CopyCommand}"
                                     CommandParameter="{Binding ElementName=PART_Content, Path=Content}"/>
-                            <TextBlock Text="{Binding ElementName=PART_Content, Path=Content.Parent.ClipboardContentBinding.Path}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>

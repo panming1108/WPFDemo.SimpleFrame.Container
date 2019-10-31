@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,22 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
     {
         private IStudentBusi _studentBusi;
 
+        public ICommand MouseDoubleClickCommand { get; set; }
+
         public TestViewModel(IStudentBusi studentBusi)
         {
             _studentBusi = studentBusi;
             PageSize = 10;
             PageSizeSource = new int[] { 10, 20, 30 };
+            MouseDoubleClickCommand = new AsyncDelegateCommand<object>(OnMouseDoubleClick);
         }
+
+        private async Task OnMouseDoubleClick(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine(arg.ToString());
+        }
+
         protected async override Task Loaded()
         {
             await PageSearch(PageSize, PageNo);

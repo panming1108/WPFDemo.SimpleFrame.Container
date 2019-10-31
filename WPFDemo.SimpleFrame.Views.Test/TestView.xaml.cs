@@ -27,15 +27,5 @@ namespace WPFDemo.SimpleFrame.Views.Test
             InitializeComponent();
             DataContext = IocManagerInstance.ResolveType<ITestViewModel>();
         }
-
-        private void Border_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine("进入");
-        }
-
-        private void Border_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine("出来");
-        }
     }
 }
