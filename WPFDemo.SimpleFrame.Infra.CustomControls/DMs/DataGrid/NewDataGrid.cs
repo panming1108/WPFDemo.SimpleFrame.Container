@@ -95,6 +95,28 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         public static readonly DependencyProperty PageSizeComboBoxVisibityProperty =
             DependencyProperty.Register("PageSizeComboBoxVisibity", typeof(Visibility), typeof(NewDataGrid));
 
+        public bool IsOpenCopyButton
+        {
+            get { return (bool)GetValue(IsOpenCopyButtonProperty); }
+            set { SetValue(IsOpenCopyButtonProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsOpenCopyButton.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsOpenCopyButtonProperty =
+            DependencyProperty.Register("IsOpenCopyButton", typeof(bool), typeof(NewDataGrid), new PropertyMetadata(false));
+
+        public Style CopyButtonStyle
+        {
+            get { return (Style)GetValue(CopyButtonStyleProperty); }
+            set { SetValue(CopyButtonStyleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CopyButtonStyle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CopyButtonStyleProperty =
+            DependencyProperty.Register("CopyButtonStyle", typeof(Style), typeof(NewDataGrid));
+
+
+
         protected override void OnLoadingRow(DataGridRowEventArgs e)
         {
             base.OnLoadingRow(e);
@@ -116,7 +138,14 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
             }
             if (_isDisplayIndexColumn)
             {
-                e.Row.Header = e.Row.GetIndex() + 1;
+                if(IsUseDataPager)
+                {
+                    e.Row.Header = ((PageNo - 1) * PageSize) + e.Row.GetIndex() + 1;
+                }
+                else
+                {
+                    e.Row.Header = e.Row.GetIndex() + 1;
+                }
             }
         }
     }

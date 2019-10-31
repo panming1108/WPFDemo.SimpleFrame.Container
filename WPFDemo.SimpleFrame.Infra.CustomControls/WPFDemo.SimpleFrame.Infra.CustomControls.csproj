@@ -47,6 +47,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DMs\DataGrid\CopyBtnAdorner.cs" />
+    <Compile Include="DMs\DataGrid\DataGridAttachProperty.cs" />
     <Compile Include="DMs\DataGrid\EMCDataGrid.cs" />
     <Compile Include="DMs\DataGrid\EMCDataGridIndexColumn.cs" />
     <Compile Include="DMs\DataGrid\NewDataGrid.cs" />

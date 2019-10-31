@@ -30,10 +30,11 @@
                          NumericButtonCount="7"
                          PageSizeSource="{Binding PageSizeSource}"
                          ItemsSource="{Binding DataSource}"
-                         IsUseDataPager="True">
+                         IsUseDataPager="True"
+                         IsOpenCopyButton="True">
             <DMs:NewDataGrid.Columns>
                 <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
-                <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"></DataGridTextColumn>
+                <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Name">
@@ -43,7 +44,17 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Age" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Age" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"/>
+                <DataGridTemplateColumn Header="Test" Width="*" ClipboardContentBinding="{Binding Name}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/WPFDemo.SimpleFrame.Views.Test;component/Images/critical.png"/>
+                                <TextBlock Text="{Binding Name}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DMs:NewDataGrid.Columns>
         </DMs:NewDataGrid>
     </Grid>
