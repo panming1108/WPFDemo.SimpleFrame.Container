@@ -16,6 +16,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
     {
         private IStudentBusi _studentBusi;
 
+        private Dictionary<string, string> _iconsSource;
+        public Dictionary<string, string> IconsSource
+        {
+            get => _iconsSource;
+            set
+            {
+                _iconsSource = value;
+                OnPropertyChanged(() => IconsSource);
+            }
+        }
+
         public ICommand MouseDoubleClickCommand { get; set; }
         public ICommand MenuOneCommand { get; set; }
         public ICommand MenuTwoCommand { get; set; }
@@ -26,6 +37,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             _studentBusi = studentBusi;
             PageSize = 10;
             PageSizeSource = new int[] { 10, 20, 30 };
+            _iconsSource = new Dictionary<string, string>();
             MouseDoubleClickCommand = new AsyncDelegateCommand<object>(OnMouseDoubleClick);
             MenuOneCommand = new AsyncDelegateCommand<object>(OnMenuOne);
             MenuTwoCommand = new AsyncDelegateCommand<object>(OnMenuTwo);
@@ -58,6 +70,13 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
 
         protected async override Task Loaded()
         {
+            Dictionary<string, string> icons = new Dictionary<string, string>()
+            {
+                { "/WPFDemo.SimpleFrame.Views.Test;component/Images/critical.png", "critical" },
+                { "/WPFDemo.SimpleFrame.Views.Test;component/Images/urgent.png", "urgent" },
+                { "/WPFDemo.SimpleFrame.Views.Test;component/Images/warning.png", "warning" },
+            };
+            IconsSource = icons;
             await PageSearch(PageSize, PageNo);
         }
 

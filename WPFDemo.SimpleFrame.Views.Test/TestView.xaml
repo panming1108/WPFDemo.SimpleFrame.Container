@@ -8,6 +8,7 @@
              xmlns:Navis="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:Menu="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
+             xmlns:converters="clr-namespace:WPFDemo.SimpleFrame.Views.Test.Converters"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              mc:Ignorable="d" 
@@ -19,6 +20,7 @@
                 <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DMsStyle.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <DMs:BindingProxy x:Key="BindingProxy" Data="{Binding}"/>
             <DMs:TextLengthConverter x:Key="textConverter" DisplayCharactorsCount="1" ReplaceString="..."/>
             <Navis:EMCContextMenu x:Key="RowContextMenu" ItemContainerStyle="{StaticResource ContextMenuItemStyleBase}">
                 <Menu:EMCMenuItem Header="111111" 
@@ -34,6 +36,7 @@
                                   Command="{Binding Source={x:Reference Main}, Path=DataContext.MenuThreeCommand}" 
                                   CommandParameter="{Binding}"/>
             </Navis:EMCContextMenu>
+            <converters:IconConverter x:Key="IconConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="AliceBlue">
@@ -49,12 +52,16 @@
                          PageSizeSource="{Binding PageSizeSource}"
                          ItemsSource="{Binding DataSource}"
                          IsUseDataPager="True"
-                         IsOpenCopyButton="True"
                          MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}"
                          RowContextMenu="{StaticResource RowContextMenu}">
             <DMs:NewDataGrid.Columns>
                 <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
-                <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="ID" 
+                                    Width="*" 
+                                    Foreground="{StaticResource BaseDataGridRowForeground}" 
+                                    Binding="{Binding Id}"
+                                    DMs:DataGridAttachProperty.IconsSource="{Binding Source={StaticResource BindingProxy}, Path=Data.IconsSource}"
+                                    DMs:DataGridAttachProperty.ValueConverter="{StaticResource IconConverter}"/>
                 <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Name">

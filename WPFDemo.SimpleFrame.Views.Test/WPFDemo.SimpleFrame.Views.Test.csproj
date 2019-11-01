@@ -44,6 +44,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\IconConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
@@ -68,6 +69,10 @@
       <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
+      <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VOnly\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.csproj">
       <Project>{90fdc46b-bd46-475e-9ff1-56e0c0b65ad1}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.MVVM.VOnly</Name>
@@ -79,6 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\critical.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\urgent.png" />
+    <Resource Include="Images\urgent_1.png" />
+    <Resource Include="Images\warning.png" />
+    <Resource Include="Images\warning1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

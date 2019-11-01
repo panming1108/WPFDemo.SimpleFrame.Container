@@ -873,16 +873,48 @@
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                            <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconsSource)}"
+                                          VerticalAlignment="Center">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Key}"
+                                               Width="25"
+                                               Height="25"
+                                               Stretch="Uniform"
+                                               ToolTip="{Binding Value}"
+                                               Margin="0,0,5,0">
+                                            <Image.Visibility>
+                                                <MultiBinding>
+                                                    <MultiBinding.Converter>
+                                                        <EMCDataGrid:DataGridIconsConverter/>
+                                                    </MultiBinding.Converter>
+                                                    <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl}" Path="DataContext"/>
+                                                    <Binding/>
+                                                </MultiBinding>
+                                            </Image.Visibility>
+                                        </Image>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <ContentPresenter Grid.Column="1"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                               Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              x:Name="PART_Content">
 
                             </ContentPresenter>
+                            <ItemsControl Grid.Column="2"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
