@@ -17,6 +17,9 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
         private IStudentBusi _studentBusi;
 
         public ICommand MouseDoubleClickCommand { get; set; }
+        public ICommand MenuOneCommand { get; set; }
+        public ICommand MenuTwoCommand { get; set; }
+        public ICommand MenuThreeCommand { get; set; }
 
         public TestViewModel(IStudentBusi studentBusi)
         {
@@ -24,6 +27,27 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             PageSize = 10;
             PageSizeSource = new int[] { 10, 20, 30 };
             MouseDoubleClickCommand = new AsyncDelegateCommand<object>(OnMouseDoubleClick);
+            MenuOneCommand = new AsyncDelegateCommand<object>(OnMenuOne);
+            MenuTwoCommand = new AsyncDelegateCommand<object>(OnMenuTwo);
+            MenuThreeCommand = new AsyncDelegateCommand<object>(OnMenuThree);
+        }
+
+        private async Task OnMenuThree(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine("MenuThree:" + arg.ToString());
+        }
+
+        private async Task OnMenuTwo(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine("MenuTwo:" + arg.ToString());
+        }
+
+        private async Task OnMenuOne(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine("MenuOne:" + arg.ToString());
         }
 
         private async Task OnMouseDoubleClick(object arg)

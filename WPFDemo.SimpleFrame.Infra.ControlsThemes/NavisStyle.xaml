@@ -422,7 +422,7 @@
 
 
 
-    <Style x:Key="ContextMenuItemStyle" TargetType="EMCMenu:EMCMenuItem">
+    <Style x:Key="ContextMenuItemStyleBase" TargetType="{x:Type EMCMenu:EMCMenuItem}">
         <Setter Property="BorderBrush" Value="{StaticResource ContextMenuItemBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Background" Value="{StaticResource ContextMenuItemBackground}"/>
@@ -431,18 +431,13 @@
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="0,4"/>
-        <Setter Property="Header" Value="{Binding Name}"/>
-        <Setter Property="Icon" Value="{Binding Icon}"/>
-        <Setter Property="InputGestureText" Value="{Binding InputGestureText}"/>
-        <Setter Property="IsGroupEnd" Value="{Binding IsGroupEnd}"/>
-        <Setter Property="GroupName" Value="{Binding GroupName}"/>
-        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}, Path=ItemCommand}"/>
+        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type EMCContextMenu:EMCContextMenu}}, Path=ItemCommand}"/>
         <Setter Property="CommandParameter" Value="{Binding}"/>
-        <Setter Property="MouseOverCommand" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}, Path=ItemMouseOverCommand}"/>
-        <Setter Property="RootContextMenu" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCContextMenu:EMCContextMenu}}"/>
+        <Setter Property="MouseOverCommand" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type EMCContextMenu:EMCContextMenu}}, Path=ItemMouseOverCommand}"/>
+        <Setter Property="RootContextMenu" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type EMCContextMenu:EMCContextMenu}}}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="EMCMenu:EMCMenuItem">
+                <ControlTemplate TargetType="{x:Type EMCMenu:EMCMenuItem}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -555,6 +550,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <Style x:Key="ContextMenuItemStyle" TargetType="{x:Type EMCMenu:EMCMenuItem}" BasedOn="{StaticResource ContextMenuItemStyleBase}">
+        <Setter Property="Header" Value="{Binding Name}"/>
+        <Setter Property="Icon" Value="{Binding Icon}"/>
+        <Setter Property="InputGestureText" Value="{Binding InputGestureText}"/>
+        <Setter Property="GroupName" Value="{Binding GroupName}"/>
     </Style>
     <!--默认右键菜单ContextMenu样式-->
     <Style TargetType="{x:Type EMCContextMenu:EMCContextMenu}">

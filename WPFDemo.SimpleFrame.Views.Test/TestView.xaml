@@ -5,20 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Test"
              xmlns:DMs="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:Navis="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.ContextMenu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:Menu="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              mc:Ignorable="d" 
+             x:Name="Main"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/DMsStyle.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/NavisStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <DMs:TextLengthConverter x:Key="textConverter" DisplayCharactorsCount="1" ReplaceString="..."/>
+            <Navis:EMCContextMenu x:Key="RowContextMenu" ItemContainerStyle="{StaticResource ContextMenuItemStyleBase}">
+                <Menu:EMCMenuItem Header="111111" 
+                                  Style="{StaticResource ContextMenuItemStyleBase}" 
+                                  Command="{Binding Source={x:Reference Main}, Path=DataContext.MenuOneCommand}" 
+                                  CommandParameter="{Binding}"/>
+                <Menu:EMCMenuItem Header="222222" 
+                                  Style="{StaticResource ContextMenuItemStyleBase}"
+                                  Command="{Binding Source={x:Reference Main}, Path=DataContext.MenuTwoCommand}" 
+                                  CommandParameter="{Binding}"/>
+                <Menu:EMCMenuItem Header="333333" 
+                                  Style="{StaticResource ContextMenuItemStyleBase}"
+                                  Command="{Binding Source={x:Reference Main}, Path=DataContext.MenuThreeCommand}" 
+                                  CommandParameter="{Binding}"/>
+            </Navis:EMCContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="AliceBlue">
         <DMs:NewDataGrid Style="{StaticResource HaveDataPagerDataGridStyle}" 
                          Margin="10,0,10,10"   
                          RowHeight="50"
@@ -32,7 +50,8 @@
                          ItemsSource="{Binding DataSource}"
                          IsUseDataPager="True"
                          IsOpenCopyButton="True"
-                         MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}">
+                         MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}"
+                         RowContextMenu="{StaticResource RowContextMenu}">
             <DMs:NewDataGrid.Columns>
                 <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
                 <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"/>

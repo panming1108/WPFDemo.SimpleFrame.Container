@@ -127,12 +127,36 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         public static readonly DependencyProperty MouseDoubleClickCommandProperty =
             DependencyProperty.Register("MouseDoubleClickCommand", typeof(ICommand), typeof(NewDataGrid));
 
+        public DataGridLengthUnitType AutoGenerateColumnWidthType
+        {
+            get { return (DataGridLengthUnitType)GetValue(AutoGenerateColumnWidthTypeProperty); }
+            set { SetValue(AutoGenerateColumnWidthTypeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AutoGenerateColumnWidthType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AutoGenerateColumnWidthTypeProperty =
+            DependencyProperty.Register("AutoGenerateColumnWidthType", typeof(DataGridLengthUnitType), typeof(NewDataGrid));
+
+        public ContextMenu RowContextMenu
+        {
+            get { return (ContextMenu)GetValue(RowContextMenuProperty); }
+            set { SetValue(RowContextMenuProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for RowContentMenu.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RowContextMenuProperty =
+            DependencyProperty.Register("RowContextMenu", typeof(ContextMenu), typeof(NewDataGrid));
+
         protected override void OnLoadingRow(DataGridRowEventArgs e)
         {
             base.OnLoadingRow(e);
             InitIndexNum(e);
             e.Row.MouseDoubleClick -= RaiseMouseDoubleClick;
             e.Row.MouseDoubleClick += RaiseMouseDoubleClick;
+            if(RowContextMenu != null)
+            {
+                e.Row.ContextMenu = RowContextMenu;
+            }
         }
 
         private void RaiseMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -165,6 +189,15 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
                     e.Row.Header = e.Row.GetIndex() + 1;
                 }
             }
+        }
+
+        protected override void OnAutoGeneratingColumn(DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (AutoGenerateColumns)
+            {
+                e.Column.Width = new DataGridLength(1, AutoGenerateColumnWidthType);
+            }
+            base.OnAutoGeneratingColumn(e);
         }
     }
 }
