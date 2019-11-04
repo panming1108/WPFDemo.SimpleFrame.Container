@@ -822,6 +822,29 @@
     <Style TargetType="EMCDataGrid:EMCDataGrid" BasedOn="{StaticResource BasicDataGrid}"/>
 
     <!--#region NewDataGrid-->
+    <Style TargetType="EMCDataGrid:IconButton">
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCDataGrid:IconButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Image Width="{TemplateBinding Width}"
+                               Height="{TemplateBinding Height}"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Source="{TemplateBinding Source}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="CopyButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource BtnConfirmBackground}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -864,6 +887,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Padding" Value="19,0,0,0" />
+        <Setter Property="EMCDataGrid:DataGridAttachProperty.IconPosition" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconPosition)}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -871,41 +895,21 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconsSource)}"
-                                          VerticalAlignment="Center">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Image Source="{Binding Key}"
-                                               Width="25"
-                                               Height="25"
-                                               Stretch="Uniform"
-                                               ToolTip="{Binding Value}"
-                                               Margin="0,0,5,0">
-                                            <Image.Visibility>
-                                                <MultiBinding>
-                                                    <MultiBinding.Converter>
-                                                        <EMCDataGrid:DataGridIconsConverter/>
-                                                    </MultiBinding.Converter>
-                                                    <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl}" Path="DataContext"/>
-                                                    <Binding/>
-                                                </MultiBinding>
-                                            </Image.Visibility>
-                                        </Image>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
+                        <DockPanel LastChildFill="True">
+                            <EMCDataGrid:IconsItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconsSource)}"
+                                                           VerticalAlignment="Center"
+                                                           IconSourceMemberPath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconSourceMemberPath)}"
+                                                           IconToolTipMemberPath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconToolTipMemberPath)}"
+                                                           IconCommandMemberPath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Column.(EMCDataGrid:DataGridAttachProperty.IconCommandMemberPath)}"
+                                                           DockPanel.Dock="Left"
+                                                           x:Name="PART_IconsItemsControl">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                            <ContentPresenter Grid.Column="1"
+                            </EMCDataGrid:IconsItemsControl>
+                            <ContentPresenter DockPanel.Dock="Right"
                                               ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                               Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
@@ -914,9 +918,14 @@
                                               x:Name="PART_Content">
 
                             </ContentPresenter>
-                            <ItemsControl Grid.Column="2"/>
-                        </Grid>
+                        </DockPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="EMCDataGrid:DataGridAttachProperty.IconPosition" Value="Behind">
+                            <Setter TargetName="PART_IconsItemsControl" Property="DockPanel.Dock" Value="Right"/>
+                            <Setter TargetName="PART_Content" Property="DockPanel.Dock" Value="Left"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -934,24 +943,45 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                            <DockPanel LastChildFill="True">
+                                <EMCDataGrid:IconsItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconsSource)}"
+                                                           VerticalAlignment="Center"
+                                                           IconSourceMemberPath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconSourceMemberPath)}"
+                                                           IconToolTipMemberPath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Column.(EMCDataGrid:DataGridAttachProperty.IconToolTipMemberPath)}"
+                                                           IconCommandMemberPath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Column.(EMCDataGrid:DataGridAttachProperty.IconCommandMemberPath)}"
+                                                           DockPanel.Dock="Left"
+                                                           x:Name="PART_IconsItemsControl">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </EMCDataGrid:IconsItemsControl>
+                                <ContentPresenter DockPanel.Dock="Right"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
                                               Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                               Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               x:Name="PART_Content">
 
-                            </ContentPresenter>
+                                </ContentPresenter>
+                            </DockPanel>
                             <Button Grid.Column="1"
                                     x:Name="PART_CopyBtn"
                                     Style="{Binding RelativeSource={RelativeSource AncestorType=EMCDataGrid:NewDataGrid}, Path=CopyButtonStyle}"
                                     Visibility="Hidden"
+                                    Margin="10,0"
                                     EMCDataGrid:DataGridAttachProperty.IsCopyEnabled="True"
                                     Command="{x:Static EMCDataGrid:DataGridAttachProperty.CopyCommand}"
                                     CommandParameter="{Binding ElementName=PART_Content, Path=Content}"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="EMCDataGrid:DataGridAttachProperty.IconPosition" Value="Behind">
+                            <Setter TargetName="PART_IconsItemsControl" Property="DockPanel.Dock" Value="Right"/>
+                            <Setter TargetName="PART_Content" Property="DockPanel.Dock" Value="Left"/>
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_CopyBtn" Property="Visibility" Value="Visible"/>
                         </Trigger>

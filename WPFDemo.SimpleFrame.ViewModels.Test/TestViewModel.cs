@@ -16,8 +16,8 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
     {
         private IStudentBusi _studentBusi;
 
-        private Dictionary<string, string> _iconsSource;
-        public Dictionary<string, string> IconsSource
+        private List<IconModel> _iconsSource;
+        public List<IconModel> IconsSource
         {
             get => _iconsSource;
             set
@@ -31,17 +31,41 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
         public ICommand MenuOneCommand { get; set; }
         public ICommand MenuTwoCommand { get; set; }
         public ICommand MenuThreeCommand { get; set; }
+        public ICommand IconOneCommand { get; set; }
+        public ICommand IconTwoCommand { get; set; }
+        public ICommand IconThreeCommand { get; set; }
 
         public TestViewModel(IStudentBusi studentBusi)
         {
             _studentBusi = studentBusi;
             PageSize = 10;
             PageSizeSource = new int[] { 10, 20, 30 };
-            _iconsSource = new Dictionary<string, string>();
+            _iconsSource = new List<IconModel>();
             MouseDoubleClickCommand = new AsyncDelegateCommand<object>(OnMouseDoubleClick);
             MenuOneCommand = new AsyncDelegateCommand<object>(OnMenuOne);
             MenuTwoCommand = new AsyncDelegateCommand<object>(OnMenuTwo);
             MenuThreeCommand = new AsyncDelegateCommand<object>(OnMenuThree);
+            IconOneCommand = new AsyncDelegateCommand<object>(OnIconOne);
+            IconTwoCommand = new AsyncDelegateCommand<object>(OnIconTwo);
+            IconThreeCommand = new AsyncDelegateCommand<object>(OnIconThree);
+        }
+
+        private async Task OnIconThree(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine("IconThree:" + arg.ToString());
+        }
+
+        private async Task OnIconTwo(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine("IconTwo:" + arg.ToString());
+        }
+
+        private async Task OnIconOne(object arg)
+        {
+            await TaskEx.FromResult(0);
+            Debug.WriteLine("IconOne:" + arg.ToString());
         }
 
         private async Task OnMenuThree(object arg)
@@ -70,11 +94,11 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
 
         protected async override Task Loaded()
         {
-            Dictionary<string, string> icons = new Dictionary<string, string>()
+            List<IconModel> icons = new List<IconModel>()
             {
-                { "/WPFDemo.SimpleFrame.Views.Test;component/Images/critical.png", "critical" },
-                { "/WPFDemo.SimpleFrame.Views.Test;component/Images/urgent.png", "urgent" },
-                { "/WPFDemo.SimpleFrame.Views.Test;component/Images/warning.png", "warning" },
+                new IconModel("/WPFDemo.SimpleFrame.Views.Test;component/Images/critical.png", "critical", IconOneCommand),
+                new IconModel("/WPFDemo.SimpleFrame.Views.Test;component/Images/urgent.png", "urgent", IconTwoCommand),
+                new IconModel("/WPFDemo.SimpleFrame.Views.Test;component/Images/warning.png", "warning", IconThreeCommand)
             };
             IconsSource = icons;
             await PageSearch(PageSize, PageNo);

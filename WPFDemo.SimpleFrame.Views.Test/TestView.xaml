@@ -52,6 +52,7 @@
                          PageSizeSource="{Binding PageSizeSource}"
                          ItemsSource="{Binding DataSource}"
                          IsUseDataPager="True"
+                         IsOpenCopyButton="True"
                          MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}"
                          RowContextMenu="{StaticResource RowContextMenu}">
             <DMs:NewDataGrid.Columns>
@@ -61,7 +62,11 @@
                                     Foreground="{StaticResource BaseDataGridRowForeground}" 
                                     Binding="{Binding Id}"
                                     DMs:DataGridAttachProperty.IconsSource="{Binding Source={StaticResource BindingProxy}, Path=Data.IconsSource}"
-                                    DMs:DataGridAttachProperty.ValueConverter="{StaticResource IconConverter}"/>
+                                    DMs:DataGridAttachProperty.ValueConverter="{StaticResource IconConverter}"
+                                    DMs:DataGridAttachProperty.IconSourceMemberPath="Source"
+                                    DMs:DataGridAttachProperty.IconToolTipMemberPath="ToolTip"
+                                    DMs:DataGridAttachProperty.IconCommandMemberPath="Command"
+                                    DMs:DataGridAttachProperty.IconPosition="Behind"/>
                 <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Name">

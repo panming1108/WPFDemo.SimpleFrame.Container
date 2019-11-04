@@ -53,6 +53,8 @@
     <Compile Include="DMs\DataGrid\DataGridIconsConverter.cs" />
     <Compile Include="DMs\DataGrid\EMCDataGrid.cs" />
     <Compile Include="DMs\DataGrid\EMCDataGridIndexColumn.cs" />
+    <Compile Include="DMs\DataGrid\IconButton.cs" />
+    <Compile Include="DMs\DataGrid\IconsItemsControl.cs" />
     <Compile Include="DMs\DataGrid\NewDataGrid.cs" />
     <Compile Include="DMs\DataGrid\TextLengthConverter.cs" />
     <Compile Include="DMs\DataPager\DataPagerCommands.cs" />

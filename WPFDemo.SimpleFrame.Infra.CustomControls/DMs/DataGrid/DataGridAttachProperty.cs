@@ -72,7 +72,53 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
             DependencyProperty.RegisterAttached("IconsSource", typeof(IEnumerable), typeof(DataGridAttachProperty));
         #endregion
 
+        #region IconSourceMemberPath
+        public static string GetIconSourceMemberPath(DependencyObject obj)
+        {
+            return (string)obj.GetValue(IconSourceMemberPathProperty);
+        }
 
+        public static void SetIconSourceMemberPath(DependencyObject obj, string value)
+        {
+            obj.SetValue(IconSourceMemberPathProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for IconSourceMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconSourceMemberPathProperty =
+            DependencyProperty.RegisterAttached("IconSourceMemberPath", typeof(string), typeof(DataGridAttachProperty));
+        #endregion
+
+        #region IconToolTipMemberPath
+        public static string GetIconToolTipMemberPath(DependencyObject obj)
+        {
+            return (string)obj.GetValue(IconToolTipMemberPathProperty);
+        }
+
+        public static void SetIconToolTipMemberPath(DependencyObject obj, string value)
+        {
+            obj.SetValue(IconToolTipMemberPathProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for IconToolTipMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconToolTipMemberPathProperty =
+            DependencyProperty.RegisterAttached("IconToolTipMemberPath", typeof(string), typeof(DataGridAttachProperty));
+        #endregion
+
+        #region IconCommandMemberPath
+        public static string GetIconCommandMemberPath(DependencyObject obj)
+        {
+            return (string)obj.GetValue(IconCommandMemberPathProperty);
+        }
+
+        public static void SetIconCommandMemberPath(DependencyObject obj, string value)
+        {
+            obj.SetValue(IconCommandMemberPathProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for IconCommandMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconCommandMemberPathProperty =
+            DependencyProperty.RegisterAttached("IconCommandMemberPath", typeof(string), typeof(DataGridAttachProperty));
+        #endregion
 
         public static IMultiValueConverter GetValueConverter(DependencyObject obj)
         {

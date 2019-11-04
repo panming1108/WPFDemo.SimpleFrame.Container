@@ -16,8 +16,8 @@ namespace WPFDemo.SimpleFrame.Views.Test.Converters
             if(values != null && values.Count() >= 2)
             {
                 var stu = values[0] as Student;
-                var img = (KeyValuePair<string, string>)values[1];
-                switch (img.Key)
+                var img = (IconModel)values[1];
+                switch (img.Source)
                 {
                     case "/WPFDemo.SimpleFrame.Views.Test;component/Images/critical.png":
                         if(stu.Id % 4 == 3 && stu.Id % 3 == 2)
