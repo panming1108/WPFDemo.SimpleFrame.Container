@@ -1090,8 +1090,6 @@
                 <EMCDataPager:EMCDataPager Grid.Row="1" 
                                            FontWeight="Normal"
                                            x:Name="PART_DataPager"
-                                           PageNo="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PageNo,Mode=TwoWay}"
-                                           PageSize="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PageSize,Mode=TwoWay}"
                                            PageSizeComboBoxVisibity="{TemplateBinding PageSizeComboBoxVisibity}"
                                            PageButtonStyle="{TemplateBinding PageButtonStyle}"
                                            PageSizeSource="{TemplateBinding PageSizeSource}"

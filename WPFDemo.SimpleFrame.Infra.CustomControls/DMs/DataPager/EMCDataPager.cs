@@ -30,6 +30,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
 
         public event EventHandler<PageNoChangingEventArgs> PageNoChanging;
         public event EventHandler<PageNoChangedEventArgs> PageNoChanged;
+        public event EventHandler<PageSizeChangedEventArgs> PageSizeChanged;
 
         /// <summary>
         /// 触发页索引改变中事件
@@ -60,6 +61,22 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         {
             PageNoChangedEventArgs args = new PageNoChangedEventArgs(oldPageNo, newPageNo);
             OnPageNoChanged(args);
+        }
+
+        protected virtual void OnPageSizeChanged(PageSizeChangedEventArgs args)
+        {
+            EventHandler<PageSizeChangedEventArgs> pageSizeChanged = PageSizeChanged;
+            if(pageSizeChanged == null)
+            {
+                return;
+            }
+            pageSizeChanged(this, args);
+        }
+
+        private void OnPageSizeChanged(int oldPageSize, int newPageSize)
+        {
+            PageSizeChangedEventArgs args = new PageSizeChangedEventArgs(oldPageSize, newPageSize);
+            OnPageSizeChanged(args);
         }
 
 
@@ -678,6 +695,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             {
                 return;
             }
+            dataPager.OnPageSizeChanged((int)e.OldValue, (int)e.NewValue);
             dataPager._textBox.Text = string.Empty;
         }
 
@@ -813,6 +831,43 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         {
             _oldPageIndex = oldPageIndex;
             _newPageIndex = newPageIndex;
+        }
+    }
+
+    /// <summary>
+    /// 页大小改变后事件
+    /// </summary>
+    public class PageSizeChangedEventArgs : EventArgs
+    {
+        private readonly int _oldPageSize;
+        private readonly int _newPageSize;
+        /// <summary>
+        /// 旧的页大小
+        /// </summary>
+        public int OldPageSize
+        {
+            get
+            {
+                return _oldPageSize;
+            }
+        }
+        /// <summary>
+        /// 新的页大小
+        /// </summary>
+        public int NewPageSize
+        {
+            get
+            {
+                return _newPageSize;
+            }
+        }
+        /// <summary>
+        /// 页码改变后事件
+        /// </summary>
+        public PageSizeChangedEventArgs(int oldPageSize, int newPageSize)
+        {
+            _oldPageSize = oldPageSize;
+            _newPageSize = newPageSize;
         }
     }
 }

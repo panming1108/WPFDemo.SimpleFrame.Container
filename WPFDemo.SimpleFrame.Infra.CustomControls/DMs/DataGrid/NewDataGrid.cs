@@ -6,12 +6,16 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 {
     public class NewDataGrid : System.Windows.Controls.DataGrid
     {
+        private const string PART_DataPager = "PART_DataPager";
         private bool _isDisplayIndexColumn = false;
+
+        private EMCDataPager _dataPager;
 
         // Using a DependencyProperty as the backing store for IsDisplayIndexColumn.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsDisplayIndexColumnProperty =
@@ -55,7 +59,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 
         // Using a DependencyProperty as the backing store for PageNo.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PageNoProperty =
-            DependencyProperty.Register("PageNo", typeof(int), typeof(NewDataGrid), new PropertyMetadata(1));
+            DependencyProperty.Register("PageNo", typeof(int), typeof(NewDataGrid), new PropertyMetadata(1, OnPageNoChanged));
 
         public int PageSize
         {
@@ -65,7 +69,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 
         // Using a DependencyProperty as the backing store for PageSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PageSizeProperty =
-            DependencyProperty.Register("PageSize", typeof(int), typeof(NewDataGrid), new PropertyMetadata(10));
+            DependencyProperty.Register("PageSize", typeof(int), typeof(NewDataGrid), new PropertyMetadata(10, OnPageSizeChanged));
 
         public int NumericButtonCount
         {
@@ -146,6 +150,61 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         // Using a DependencyProperty as the backing store for RowContentMenu.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RowContextMenuProperty =
             DependencyProperty.Register("RowContextMenu", typeof(ContextMenu), typeof(NewDataGrid));
+
+        public NewDataGrid()
+        {
+
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            if(_dataPager != null)
+            {
+                _dataPager.PageNoChanged -= DataPager_PageNoChanged;
+                _dataPager.PageSizeChanged -= DataPager_PageSizeChanged;
+            }
+            _dataPager = GetTemplateChild(PART_DataPager) as EMCDataPager;
+            if(_dataPager != null)
+            {
+                _dataPager.PageNoChanged += DataPager_PageNoChanged;
+                _dataPager.PageSizeChanged += DataPager_PageSizeChanged;
+            }
+        }
+
+        private void DataPager_PageSizeChanged(object sender, PageSizeChangedEventArgs e)
+        {
+            PageSize = e.NewPageSize;
+        }
+
+        private void DataPager_PageNoChanged(object sender, PageNoChangedEventArgs e)
+        {
+            PageNo = e.NewPageIndex;
+        }
+
+        private static void OnPageNoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dataGrid = d as NewDataGrid;
+            if(dataGrid != null)
+            {
+                if(dataGrid._dataPager != null)
+                {
+                    dataGrid._dataPager.PageNo = (int)e.NewValue;
+                }
+            }
+        }
+
+        private static void OnPageSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dataGrid = d as NewDataGrid;
+            if (dataGrid != null)
+            {
+                if (dataGrid._dataPager != null)
+                {
+                    dataGrid._dataPager.PageSize = (int)e.NewValue;
+                }
+            }
+        }
 
         protected override void OnLoadingRow(DataGridRowEventArgs e)
         {
