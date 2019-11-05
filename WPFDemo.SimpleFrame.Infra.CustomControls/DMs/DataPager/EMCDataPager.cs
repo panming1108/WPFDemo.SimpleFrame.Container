@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -23,6 +24,44 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         private CommandBinding MoveToNextPageCommand;
         private CommandBinding MoveToPageCommand;
         private CommandBinding MoveToPreviousPageCommand;
+
+        private bool _isChangingPage;
+        private bool _areHandlersSuspended;//是否处理程序被挂起
+
+        public event EventHandler<PageNoChangingEventArgs> PageNoChanging;
+        public event EventHandler<PageNoChangedEventArgs> PageNoChanged;
+
+        /// <summary>
+        /// 触发页索引改变中事件
+        /// </summary>
+        protected virtual void OnPageNoChanging(PageNoChangingEventArgs args)
+        {
+            EventHandler<PageNoChangingEventArgs> pageNoChanging = PageNoChanging;
+            if (pageNoChanging == null)
+            {
+                return;
+            }
+            pageNoChanging(this, args);
+        }
+        /// <summary>
+        /// 触发页索引改变后事件
+        /// </summary>
+        /// <param name="args"></param>
+        protected virtual void OnPageNoChanged(PageNoChangedEventArgs args)
+        {
+            EventHandler<PageNoChangedEventArgs> pageNoChanged = PageNoChanged;
+            if (pageNoChanged == null)
+            {
+                return;
+            }
+            pageNoChanged(this, args);
+        }
+        private void OnPageNoChanged(int oldPageNo, int newPageNo)
+        {
+            PageNoChangedEventArgs args = new PageNoChangedEventArgs(oldPageNo, newPageNo);
+            OnPageNoChanged(args);
+        }
+
 
         #region Property
         /// <summary>
@@ -319,11 +358,21 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
 
         private bool MoveToPage(int pageNo)
         {
+            if(_isChangingPage)
+            {
+                throw new InvalidOperationException("Cannot change page during a page changing operation.");
+            }
             if (pageNo > PageCount)
             {
                 return false;
             }
-            return true;
+            _isChangingPage = true;
+
+            //页码改变中事件触发
+            PageNoChangingEventArgs pageNoChangingEventArgs = new PageNoChangingEventArgs(PageNo, pageNo);
+            OnPageNoChanging(pageNoChangingEventArgs);
+            _isChangingPage = false;
+            return !pageNoChangingEventArgs.Cancel;
         }
 
         private bool MoveToPreviousPage()
@@ -577,16 +626,48 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         private static void OnPageNoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             EMCDataPager dataPager = (EMCDataPager)d;
+            if(dataPager._areHandlersSuspended)
+            {
+                return;
+            }
             int num = (int)e.OldValue;
             int num2 = (int)e.NewValue;
-            if (num != num2)
+            dataPager.CheckPageNoChange(num, num2);
+            if(!dataPager.MoveToPage(num2))
+            {
+                dataPager.SetValueNoCallback(PageNoProperty, num);
+            }
+            else
             {
                 dataPager.GenerateDisplayNumbers(num2);
                 dataPager.CanMoveToPreviousPage = num2 > 1;
                 dataPager.CanMoveToNextPage = num2 < dataPager.PageCount;
                 CommandManager.InvalidateRequerySuggested();
             }
+            dataPager.OnPageNoChanged(num, num2);
             dataPager._textBox.Text = string.Empty;
+        }
+
+        private void CheckPageNoChange(int oldPageNo, int newPageNo)
+        {
+            if (PageSize == 0 && newPageNo != 1)
+            {
+                SetValueNoCallback(PageNoProperty, oldPageNo);
+                throw new ArgumentOutOfRangeException("newPageNo", "PageNo can only be set to 1 when the PageSize is 0.");
+            }
+        }
+
+        private void SetValueNoCallback(DependencyProperty property, int value)
+        {
+            _areHandlersSuspended = true;
+            try
+            {
+                SetValue(property, value);
+            }
+            finally
+            {
+                _areHandlersSuspended = false;
+            }
         }
 
         private static void OnPageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -658,5 +739,80 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             }
         }
         #endregion
+    }
+
+    /// <summary>
+    /// 页号改变中事件
+    /// </summary>
+    public class PageNoChangingEventArgs : CancelEventArgs
+    {
+        private int _oldPageIndex;
+        private int _newPageIndex;
+
+        /// <summary>
+        /// 旧的页码
+        /// </summary>
+        public int OldPageIndex
+        {
+            get
+            {
+                return _oldPageIndex;
+            }
+        }
+        /// <summary>
+        /// 新的页码
+        /// </summary>
+        public int NewPageIndex
+        {
+            get
+            {
+                return _newPageIndex;
+            }
+        }
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PageNoChangingEventArgs(int oldPageIndex, int newPageIndex)
+        {
+            _oldPageIndex = oldPageIndex;
+            _newPageIndex = newPageIndex;
+        }
+    }
+
+    /// <summary>
+    /// 页码改变后事件
+    /// </summary>
+    public class PageNoChangedEventArgs : EventArgs
+    {
+        private readonly int _oldPageIndex;
+        private readonly int _newPageIndex;
+        /// <summary>
+        /// 旧的页码
+        /// </summary>
+        public int OldPageIndex
+        {
+            get
+            {
+                return _oldPageIndex;
+            }
+        }
+        /// <summary>
+        /// 新的页码
+        /// </summary>
+        public int NewPageIndex
+        {
+            get
+            {
+                return _newPageIndex;
+            }
+        }
+        /// <summary>
+        /// 页码改变后事件
+        /// </summary>
+        public PageNoChangedEventArgs(int oldPageIndex, int newPageIndex)
+        {
+            _oldPageIndex = oldPageIndex;
+            _newPageIndex = newPageIndex;
+        }
     }
 }
