@@ -133,8 +133,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu
         public static readonly DependencyProperty IsGroupEndProperty =
             DependencyProperty.Register("IsGroupEnd", typeof(bool), typeof(EMCMenuItem), new PropertyMetadata(false));
 
-
-
         public string GroupName
         {
             get { return (string)GetValue(GroupNameProperty); }
@@ -145,10 +143,53 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu
         public static readonly DependencyProperty GroupNameProperty =
             DependencyProperty.Register("GroupName", typeof(string), typeof(EMCMenuItem));
 
+        public string IconMemberPath
+        {
+            get { return (string)GetValue(IconMemberPathProperty); }
+            set { SetValue(IconMemberPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IconMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconMemberPathProperty =
+            DependencyProperty.Register("IconMemberPath", typeof(string), typeof(EMCMenuItem), new PropertyMetadata(string.Empty));
+
+        public string NameMemberPath
+        {
+            get { return (string)GetValue(NameMemberPathProperty); }
+            set { SetValue(NameMemberPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for NameMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NameMemberPathProperty =
+            DependencyProperty.Register("NameMemberPath", typeof(string), typeof(EMCMenuItem), new PropertyMetadata(string.Empty));
+
+        public string InputGestureTextMemberPath
+        {
+            get { return (string)GetValue(InputGestureTextMemberPathProperty); }
+            set { SetValue(InputGestureTextMemberPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for InputGestureTextMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty InputGestureTextMemberPathProperty =
+            DependencyProperty.Register("InputGestureTextMemberPath", typeof(string), typeof(EMCMenuItem), new PropertyMetadata(string.Empty));
+
+        public string GroupNameMemberPath
+        {
+            get { return (string)GetValue(GroupNameMemberPathProperty); }
+            set { SetValue(GroupNameMemberPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for GroupNameMemberPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GroupNameMemberPathProperty =
+            DependencyProperty.Register("GroupNameMemberPath", typeof(string), typeof(EMCMenuItem), new PropertyMetadata(string.Empty));
+
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
             var menuItem = element as EMCMenuItem;
+
+            SetMenuItemProperties(menuItem, item);
+
             if (!string.IsNullOrEmpty(menuItem.GroupName))
             {
                 if (!_groupList.Keys.Contains(menuItem.GroupName))
@@ -166,6 +207,44 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Menu
                 }
 
                 menuItem.IsGroupEnd = false;
+            }
+        }
+
+        private void SetMenuItemProperties(EMCMenuItem menuItem, object item)
+        {
+            Type type = item.GetType();
+            if (!string.IsNullOrEmpty(IconMemberPath))
+            {
+                var icon = type.GetProperty(IconMemberPath);
+                if (icon != null)
+                {
+                    menuItem.Icon = icon.GetValue(item, null) as string;
+                }
+            }
+            if (!string.IsNullOrEmpty(NameMemberPath))
+            {
+
+                var name = type.GetProperty(NameMemberPath);
+                if (name != null)
+                {
+                    menuItem.Header = name.GetValue(item, null) as string;
+                }
+            }
+            if (!string.IsNullOrEmpty(InputGestureTextMemberPath))
+            {
+                var input = type.GetProperty(InputGestureTextMemberPath);
+                if (input != null)
+                {
+                    menuItem.InputGestureText = input.GetValue(item, null) as string;
+                }
+            }
+            if (!string.IsNullOrEmpty(GroupNameMemberPath))
+            {
+                var groupName = type.GetProperty(GroupNameMemberPath);
+                if (groupName != null)
+                {
+                    menuItem.GroupName = groupName.GetValue(item, null) as string;
+                }
             }
         }
 

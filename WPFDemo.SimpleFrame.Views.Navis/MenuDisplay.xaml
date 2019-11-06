@@ -25,10 +25,11 @@
             <EMCContextMenu:EMCContextMenu x:Key="MenuContextMenu"
                                            ItemTemplate="{StaticResource MenuItemTemplate}"
                                            ItemCommand="{Binding ItemCommand}"
-                                           ItemsSource="{Binding MenuSource}">
-                <EMCContextMenu:EMCContextMenu.Resources>
-                    <KeyBinding x:Key="sdf" Gesture="Ctrl+K" Command="{Binding ItemCommand}" CommandParameter="123"/>
-                </EMCContextMenu:EMCContextMenu.Resources>
+                                           ItemsSource="{Binding MenuSource}"
+                                           IconMemberPath="Icon"
+                                           NameMemberPath="Name"
+                                           InputGestureTextMemberPath="InputGestureText"
+                                           GroupNameMemberPath="GroupName">
             </EMCContextMenu:EMCContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>

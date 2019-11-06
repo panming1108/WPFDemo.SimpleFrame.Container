@@ -25,5 +25,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.TreeView
             base.OnMouseLeftButtonDown(e);
             IsExpanded = !IsExpanded;
         }
+
+        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+        {
+            base.PrepareContainerForItemOverride(element, item);
+            var treeViewItem = element as EMCTreeViewItem;
+            treeViewItem.Padding = new Thickness(10,0,0,0);
+        }
     }
 }

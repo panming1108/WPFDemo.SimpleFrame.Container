@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
     {
         private const string PART_DataPager = "PART_DataPager";
         private bool _isDisplayIndexColumn = false;
+        private bool _isHandleCurrentPageNo = false;
+        private bool _isHandleCurrentPageSize = false;
+        private static int _currentPageNo = -1;
+        private static int _currentPageSize = -1;
 
         private EMCDataPager _dataPager;
 
@@ -156,21 +161,47 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 
         }
 
-        public override void OnApplyTemplate()
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
-            base.OnApplyTemplate();
-            if(_dataPager != null)
+            base.OnItemsSourceChanged(oldValue, newValue);
+            if (oldValue != null)
             {
-                _dataPager.PageNoChanged -= DataPager_PageNoChanged;
-                _dataPager.PageSizeChanged -= DataPager_PageSizeChanged;
-            }
-            _dataPager = GetTemplateChild(PART_DataPager) as EMCDataPager;
-            if(_dataPager != null)
-            {
-                _dataPager.PageNoChanged += DataPager_PageNoChanged;
-                _dataPager.PageSizeChanged += DataPager_PageSizeChanged;
+                if(!_isHandleCurrentPageSize)
+                {
+                    if (_currentPageSize != -1 && _currentPageSize != PageSize)
+                    {
+                        _isHandleCurrentPageNo = true;
+                        PageSize = _currentPageSize;
+                    }
+                }
+                if(!_isHandleCurrentPageNo)
+                {
+                    if (_currentPageNo != -1 && _currentPageNo != PageNo)
+                    {
+                        _isHandleCurrentPageSize = true;
+                        PageNo = _currentPageNo;
+                    }
+                }
+                _isHandleCurrentPageNo = false;
+                _isHandleCurrentPageSize = false;
             }
         }
+
+        //public override void OnApplyTemplate()
+        //{
+        //    base.OnApplyTemplate();
+        //    if(_dataPager != null)
+        //    {
+        //        _dataPager.PageNoChanged -= DataPager_PageNoChanged;
+        //        _dataPager.PageSizeChanged -= DataPager_PageSizeChanged;
+        //    }
+        //    _dataPager = GetTemplateChild(PART_DataPager) as EMCDataPager;
+        //    if(_dataPager != null)
+        //    {
+        //        _dataPager.PageNoChanged += DataPager_PageNoChanged;
+        //        _dataPager.PageSizeChanged += DataPager_PageSizeChanged;
+        //    }
+        //}
 
         private void DataPager_PageSizeChanged(object sender, PageSizeChangedEventArgs e)
         {
@@ -184,26 +215,28 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 
         private static void OnPageNoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var dataGrid = d as NewDataGrid;
-            if(dataGrid != null)
-            {
-                if(dataGrid._dataPager != null)
-                {
-                    dataGrid._dataPager.PageNo = (int)e.NewValue;
-                }
-            }
+            //var dataGrid = d as NewDataGrid;
+            //if(dataGrid != null)
+            //{
+            //    if(dataGrid._dataPager != null)
+            //    {
+            //        dataGrid._dataPager.PageNo = (int)e.NewValue;
+            //    }
+            //}
+            _currentPageNo = (int)e.NewValue;
         }
 
         private static void OnPageSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var dataGrid = d as NewDataGrid;
-            if (dataGrid != null)
-            {
-                if (dataGrid._dataPager != null)
-                {
-                    dataGrid._dataPager.PageSize = (int)e.NewValue;
-                }
-            }
+            //var dataGrid = d as NewDataGrid;
+            //if (dataGrid != null)
+            //{
+            //    if (dataGrid._dataPager != null)
+            //    {
+            //        dataGrid._dataPager.PageSize = (int)e.NewValue;
+            //    }
+            //}
+            _currentPageSize = (int)e.NewValue;
         }
 
         protected override void OnLoadingRow(DataGridRowEventArgs e)
@@ -212,7 +245,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
             InitIndexNum(e);
             e.Row.MouseDoubleClick -= RaiseMouseDoubleClick;
             e.Row.MouseDoubleClick += RaiseMouseDoubleClick;
-            if(RowContextMenu != null)
+            if (RowContextMenu != null)
             {
                 e.Row.ContextMenu = RowContextMenu;
             }
@@ -239,7 +272,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
             }
             if (_isDisplayIndexColumn)
             {
-                if(IsUseDataPager)
+                if (IsUseDataPager)
                 {
                     e.Row.Header = ((PageNo - 1) * PageSize) + e.Row.GetIndex() + 1;
                 }
