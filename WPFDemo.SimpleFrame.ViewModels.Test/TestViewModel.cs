@@ -15,7 +15,16 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
     public class TestViewModel : DataPagerQueryViewModel<Student>, ITestViewModel
     {
         private IStudentBusi _studentBusi;
-
+        private List<Student> _selectedRows;
+        public List<Student> SeletedRows
+        {
+            get => _selectedRows;
+            set
+            {
+                _selectedRows = value;
+                OnPropertyChanged(() => SeletedRows);
+            }
+        }
         private List<IconModel> _iconsSource;
         public List<IconModel> IconsSource
         {
@@ -38,6 +47,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
         public TestViewModel(IStudentBusi studentBusi)
         {
             _studentBusi = studentBusi;
+            _selectedRows = new List<Student>();
             PageSize = 10;
             PageSizeSource = new int[] { 10, 20, 30 };
             _iconsSource = new List<IconModel>();

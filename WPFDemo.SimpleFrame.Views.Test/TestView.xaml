@@ -54,7 +54,8 @@
                          IsUseDataPager="True"
                          IsOpenCopyButton="True"
                          MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}"
-                         RowContextMenu="{StaticResource RowContextMenu}">
+                         RowContextMenu="{StaticResource RowContextMenu}"
+                         SelectedRows="{Binding SeletedRows,Mode=TwoWay}">
             <DMs:NewDataGrid.Columns>
                 <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
                 <DataGridTextColumn Header="ID" 

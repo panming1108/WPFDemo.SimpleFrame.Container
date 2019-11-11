@@ -156,6 +156,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         public static readonly DependencyProperty RowContextMenuProperty =
             DependencyProperty.Register("RowContextMenu", typeof(ContextMenu), typeof(NewDataGrid));
 
+        public IList SelectedRows
+        {
+            get { return (IList)GetValue(SelectedRowsProperty); }
+            set { SetValue(SelectedRowsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedRows.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedRowsProperty =
+            DependencyProperty.Register("SelectedRows", typeof(IList), typeof(NewDataGrid));
+
         public NewDataGrid()
         {
 
@@ -290,6 +300,18 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
                 e.Column.Width = new DataGridLength(1, AutoGenerateColumnWidthType);
             }
             base.OnAutoGeneratingColumn(e);
+        }
+
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+            Type type = ItemsSource.GetType();
+            IList list1 = (IList)Activator.CreateInstance(type, true);
+            foreach (var item in SelectedItems)
+            {
+                list1.Add(item);
+            }
+            SelectedRows = list1;
         }
     }
 }
