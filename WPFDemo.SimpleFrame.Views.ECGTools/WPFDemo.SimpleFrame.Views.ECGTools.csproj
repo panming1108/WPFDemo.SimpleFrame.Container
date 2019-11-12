@@ -50,6 +50,9 @@
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EquiDistanceMeasure.xaml.cs">
+      <DependentUpon>EquiDistanceMeasure.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EuqiDistanceMeasureView.xaml.cs">
       <DependentUpon>EuqiDistanceMeasureView.xaml</DependentUpon>
     </Compile>
@@ -80,10 +83,24 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\EquiDistanceMeasure.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EuqiDistanceMeasureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlsThemes\WPFDemo.SimpleFrame.Infra.ControlsThemes.csproj">
+      <Project>{d399f467-fc99-413c-ae99-8f2b9aeec34b}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.ControlsThemes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
+      <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

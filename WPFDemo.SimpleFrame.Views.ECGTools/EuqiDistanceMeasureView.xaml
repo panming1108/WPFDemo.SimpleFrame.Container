@@ -4,9 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools"
+             xmlns:ECGTool="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools.Controls"
+             xmlns:ECGToolControls="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ECGToolsStyle.xaml"/>
+    </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <TextBlock Text="并行分规"/>
+        <!--<ECGTool:EquiDistanceMeasure Grid.Row="1"/>-->
+        <ECGToolControls:EquiDistanceMeasure Grid.Row="1"/>
     </Grid>
 </UserControl>
