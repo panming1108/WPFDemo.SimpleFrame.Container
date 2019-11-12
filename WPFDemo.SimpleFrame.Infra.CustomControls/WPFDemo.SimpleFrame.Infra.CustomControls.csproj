@@ -63,6 +63,8 @@
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
+    <Compile Include="ECGTools\BoxLineMeter.cs" />
+    <Compile Include="ECGTools\EquiDistanceMeasure.cs" />
     <Compile Include="Editors\CheckBox\CheckBoxGroup.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />

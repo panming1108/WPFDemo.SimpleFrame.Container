@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D399F467-FC99-413C-AE99-8F2B9AEEC34B}</ProjectGuid>
+    <ProjectGuid>{730C9982-DDC8-4871-A70A-3B39D6DBF430}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>WPFDemo.SimpleFrame.Infra.ControlsThemes</RootNamespace>
-    <AssemblyName>WPFDemo.SimpleFrame.Infra.ControlsThemes</AssemblyName>
+    <RootNamespace>WPFDemo.SimpleFrame.Views.ECGTools</RootNamespace>
+    <AssemblyName>WPFDemo.SimpleFrame.Views.ECGTools</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Windows.Shell.3.0.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -50,6 +47,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoxLineMeterView.xaml.cs">
+      <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EuqiDistanceMeasureView.xaml.cs">
+      <DependentUpon>EuqiDistanceMeasureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,64 +70,20 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\fontawesome-webfont.ttf" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Colors.xaml">
+    <Page Include="BoxLineMeterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DMsStyle.xaml">
+    <Page Include="EuqiDistanceMeasureView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DVsStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ECGToolsStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EditorsStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Fonts\FontStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LayOutStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NavisStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SchedulesStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ScrollViewerStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UXsStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
-      <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

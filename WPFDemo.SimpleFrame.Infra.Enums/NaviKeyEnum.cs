@@ -21,6 +21,8 @@ namespace WPFDemo.SimpleFrame.Infra.Enums
         [Description("SchedulesPage.xaml")]
         Schedules,
         [Description("UXsPage.xaml")]
-        UXs
+        UXs,
+        [Description("ECGToolsPage.xaml")]
+        ECGTools,
     }
 }

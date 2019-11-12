@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.IViewMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.ViewModels.Editors", "WPFDemo.SimpleFrame.ViewModels.Editors\WPFDemo.SimpleFrame.ViewModels.Editors.csproj", "{6D5ABBAA-0ACF-48CF-80C8-6A4C6FF651E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.Views.ECGTools", "WPFDemo.SimpleFrame.Views.ECGTools\WPFDemo.SimpleFrame.Views.ECGTools.csproj", "{730C9982-DDC8-4871-A70A-3B39D6DBF430}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +259,10 @@ Global
 		{6D5ABBAA-0ACF-48CF-80C8-6A4C6FF651E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D5ABBAA-0ACF-48CF-80C8-6A4C6FF651E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D5ABBAA-0ACF-48CF-80C8-6A4C6FF651E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730C9982-DDC8-4871-A70A-3B39D6DBF430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730C9982-DDC8-4871-A70A-3B39D6DBF430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730C9982-DDC8-4871-A70A-3B39D6DBF430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730C9982-DDC8-4871-A70A-3B39D6DBF430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -305,6 +311,7 @@ Global
 		{F86A130B-211E-4724-B843-C2758E5905CF} = {32E4B991-EC41-4B3D-B20C-56E089F1B6E1}
 		{46CEC59E-0758-4582-8E73-85E785BFD96D} = {B64691E5-47AE-4A02-BD8A-9C6E662558B2}
 		{6D5ABBAA-0ACF-48CF-80C8-6A4C6FF651E9} = {32E4B991-EC41-4B3D-B20C-56E089F1B6E1}
+		{730C9982-DDC8-4871-A70A-3B39D6DBF430} = {DD5D3BD8-339F-4807-864C-0B70C6EA6579}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65EBE67F-9EF2-4F47-A70E-1A7EAB195C63}

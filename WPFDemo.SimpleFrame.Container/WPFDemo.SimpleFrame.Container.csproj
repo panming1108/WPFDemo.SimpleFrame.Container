@@ -96,6 +96,9 @@
     <Compile Include="NaviPages\DVsPage.xaml.cs">
       <DependentUpon>DVsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NaviPages\ECGToolsPage.xaml.cs">
+      <DependentUpon>ECGToolsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NaviPages\EditorsPage.xaml.cs">
       <DependentUpon>EditorsPage.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NaviPages\DVsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\ECGToolsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -328,6 +335,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.DVs\WPFDemo.SimpleFrame.Views.DVs.csproj">
       <Project>{83e3786b-5c01-4411-8f41-7c0ce3b6aa6a}</Project>
       <Name>WPFDemo.SimpleFrame.Views.DVs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.ECGTools\WPFDemo.SimpleFrame.Views.ECGTools.csproj">
+      <Project>{730c9982-ddc8-4871-a70a-3b39d6dbf430}</Project>
+      <Name>WPFDemo.SimpleFrame.Views.ECGTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Views.Editors\WPFDemo.SimpleFrame.Views.Editors.csproj">
       <Project>{a3b05639-b6fe-405b-a7c8-9ad84c4163e4}</Project>
