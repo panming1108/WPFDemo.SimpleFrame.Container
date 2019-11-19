@@ -485,9 +485,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private void RightCenterThumb_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
             var width = RectangleWidth + e.HorizontalChange;
-            if(width < 20)
+            if(width < 1)
             {
-                RectangleWidth = 20;
+                RectangleWidth = 1;
             }
             else if(width > _canvas.ActualWidth - _rectangleLeftUpPoint.X)
             {
@@ -502,9 +502,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private void CenterDownThumb_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
             var height = RectangleHeight + e.VerticalChange;
-            if(height < 20)
+            if(height < 1)
             {
-                RectangleHeight = 20;
+                RectangleHeight = 1;
             }
             else if(height > _canvas.ActualHeight - _rectangleLeftUpPoint.Y)
             {
@@ -520,9 +520,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         {
             var width = RectangleWidth + e.HorizontalChange;
             var height = RectangleHeight + e.VerticalChange;
-            if (height < 20)
+            if (height < 1)
             {
-                RectangleHeight = 20;
+                RectangleHeight = 1;
             }
             else if (height > _canvas.ActualHeight - _rectangleLeftUpPoint.Y)
             {
@@ -532,9 +532,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             {
                 RectangleHeight = height;
             }
-            if (width < 20)
+            if (width < 1)
             {
-                RectangleWidth = 20;
+                RectangleWidth = 1;
             }
             else if (width > _canvas.ActualWidth - _rectangleLeftUpPoint.X)
             {
@@ -557,9 +557,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if(width < 20)
+            if(width < 1)
             {
-                RectangleWidth = 20;
+                RectangleWidth = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -579,9 +579,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (height < 20)
+            if (height < 1)
             {
-                RectangleHeight = 20;
+                RectangleHeight = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -596,9 +596,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             var height = RectangleHeight + e.VerticalChange;
             var width = RectangleWidth - e.HorizontalChange;
 
-            if (height < 20)
+            if (height < 1)
             {
-                RectangleHeight = 20;
+                RectangleHeight = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -614,9 +614,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (width < 20)
+            if (width < 1)
             {
-                RectangleWidth = 20;
+                RectangleWidth = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -631,9 +631,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             var height = RectangleHeight - e.VerticalChange;
             var width = RectangleWidth + e.HorizontalChange;
 
-            if (height < 20)
+            if (height < 1)
             {
-                RectangleHeight = 20;
+                RectangleHeight = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -643,9 +643,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (width < 20)
+            if (width < 1)
             {
-                RectangleWidth = 20;
+                RectangleWidth = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -667,9 +667,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             var height = RectangleHeight - e.VerticalChange;
             var width = RectangleWidth - e.HorizontalChange;
 
-            if (height < 20)
+            if (height < 1)
             {
-                RectangleHeight = 20;
+                RectangleHeight = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -679,9 +679,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (width < 20)
+            if (width < 1)
             {
-                RectangleWidth = 20;
+                RectangleWidth = 1;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }

@@ -34,7 +34,7 @@
         </Setter>
     </Style>
     <Style TargetType="ECGTool:BoxLineMeter">
-        <Setter Property="TextBorderBackground" Value="#4c3F6A98"/>
+        <Setter Property="TextBorderBackground" Value="#CC0F4983"/>
         <Setter Property="HeartRate" Value="29"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
