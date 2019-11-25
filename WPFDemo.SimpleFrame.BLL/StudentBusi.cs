@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,22 @@ namespace WPFDemo.SimpleFrame.BLL
                         Password = "83894680pm"
                     };
                     SqlConnection con = new SqlConnection(sqlConnectionString.ConnectionString);
-                    con.Open();
+                    try
+                    {
+                        con.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        for (int i = (pageNo - 1) * pageSize; i < pageNo  * pageSize; i++)
+                        {
+                            students.Add(new Student(i, "测试" + i, i * 10));
+                        }
+                        queryResult.Students = students;
+                        queryResult.PageSize = pageSize;
+                        queryResult.PageNo = pageNo;
+                        return queryResult;
+                    }
                     string sql = string.Format("select top {0} * from(select row_number() over(order by a.id asc) as rownumber, * from a) temp_row where rownumber > ({1} - 1) * {0}; ", pageSize, pageNo);
                     SqlCommand command = new SqlCommand(sql, con);
                     SqlDataReader reader = command.ExecuteReader();
