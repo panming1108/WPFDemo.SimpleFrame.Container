@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using WPFDemo.SimpleFrame.Infra.Helper;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
 {
@@ -19,6 +20,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private bool _isCompassesOn;//判断等距是否开启
         private double _lastValue;
         private double _firstPotint;
+
+        public Brush FirstLineBrush
+        {
+            get { return (Brush)GetValue(FirstLineBrushProperty); }
+            set { SetValue(FirstLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FirstLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FirstLineBrushProperty =
+            DependencyProperty.Register("FirstLineBrush", typeof(Brush), typeof(EquiDistanceMeasure));
+
+        public Brush OtherLineBrush
+        {
+            get { return (Brush)GetValue(OtherLineBrushProperty); }
+            set { SetValue(OtherLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for OtherLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OtherLineBrushProperty =
+            DependencyProperty.Register("OtherLineBrush", typeof(Brush), typeof(EquiDistanceMeasure));
 
         public override void OnApplyTemplate()
         {
@@ -47,7 +68,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 _isCompassesOnMove = true;//在鼠标当前位置画一个线
                 _firstPotint = e.GetPosition((FrameworkElement)sender).X;
                 _canvas.Children.Clear();
-                DrawLine(_firstPotint);
+                DrawLine(_firstPotint, FirstLineBrush);
                 e.Handled = true;//截断下方的鼠标事件的触发
             }
         }
@@ -84,20 +105,20 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 Y1 = 0,
                 X2 = _firstPotint,
                 Y2 = _canvas.ActualHeight,
-                Stroke = Brushes.DodgerBlue,
+                Stroke = FirstLineBrush,
                 StrokeThickness = 2
             });
             //往前画
             for (double i = _firstPotint - _lastValue; i > 0; i = i - _lastValue)
             {
-                DrawLine(i);
+                DrawLine(i, OtherLineBrush);
             }
             //往后画
             for (double i = _firstPotint + _lastValue; i < _canvas.ActualWidth; i = i + _lastValue)
             {
                 if (i > 0)
                 {
-                    DrawLine(i);
+                    DrawLine(i, OtherLineBrush);
                 }
             }
         }
@@ -106,7 +127,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         /// 画线
         /// </summary>
         /// <param name="firstPotint"></param>
-        private void DrawLine(double spot)
+        private void DrawLine(double spot, Brush brush)
         {
             _canvas.Children.Add(new Line()
             {
@@ -114,7 +135,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 Y1 = 0,
                 X2 = spot,
                 Y2 = _canvas.ActualHeight,
-                Stroke = Brushes.DodgerBlue,
+                Stroke = brush,
                 StrokeThickness = 2
             });
         }

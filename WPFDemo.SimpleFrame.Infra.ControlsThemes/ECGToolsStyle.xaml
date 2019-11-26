@@ -3,6 +3,8 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:ECGTool="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <Style TargetType="ECGTool:EquiDistanceMeasure">
+        <Setter Property="FirstLineBrush" Value="#FC4B55"/>
+        <Setter Property="OtherLineBrush" Value="#0081E4"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
