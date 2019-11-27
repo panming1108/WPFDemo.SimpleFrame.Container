@@ -250,6 +250,10 @@
       <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Mapping\WPFDemo.SimpleFrame.Infra.Mapping.csproj">
+      <Project>{8395fe5f-62f6-4042-a9f6-0249c456e4b5}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Mapping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Messager\WPFDemo.SimpleFrame.Infra.Messager.csproj">
       <Project>{0CA40CEA-AE5C-425D-8556-CBBABFDE5CFC}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Messager</Name>
