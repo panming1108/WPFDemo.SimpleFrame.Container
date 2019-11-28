@@ -14,7 +14,14 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ECGTools:BoxLineMeterView/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ECGTools:BoxLineMeterView/>
+            <ECGTools:ScopeViewerView Grid.Column="1"/>
+        </Grid>
         <ECGTools:EuqiDistanceMeasureView Grid.Row="1"/>
     </Grid>
 </Page>

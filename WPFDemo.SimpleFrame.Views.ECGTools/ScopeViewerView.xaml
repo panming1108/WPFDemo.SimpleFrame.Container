@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.ECGTools.ScopeViewerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools"
+             xmlns:ECGTools="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:converters="clr-namespace:WPFDemo.SimpleFrame.Infra.Helper.Converters;assembly=WPFDemo.SimpleFrame.Infra.Helper"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ECGToolsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:Bool2VisibilityConverter x:Key="Bool2VisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="放大镜"/>
+            <CheckBox x:Name="PART_CheckBox"
+                      Content="开关"
+                      VerticalAlignment="Bottom"
+                      Margin="20,0,0,0"/>
+        </StackPanel>
+        <ECGTools:ScopeViewer ScopeVisibility="{Binding ElementName=PART_CheckBox, Path=IsChecked, Mode=TwoWay, Converter={StaticResource Bool2VisibilityConverter}}"
+                              Grid.Row="1">
+            <Image Source="/WPFDemo.SimpleFrame.Views.ECGTools;component/Images/ScopeView.png"
+                   Stretch="UniformToFill"/>
+        </ECGTools:ScopeViewer>
+    </Grid>
+</UserControl>

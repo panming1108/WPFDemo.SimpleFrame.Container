@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrushHelper.cs" />
+    <Compile Include="Converters\Bool2VisibilityConverter.cs" />
     <Compile Include="DispatcherHelper.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

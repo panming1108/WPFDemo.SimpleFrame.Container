@@ -125,4 +125,41 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="ECGTool:ScopeViewer">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="ScopeHeight" Value="274"/>
+        <Setter Property="ScopeWidth" Value="274"/>
+        <Setter Property="ScopeMargin" Value="22,22,0,0"/>
+        <Setter Property="ScopeVisibility" Value="Collapsed"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:ScopeViewer">
+                    <Grid>
+                        <ContentPresenter/>
+                        <Canvas Background="Transparent"
+                                Visibility="{TemplateBinding ScopeVisibility}"
+                                Cursor="None"
+                                x:Name="PART_Canvas" 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch">
+                            <Grid x:Name="PART_GridToMove" >
+                                <Ellipse Width="{TemplateBinding ScopeWidth}"
+                                         Height="{TemplateBinding ScopeWidth}" 
+                                         Margin="{TemplateBinding ScopeMargin}" 
+                                         HorizontalAlignment="Left" 
+                                         VerticalAlignment="Top">
+                                    <Ellipse.Fill>
+                                        <VisualBrush Stretch="Fill" 
+                                                     x:Name="PART_VisualBrush"
+                                                     ViewboxUnits="Absolute" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </Grid>
+                        </Canvas>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
