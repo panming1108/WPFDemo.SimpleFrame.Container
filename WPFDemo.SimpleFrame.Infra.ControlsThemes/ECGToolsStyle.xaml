@@ -6,6 +6,10 @@
         <Setter Property="FirstLineBrush" Value="#FC4B55"/>
         <Setter Property="OtherLineBrush" Value="#0081E4"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="IsDisplayMultipleNum" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:EquiDistanceMeasure">

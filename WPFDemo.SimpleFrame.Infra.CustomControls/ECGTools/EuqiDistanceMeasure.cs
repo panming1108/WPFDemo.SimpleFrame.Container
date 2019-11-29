@@ -41,6 +41,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         public static readonly DependencyProperty OtherLineBrushProperty =
             DependencyProperty.Register("OtherLineBrush", typeof(Brush), typeof(EquiDistanceMeasure));
 
+        public bool IsDisplayMultipleNum
+        {
+            get { return (bool)GetValue(IsDisplayMultipleNumProperty); }
+            set { SetValue(IsDisplayMultipleNumProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsDisplayMultipleNum.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsDisplayMultipleNumProperty =
+            DependencyProperty.Register("IsDisplayMultipleNum", typeof(bool), typeof(EquiDistanceMeasure));
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -114,11 +124,25 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 DrawLine(i, OtherLineBrush);
             }
             //往后画
+            int count = 0;
             for (double i = _firstPotint + _lastValue; i < _canvas.ActualWidth; i = i + _lastValue)
             {
                 if (i > 0)
                 {
                     DrawLine(i, OtherLineBrush);
+                    count++;
+                    if (IsDisplayMultipleNum)
+                    {
+                        TextBlock textBlock = new TextBlock();
+                        textBlock.Height = 30;
+                        textBlock.Text = "x" + count;
+                        textBlock.Foreground = Foreground;
+                        textBlock.FontWeight = FontWeight;
+                        textBlock.FontSize = FontSize;
+                        Canvas.SetLeft(textBlock, i + 2);
+                        Canvas.SetTop(textBlock, _canvas.ActualHeight - textBlock.Height);
+                        _canvas.Children.Add(textBlock);
+                    }
                 }
             }
         }
