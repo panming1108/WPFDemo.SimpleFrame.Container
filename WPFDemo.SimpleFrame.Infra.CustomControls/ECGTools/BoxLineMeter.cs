@@ -139,6 +139,46 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         // Using a DependencyProperty as the backing store for OtherControlsVisiblty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty OtherControlsVisibltyProperty =
             DependencyProperty.Register("OtherControlsVisiblty", typeof(Visibility), typeof(BoxLineMeter), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility ThumbVisiblity
+        {
+            get { return (Visibility)GetValue(ThumbVisiblityProperty); }
+            set { SetValue(ThumbVisiblityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ThumbVisiblity.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ThumbVisiblityProperty =
+            DependencyProperty.Register("ThumbVisiblity", typeof(Visibility), typeof(BoxLineMeter), new PropertyMetadata(Visibility.Collapsed));
+
+        public Brush MeasuringLineBrush
+        {
+            get { return (Brush)GetValue(MeasuringLineBrushProperty); }
+            set { SetValue(MeasuringLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MeasuringLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MeasuringLineBrushProperty =
+            DependencyProperty.Register("MeasuringLineBrush", typeof(Brush), typeof(BoxLineMeter));
+
+        public Brush MeasuredLineBrush
+        {
+            get { return (Brush)GetValue(MeasuredLineBrushProperty); }
+            set { SetValue(MeasuredLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MeasuredLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MeasuredLineBrushProperty =
+            DependencyProperty.Register("MeasuredLineBrush", typeof(Brush), typeof(BoxLineMeter));
+
+        public Brush LineBrush
+        {
+            get { return (Brush)GetValue(LineBrushProperty); }
+            set { SetValue(LineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineBrushProperty =
+            DependencyProperty.Register("LineBrush", typeof(Brush), typeof(BoxLineMeter));
         #endregion
 
         public override void OnApplyTemplate()
@@ -462,6 +502,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 if(!_isUseThumb && !_isUseBorder && !_isMove)
                 {
                     OtherControlsVisiblty = Visibility.Visible;
+                    LineBrush = MeasuringLineBrush;
                     _endPoint = e.GetPosition((FrameworkElement)sender);
                     if(_endPoint.Y < _timeBorder.Height)
                     {
@@ -475,6 +516,21 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                     RectangleWidth = Math.Abs(_endPoint.X - _startPoint.X);
                     _rectangleLeftUpPoint = new Point(Math.Min(_startPoint.X, _endPoint.X), Math.Min(_startPoint.Y, _endPoint.Y));
                     SetControlsPosition(_rectangleLeftUpPoint);     
+                }
+            }
+            else
+            {
+                var point = e.GetPosition((FrameworkElement)sender);
+                Rect rect = new Rect(_rectangleLeftUpPoint.X, _rectangleLeftUpPoint.Y, RectangleWidth, RectangleHeight);
+                if(rect.Contains(point))
+                {
+                    LineBrush = MeasuringLineBrush;
+                    ThumbVisiblity = Visibility.Visible;
+                }
+                else
+                {
+                    LineBrush = MeasuredLineBrush;
+                    ThumbVisiblity = Visibility.Collapsed;
                 }
             }
             e.Handled = true;

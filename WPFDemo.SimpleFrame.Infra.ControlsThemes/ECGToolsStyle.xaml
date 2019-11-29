@@ -43,6 +43,8 @@
         <Setter Property="TextBorderBackground" Value="#CC0F4983"/>
         <Setter Property="HeartRate" Value="29"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="MeasuringLineBrush" Value="#0081E4"/>
+        <Setter Property="MeasuredLineBrush" Value="#00000D"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:BoxLineMeter">
@@ -55,7 +57,7 @@
                                        Width="{TemplateBinding RectangleWidth}"
                                        x:Name="PART_Rectangle"
                                        StrokeThickness="2"
-                                       Stroke="DodgerBlue"
+                                       Stroke="{TemplateBinding LineBrush}"
                                        Visibility="{TemplateBinding OtherControlsVisiblty}"/>
                             <Border Background="{TemplateBinding TextBorderBackground}"
                                     Height="20"
@@ -94,35 +96,35 @@
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_LeftUpThumb"
                                    Cursor="SizeNWSE"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_CenterUpThumb"
                                    Cursor="SizeNS"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_RightUpThumb"
                                    Cursor="SizeNESW"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_LeftCenterThumb"
                                    Cursor="SizeWE"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_RightCenterThumb"
                                    Cursor="SizeWE"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_LeftDownThumb"
                                    Cursor="SizeNESW"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_CenterDownThumb"
                                    Cursor="SizeNS"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_RightDownThumb"
                                    Cursor="SizeNWSE"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
                         </Canvas>
                     </Grid>
                 </ControlTemplate>
