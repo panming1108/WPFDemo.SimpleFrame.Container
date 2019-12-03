@@ -19,48 +19,26 @@ namespace WPFDemo.SimpleFrame.BLL
                 {
                     QueryResult queryResult = new QueryResult();
                     List<Student> students = new List<Student>();
-                    SqlConnectionStringBuilder sqlConnectionString = new SqlConnectionStringBuilder()
+                    int start = pageSize * (pageNo - 1);
+                    int end = start + pageSize;
+                    if (end >= 9999)
                     {
-                        DataSource = ".",
-                        InitialCatalog = "Test",
-                        UserID = "sa",
-                        Password = "83894680pm"
-                    };
-                    SqlConnection con = new SqlConnection(sqlConnectionString.ConnectionString);
-                    try
-                    {
-                        con.Open();
+                        end = 9999;
                     }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                        for (int i = (pageNo - 1) * pageSize; i < pageNo  * pageSize; i++)
-                        {
-                            students.Add(new Student(i, "测试" + i, i * 10));
-                        }
-                        queryResult.Students = students;
-                        queryResult.PageSize = pageSize;
-                        queryResult.PageNo = pageNo;
-                        return queryResult;
-                    }
-                    string sql = string.Format("select top {0} * from(select row_number() over(order by a.id asc) as rownumber, * from a) temp_row where rownumber > ({1} - 1) * {0}; ", pageSize, pageNo);
-                    SqlCommand command = new SqlCommand(sql, con);
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
+                    for (int i = start; i < end; i++)
                     {
                         Student student = new Student()
                         {
-                            Id = (int)reader["id"],
-                            Name = (string)reader["name"],
-                            Age = (int)reader["age"]
+                            Id = i,
+                            Name = "Testaksjdfhkjashdfkjashkdfhkaskjasdhfk" + i * 10,
+                            Age = i * 10,
                         };
                         students.Add(student);
                     }
                     queryResult.Students = students;
                     queryResult.PageSize = pageSize;
                     queryResult.PageNo = pageNo;
-                    reader.Close();
-                    con.Close();
+
                     return queryResult;
                 });          
         }
