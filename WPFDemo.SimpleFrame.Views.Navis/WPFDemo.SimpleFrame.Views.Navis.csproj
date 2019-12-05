@@ -48,6 +48,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ButtonDisplay.xaml.cs">
@@ -80,10 +83,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
       <Project>{c9ad9862-4539-4eea-ba4d-1b01301263eb}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VOnly\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.csproj">
-      <Project>{90fdc46b-bd46-475e-9ff1-56e0c0b65ad1}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VOnly</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.Navis\WPFDemo.SimpleFrame.IViewModels.Navis.csproj">
       <Project>{E8D122AA-95C9-433C-BE0D-C324FA122B20}</Project>

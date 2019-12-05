@@ -48,6 +48,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChartViewDisplay.xaml.cs">
@@ -63,10 +66,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
       <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VOnly\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.csproj">
-      <Project>{90fdc46b-bd46-475e-9ff1-56e0c0b65ad1}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VOnly</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.DVs\WPFDemo.SimpleFrame.IViewModels.DVs.csproj">
       <Project>{E75B1BD8-8447-4CDD-BF8E-110F0C16C125}</Project>
