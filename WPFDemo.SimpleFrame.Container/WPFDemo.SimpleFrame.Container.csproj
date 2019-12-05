@@ -87,6 +87,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Application.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Application.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Cache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Cache.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Cache.dll</HintPath>
+    </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
     </Reference>
@@ -230,10 +233,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IBLL\WPFDemo.SimpleFrame.IBLL.csproj">
       <Project>{e1243ff9-b052-4ac7-ae55-80460b828599}</Project>
       <Name>WPFDemo.SimpleFrame.IBLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Cache\WPFDemo.SimpleFrame.Infra.Cache.csproj">
-      <Project>{828e8730-9ffe-4801-be00-5013aa5ea1a5}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlsThemes\WPFDemo.SimpleFrame.Infra.ControlsThemes.csproj">
       <Project>{d399f467-fc99-413c-ae99-8f2b9aeec34b}</Project>
