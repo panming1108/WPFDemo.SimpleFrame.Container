@@ -40,6 +40,9 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net40\CommonServiceLocator.dll</HintPath>
     </Reference>
+    <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=0e453835af4ee6ce, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net40\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -95,6 +98,9 @@
     </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Mapping, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Mapping.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Mapping.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -252,10 +258,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
       <Project>{1efda8f3-f261-4c04-b069-67dacae8bbe5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Mapping\WPFDemo.SimpleFrame.Infra.Mapping.csproj">
-      <Project>{8395fe5f-62f6-4042-a9f6-0249c456e4b5}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Mapping</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Messager\WPFDemo.SimpleFrame.Infra.Messager.csproj">
       <Project>{0CA40CEA-AE5C-425D-8556-CBBABFDE5CFC}</Project>
