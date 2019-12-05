@@ -90,6 +90,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Cache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Cache.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Cache.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Helper.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Helper.dll</HintPath>
+    </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
     </Reference>
@@ -249,10 +252,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
       <Project>{1efda8f3-f261-4c04-b069-67dacae8bbe5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Helper\WPFDemo.SimpleFrame.Infra.Helper.csproj">
-      <Project>{DF6BFA02-30DF-4ABF-B335-58F3DD78B757}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Mapping\WPFDemo.SimpleFrame.Infra.Mapping.csproj">
       <Project>{8395fe5f-62f6-4042-a9f6-0249c456e4b5}</Project>

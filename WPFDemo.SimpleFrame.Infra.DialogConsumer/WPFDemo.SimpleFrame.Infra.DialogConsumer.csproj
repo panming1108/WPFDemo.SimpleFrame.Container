@@ -62,6 +62,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Helper.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Helper.dll</HintPath>
+    </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
     </Reference>
@@ -82,10 +85,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
       <Project>{1EFDA8F3-F261-4C04-B069-67DACAE8BBE5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Helper\WPFDemo.SimpleFrame.Infra.Helper.csproj">
-      <Project>{DF6BFA02-30DF-4ABF-B335-58F3DD78B757}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Messager\WPFDemo.SimpleFrame.Infra.Messager.csproj">
       <Project>{0CA40CEA-AE5C-425D-8556-CBBABFDE5CFC}</Project>
