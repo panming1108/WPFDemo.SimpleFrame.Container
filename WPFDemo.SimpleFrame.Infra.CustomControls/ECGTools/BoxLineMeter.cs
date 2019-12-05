@@ -14,8 +14,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
 {
     [TemplatePart(Name = PART_Canvas, Type = typeof(Canvas))]
     [TemplatePart(Name = PART_Rectangle, Type = typeof(Rectangle))]
+
     [TemplatePart(Name = PART_TimeBorder, Type = typeof(Border))]
     [TemplatePart(Name = PART_VoltageBorder, Type = typeof(Border))]
+    [TemplatePart(Name = PART_TimeThumb, Type = typeof(Thumb))]
+    [TemplatePart(Name = PART_VoltageThumb, Type = typeof(Thumb))]
+
     [TemplatePart(Name = PART_LeftUpThumb, Type = typeof(Thumb))]
     [TemplatePart(Name = PART_CenterUpThumb, Type = typeof(Thumb))]
     [TemplatePart(Name = PART_RightUpThumb, Type = typeof(Thumb))]
@@ -29,8 +33,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         #region PART Control Name
         protected const string PART_Canvas = "BoxLineMeterCanvas";
         protected const string PART_Rectangle = "PART_Rectangle";
+
         protected const string PART_TimeBorder = "PART_TimeBorder";
         protected const string PART_VoltageBorder = "PART_VoltageBorder";
+        protected const string PART_TimeThumb = "PART_TimeThumb";
+        protected const string PART_VoltageThumb = "PART_VoltageThumb";
+
         protected const string PART_LeftUpThumb = "PART_LeftUpThumb";
         protected const string PART_CenterUpThumb = "PART_CenterUpThumb";
         protected const string PART_RightUpThumb = "PART_RightUpThumb";
@@ -43,9 +51,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
 
         #region PART Control
         protected Canvas _canvas;
+        protected Rectangle _rectangle;
+
         protected Border _timeBorder;
         protected Border _voltageBorder;
-        protected Rectangle _rectangle;
+        protected Thumb _timeThumb;
+        protected Thumb _voltageThumb;
+
         protected Thumb _leftUpThumb;
         protected Thumb _centerUpThumb;
         protected Thumb _rightUpThumb;
@@ -57,10 +69,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         #endregion
 
         #region fields
-        private bool _isUseBorder;
         private bool _isUseThumb;
         private bool _isCompassesOn;//判断是否开启
-        private bool _isMove;
         private Point _startPoint;
         private Point _endPoint;
         private Point _rectangleLeftUpPoint;
@@ -190,8 +200,14 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private void LoadedPartControls()
         {
             LoadCanvas();
+
             LoadTimeBorder();
             LoadVoltageBorder();
+            LoadTimeThumb();
+            LoadVoltageThumb();
+
+            LoadTimeThumb();
+            LoadVoltageThumb();
             LoadRectangle();
             LoadLeftUpThumb();
             LoadCenterUpThumb();
@@ -202,11 +218,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             LoadCenterDownThumb();
             LoadRightDownThumb();
         }
+
         private void UnLoadedPartControls()
         {
             UnLoadCanvas();
+
             UnLoadTimeBorder();
             UnLoadVoltageBorder();
+            UnLoadTimeThumb();
+            UnLoadVoltageThumb();
+
             UnLoadRectangle();
             UnLoadLeftUpThumb();
             UnLoadCenterUpThumb();
@@ -319,26 +340,32 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private void LoadVoltageBorder()
         {
             _voltageBorder = GetTemplateChild(PART_VoltageBorder) as Border;
-            if(_voltageBorder != null)
-            {
-                _voltageBorder.MouseEnter += Borders_OnMouseEnter;
-                _voltageBorder.MouseLeave += Borders_OnMouseLeave;
-                _voltageBorder.MouseLeftButtonDown += Borders_OnMouseLeftButtonDown;
-                _voltageBorder.MouseMove += Borders_OnMouseMove;
-                _voltageBorder.MouseLeftButtonUp += Borders_OnMouseLeftButtonUp;
-            }
         }
 
         private void LoadTimeBorder()
         {
             _timeBorder = GetTemplateChild(PART_TimeBorder) as Border;
-            if(_timeBorder != null)
+        }
+
+        private void LoadVoltageThumb()
+        {
+            _voltageThumb = GetTemplateChild(PART_VoltageThumb) as Thumb;
+            if(_voltageThumb != null)
             {
-                _timeBorder.MouseEnter += Borders_OnMouseEnter;
-                _timeBorder.MouseLeave += Borders_OnMouseLeave;
-                _timeBorder.MouseLeftButtonDown += Borders_OnMouseLeftButtonDown;
-                _timeBorder.MouseMove += Borders_OnMouseMove;
-                _timeBorder.MouseLeftButtonUp += Borders_OnMouseLeftButtonUp;
+                _voltageThumb.MouseEnter += Thumbs_OnMouseEnter;
+                _voltageThumb.MouseLeave += Thumbs_OnMouseLeave;
+                _voltageThumb.DragDelta += TextThumb_DragDelta;
+            }
+        }
+
+        private void LoadTimeThumb()
+        {
+            _timeThumb = GetTemplateChild(PART_TimeThumb) as Thumb;
+            if (_timeThumb != null)
+            {
+                _timeThumb.MouseEnter += Thumbs_OnMouseEnter;
+                _timeThumb.MouseLeave += Thumbs_OnMouseLeave;
+                _timeThumb.DragDelta += TextThumb_DragDelta;
             }
         }
 
@@ -446,11 +473,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         {
             if (_voltageBorder != null)
             {
-                _voltageBorder.MouseEnter -= Borders_OnMouseEnter;
-                _voltageBorder.MouseLeave -= Borders_OnMouseLeave;
-                _voltageBorder.MouseLeftButtonDown -= Borders_OnMouseLeftButtonDown;
-                _voltageBorder.MouseMove -= Borders_OnMouseMove;
-                _voltageBorder.MouseLeftButtonUp -= Borders_OnMouseLeftButtonUp;
+
             }
         }
 
@@ -458,11 +481,27 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         {
             if (_timeBorder != null)
             {
-                _timeBorder.MouseEnter -= Borders_OnMouseEnter;
-                _timeBorder.MouseLeave -= Borders_OnMouseLeave;
-                _timeBorder.MouseLeftButtonDown -= Borders_OnMouseLeftButtonDown;
-                _timeBorder.MouseMove -= Borders_OnMouseMove;
-                _timeBorder.MouseLeftButtonUp -= Borders_OnMouseLeftButtonUp;
+
+            }
+        }
+
+        private void UnLoadVoltageThumb()
+        {
+            if(_voltageThumb != null)
+            {
+                _voltageThumb.MouseEnter -= Thumbs_OnMouseEnter;
+                _voltageThumb.MouseLeave -= Thumbs_OnMouseLeave;
+                _voltageThumb.DragDelta -= TextThumb_DragDelta;
+            }
+        }
+
+        private void UnLoadTimeThumb()
+        {
+            if (_timeThumb != null)
+            {
+                _timeThumb.MouseEnter -= Thumbs_OnMouseEnter;
+                _timeThumb.MouseLeave -= Thumbs_OnMouseLeave;
+                _timeThumb.DragDelta -= TextThumb_DragDelta;
             }
         }
 
@@ -485,38 +524,32 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         #region Canvas事件
         private void BoxLineMeterCanvas_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(_isCompassesOn)
+            if(_isCompassesOn && !_isUseThumb)
             {
-                if(!_isUseBorder && !_isUseThumb && !_isMove)
-                {
-                    _startPoint = e.GetPosition((FrameworkElement)sender);
-                }
+                _startPoint = e.GetPosition((FrameworkElement)sender);
             }
             e.Handled = true;
         }
 
         private void BoxLineMeterCanvas_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed && !_isUseThumb)
             {
-                if(!_isUseThumb && !_isUseBorder && !_isMove)
+                OtherControlsVisiblty = Visibility.Visible;
+                LineBrush = MeasuringLineBrush;
+                _endPoint = e.GetPosition((FrameworkElement)sender);
+                if(_endPoint.Y < _timeBorder.Height)
                 {
-                    OtherControlsVisiblty = Visibility.Visible;
-                    LineBrush = MeasuringLineBrush;
-                    _endPoint = e.GetPosition((FrameworkElement)sender);
-                    if(_endPoint.Y < _timeBorder.Height)
-                    {
-                        _endPoint.Y = _timeBorder.Height;
-                    }
-                    if(_endPoint.X < _voltageBorder.Width)
-                    {
-                        _endPoint.X = _voltageBorder.Width;
-                    }
-                    RectangleHeight = Math.Abs(_endPoint.Y - _startPoint.Y);
-                    RectangleWidth = Math.Abs(_endPoint.X - _startPoint.X);
-                    _rectangleLeftUpPoint = new Point(Math.Min(_startPoint.X, _endPoint.X), Math.Min(_startPoint.Y, _endPoint.Y));
-                    SetControlsPosition(_rectangleLeftUpPoint);     
+                    _endPoint.Y = _timeBorder.Height;
                 }
+                if(_endPoint.X < _voltageBorder.Width)
+                {
+                    _endPoint.X = _voltageBorder.Width;
+                }
+                RectangleHeight = Math.Abs(_endPoint.Y - _startPoint.Y);
+                RectangleWidth = Math.Abs(_endPoint.X - _startPoint.X);
+                _rectangleLeftUpPoint = new Point(Math.Min(_startPoint.X, _endPoint.X), Math.Min(_startPoint.Y, _endPoint.Y));
+                SetControlsPosition(_rectangleLeftUpPoint);     
             }
             else
             {
@@ -533,6 +566,32 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                     ThumbVisiblity = Visibility.Collapsed;
                 }
             }
+            e.Handled = true;
+        }
+        #endregion
+
+        #region 整体拖动事件
+        private void TextThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            _rectangleLeftUpPoint.X += e.HorizontalChange;
+            _rectangleLeftUpPoint.Y += e.VerticalChange;
+            if(_rectangleLeftUpPoint.X <= _voltageBorder.Width)
+            {
+                _rectangleLeftUpPoint.X = _voltageBorder.Width;
+            }
+            if(_rectangleLeftUpPoint.X >= _canvas.ActualWidth - RectangleWidth)
+            {
+                _rectangleLeftUpPoint.X = _canvas.ActualWidth - RectangleWidth;
+            }
+            if(_rectangleLeftUpPoint.Y <= _timeBorder.Height)
+            {
+                _rectangleLeftUpPoint.Y = _timeBorder.Height;
+            }
+            if(_rectangleLeftUpPoint.Y >= _canvas.ActualHeight - RectangleHeight)
+            {
+                _rectangleLeftUpPoint.Y = _canvas.ActualHeight - RectangleHeight;
+            }
+            SetControlsPosition(_rectangleLeftUpPoint);
             e.Handled = true;
         }
         #endregion
@@ -755,59 +814,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         }
         #endregion
 
-        #region Border拖动事件
-        private void Borders_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed && _isUseBorder && _isMove)
-            {
-                var currentPoint = e.GetPosition(_canvas);
-                var prepareX = currentPoint.X - _offsetX;
-                var prepareY = currentPoint.Y - _offsetY;
-                if(prepareX < _voltageBorder.Width)
-                {
-                    prepareX = _voltageBorder.Width;
-                }
-                else if(prepareX > _canvas.ActualWidth - RectangleWidth)
-                {
-                    prepareX = _canvas.ActualWidth - RectangleWidth;
-                }
-                if(prepareY < _timeBorder.Height)
-                {
-                    prepareY = _timeBorder.Height;
-                }
-                else if(prepareY > _canvas.ActualHeight - RectangleHeight)
-                {
-                    prepareY = _canvas.ActualHeight - RectangleHeight;
-                }
-                _rectangleLeftUpPoint.X = prepareX;
-                _rectangleLeftUpPoint.Y = prepareY;
-                SetControlsPosition(_rectangleLeftUpPoint);
-            }
-            e.Handled = true;
-        }
-
-        private void Borders_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (_isUseBorder)
-            {
-                _isMove = true;
-                _dragStartPoint = e.GetPosition(_canvas);
-                _offsetX = _dragStartPoint.X - _rectangleLeftUpPoint.X;
-                _offsetY = _dragStartPoint.Y - _rectangleLeftUpPoint.Y;
-            }
-            e.Handled = true;
-        }
-
-        private void Borders_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_isUseBorder)
-            {
-                _isMove = false;
-            }
-            e.Handled = true;
-        }
-        #endregion
-
         #region 其他控件鼠标进入离开事件
         private void Thumbs_OnMouseLeave(object sender, MouseEventArgs e)
         {
@@ -817,16 +823,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private void Thumbs_OnMouseEnter(object sender, MouseEventArgs e)
         {
             _isUseThumb = true;
-        }
-
-        private void Borders_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            _isUseBorder = false;
-        }
-
-        private void Borders_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            _isUseBorder = true;
         }
         #endregion
 
@@ -846,9 +842,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
 
             Canvas.SetTop(_timeBorder, rectLeftUpPointY - _timeBorder.Height);
             Canvas.SetLeft(_timeBorder, rectLeftUpPointX);
+            Canvas.SetTop(_timeThumb, rectLeftUpPointY - _timeBorder.Height);
+            Canvas.SetLeft(_timeThumb, rectLeftUpPointX);
 
             Canvas.SetTop(_voltageBorder, rectLeftUpPointY + _voltageBorder.Height);
             Canvas.SetLeft(_voltageBorder, rectLeftUpPointX - _voltageBorder.Width);
+            Canvas.SetTop(_voltageThumb, rectLeftUpPointY + _voltageBorder.Height);
+            Canvas.SetLeft(_voltageThumb, rectLeftUpPointX - _voltageBorder.Width);
 
             Canvas.SetTop(_leftUpThumb, rectLeftUpPointY - halfThumbHeight);
             Canvas.SetLeft(_leftUpThumb, rectLeftUpPointX - halfThumbWidth);
