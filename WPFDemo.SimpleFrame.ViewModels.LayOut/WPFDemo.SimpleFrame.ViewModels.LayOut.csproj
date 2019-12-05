@@ -79,6 +79,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Messager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Messager.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Messager.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VMOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LayOutViewModel.cs" />
@@ -97,10 +100,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
       <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.csproj">
-      <Project>{EF814E43-2ACE-4122-A1C9-B3BAD2193E96}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VMOnly</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.LayOut\WPFDemo.SimpleFrame.IViewModels.LayOut.csproj">
       <Project>{BC4B313D-D80D-4CAC-B2DA-9DAD04FEC137}</Project>

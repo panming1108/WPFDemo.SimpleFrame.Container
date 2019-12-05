@@ -105,6 +105,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Messager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Messager.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Messager.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VMOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
+    </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.dll</HintPath>
     </Reference>
@@ -268,10 +271,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
       <Project>{c9ad9862-4539-4eea-ba4d-1b01301263eb}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.csproj">
-      <Project>{ef814e43-2ace-4122-a1c9-b3bad2193e96}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VMOnly</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.DMs\WPFDemo.SimpleFrame.IViewModels.DMs.csproj">
       <Project>{d27fb9fa-9c09-4272-9b88-021d24b8409e}</Project>

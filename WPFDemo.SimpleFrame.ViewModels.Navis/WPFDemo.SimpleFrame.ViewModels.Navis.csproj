@@ -58,6 +58,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VMOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MenuViewModel.cs" />
@@ -71,10 +74,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
       <Project>{C9AD9862-4539-4EEA-BA4D-1B01301263EB}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.csproj">
-      <Project>{EF814E43-2ACE-4122-A1C9-B3BAD2193E96}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.MVVM.VMOnly</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.Navis\WPFDemo.SimpleFrame.IViewModels.Navis.csproj">
       <Project>{E8D122AA-95C9-433C-BE0D-C324FA122B20}</Project>
