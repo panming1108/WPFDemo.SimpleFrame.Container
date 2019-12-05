@@ -102,6 +102,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.Mapping, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Mapping.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Mapping.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Messager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Messager.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Messager.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeValidationRule.cs" />
@@ -258,10 +261,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
       <Project>{1efda8f3-f261-4c04-b069-67dacae8bbe5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Messager\WPFDemo.SimpleFrame.Infra.Messager.csproj">
-      <Project>{0CA40CEA-AE5C-425D-8556-CBBABFDE5CFC}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Messager</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
       <Project>{c9ad9862-4539-4eea-ba4d-1b01301263eb}</Project>
