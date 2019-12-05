@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using WPFDemo.SimpleFrame.Infra.Application;
 
 namespace WPFDemo.SimpleFrame.Container
 {
-    public class Startup : Application
+    public class Startup : AppBase
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void App_Startup(object sender, StartupEventArgs e)
         {
             string[] lists = new string[]
             {
@@ -17,27 +18,9 @@ namespace WPFDemo.SimpleFrame.Container
                 "/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/UXsStyle.xaml"
             };
             LoadResources(lists);
-            base.OnStartup(e);
+            base.App_Startup(sender, e);
             Application.Current.MainWindow = new MainWindow();
             Application.Current.MainWindow.ShowDialog();
-        }
-
-        private void LoadResources(string[] resourcesUris)
-        {
-            if(resourcesUris == null)
-            {
-                return;
-            }
-            Application.Current.Resources.MergedDictionaries.Clear();
-
-            foreach (var resourcesUri in resourcesUris)
-            {
-                var resourceDictionary = new ResourceDictionary()
-                {
-                    Source = new Uri(resourcesUri, UriKind.RelativeOrAbsolute)
-                };
-                Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);
-            }
         }
     }
 }

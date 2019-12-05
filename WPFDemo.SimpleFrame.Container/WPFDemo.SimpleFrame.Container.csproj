@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net40\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -81,6 +84,12 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Application, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Application.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Application.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeValidationRule.cs" />
@@ -245,10 +254,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Helper\WPFDemo.SimpleFrame.Infra.Helper.csproj">
       <Project>{DF6BFA02-30DF-4ABF-B335-58F3DD78B757}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Ioc\WPFDemo.SimpleFrame.Infra.Ioc.csproj">
-      <Project>{6855CF0A-D03A-47F5-872E-D340CDDBF043}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Ioc</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Mapping\WPFDemo.SimpleFrame.Infra.Mapping.csproj">
       <Project>{8395fe5f-62f6-4042-a9f6-0249c456e4b5}</Project>
