@@ -42,6 +42,24 @@
         <Setter Property="Width" Value="4"/>
         <Setter Property="Background" Value="Black"/>
     </Style>
+    <Style TargetType="ECGTool:BoxLineValueThumb">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:BoxLineValueThumb">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="5">
+                        <TextBlock VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="5,0,0,0"
+                                   Foreground="White"
+                                   FontSize="15"
+                                   Text="{TemplateBinding Text}">
+                        </TextBlock>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="ECGTool:BoxLineMeter">
         <Setter Property="TextBorderBackground" Value="#CC0F4983"/>
         <Setter Property="HeartRate" Value="29"/>
@@ -62,52 +80,20 @@
                                        StrokeThickness="2"
                                        Stroke="{TemplateBinding LineBrush}"
                                        Visibility="{TemplateBinding OtherControlsVisiblty}"/>
-                            <Border Background="{TemplateBinding TextBorderBackground}"
-                                    Height="20"
-                                    Width="150"
-                                    CornerRadius="5"
-                                    x:Name="PART_TimeBorder"                                    
-                                    Visibility="{TemplateBinding OtherControlsVisiblty}">
-                                <TextBlock VerticalAlignment="Center"
-                                           HorizontalAlignment="Left"
-                                           Margin="5,0,0,0"
-                                           Foreground="White"
-                                           FontSize="15">
-                                    <Run Text="{TemplateBinding TimeInterval}"/>
-                                    <Run Text="ms ("/>
-                                    <Run Text="{TemplateBinding HeartRate}"/>
-                                    <Run Text="bpm)"/>
-                                </TextBlock>
-                            </Border>
-                            <Thumb Style="{StaticResource BoxLineMeter_ThumbBase_Style}"
-                                   Width="{Binding ElementName=PART_TimeBorder, Path=Width}"
-                                   Height="{Binding ElementName=PART_TimeBorder, Path=Height}"
-                                   Opacity="0"
-                                   Cursor="SizeAll"
-                                   x:Name="PART_TimeThumb"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
-                            <Border Background="{TemplateBinding TextBorderBackground}"
-                                    Height="20"
-                                    Width="75"
-                                    CornerRadius="5"
-                                    x:Name="PART_VoltageBorder"
-                                    Visibility="{TemplateBinding OtherControlsVisiblty}">
-                                <TextBlock VerticalAlignment="Center"
-                                           HorizontalAlignment="Left"
-                                           Margin="5,0,0,0"
-                                           Foreground="White"
-                                           FontSize="15">
-                                    <Run Text="{TemplateBinding Voltage}"/>
-                                    <Run Text="uV"/>
-                                </TextBlock>
-                            </Border>
-                            <Thumb Style="{StaticResource BoxLineMeter_ThumbBase_Style}"
-                                   Opacity="0"
-                                   Width="{Binding ElementName=PART_VoltageBorder, Path=Width}"
-                                   Height="{Binding ElementName=PART_VoltageBorder, Path=Height}"
-                                   x:Name="PART_VoltageThumb"
-                                   Cursor="SizeAll"
-                                   Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                            <ECGTool:BoxLineValueThumb Width="150"
+                                                       Height="20"
+                                                       Cursor="SizeAll"
+                                                       x:Name="PART_TimeThumb"
+                                                       Background="{TemplateBinding TextBorderBackground}"
+                                                       Text="{TemplateBinding TimeText}"
+                                                       Visibility="{TemplateBinding OtherControlsVisiblty}"/>
+                            <ECGTool:BoxLineValueThumb Width="75"
+                                                       Height="20"
+                                                       x:Name="PART_VoltageThumb"
+                                                       Background="{TemplateBinding TextBorderBackground}"
+                                                       Cursor="SizeAll"
+                                                       Text="{TemplateBinding Voltage}"
+                                                       Visibility="{TemplateBinding OtherControlsVisiblty}"/>
                             <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
                                    x:Name="PART_LeftUpThumb"
                                    Cursor="SizeNWSE"

@@ -15,10 +15,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
     [TemplatePart(Name = PART_Canvas, Type = typeof(Canvas))]
     [TemplatePart(Name = PART_Rectangle, Type = typeof(Rectangle))]
 
-    [TemplatePart(Name = PART_TimeBorder, Type = typeof(Border))]
-    [TemplatePart(Name = PART_VoltageBorder, Type = typeof(Border))]
-    [TemplatePart(Name = PART_TimeThumb, Type = typeof(Thumb))]
-    [TemplatePart(Name = PART_VoltageThumb, Type = typeof(Thumb))]
+    [TemplatePart(Name = PART_TimeThumb, Type = typeof(BoxLineValueThumb))]
+    [TemplatePart(Name = PART_VoltageThumb, Type = typeof(BoxLineValueThumb))]
 
     [TemplatePart(Name = PART_LeftUpThumb, Type = typeof(Thumb))]
     [TemplatePart(Name = PART_CenterUpThumb, Type = typeof(Thumb))]
@@ -34,8 +32,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         protected const string PART_Canvas = "BoxLineMeterCanvas";
         protected const string PART_Rectangle = "PART_Rectangle";
 
-        protected const string PART_TimeBorder = "PART_TimeBorder";
-        protected const string PART_VoltageBorder = "PART_VoltageBorder";
         protected const string PART_TimeThumb = "PART_TimeThumb";
         protected const string PART_VoltageThumb = "PART_VoltageThumb";
 
@@ -53,10 +49,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         protected Canvas _canvas;
         protected Rectangle _rectangle;
 
-        protected Border _timeBorder;
-        protected Border _voltageBorder;
-        protected Thumb _timeThumb;
-        protected Thumb _voltageThumb;
+        protected BoxLineValueThumb _timeThumb;
+        protected BoxLineValueThumb _voltageThumb;
 
         protected Thumb _leftUpThumb;
         protected Thumb _centerUpThumb;
@@ -74,12 +68,21 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         private Point _startPoint;
         private Point _endPoint;
         private Point _rectangleLeftUpPoint;
-        private Point _dragStartPoint;
-        private double _offsetX;
-        private double _offsetY;
         #endregion
 
         #region DependencyProperty
+
+
+        public string TimeText
+        {
+            get { return (string)GetValue(TimeTextProperty); }
+            set { SetValue(TimeTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TimeText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TimeTextProperty =
+            DependencyProperty.Register("TimeText", typeof(string), typeof(BoxLineMeter));
+
         public double RectangleHeight
         {
             get { return (double)GetValue(RectangleHeightProperty); }
@@ -201,8 +204,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         {
             LoadCanvas();
 
-            LoadTimeBorder();
-            LoadVoltageBorder();
             LoadTimeThumb();
             LoadVoltageThumb();
 
@@ -223,8 +224,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         {
             UnLoadCanvas();
 
-            UnLoadTimeBorder();
-            UnLoadVoltageBorder();
             UnLoadTimeThumb();
             UnLoadVoltageThumb();
 
@@ -337,19 +336,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             }
         }
 
-        private void LoadVoltageBorder()
-        {
-            _voltageBorder = GetTemplateChild(PART_VoltageBorder) as Border;
-        }
-
-        private void LoadTimeBorder()
-        {
-            _timeBorder = GetTemplateChild(PART_TimeBorder) as Border;
-        }
-
         private void LoadVoltageThumb()
         {
-            _voltageThumb = GetTemplateChild(PART_VoltageThumb) as Thumb;
+            _voltageThumb = GetTemplateChild(PART_VoltageThumb) as BoxLineValueThumb;
             if(_voltageThumb != null)
             {
                 _voltageThumb.MouseEnter += Thumbs_OnMouseEnter;
@@ -360,7 +349,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
 
         private void LoadTimeThumb()
         {
-            _timeThumb = GetTemplateChild(PART_TimeThumb) as Thumb;
+            _timeThumb = GetTemplateChild(PART_TimeThumb) as BoxLineValueThumb;
             if (_timeThumb != null)
             {
                 _timeThumb.MouseEnter += Thumbs_OnMouseEnter;
@@ -469,22 +458,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             }
         }
 
-        private void UnLoadVoltageBorder()
-        {
-            if (_voltageBorder != null)
-            {
-
-            }
-        }
-
-        private void UnLoadTimeBorder()
-        {
-            if (_timeBorder != null)
-            {
-
-            }
-        }
-
         private void UnLoadVoltageThumb()
         {
             if(_voltageThumb != null)
@@ -538,13 +511,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 OtherControlsVisiblty = Visibility.Visible;
                 LineBrush = MeasuringLineBrush;
                 _endPoint = e.GetPosition((FrameworkElement)sender);
-                if(_endPoint.Y < _timeBorder.Height)
+                if(_endPoint.Y < _timeThumb.Height)
                 {
-                    _endPoint.Y = _timeBorder.Height;
+                    _endPoint.Y = _timeThumb.Height;
                 }
-                if(_endPoint.X < _voltageBorder.Width)
+                if(_endPoint.X < _voltageThumb.Width)
                 {
-                    _endPoint.X = _voltageBorder.Width;
+                    _endPoint.X = _voltageThumb.Width;
                 }
                 RectangleHeight = Math.Abs(_endPoint.Y - _startPoint.Y);
                 RectangleWidth = Math.Abs(_endPoint.X - _startPoint.X);
@@ -575,17 +548,17 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
         {
             _rectangleLeftUpPoint.X += e.HorizontalChange;
             _rectangleLeftUpPoint.Y += e.VerticalChange;
-            if(_rectangleLeftUpPoint.X <= _voltageBorder.Width)
+            if(_rectangleLeftUpPoint.X <= _voltageThumb.Width)
             {
-                _rectangleLeftUpPoint.X = _voltageBorder.Width;
+                _rectangleLeftUpPoint.X = _voltageThumb.Width;
             }
             if(_rectangleLeftUpPoint.X >= _canvas.ActualWidth - RectangleWidth)
             {
                 _rectangleLeftUpPoint.X = _canvas.ActualWidth - RectangleWidth;
             }
-            if(_rectangleLeftUpPoint.Y <= _timeBorder.Height)
+            if(_rectangleLeftUpPoint.Y <= _timeThumb.Height)
             {
-                _rectangleLeftUpPoint.Y = _timeBorder.Height;
+                _rectangleLeftUpPoint.Y = _timeThumb.Height;
             }
             if(_rectangleLeftUpPoint.Y >= _canvas.ActualHeight - RectangleHeight)
             {
@@ -666,9 +639,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             var leftUpPointX = _rectangleLeftUpPoint.X + e.HorizontalChange;
             var width = RectangleWidth - e.HorizontalChange;
 
-            if(leftUpPointX < _voltageBorder.Width)
+            if(leftUpPointX < _voltageThumb.Width)
             {
-                _rectangleLeftUpPoint.X = _voltageBorder.Width;
+                _rectangleLeftUpPoint.X = _voltageThumb.Width;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -688,9 +661,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             var leftUpPointY = _rectangleLeftUpPoint.Y + e.VerticalChange;
             var height = RectangleHeight - e.VerticalChange;
 
-            if (leftUpPointY < _timeBorder.Height)
+            if (leftUpPointY < _timeThumb.Height)
             {
-                _rectangleLeftUpPoint.Y = _timeBorder.Height;
+                _rectangleLeftUpPoint.Y = _timeThumb.Height;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -723,9 +696,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (leftUpPointX < _voltageBorder.Width)
+            if (leftUpPointX < _voltageThumb.Width)
             {
-                _rectangleLeftUpPoint.X = _voltageBorder.Width;
+                _rectangleLeftUpPoint.X = _voltageThumb.Width;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -752,9 +725,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (leftUpPointY < _timeBorder.Height)
+            if (leftUpPointY < _timeThumb.Height)
             {
-                _rectangleLeftUpPoint.Y = _timeBorder.Height;
+                _rectangleLeftUpPoint.Y = _timeThumb.Height;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -788,9 +761,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (leftUpPointY < _timeBorder.Height)
+            if (leftUpPointY < _timeThumb.Height)
             {
-                _rectangleLeftUpPoint.Y = _timeBorder.Height;
+                _rectangleLeftUpPoint.Y = _timeThumb.Height;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -800,9 +773,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
-            if (leftUpPointX < _voltageBorder.Width)
+            if (leftUpPointX < _voltageThumb.Width)
             {
-                _rectangleLeftUpPoint.X = _voltageBorder.Width;
+                _rectangleLeftUpPoint.X = _voltageThumb.Width;
                 SetControlsPosition(_rectangleLeftUpPoint);
                 return;
             }
@@ -840,15 +813,11 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             Canvas.SetTop(_rectangle, rectLeftUpPointY);
             Canvas.SetLeft(_rectangle, rectLeftUpPointX);
 
-            Canvas.SetTop(_timeBorder, rectLeftUpPointY - _timeBorder.Height);
-            Canvas.SetLeft(_timeBorder, rectLeftUpPointX);
-            Canvas.SetTop(_timeThumb, rectLeftUpPointY - _timeBorder.Height);
+            Canvas.SetTop(_timeThumb, rectLeftUpPointY - _timeThumb.Height);
             Canvas.SetLeft(_timeThumb, rectLeftUpPointX);
 
-            Canvas.SetTop(_voltageBorder, rectLeftUpPointY + _voltageBorder.Height);
-            Canvas.SetLeft(_voltageBorder, rectLeftUpPointX - _voltageBorder.Width);
-            Canvas.SetTop(_voltageThumb, rectLeftUpPointY + _voltageBorder.Height);
-            Canvas.SetLeft(_voltageThumb, rectLeftUpPointX - _voltageBorder.Width);
+            Canvas.SetTop(_voltageThumb, rectLeftUpPointY + _voltageThumb.Height);
+            Canvas.SetLeft(_voltageThumb, rectLeftUpPointX - _voltageThumb.Width);
 
             Canvas.SetTop(_leftUpThumb, rectLeftUpPointY - halfThumbHeight);
             Canvas.SetLeft(_leftUpThumb, rectLeftUpPointX - halfThumbWidth);
@@ -879,9 +848,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
 
         private void SetText(string timeInterval, string voltage, string heartRate)
         {
-            TimeInterval = timeInterval + "";
-            Voltage = voltage + "";
-            HeartRate = heartRate + "";
+            TimeText = timeInterval + "ms (" + heartRate + "bpm)";
+            Voltage = voltage + "uV";
         }
 
         private void BoxLineMeter_Unloaded(object sender, System.Windows.RoutedEventArgs e)
@@ -890,5 +858,18 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools
             UnLoadedPartControls();
             Unloaded -= BoxLineMeter_Unloaded;
         }
+    }
+
+    public class BoxLineValueThumb : Thumb
+    {
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(BoxLineValueThumb));
     }
 }
