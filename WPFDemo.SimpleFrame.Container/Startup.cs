@@ -18,7 +18,6 @@ namespace WPFDemo.SimpleFrame.Container
                 "/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/UXsStyle.xaml"
             };
             LoadResources(lists);
-            base.App_Startup(sender, e);
             Application.Current.MainWindow = new MainWindow();
             Application.Current.MainWindow.ShowDialog();
         }
