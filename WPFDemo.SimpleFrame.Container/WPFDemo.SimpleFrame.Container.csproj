@@ -248,9 +248,17 @@
       <Project>{3f27ce5c-96a9-4a9d-bf58-8bfa594a0fb1}</Project>
       <Name>WPFDemo.SimpleFrame.BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.DAL\WPFDemo.SimpleFrame.DAL.csproj">
+      <Project>{ee503551-1e5a-4e2a-b936-992e4c7facc8}</Project>
+      <Name>WPFDemo.SimpleFrame.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IBLL\WPFDemo.SimpleFrame.IBLL.csproj">
       <Project>{e1243ff9-b052-4ac7-ae55-80460b828599}</Project>
       <Name>WPFDemo.SimpleFrame.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IDAL\WPFDemo.SimpleFrame.IDAL.csproj">
+      <Project>{309285c2-be35-4fa7-b455-e3594eaad69e}</Project>
+      <Name>WPFDemo.SimpleFrame.IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.ControlsThemes\WPFDemo.SimpleFrame.Infra.ControlsThemes.csproj">
       <Project>{d399f467-fc99-413c-ae99-8f2b9aeec34b}</Project>
