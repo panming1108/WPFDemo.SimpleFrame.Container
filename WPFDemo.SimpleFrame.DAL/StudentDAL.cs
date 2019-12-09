@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WPFDemo.SimpleFrame.IDAL;
 using WPFDemo.SimpleFrame.Infra.Models;
 using WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper;
+using System.Configuration;
 
 namespace WPFDemo.SimpleFrame.DAL
 {
@@ -13,7 +14,7 @@ namespace WPFDemo.SimpleFrame.DAL
     {
         public StudentDAL()
         {
-            DBPath = "DB/Sky.MonitorConsole.db";
+            DBPath = ConfigurationManager.AppSettings["DBSourceUri"].ToString();
         }
 
         public async Task<List<Student>> GetStudents()
