@@ -244,6 +244,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WPFDemo.SimpleFrame.Infra\WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper\WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper.csproj">
+      <Project>{7b4ab2bb-f204-42e6-8502-908e49c02974}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.BLL\WPFDemo.SimpleFrame.BLL.csproj">
       <Project>{3f27ce5c-96a9-4a9d-bf58-8bfa594a0fb1}</Project>
       <Name>WPFDemo.SimpleFrame.BLL</Name>

@@ -6,12 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPFDemo.SimpleFrame.IBLL;
+using WPFDemo.SimpleFrame.IDAL;
 using WPFDemo.SimpleFrame.Infra.Models;
 
 namespace WPFDemo.SimpleFrame.BLL
 {
     public class StudentBusi : IStudentBusi
     {
+        private IStudentDAL _studentDAL;
+
+        public StudentBusi(IStudentDAL studentDAL)
+        {
+            _studentDAL = studentDAL;
+        }
+
         public Task<QueryResult> GetStudents(int pageNo, int pageSize)
         {
             return Task.Factory.StartNew(
@@ -41,6 +49,11 @@ namespace WPFDemo.SimpleFrame.BLL
 
                     return queryResult;
                 });          
+        }
+
+        public async Task<List<Student>> GetStudents()
+        {
+            return await _studentDAL.GetStudents();
         }
     }
 }

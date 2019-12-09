@@ -93,6 +93,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.IDAL", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.DAL", "WPFDemo.SimpleFrame.DAL\WPFDemo.SimpleFrame.DAL.csproj", "{EE503551-1E5A-4E2A-B936-992E4C7FACC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper", "..\WPFDemo.SimpleFrame.Infra\WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper\WPFDemo.SimpleFrame.Infra.DALOnly.SQLiteHelper.csproj", "{7B4AB2BB-F204-42E6-8502-908E49C02974}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -239,6 +241,10 @@ Global
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B4AB2BB-F204-42E6-8502-908E49C02974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4AB2BB-F204-42E6-8502-908E49C02974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4AB2BB-F204-42E6-8502-908E49C02974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4AB2BB-F204-42E6-8502-908E49C02974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

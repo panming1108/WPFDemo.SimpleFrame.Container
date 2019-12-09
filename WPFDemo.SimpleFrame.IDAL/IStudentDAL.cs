@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using WPFDemo.SimpleFrame.Infra.Models;
 
-namespace WPFDemo.SimpleFrame.IBLL
+namespace WPFDemo.SimpleFrame.IDAL
 {
-    public interface IStudentBusi
+    public interface IStudentDAL
     {
-        Task<QueryResult> GetStudents(int pageNo, int pageSize);
         Task<List<Student>> GetStudents();
     }
 }

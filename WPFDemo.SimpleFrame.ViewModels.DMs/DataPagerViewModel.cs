@@ -23,11 +23,16 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         protected override async Task PageSearch(int pageSize, int pageNo)
         {
-            var result = await _studentBusi.GetStudents(pageNo, pageSize);
+            //var result = await _studentBusi.GetStudents(pageNo, pageSize);
+            //ItemCount = 9999;
+            //PageSize = result.PageSize;
+            //PageNo = result.PageNo;
+            //DataSource = result.Students;
+            var result = await _studentBusi.GetStudents();
             ItemCount = 9999;
-            PageSize = result.PageSize;
-            PageNo = result.PageNo;
-            DataSource = result.Students;
+            PageSize = 10;
+            PageNo = 1;
+            DataSource = result;
         }
 
         protected async override Task Loaded()
