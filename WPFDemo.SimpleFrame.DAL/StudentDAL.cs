@@ -19,7 +19,7 @@ namespace WPFDemo.SimpleFrame.DAL
 
         public async Task<List<Student>> GetStudents()
         {
-            string sql = "select * from TbStudent;";
+            string sql = "select * from Student;";
             var result = await SqlQueryList<Student>(sql);
             return result.ToList();
         }
