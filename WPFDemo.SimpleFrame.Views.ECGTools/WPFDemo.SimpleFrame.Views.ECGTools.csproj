@@ -32,8 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.8\lib\net40-client\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -46,7 +53,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WPFDemo.SimpleFrame.Infra.Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Helper.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Helper.dll</HintPath>
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Helper.1.0.1\lib\net40\WPFDemo.SimpleFrame.Infra.Helper.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

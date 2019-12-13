@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFDemo.SimpleFrame.Container.IViewModels;
+using WPFDemo.SimpleFrame.Infra.Helper;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 
 namespace WPFDemo.SimpleFrame.Container
@@ -32,6 +33,7 @@ namespace WPFDemo.SimpleFrame.Container
             ////创建TreeView的数据源
 
             //treeView.ItemsSource = jobj.Children().Select(c => JsonHeaderLogic.FromJToken(c));
+            LogHelper.Info("Test Log");
         }
     }
 }
