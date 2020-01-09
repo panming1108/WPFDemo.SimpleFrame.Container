@@ -10,7 +10,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage">
-    
+    <Page.Resources>
+
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -28,8 +30,22 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        <Grid Grid.Row="1">
-            
+        <Grid Grid.Row="1" Background="White">
+            <StackPanel>
+                <TextBlock>
+                    <Run Text="角:"/>
+                    <Run Text="{Binding AngleText}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="棱:"/>
+                    <Run Text="{Binding LengText}"/>
+                </TextBlock>
+                <Button Width="60"
+                        Height="30"
+                        HorizontalAlignment="Left"
+                        Content="刷新"
+                        Command="{Binding RefreshCommand}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
