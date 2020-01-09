@@ -37,6 +37,17 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
             }
         }
 
+        private string _allText;
+        public string AllText
+        {
+            get => _allText;
+            set
+            {
+                _allText = value;
+                OnPropertyChanged(() => AllText);
+            }
+        }
+
         private IEnumerable<JsonHeaderLogic> _source;
         public IEnumerable<JsonHeaderLogic> Source
         {
@@ -60,6 +71,7 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
             await TaskEx.FromResult(0);
             AngleText = GenerateText(_angle) + "C";
             LengText = GenerateText(_leng) + "D";
+            AllText = AngleText + LengText;
         }
 
         private string GenerateText(string[] data)

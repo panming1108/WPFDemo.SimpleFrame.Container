@@ -31,21 +31,32 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <Grid Grid.Row="1" Background="White">
-            <StackPanel>
-                <TextBlock>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="182"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border BorderThickness="0,0,0.5,0"
+                    BorderBrush="Black">
+                <StackPanel>
+                    <TextBlock>
                     <Run Text="角:"/>
                     <Run Text="{Binding AngleText}"/>
-                </TextBlock>
-                <TextBlock>
+                    </TextBlock>
+                    <TextBlock>
                     <Run Text="棱:"/>
                     <Run Text="{Binding LengText}"/>
-                </TextBlock>
-                <Button Width="60"
+                    </TextBlock>
+                    <TextBlock>
+                    <Run Text="全:"/>
+                    <Run Text="{Binding AllText}"/>
+                    </TextBlock>
+                    <Button Width="60"
                         Height="30"
                         HorizontalAlignment="Left"
                         Content="刷新"
                         Command="{Binding RefreshCommand}"/>
-            </StackPanel>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </Page>
