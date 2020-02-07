@@ -22,6 +22,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
 
         private EMCDataPager _dataPager;
 
+        public string RowIsEnabledPath
+        {
+            get { return (string)GetValue(RowIsEnabledPathProperty); }
+            set { SetValue(RowIsEnabledPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for RowIsEnabledPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RowIsEnabledPathProperty =
+            DependencyProperty.Register("RowIsEnabledPath", typeof(string), typeof(NewDataGrid));
+
         // Using a DependencyProperty as the backing store for IsDisplayIndexColumn.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsDisplayIndexColumnProperty =
             DependencyProperty.Register("IsDisplayIndexColumn", typeof(bool), typeof(NewDataGrid), new PropertyMetadata(false));
@@ -253,11 +263,33 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid
         {
             base.OnLoadingRow(e);
             InitIndexNum(e);
+            InitRowIsEnabled(e);
             e.Row.MouseDoubleClick -= RaiseMouseDoubleClick;
             e.Row.MouseDoubleClick += RaiseMouseDoubleClick;
             if (RowContextMenu != null)
             {
                 e.Row.ContextMenu = RowContextMenu;
+            }
+        }
+
+        private void InitRowIsEnabled(DataGridRowEventArgs e)
+        {
+            if(e.Row == null)
+            {
+                return;
+            }
+            if(e.Row.DataContext == null)
+            {
+                return;
+            }           
+            if (!string.IsNullOrEmpty(RowIsEnabledPath))
+            {
+                Type type = e.Row.DataContext.GetType();
+                var isEnabled = type.GetProperty(RowIsEnabledPath);
+                if (isEnabled != null)
+                {
+                    e.Row.IsEnabled = (bool)isEnabled.GetValue(e.Row.DataContext, null);
+                }
             }
         }
 

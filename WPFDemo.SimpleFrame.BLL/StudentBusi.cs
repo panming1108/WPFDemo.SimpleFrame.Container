@@ -40,6 +40,7 @@ namespace WPFDemo.SimpleFrame.BLL
                             Id = i,
                             Name = "Testaksjdfhkjashdfkjashkdfhkaskjasdhfk" + i * 10,
                             Age = i * 10,
+                            IsEnabled = i % 4 != 0
                         };
                         students.Add(student);
                     }

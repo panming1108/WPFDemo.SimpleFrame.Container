@@ -10,6 +10,7 @@ namespace WPFDemo.SimpleFrame.Infra.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
+        public bool IsEnabled { get; set; }
 
         public Student()
         {
@@ -23,9 +24,18 @@ namespace WPFDemo.SimpleFrame.Infra.Models
             Age = age;
         }
 
+        public Student(int id, string name, int age, bool isEnabled)
+        {
+            Id = id;
+            Name = name;
+            Age = age;
+            IsEnabled = isEnabled;
+        }
+
+
         public override string ToString()
         {
-            return Id + "," + Name + "," + Age;
+            return Id + "," + Name + "," + Age + "," + IsEnabled;
         }
     }
 }
