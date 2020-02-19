@@ -137,9 +137,9 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="10,0">
-        <EMCListBox:EMCListBox ItemsSource="{Binding ListBoxSource}"
-                               Style="{StaticResource ReadEMCListBoxStyle}"
-                               ItemTemplate="{StaticResource ListBoxItemTemplate}"/>
-    </Grid>
+    <StackPanel Margin="10,0">
+        <EMCListBox:EMCFlushListBox ItemsSource="{Binding ListBoxSource}"                                    
+                                    ItemTemplate="{StaticResource ListBoxItemTemplate}" Height="850"/>
+        <Button Width="90" Height="30" Command="{Binding InsertCommand}"/>
+    </StackPanel>
 </UserControl>
