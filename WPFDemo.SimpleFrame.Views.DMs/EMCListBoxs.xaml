@@ -44,7 +44,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <DataTemplate x:Key="ListBoxItemTemplate">
+            <!--<DataTemplate x:Key="ListBoxItemTemplate">
                 <Grid Height="127">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -134,12 +134,30 @@
                             Style="{StaticResource listBox_Btn_Style}"/>
                     </Grid>
                 </Grid>
+            </DataTemplate>-->
+            <DataTemplate x:Key="ListBoxItemTemplate">
+                <Grid Height="20">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Data.Id}"/>
+                        <TextBlock Text="{Binding Data.Name}" Margin="10,0"/>
+                        <TextBlock Text="{Binding Data.Age}"/>
+                    </StackPanel>
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Margin="10,0">
-        <EMCListBox:EMCFlushListBox ItemsSource="{Binding ListBoxSource}"                                    
-                                    ItemTemplate="{StaticResource ListBoxItemTemplate}" Height="850"/>
-        <Button Width="90" Height="30" Command="{Binding InsertCommand}"/>
+        <EMCListBox:LazyFlushListBox ItemsSource="{Binding Students}"
+                                     LazyLoadCommand="{Binding LazyLoadCommand}"
+                                     Style="{StaticResource LazyLoadListBoxStyle}"
+                                     StartLazyLoadCount="{Binding StartLazyLoadCount}"
+                                     IsFlushMemberPath="IsFlush"
+                                     Height="245"
+                                     BorderThickness="1"
+                                     BorderBrush="Black"
+                                     Width="300"
+                                     VerticalAlignment="Center"
+                                     ItemTemplate="{StaticResource ListBoxItemTemplate}"/>
+        <Button Width="90" Height="30" Command="{Binding InsertCommand}" Content="插入数据"/>
     </StackPanel>
 </UserControl>

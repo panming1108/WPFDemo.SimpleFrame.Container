@@ -28,9 +28,11 @@
                  SelectedItem="{Binding SelectedNavi, Mode=OneWayToSource}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                    <Grid Height="50">
+                        <TextBlock Text="{Binding Name}"
+                                   VerticalAlignment="Center"                               
+                                   HorizontalAlignment="Center"/>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </EMCListBox:EMCListBox>

@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.ListBox
 {
-    public class EMCFlushListBoxItem : ListBoxItem
+    public class LazyFlushListBoxItem : ListBoxItem
     {
 
     }

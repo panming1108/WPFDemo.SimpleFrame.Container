@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataGridModel.cs" />
+    <Compile Include="FlushModel.cs" />
     <Compile Include="IconModel.cs" />
     <Compile Include="ListBoxModel.cs" />
     <Compile Include="PopupNotifyObject.cs" />

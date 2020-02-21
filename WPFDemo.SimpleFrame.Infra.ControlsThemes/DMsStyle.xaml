@@ -392,7 +392,7 @@
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <!--<Setter Property="VerticalContentAlignment" Value="Center" />-->
-        <Setter Property="MinHeight" Value="50" />
+        <!--<Setter Property="MinHeight" Value="50" />-->
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
         <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
@@ -477,7 +477,34 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <ScrollViewer>
+                        <ScrollViewer x:Name="PART_ScrollViewer">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="{StaticResource DisableOpacity}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LazyLoadListBoxStyle" TargetType="EMCListBox:LazyFlushListBox">
+        <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource ItemsContentBackground}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListBoxItem}"></Setter>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="False"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCListBox:LazyFlushListBox">
+                    <Border Name="Border" 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer x:Name="PART_ScrollViewer">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
