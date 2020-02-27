@@ -169,4 +169,100 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="GroupLeadSwitchListBoxItem" TargetType="ListBoxItem">
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
+                            <ContentPresenter/>
+                        </CheckBox>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ECGTool:GroupLeadSwitch">
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="SelectionMode" Value="Multiple"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource GroupLeadSwitchListBoxItem}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:GroupLeadSwitch">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel Orientation="Vertical">
+                            <Button Content="全选" x:Name="PART_SelectAllBtn"/>
+                            <ListBox ItemsSource="{TemplateBinding GroupSource}" 
+                                     DisplayMemberPath="Key"
+                                     x:Name="PART_GroupListBox"
+                                     SelectedValuePath="Key"/>
+                            <ItemsPresenter/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ECGTool:LeadLayOutSwitch">
+        <Setter Property="StaysOpen" Value="False"/>
+        <Setter Property="SwitchType" Value="LayOut"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:LeadLayOutSwitch">
+                    <Popup IsOpen="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
+                           AllowsTransparency="True"
+                           PlacementTarget="{TemplateBinding PlacementTarget}"
+                           StaysOpen="{TemplateBinding StaysOpen}"
+                           Placement="{TemplateBinding Placement}"
+                           VerticalOffset="{TemplateBinding VerticalOffset}"
+                           HorizontalOffset="{TemplateBinding HorizontalOffset}"
+                           x:Name="PART_RootPopup">
+                        <Grid>
+                            <ListBox x:Name="PART_LayOutSwitch"
+                                     ItemsSource="{TemplateBinding ItemsSource}"
+                                     Style="{TemplateBinding ListBoxStyle}"
+                                     ItemContainerStyle="{TemplateBinding ListBoxItemStyle}"
+                                     ItemTemplate="{TemplateBinding ItemTemplate}"
+                                     SelectionMode="Multiple"
+                                     Visibility="Collapsed"
+                                     SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"/>
+                            <ECGTool:GroupLeadSwitch x:Name="PART_GroupLeadSwitch"
+                                                     GroupSource="{TemplateBinding GroupSource}"
+                                                     Visibility="Collapsed"/>
+                        </Grid>
+                    </Popup>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SwitchType" Value="LayOut">
+                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Single"/>
+                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="SwitchType" Value="Lead">
+                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Multiple"/>
+                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="SwitchType" Value="GroupLead">
+                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Multiple"/>
+                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

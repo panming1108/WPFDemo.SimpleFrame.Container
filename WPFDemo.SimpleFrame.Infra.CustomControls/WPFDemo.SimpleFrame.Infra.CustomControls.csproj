@@ -77,6 +77,10 @@
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="ECGTools\BoxLineMeter.cs" />
     <Compile Include="ECGTools\EuqiDistanceMeasure.cs" />
+    <Compile Include="ECGTools\LeadLayOutSwitch\GroupLeadSwitch.cs" />
+    <Compile Include="ECGTools\LeadLayOutSwitch\LeadLayOutSwitch.cs" />
+    <Compile Include="ECGTools\LeadLayOutSwitch\LeadSwitchSelectionChangedEventArgs.cs" />
+    <Compile Include="ECGTools\LeadLayOutSwitch\SwitchTypeEnum.cs" />
     <Compile Include="ECGTools\ScopeViewer.cs" />
     <Compile Include="Editors\CheckBox\CheckBoxGroup.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />

@@ -14,14 +14,13 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <ECGTools:BoxLineMeterView/>
-            <ECGTools:ScopeViewerView Grid.Column="1"/>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ECGTools:BoxLineMeterView Grid.Column="0"/>
+        <ECGTools:ScopeViewerView Grid.Column="1"/>
         <ECGTools:EuqiDistanceMeasureView Grid.Row="1"/>
+        <ECGTools:SwitchView Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </Page>
