@@ -66,7 +66,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         protected virtual void OnPageSizeChanged(PageSizeChangedEventArgs args)
         {
             EventHandler<PageSizeChangedEventArgs> pageSizeChanged = PageSizeChanged;
-            if(pageSizeChanged == null)
+            if (pageSizeChanged == null)
             {
                 return;
             }
@@ -81,6 +81,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
 
 
         #region Property
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CornerRadius.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(EMCDataPager));
+
+        public bool IsUsePageButton
+        {
+            get { return (bool)GetValue(IsUsePageButtonProperty); }
+            set { SetValue(IsUsePageButtonProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsUsePageButton.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsUsePageButtonProperty =
+            DependencyProperty.Register("IsUsePageButton", typeof(bool), typeof(EMCDataPager));
+
         /// <summary>
         /// 第一个省略号是否隐藏
         /// </summary>
@@ -375,7 +395,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
 
         private bool MoveToPage(int pageNo)
         {
-            if(_isChangingPage)
+            if (_isChangingPage)
             {
                 throw new InvalidOperationException("Cannot change page during a page changing operation.");
             }
@@ -542,7 +562,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             EMCDataPager dataPager = sender as EMCDataPager;
             if (dataPager != null)
             {
-                e.CanExecute = dataPager.CanMoveToLastPage = true;
+                e.CanExecute = IsUsePageButton ? true : dataPager.CanMoveToNextPage;
             }
         }
 
@@ -556,7 +576,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             EMCDataPager dataPager = sender as EMCDataPager;
             if (dataPager != null)
             {
-                e.CanExecute = dataPager.CanMoveToFirstPage = true;
+                e.CanExecute = IsUsePageButton ? true : dataPager.CanMoveToPreviousPage;
             }
         }
         #endregion
@@ -575,6 +595,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             }
             CanMoveToPreviousPage = PageNo > 1;
             CanMoveToNextPage = PageNo < PageCount;
+
         }
 
         private void GenerateDisplayNumbers(int pageNo)
@@ -643,14 +664,14 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         private static void OnPageNoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             EMCDataPager dataPager = (EMCDataPager)d;
-            if(dataPager._areHandlersSuspended)
+            if (dataPager._areHandlersSuspended)
             {
                 return;
             }
             int num = (int)e.OldValue;
             int num2 = (int)e.NewValue;
             dataPager.CheckPageNoChange(num, num2);
-            if(!dataPager.MoveToPage(num2))
+            if (!dataPager.MoveToPage(num2))
             {
                 dataPager.SetValueNoCallback(PageNoProperty, num);
             }
@@ -662,7 +683,10 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
                 CommandManager.InvalidateRequerySuggested();
             }
             dataPager.OnPageNoChanged(num, num2);
-            dataPager._textBox.Text = string.Empty;
+            if (dataPager._textBox != null)
+            {
+                dataPager._textBox.Text = string.Empty;
+            }
         }
 
         private void CheckPageNoChange(int oldPageNo, int newPageNo)

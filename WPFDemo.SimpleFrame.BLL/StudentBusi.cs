@@ -20,36 +20,33 @@ namespace WPFDemo.SimpleFrame.BLL
             _studentDAL = studentDAL;
         }
 
-        public Task<QueryResult> GetStudents(int pageNo, int pageSize)
+        public async Task<QueryResult> GetStudents(int pageNo, int pageSize)
         {
-            return Task.Factory.StartNew(
-                ()=> 
+            await TaskEx.Delay(500);
+            QueryResult queryResult = new QueryResult();
+            List<Student> students = new List<Student>();
+            int start = pageSize * (pageNo - 1);
+            int end = start + pageSize;
+            if (end >= 9999)
+            {
+                end = 9999;
+            }
+            for (int i = start; i < end; i++)
+            {
+                Student student = new Student()
                 {
-                    QueryResult queryResult = new QueryResult();
-                    List<Student> students = new List<Student>();
-                    int start = pageSize * (pageNo - 1);
-                    int end = start + pageSize;
-                    if (end >= 9999)
-                    {
-                        end = 9999;
-                    }
-                    for (int i = start; i < end; i++)
-                    {
-                        Student student = new Student()
-                        {
-                            Id = i,
-                            Name = "Testaksjdfhkjashdfkjashkdfhkaskjasdhfk" + i * 10,
-                            Age = i * 10,
-                            IsEnabled = i % 4 != 0
-                        };
-                        students.Add(student);
-                    }
-                    queryResult.Students = students;
-                    queryResult.PageSize = pageSize;
-                    queryResult.PageNo = pageNo;
+                    Id = i,
+                    Name = "Testaksjdfhkjashdfkjashkdfhkaskjasdhfk" + i * 10,
+                    Age = i * 10,
+                    IsEnabled = i % 4 != 0
+                };
+                students.Add(student);
+            }
+            queryResult.Students = students;
+            queryResult.PageSize = pageSize;
+            queryResult.PageNo = pageNo;
 
-                    return queryResult;
-                });          
+            return queryResult;
         }
 
         public async Task<List<Student>> GetStudents()

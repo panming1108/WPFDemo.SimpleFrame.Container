@@ -26,9 +26,7 @@
         <EMCDataGrid:EMCDataGrid RowHeight="50"
                                  BorderThickness="1"
                                  Height="292"
-                                 ItemsSource="{Binding DataSource}"
-                                 VerticalScrollBarVisibility="Auto"
-                                 HorizontalScrollBarVisibility="Disabled">
+                                 ItemsSource="{Binding DataSource}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Id}"></DataGridTextColumn>
                 <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Name}"></DataGridTextColumn>
