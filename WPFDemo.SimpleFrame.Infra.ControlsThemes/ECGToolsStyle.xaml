@@ -265,4 +265,37 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="ECGTool:HRMonitor">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="Unit" Value="bpm"/>
+        <Setter Property="Minimum" Value="60"/>
+        <Setter Property="Maximum" Value="100"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="NormalBrush" Value="#37B9FF"/>
+        <Setter Property="AbnormalBrush" Value="#FF3C3C"/>
+        <Setter Property="Foreground" Value="#37B9FF"/>
+        <Setter Property="HR" Value="-1"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="UnitFontSize" Value="12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:HRMonitor">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <TextBlock>
+                            <TextBlock FontSize="{TemplateBinding FontSize}"
+                                       Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HR}"/>
+                            <TextBlock FontSize="{TemplateBinding UnitFontSize}"
+                                       Text="{TemplateBinding Unit}"
+                                       Margin="-5,0,0,0"/>
+                        </TextBlock>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

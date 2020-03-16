@@ -16,6 +16,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
@@ -84,6 +85,13 @@
                                                      SelectedItemsChanged="PART_GroupLeadSwitch_SelectedItemsChanged"/>-->
                     <TextBlock x:Name="PART_GroupLeadSwitchText" VerticalAlignment="Bottom"/>
                 </Grid>
+            </Grid>
+            <Grid Grid.Column="3">
+                <StackPanel>
+                    <TextBlock Text="心率展示"/>
+                    <ECGToolControls:HRMonitor x:Name="HR"/>
+                    <Button Height="30" Width="50" VerticalAlignment="Bottom" Click="Button_Click"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

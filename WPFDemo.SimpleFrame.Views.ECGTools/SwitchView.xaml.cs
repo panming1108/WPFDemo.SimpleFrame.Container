@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -73,6 +74,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 result += item.ToString() + ",";
             }
             PART_GroupLeadSwitchText.Text = result.TrimEnd(',');
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            HR.HR = new Random().Next(40, 120);
         }
     }
 
