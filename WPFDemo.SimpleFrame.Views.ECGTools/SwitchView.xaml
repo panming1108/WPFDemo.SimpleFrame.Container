@@ -90,7 +90,6 @@
                 <StackPanel>
                     <TextBlock Text="心率展示"/>
                     <ECGToolControls:HRMonitor x:Name="HR"/>
-                    <Button Height="30" Width="50" VerticalAlignment="Bottom" Click="Button_Click"/>
                 </StackPanel>
             </Grid>
         </Grid>
