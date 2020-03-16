@@ -70,6 +70,7 @@
     <Compile Include="DMs\DataPager\DataPagerCommands.cs" />
     <Compile Include="DMs\DataPager\EMCDataPager.cs" />
     <Compile Include="DMs\DataPager\SelectedBackgroundConverter.cs" />
+    <Compile Include="DMs\DataPager\TaskEx.cs" />
     <Compile Include="DMs\ListBox\LazyFlushListBox.cs" />
     <Compile Include="DMs\ListBox\LazyFlushListBoxItem.cs" />
     <Compile Include="DMs\ListBox\EMCListBox.cs" />

@@ -40,6 +40,7 @@
                                    PageNo="{Binding PageNo,Mode=TwoWay}"
                                    NumericButtonCount="7"
                                    PageSizeSource="{Binding PageSizeSource}"
-                                   ItemCount="{Binding ItemCount}"/>
+                                   ItemCount="{Binding ItemCount}"
+                                   SearchCallBack="{Binding SearchCallBack}"/>
     </Grid>
 </UserControl>

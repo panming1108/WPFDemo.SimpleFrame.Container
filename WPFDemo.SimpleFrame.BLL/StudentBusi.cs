@@ -22,6 +22,7 @@ namespace WPFDemo.SimpleFrame.BLL
 
         public async Task<QueryResult> GetStudents(int pageNo, int pageSize)
         {
+            
             await TaskEx.Delay(500);
             QueryResult queryResult = new QueryResult();
             List<Student> students = new List<Student>();

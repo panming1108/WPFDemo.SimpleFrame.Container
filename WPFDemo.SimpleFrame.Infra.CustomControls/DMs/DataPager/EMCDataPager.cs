@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -294,6 +295,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         // Using a DependencyProperty as the backing store for LastEllipsisVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LastEllipsisVisibilityProperty =
             DependencyProperty.Register("LastEllipsisVisibility", typeof(Visibility), typeof(EMCDataPager));
+
+        public Func<int, int, Task> SearchCallBack
+        {
+            get { return (Func<int, int, Task>)GetValue(SearchCallBackProperty); }
+            set { SetValue(SearchCallBackProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SearchCallBack.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SearchCallBackProperty =
+            DependencyProperty.Register("SearchCallBack", typeof(Func<int, int, Task>), typeof(EMCDataPager));
         #endregion
 
         public EMCDataPager()
@@ -581,21 +592,23 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         }
         #endregion
 
-        private void ChangePageCount()
+        private bool ChangePageCount()
         {
+            bool isPageNoBiggerThanPageCount = false;
             if (ItemCount == -1)
             {
-                return;
+                return true;
             }
             PageCount = (ItemCount - 1) / Math.Max(1, PageSize) + 1;
             GenerateDisplayNumbers(PageNo);
             if (PageNo > PageCount)
             {
+                isPageNoBiggerThanPageCount = true;
                 PageNo = PageCount;
             }
             CanMoveToPreviousPage = PageNo > 1;
             CanMoveToNextPage = PageNo < PageCount;
-
+            return isPageNoBiggerThanPageCount;
         }
 
         private void GenerateDisplayNumbers(int pageNo)
@@ -660,8 +673,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             }
             DisplayButtons = array;
         }
-
-        private static void OnPageNoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static bool _isEnable;
+        private async static void OnPageNoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             EMCDataPager dataPager = (EMCDataPager)d;
             if (dataPager._areHandlersSuspended)
@@ -680,6 +693,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
                 dataPager.GenerateDisplayNumbers(num2);
                 dataPager.CanMoveToPreviousPage = num2 > 1;
                 dataPager.CanMoveToNextPage = num2 < dataPager.PageCount;
+                dataPager.IsEnabled = false;
+                await dataPager.SearchCallBack?.Invoke(num2, dataPager.PageSize);
+                dataPager.IsEnabled = true;
                 CommandManager.InvalidateRequerySuggested();
             }
             dataPager.OnPageNoChanged(num, num2);
@@ -711,10 +727,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             }
         }
 
-        private static void OnPageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private async static void OnPageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             EMCDataPager dataPager = (EMCDataPager)d;
-            dataPager.ChangePageCount();
+            var result = dataPager.ChangePageCount();
+            if (!result)
+            {
+                dataPager.IsEnabled = false;
+                await dataPager.SearchCallBack?.Invoke(dataPager.PageNo, (int)e.NewValue);
+                dataPager.IsEnabled = true;
+            }
             if (dataPager._textBox == null)
             {
                 return;
