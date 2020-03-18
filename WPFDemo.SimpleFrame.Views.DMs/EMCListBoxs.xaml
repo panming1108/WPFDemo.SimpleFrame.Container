@@ -144,10 +144,35 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="RealTime_VerificationAlgorithm_ListBoxItemTemplate">
+                <Grid Height="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="310"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding}"
+                           TextTrimming="WordEllipsis"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"/>
+                    <Button Grid.Column="1"
+                        Width="30"
+                        Background="Transparent"
+                        Height="30"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="0,0,10,0">
+                        <Path Stretch="Uniform"
+                          Fill="Red"
+                          Data="M841.14 512.013c0 181.5-147.641 329.14-329.14 329.14s-329.14-147.64-329.14-329.14c0-175.391 138-318.746 311.068-328.211v99.642c0 3.249 1.75 6.286 4.572 7.928 1.428 0.821 3 1.214 4.571 1.214s3.143-0.393 4.572-1.214l237.57-137.141c2.82-1.643 4.57-4.68 4.57-7.93s-1.75-6.286-4.57-7.928L507.642 1.232a9.1 9.1 0 0 0-9.143 0 9.207 9.207 0 0 0-4.572 7.928v101.5c-213.39 9.536-384.21 185.64-384.21 401.353 0 221.82 180.462 402.283 402.282 402.283s402.282-180.462 402.282-402.283H841.14z"/>
+                    </Button>
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Margin="10,0">
-        <EMCListBox:LazyFlushListBox ItemsSource="{Binding Students}"
+        <!--<EMCListBox:LazyFlushListBox ItemsSource="{Binding Students}"
                                      LazyLoadCommand="{Binding LazyLoadCommand}"
                                      Style="{StaticResource LazyLoadListBoxStyle}"
                                      StartLazyLoadCount="{Binding StartLazyLoadCount}"
@@ -158,6 +183,14 @@
                                      Width="300"
                                      VerticalAlignment="Center"
                                      ItemTemplate="{StaticResource ListBoxItemTemplate}"/>
-        <Button Width="90" Height="30" Command="{Binding InsertCommand}" Content="插入数据"/>
+        <Button Width="90" Height="30" Command="{Binding InsertCommand}" Content="插入数据"/>-->
+        <ListBox Grid.Row="1"
+                 x:Name="list"
+                 SelectionMode="Multiple"
+                 ItemsSource="{Binding FileListSource}"
+                 EMCListBox:CustomeSelectionItems.SelectedItems="{Binding SelectedFiles, Mode=TwoWay}"
+                 EMCListBox:CustomeSelectionItems.IsUseSelectedItems ="True"
+                 ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"/>
+        <Button Width="90" Height="30" Command="{Binding SelectedItemsAnalysisCommand}" Content="获取数据" CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>
     </StackPanel>
 </UserControl>

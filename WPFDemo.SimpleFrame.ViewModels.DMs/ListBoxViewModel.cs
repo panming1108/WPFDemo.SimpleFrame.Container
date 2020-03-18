@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,6 +15,26 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 {
     public class ListBoxViewModel : BaseViewModel, IListBoxViewModel
     {
+        private List<string> _fileListSource;
+        public List<string> FileListSource
+        {
+            get => _fileListSource;
+            set
+            {
+                _fileListSource = value;
+                OnPropertyChanged(() => FileListSource);
+            }
+        }
+        private IList _selectedFiles;
+        public IList SelectedFiles
+        {
+            get => _selectedFiles;
+            set
+            {
+                _selectedFiles = value;
+            }
+        }
+
         private IListBoxBusi _listBoxBusi;
         private ObservableCollection<ListBoxModel> _listBoxSource;
         public ObservableCollection<ListBoxModel> ListBoxSource
@@ -53,15 +74,23 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         public ICommand InsertCommand { get; set; }
         public ICommand LazyLoadCommand { get; set; }
+        public ICommand SelectedItemsAnalysisCommand { get; set; }
 
         public ListBoxViewModel(IListBoxBusi listBoxBusi)
         {
             _listBoxBusi = listBoxBusi;
             _startLazyLoadCount = 20;
             _students = new ObservableCollection<FlushModel<Student>>();
+            _fileListSource = new List<string>();
             AllStudents = new List<FlushModel<Student>>();
             InsertCommand = new AsyncDelegateCommand<object>(OnInsert);
             LazyLoadCommand = new AsyncDelegateCommand<object>(OnLazyLoad);
+            SelectedItemsAnalysisCommand = new AsyncDelegateCommand<object>(OnSelectedItemsAnalysis);
+        }
+
+        private async Task OnSelectedItemsAnalysis(object arg)
+        {
+            await TaskEx.FromResult(0);
         }
 
         private async Task OnLazyLoad(object arg)
@@ -107,6 +136,18 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         protected async override Task Loaded()
         {
+            FileListSource = new List<string>()
+            {
+                "111",
+                "222",
+                "333",
+                "444",
+                "555",
+                "666",
+                "777",
+                "888",
+                "999",
+            };
             ListBoxSource = new ObservableCollection<ListBoxModel>(await _listBoxBusi.GetListBoxSource());
         }
 

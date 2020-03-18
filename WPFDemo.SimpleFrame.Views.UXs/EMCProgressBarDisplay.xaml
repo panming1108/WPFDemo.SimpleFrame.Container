@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.UXs"
              xmlns:EMCProgressBar="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ProgressBar;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:Indicator="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
@@ -48,10 +49,13 @@
                 <Run Text="%"/>
             </TextBlock>
         </Grid>
-        <StackPanel Grid.Column="2"
+        <StackPanel Grid.Column="1"
                     Orientation="Horizontal">
             <EMCButton:EMCButton Content="开始" Margin="10" Command="{Binding StartCommand}"/>
             <EMCButton:EMCButton Content="重置" Command="{Binding ResetCommand}"/>
         </StackPanel>
+        <Grid Grid.Column="2" Width="200" Height="200">
+            <Indicator:UpLoadingIndicator IsUpLoading="True"/>
+        </Grid>
     </Grid>
 </UserControl>
