@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
 {
@@ -674,7 +675,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             DisplayButtons = array;
         }
         private static bool _isEnable;
-        private async static void OnPageNoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnPageNoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             EMCDataPager dataPager = (EMCDataPager)d;
             if (dataPager._areHandlersSuspended)
@@ -694,8 +695,14 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
                 dataPager.CanMoveToPreviousPage = num2 > 1;
                 dataPager.CanMoveToNextPage = num2 < dataPager.PageCount;
                 dataPager.IsEnabled = false;
-                await dataPager.SearchCallBack?.Invoke(num2, dataPager.PageSize);
-                dataPager.IsEnabled = true;
+                dataPager.SearchCallBack?.Invoke(num2, dataPager.PageSize).ContinueWith((t) => 
+                {
+                    Application.Current.Dispatcher.Invoke(new Action(
+                        ()=> 
+                        {
+                            dataPager.IsEnabled = true;
+                        }));
+                });
                 CommandManager.InvalidateRequerySuggested();
             }
             dataPager.OnPageNoChanged(num, num2);
@@ -727,14 +734,22 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             }
         }
 
-        private async static void OnPageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnPageSizePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             EMCDataPager dataPager = (EMCDataPager)d;
             var result = dataPager.ChangePageCount();
             if (!result)
             {
                 dataPager.IsEnabled = false;
-                await dataPager.SearchCallBack?.Invoke(dataPager.PageNo, (int)e.NewValue);
+                dataPager.SearchCallBack?.Invoke(dataPager.PageNo, (int)e.NewValue).ContinueWith(
+                    (t) => 
+                    {
+                        Application.Current.Dispatcher.Invoke(new Action(
+                        () =>
+                        {
+                            dataPager.IsEnabled = true;
+                        }));
+                    });
                 dataPager.IsEnabled = true;
             }
             if (dataPager._textBox == null)
