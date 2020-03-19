@@ -32,6 +32,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             set
             {
                 _selectedFiles = value;
+                OnPropertyChanged(() => SelectedFiles);
             }
         }
 
@@ -86,6 +87,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             InsertCommand = new AsyncDelegateCommand<object>(OnInsert);
             LazyLoadCommand = new AsyncDelegateCommand<object>(OnLazyLoad);
             SelectedItemsAnalysisCommand = new AsyncDelegateCommand<object>(OnSelectedItemsAnalysis);
+            //_selectedFiles = new List<object>() { "999" };
         }
 
         private async Task OnSelectedItemsAnalysis(object arg)
@@ -148,6 +150,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
                 "888",
                 "999",
             };
+            SelectedFiles = new List<string>() { "999", "888" };
             ListBoxSource = new ObservableCollection<ListBoxModel>(await _listBoxBusi.GetListBoxSource());
         }
 

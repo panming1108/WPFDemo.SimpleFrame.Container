@@ -189,7 +189,7 @@
                  SelectionMode="Multiple"
                  ItemsSource="{Binding FileListSource}"
                  EMCListBox:CustomeSelectionItems.SelectedItems="{Binding SelectedFiles, Mode=TwoWay}"
-                 EMCListBox:CustomeSelectionItems.IsUseSelectedItems ="True"
+                 EMCListBox:CustomeSelectionItems.CanSelectedItemsBinding="True"
                  ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"/>
         <Button Width="90" Height="30" Command="{Binding SelectedItemsAnalysisCommand}" Content="获取数据" CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>
     </StackPanel>
