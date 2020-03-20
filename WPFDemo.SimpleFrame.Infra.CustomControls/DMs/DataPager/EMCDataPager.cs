@@ -750,7 +750,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
                             dataPager.IsEnabled = true;
                         }));
                     });
-                dataPager.IsEnabled = true;
             }
             if (dataPager._textBox == null)
             {
