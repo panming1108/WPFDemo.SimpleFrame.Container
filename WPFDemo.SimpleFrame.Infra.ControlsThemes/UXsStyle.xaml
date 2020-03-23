@@ -316,37 +316,58 @@
 
     <Style TargetType="EMCBusyIndicator:UpLoadingIndicator">
         <Setter Property="Background" Value="{StaticResource MaskBackground}"/>
+        <Setter Property="Foreground" Value="#21ADFF"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCBusyIndicator:UpLoadingIndicator">
                     <Grid Background="{TemplateBinding Background}">
-                        <Grid Width="30" Height="30">
-                            <Path Fill="#21ADFF"
-                                  Stretch="Uniform"
-                                  Data="M981.333333 255.266133c164.949333 0 298.666667 133.8368 298.666667 298.9568 0 165.102933-133.717333 298.939733-298.666667 298.939734H938.666667c-23.552 0-42.666667-19.114667-42.666667-42.7008a42.683733 42.683733 0 0 1 42.666667-42.7008h42.666666c117.828267 0 213.333333-95.607467 213.333334-213.538134s-95.505067-213.538133-213.333334-213.538133a196.096 196.096 0 0 0-37.12 3.413333 42.632533 42.632533 0 0 1-50.773333-36.727466c-17.9712-126.293333-126.0032-220.1088-253.44-220.1088S404.5312 181.0944 386.56 307.370667a42.717867 42.717867 0 0 1-50.773333 36.727466 196.096 196.096 0 0 0-37.12-3.413333c-117.828267 0-213.333333 95.5904-213.333334 213.538133 0 117.930667 95.505067 213.538133 213.333334 213.538134H341.333333c23.552 0 42.666667 19.114667 42.666667 42.7008A42.683733 42.683733 0 0 1 341.333333 853.162667h-42.666666C133.717333 853.162667 0 719.325867 0 554.222933c0-165.12 133.717333-298.9568 298.666667-298.9568h11.093333C349.013333 104.9088 484.727467 0 640 0s290.986667 104.891733 330.24 255.266133h11.093333z"/>
-                            <Path Fill="#21ADFF"
-                                  Width="10" 
-                                  Height="10"
-                                  Stretch="Uniform"
-                                  VerticalAlignment="Bottom"
-                                  x:Name="PART_Move">
-                                <Path.Data>
-                                    <PathGeometry FillRule="Nonzero" 
-                                                  Figures="M682.666667 981.282133a42.683733 42.683733 0 1 1-85.333334 0v-384.341333a42.683733 42.683733 0 1 1 85.333334 0v384.341333z m-160-185.344a42.6496 42.6496 0 0 1-73.847467-13.7216 42.734933 42.734933 0 0 1 9.847467-42.6496l149.333333-170.837333a42.6496 42.6496 0 0 1 64 0l149.333333 170.837333a42.734933 42.734933 0 0 1-5.034666 58.845867 42.632533 42.632533 0 0 1-58.965334-2.474667L640 661.845333l-117.333333 134.0928z"/>
-                                </Path.Data>
-                                <Path.RenderTransform>
-                                    <TranslateTransform x:Name="PART_MoveOffset" Y="0"/>
-                                </Path.RenderTransform>
-                            </Path>
+                        <Grid HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Width="40" Height="40">
+                                <Path Fill="{TemplateBinding Foreground}"
+                                      Stretch="Uniform"
+                                      Data="M981.333333 255.266133c164.949333 0 298.666667 133.8368 298.666667 298.9568 0 165.102933-133.717333 298.939733-298.666667 298.939734H938.666667c-23.552 0-42.666667-19.114667-42.666667-42.7008a42.683733 42.683733 0 0 1 42.666667-42.7008h42.666666c117.828267 0 213.333333-95.607467 213.333334-213.538134s-95.505067-213.538133-213.333334-213.538133a196.096 196.096 0 0 0-37.12 3.413333 42.632533 42.632533 0 0 1-50.773333-36.727466c-17.9712-126.293333-126.0032-220.1088-253.44-220.1088S404.5312 181.0944 386.56 307.370667a42.717867 42.717867 0 0 1-50.773333 36.727466 196.096 196.096 0 0 0-37.12-3.413333c-117.828267 0-213.333333 95.5904-213.333334 213.538133 0 117.930667 95.505067 213.538133 213.333334 213.538134H341.333333c23.552 0 42.666667 19.114667 42.666667 42.7008A42.683733 42.683733 0 0 1 341.333333 853.162667h-42.666666C133.717333 853.162667 0 719.325867 0 554.222933c0-165.12 133.717333-298.9568 298.666667-298.9568h11.093333C349.013333 104.9088 484.727467 0 640 0s290.986667 104.891733 330.24 255.266133h11.093333z"/>
+                                <Canvas Width="15" Height="20"
+                                        VerticalAlignment="Bottom"
+                                        ClipToBounds="True">
+                                    <Path Fill="{TemplateBinding Foreground}"
+                                          Width="15" 
+                                          Height="15"
+                                          Stretch="Uniform"
+                                          VerticalAlignment="Bottom"
+                                          x:Name="PART_Move">
+                                        <Path.Data>
+                                            <PathGeometry FillRule="Nonzero" 
+                                                          Figures="M682.666667 981.282133a42.683733 42.683733 0 1 1-85.333334 0v-384.341333a42.683733 42.683733 0 1 1 85.333334 0v384.341333z m-160-185.344a42.6496 42.6496 0 0 1-73.847467-13.7216 42.734933 42.734933 0 0 1 9.847467-42.6496l149.333333-170.837333a42.6496 42.6496 0 0 1 64 0l149.333333 170.837333a42.734933 42.734933 0 0 1-5.034666 58.845867 42.632533 42.632533 0 0 1-58.965334-2.474667L640 661.845333l-117.333333 134.0928z"/>
+                                        </Path.Data>
+                                        <Path.RenderTransform>
+                                            <TranslateTransform x:Name="PART_MoveOffset" Y="0"/>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Canvas>
+                            </Grid>
+                            <TextBlock Text="数据正在传输中"
+                                       Grid.Row="1"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       FontSize="16"
+                                       Margin="0,0,0,0"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsUpLoading" Value="True">
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
-                                    <Storyboard Storyboard.TargetName="PART_MoveOffset" Storyboard.TargetProperty="Y" Duration="0:0:1" RepeatBehavior="Forever">
+                                    <Storyboard Storyboard.TargetName="PART_MoveOffset" Storyboard.TargetProperty="Y" Duration="0:0:2.3" RepeatBehavior="Forever">
                                         <DoubleAnimation From="0"
-                                                         To="-10"
+                                                         To="-15"
+                                                         Duration="0:0:1"/>
+                                        <DoubleAnimation From="15"
+                                                         To="0"
+                                                         BeginTime="0:0:1.3"
                                                          Duration="0:0:1"/>
                                     </Storyboard>
                                 </BeginStoryboard>
