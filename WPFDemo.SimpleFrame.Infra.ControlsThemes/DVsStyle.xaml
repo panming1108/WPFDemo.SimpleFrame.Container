@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:EMCWaveChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCWaveChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:toolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -148,7 +149,16 @@
                              Height="{TemplateBinding Height}"
                              Fill="{TemplateBinding Background}"
                              Stroke="{TemplateBinding BorderBrush}"
-                             StrokeThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness.Left}"/>
+                             StrokeThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness.Left}">
+                        <Ellipse.ToolTip>
+                            <toolTip:EMCToolTip>
+                                <TextBlock>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=X, StringFormat={}X:{0}}"/>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Y, StringFormat={} Y:{0}}"/>
+                                </TextBlock>
+                            </toolTip:EMCToolTip>
+                        </Ellipse.ToolTip>
+                    </Ellipse>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

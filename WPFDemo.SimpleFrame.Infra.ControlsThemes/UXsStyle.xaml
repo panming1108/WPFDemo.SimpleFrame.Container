@@ -229,11 +229,20 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <EMCToolTip:CenterToolTipConverter x:Key="CenterToolTipConverter"/>
     <Style TargetType="EMCToolTip:EMCToolTip">
         <Setter Property="Placement" Value="Bottom"/>
         <Setter Property="Background" Value="{StaticResource ToolTipBackground}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{StaticResource ToolTipBorderBrush}"/>
+        <Setter Property="HorizontalOffset">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource CenterToolTipConverter}">
+                    <Binding RelativeSource="{RelativeSource Self}" Path="PlacementTarget.ActualWidth"/>
+                    <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template" Value="{StaticResource ToolTipTemplate}"/>
     </Style>
 
