@@ -77,9 +77,21 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
         public ICommand SmallChartDataChangeCommand { get; set; }
         public ICommand BigChartDataChangeCommand { get; set; }
 
+        private Dictionary<string, double> _waveSource;
+        public Dictionary<string, double> WaveSource
+        {
+            get => _waveSource;
+            set
+            {
+                _waveSource = value;
+                OnPropertyChanged(() => WaveSource);
+            }
+        }
+
         public ChartViewViewModel(IChartViewBusi chartViewBusi)
         {
             _chartViewBusi = chartViewBusi;
+            _waveSource = new Dictionary<string, double>();
             InitCommands();
         }
 
@@ -112,6 +124,14 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
             await OnSmallChartDataChanged();
             await OnFixChartDataChanged();
             await OnBigChartDataChanged();
+
+            Dictionary<string, double> keyValuePairs = new Dictionary<string, double>();
+            Random random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                keyValuePairs.Add((i + 1) + "", random.Next(10, 50));
+            }
+            WaveSource = keyValuePairs;
         }
 
         protected async override Task UnLoaded()

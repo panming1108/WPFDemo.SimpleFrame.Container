@@ -8,6 +8,7 @@
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:EMCWaveChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="900">
@@ -31,7 +32,7 @@
     </UserControl.Resources>
     <Grid Height="800"
           Width="900">
-        <Grid.RowDefinitions>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="85"/>
             <RowDefinition Height="Auto"/>
@@ -132,6 +133,10 @@
                                  Margin="0,10,0,0"
                                  Content="Change" 
                                  Command="{Binding BigChartDataChangeCommand}"/>
-        </StackPanel>
+        </StackPanel>-->
+
+        <EMCWaveChart:EMCWaveChart Width="500" 
+                                   Height="300" 
+                                   ItemsSource="{Binding WaveSource}"/>
     </Grid>
 </UserControl>

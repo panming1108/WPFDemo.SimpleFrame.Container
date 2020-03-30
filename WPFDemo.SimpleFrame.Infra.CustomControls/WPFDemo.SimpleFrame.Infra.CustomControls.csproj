@@ -77,6 +77,11 @@
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
+    <Compile Include="DVs\WaveChart\DataPoint.cs" />
+    <Compile Include="DVs\WaveChart\EMCWaveChart.cs" />
+    <Compile Include="DVs\WaveChart\LineWave.cs" />
+    <Compile Include="DVs\WaveChart\WaveAxis.cs" />
+    <Compile Include="DVs\WaveChart\WaveIntervalConverter.cs" />
     <Compile Include="ECGTools\BoxLineMeter.cs" />
     <Compile Include="ECGTools\EuqiDistanceMeasure.cs" />
     <Compile Include="ECGTools\HRMonitor.cs" />
@@ -113,6 +118,7 @@
     <Compile Include="UXs\Dialog\DialogBase.cs" />
     <Compile Include="UXs\Dialog\DialogCommands.cs" />
     <Compile Include="UXs\Dialog\IConfirmDialog.cs" />
+    <Compile Include="UXs\Marquee\ScrollingMarquee.cs" />
     <Compile Include="UXs\ProgressBar\EMCProgressBar.cs" />
     <Compile Include="UXs\ToolTip\EMCToolTip.cs" />
   </ItemGroup>

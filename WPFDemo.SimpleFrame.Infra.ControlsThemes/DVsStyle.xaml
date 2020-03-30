@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
-                    xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCWaveChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -134,5 +135,54 @@
         </Setter>
     </Style>
     <Style TargetType="EMCChartView:EMCChartView" BasedOn="{StaticResource ColumnChartStyle}"/>
+    <!--#endregion-->
+    
+    <!--#region WaveChart -->
+    <Style TargetType="EMCWaveChart:DataPoint">
+        <Setter Property="Width" Value="4"/>
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCWaveChart:DataPoint">
+                    <Ellipse Width="{TemplateBinding Width}"
+                             Height="{TemplateBinding Height}"
+                             Fill="{TemplateBinding Background}"
+                             Stroke="{TemplateBinding BorderBrush}"
+                             StrokeThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness.Left}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="EMCWaveChart:LineWave">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCWaveChart:LineWave">
+                    <Grid Background="Transparent">
+                        <Canvas Background="Transparent"
+                                x:Name="PART_Canvas"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="EMCWaveChart:EMCWaveChart">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCWaveChart:EMCWaveChart">
+                    <Grid>
+                        <EMCWaveChart:WaveAxis ItemsSource="{TemplateBinding ItemsSource}"
+                                               WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
+                                               IsDrawAbscissaAxis="{TemplateBinding IsDrawAbscissaAxis}"
+                                               IsDrawOrdinateAxis="{TemplateBinding IsDrawOrdinateAxis}"/>
+                        <EMCWaveChart:LineWave ItemsSource="{TemplateBinding ItemsSource}"
+                                               IsDrawPoint="{TemplateBinding IsDrawPoint}"
+                                               WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--#endregion-->
 </ResourceDictionary>
