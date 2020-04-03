@@ -135,8 +135,11 @@
                                  Command="{Binding BigChartDataChangeCommand}"/>
         </StackPanel>-->
 
-        <EMCWaveChart:EMCWaveChart Width="500" 
-                                   Height="300" 
-                                   ItemsSource="{Binding WaveSource}"/>
+        <StackPanel>
+            <EMCWaveChart:EMCWaveChart Width="500" 
+                                       Height="300" 
+                                       ItemsSource="{Binding WaveSource}"
+                                       LineMode="Curve"/>
+        </StackPanel>
     </Grid>
 </UserControl>

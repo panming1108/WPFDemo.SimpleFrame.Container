@@ -32,7 +32,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         }
 
         public static readonly DependencyProperty WaveIntervalConverterProperty =
-            DependencyProperty.Register(nameof(WaveIntervalConverter), typeof(WaveIntervalConverter), typeof(WaveAxis), new PropertyMetadata(OnWaveIntervalConverterChanged));
+            DependencyProperty.Register(nameof(WaveIntervalConverter), typeof(WaveIntervalConverter), typeof(WaveAxis), new PropertyMetadata(OnReDrawing));
 
         public bool IsDrawOrdinateAxis
         {
@@ -51,6 +51,24 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 
         public static readonly DependencyProperty IsDrawAbscissaAxisProperty =
             DependencyProperty.Register(nameof(IsDrawAbscissaAxis), typeof(bool), typeof(WaveAxis));
+
+        public double AxisStrokeThickness
+        {
+            get { return (double)GetValue(AxisStrokeThicknessProperty); }
+            set { SetValue(AxisStrokeThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisStrokeThicknessProperty =
+            DependencyProperty.Register(nameof(AxisStrokeThickness), typeof(double), typeof(WaveAxis), new PropertyMetadata(OnReDrawing));
+
+        public Brush AxisStrokeBrush
+        {
+            get { return (Brush)GetValue(AxisStrokeBrushProperty); }
+            set { SetValue(AxisStrokeBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisStrokeBrushProperty =
+            DependencyProperty.Register(nameof(AxisStrokeBrush), typeof(Brush), typeof(WaveAxis), new PropertyMetadata(OnReDrawing));
 
         public WaveAxis()
         {
@@ -74,7 +92,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             {
                 return;
             }
-            Pen pen = new Pen(Brushes.Black, 1);
+            Pen pen = new Pen(AxisStrokeBrush, AxisStrokeThickness);
             drawingContext.DrawLine(pen, new Point(0, 0), new Point(0, ActualHeight));
             drawingContext.DrawLine(pen, new Point(0, 0), new Point(-5, 10));
             drawingContext.DrawLine(pen, new Point(0, 0), new Point(5, 10));
@@ -123,7 +141,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             }
         }
 
-        private static void OnWaveIntervalConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnReDrawing(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d != null)
             {

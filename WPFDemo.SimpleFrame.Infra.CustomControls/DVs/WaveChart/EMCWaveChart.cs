@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 {
@@ -71,6 +72,69 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 
         public static readonly DependencyProperty IsDrawAbscissaAxisProperty =
             DependencyProperty.Register(nameof(IsDrawAbscissaAxis), typeof(bool), typeof(EMCWaveChart), new PropertyMetadata(true));
+
+        public LineModeEnum LineMode
+        {
+            get { return (LineModeEnum)GetValue(LineModeProperty); }
+            set { SetValue(LineModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty LineModeProperty =
+            DependencyProperty.Register(nameof(LineMode), typeof(LineModeEnum), typeof(EMCWaveChart), new PropertyMetadata(LineModeEnum.StraightLine));
+
+        public double AxisStrokeThickness
+        {
+            get { return (double)GetValue(AxisStrokeThicknessProperty); }
+            set { SetValue(AxisStrokeThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisStrokeThicknessProperty =
+            DependencyProperty.Register(nameof(AxisStrokeThickness), typeof(double), typeof(EMCWaveChart), new PropertyMetadata(1.0));
+
+        public Brush AxisStrokeBrush
+        {
+            get { return (Brush)GetValue(AxisStrokeBrushProperty); }
+            set { SetValue(AxisStrokeBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisStrokeBrushProperty =
+            DependencyProperty.Register(nameof(AxisStrokeBrush), typeof(Brush), typeof(EMCWaveChart));
+
+        public double WaveStrokeThickness
+        {
+            get { return (double)GetValue(WaveStrokeThicknessProperty); }
+            set { SetValue(WaveStrokeThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty WaveStrokeThicknessProperty =
+            DependencyProperty.Register(nameof(WaveStrokeThickness), typeof(double), typeof(EMCWaveChart), new PropertyMetadata(1.0));
+
+        public Brush WaveStrokeBrush
+        {
+            get { return (Brush)GetValue(WaveStrokeBrushProperty); }
+            set { SetValue(WaveStrokeBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty WaveStrokeBrushProperty =
+            DependencyProperty.Register(nameof(WaveStrokeBrush), typeof(Brush), typeof(EMCWaveChart));
+
+        public double PointRadius
+        {
+            get { return (double)GetValue(PointRadiusProperty); }
+            set { SetValue(PointRadiusProperty, value); }
+        }
+
+        public static readonly DependencyProperty PointRadiusProperty =
+            DependencyProperty.Register(nameof(PointRadius), typeof(double), typeof(EMCWaveChart), new PropertyMetadata(2.0));
+
+        public Brush PointFillBrush
+        {
+            get { return (Brush)GetValue(PointFillBrushProperty); }
+            set { SetValue(PointFillBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty PointFillBrushProperty =
+            DependencyProperty.Register(nameof(PointFillBrush), typeof(Brush), typeof(EMCWaveChart));
 
         public EMCWaveChart()
         {

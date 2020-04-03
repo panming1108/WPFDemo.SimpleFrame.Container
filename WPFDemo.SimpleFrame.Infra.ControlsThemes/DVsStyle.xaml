@@ -142,6 +142,7 @@
     <Style TargetType="EMCWaveChart:DataPoint">
         <Setter Property="Width" Value="4"/>
         <Setter Property="Height" Value="4"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:DataPoint">
@@ -151,10 +152,10 @@
                              Stroke="{TemplateBinding BorderBrush}"
                              StrokeThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness.Left}">
                         <Ellipse.ToolTip>
-                            <toolTip:EMCToolTip>
+                            <toolTip:EMCToolTip Placement="Top">
                                 <TextBlock>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=X, StringFormat={}X:{0}}"/>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Y, StringFormat={} Y:{0}}"/>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=XValue, StringFormat={}X:{0:F2}}"/>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YValue, StringFormat={} Y:{0:F2}}"/>
                                 </TextBlock>
                             </toolTip:EMCToolTip>
                         </Ellipse.ToolTip>
@@ -176,8 +177,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="EMCWaveChart:EMCWaveChart">
+        <Setter Property="AxisStrokeBrush" Value="Black"/>
+        <Setter Property="WaveStrokeBrush" Value="Black"/>
+        <Setter Property="PointFillBrush" Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:EMCWaveChart">
@@ -185,10 +189,17 @@
                         <EMCWaveChart:WaveAxis ItemsSource="{TemplateBinding ItemsSource}"
                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
                                                IsDrawAbscissaAxis="{TemplateBinding IsDrawAbscissaAxis}"
-                                               IsDrawOrdinateAxis="{TemplateBinding IsDrawOrdinateAxis}"/>
+                                               IsDrawOrdinateAxis="{TemplateBinding IsDrawOrdinateAxis}"
+                                               AxisStrokeBrush="{TemplateBinding AxisStrokeBrush}"
+                                               AxisStrokeThickness="{TemplateBinding AxisStrokeThickness}"/>
                         <EMCWaveChart:LineWave ItemsSource="{TemplateBinding ItemsSource}"
                                                IsDrawPoint="{TemplateBinding IsDrawPoint}"
-                                               WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"/>
+                                               WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
+                                               LineMode="{TemplateBinding LineMode}"
+                                               PointFillBrush="{TemplateBinding PointFillBrush}"
+                                               PointRadius="{TemplateBinding PointRadius}"
+                                               WaveStrokeBrush="{TemplateBinding WaveStrokeBrush}"
+                                               WaveStrokeThickness="{TemplateBinding WaveStrokeThickness}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

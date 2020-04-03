@@ -27,6 +27,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public static readonly DependencyProperty YProperty =
             DependencyProperty.Register(nameof(Y), typeof(double), typeof(DataPoint), new PropertyMetadata(OnPositionChanged));
 
+        public string XValue
+        {
+            get { return (string)GetValue(XValueProperty); }
+            set { SetValue(XValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty XValueProperty =
+            DependencyProperty.Register(nameof(XValue), typeof(string), typeof(DataPoint));
+
+        public double YValue
+        {
+            get { return (double)GetValue(YValueProperty); }
+            set { SetValue(YValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty YValueProperty =
+            DependencyProperty.Register(nameof(YValue), typeof(double), typeof(DataPoint));
+
+
+
         public DataPoint()
         {
 

@@ -79,7 +79,9 @@
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="DVs\WaveChart\DataPoint.cs" />
     <Compile Include="DVs\WaveChart\EMCWaveChart.cs" />
+    <Compile Include="DVs\WaveChart\LineModeEnum.cs" />
     <Compile Include="DVs\WaveChart\LineWave.cs" />
+    <Compile Include="DVs\WaveChart\Vector.cs" />
     <Compile Include="DVs\WaveChart\WaveAxis.cs" />
     <Compile Include="DVs\WaveChart\WaveIntervalConverter.cs" />
     <Compile Include="ECGTools\BoxLineMeter.cs" />

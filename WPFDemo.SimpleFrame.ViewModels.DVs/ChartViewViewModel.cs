@@ -129,7 +129,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
             Random random = new Random();
             for (int i = 0; i < 10; i++)
             {
-                keyValuePairs.Add((i + 1) + "", random.Next(10, 50));
+                keyValuePairs.Add((i + 1) + "", random.Next(30, 50));
             }
             WaveSource = keyValuePairs;
         }
