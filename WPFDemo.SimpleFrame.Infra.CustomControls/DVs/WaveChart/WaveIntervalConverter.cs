@@ -83,9 +83,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                 Point startPoint = new Point(0, avg);
                 Point firstPoint = DataConverter2Point(itemsSource.First());
                 PathSegment firstLine = new LineSegment(startPoint, false);
-                var startControlPoint1 = GetControlPoint(_rt, startPoint, startPoint, firstPoint);
-                var startControlPoint2 = GetControlPoint(_rt, startPoint, firstPoint, DataConverter2Point(itemsSource.ElementAt(1)));
-                PathSegment secondLine = new BezierSegment(startControlPoint1.Item2, startControlPoint2.Item1, firstPoint, true);
+                PathSegment secondLine = GetBezierSegment(startPoint, startPoint, firstPoint, DataConverter2Point(itemsSource.ElementAt(1)));
                 PathSegment finalLine = new LineSegment(new Point(DataConverter2Point(itemsSource.Last()).X, _height), false);
                 pathSegments.Insert(0, firstLine);
                 pathSegments.Insert(1, secondLine);
@@ -130,7 +128,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             for (int i = 0; i < count; i++)
             {
                 Point a, b, c, d;
-                Tuple<Point, Point> tuple1, tuple2;
                 b = DataConverter2Point(itemsSource.ElementAt(i));
                 c = DataConverter2Point(itemsSource.ElementAt(i + 1));
                 if (i == 0)
@@ -148,12 +145,35 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                     a = DataConverter2Point(itemsSource.ElementAt(i - 1));
                     d = DataConverter2Point(itemsSource.ElementAt(i + 2));
                 }
-                tuple1 = GetControlPoint(_rt, a, b, c);
-                tuple2 = GetControlPoint(_rt, b, c, d);
-                BezierSegment bezierSegment = new BezierSegment(tuple1.Item2, tuple2.Item1, c, true);
+
+                BezierSegment bezierSegment = GetBezierSegment(a,b,c,d);
+                
                 pathSegments.Add(bezierSegment);
             }
             return pathSegments;
+        }
+
+        private BezierSegment GetBezierSegment(Point prev, Point current, Point next, Point nextNext, bool isStroked = true)
+        {
+            var tuple1 = GetControlPoint(_rt, prev, current, next);
+            var tuple2 = GetControlPoint(_rt, current, next, nextNext);
+
+            var centerPoint = new Point((current.X + next.X) / 2, (current.Y + next.Y) / 2);
+
+            Point point1 = tuple1.Item2;
+            Point point2 = tuple2.Item1;
+
+            if (point1.X > centerPoint.X)
+            {
+                point1.X = centerPoint.X;
+            }
+
+            if (point2.X < centerPoint.X)
+            {
+                point2.X = centerPoint.X;
+            }
+
+            return new BezierSegment(point1, point2, next, isStroked);
         }
 
         private Tuple<Point, Point> GetControlPoint(double rt, Point pointPrev, Point pointCur, Point pointNext)

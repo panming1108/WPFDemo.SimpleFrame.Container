@@ -126,10 +126,9 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
             await OnBigChartDataChanged();
 
             Dictionary<string, double> keyValuePairs = new Dictionary<string, double>();
-            Random random = new Random();
-            for (int i = 0; i < 10; i++)
+            foreach (var item in BigChartData)
             {
-                keyValuePairs.Add((i + 1) + "", random.Next(30, 50));
+                keyValuePairs.Add(item.Key.ToString("dd"), item.Value);
             }
             WaveSource = keyValuePairs;
         }

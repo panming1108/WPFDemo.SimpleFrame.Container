@@ -140,6 +140,7 @@
                                        Height="300" 
                                        ItemsSource="{Binding WaveSource}"
                                        LineMode="Curve"
+                                       IsDrawPoint="True"
                                        IsWaveFill="True"
                                        WaveStrokeBrush="Red"
                                        WaveFillBrush="AliceBlue"/>
