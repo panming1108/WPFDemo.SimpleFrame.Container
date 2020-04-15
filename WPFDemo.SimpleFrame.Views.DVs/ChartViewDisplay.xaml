@@ -139,7 +139,10 @@
             <EMCWaveChart:EMCWaveChart Width="500" 
                                        Height="300" 
                                        ItemsSource="{Binding WaveSource}"
-                                       LineMode="Curve"/>
+                                       LineMode="Curve"
+                                       IsWaveFill="True"
+                                       WaveStrokeBrush="Red"
+                                       WaveFillBrush="AliceBlue"/>
         </StackPanel>
     </Grid>
 </UserControl>

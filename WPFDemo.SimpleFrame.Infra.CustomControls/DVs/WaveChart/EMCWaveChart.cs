@@ -136,6 +136,24 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public static readonly DependencyProperty PointFillBrushProperty =
             DependencyProperty.Register(nameof(PointFillBrush), typeof(Brush), typeof(EMCWaveChart));
 
+        public bool IsWaveFill
+        {
+            get { return (bool)GetValue(IsWaveFillProperty); }
+            set { SetValue(IsWaveFillProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsWaveFillProperty =
+            DependencyProperty.Register(nameof(IsWaveFill), typeof(bool), typeof(EMCWaveChart), new PropertyMetadata(true));
+
+        public Brush WaveFillBrush
+        {
+            get { return (Brush)GetValue(WaveFillBrushProperty); }
+            set { SetValue(WaveFillBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty WaveFillBrushProperty =
+            DependencyProperty.Register(nameof(WaveFillBrush), typeof(Brush), typeof(EMCWaveChart));
+
         public EMCWaveChart()
         {
             Loaded += EMCWaveChart_Loaded;

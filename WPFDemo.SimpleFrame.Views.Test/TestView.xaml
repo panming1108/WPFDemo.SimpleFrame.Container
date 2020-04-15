@@ -44,6 +44,7 @@
                          Margin="10,0,10,10"   
                          RowHeight="50"
                          Height="592"
+                         Width="400"
                          BorderThickness="1"
                          Total="{Binding ItemCount}"
                          PageSize="{Binding PageSize,Mode=TwoWay}"
@@ -56,11 +57,14 @@
                          MouseDoubleClickCommand="{Binding MouseDoubleClickCommand}"
                          RowContextMenu="{StaticResource RowContextMenu}"
                          RowIsEnabledPath="IsEnabled"
-                         SelectedRows="{Binding SeletedRows,Mode=TwoWay}">
+                         HorizontalScrollBarVisibility="Auto"
+                         FrozenColumnCount="1"
+                         SelectedRows="{Binding SeletedRows,Mode=TwoWay}"
+                         HorizontalAlignment="Center">
             <DMs:NewDataGrid.Columns>
-                <DMs:EMCDataGridIndexColumn Header="序号" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}"/>
+                <DMs:EMCDataGridIndexColumn Header="序号" Width="100" Foreground="{StaticResource BaseDataGridRowForeground}"/>
                 <DataGridTextColumn Header="ID" 
-                                    Width="*" 
+                                    Width="100" 
                                     Foreground="{StaticResource BaseDataGridRowForeground}" 
                                     Binding="{Binding Id}"
                                     DMs:DataGridAttachProperty.IconsSource="{Binding Source={StaticResource BindingProxy}, Path=Data.IconsSource}"
@@ -69,7 +73,7 @@
                                     DMs:DataGridAttachProperty.IconToolTipMemberPath="ToolTip"
                                     DMs:DataGridAttachProperty.IconCommandMemberPath="Command"
                                     DMs:DataGridAttachProperty.IconPosition="Behind"/>
-                <DataGridTextColumn Header="NAME" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}">
+                <DataGridTextColumn Header="NAME" Width="100" Foreground="{StaticResource BaseDataGridRowForeground}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Name">
                             <Binding.Converter>
@@ -78,8 +82,8 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Age" Width="*" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"/>
-                <DataGridTemplateColumn Header="Test" Width="*">
+                <DataGridTextColumn Header="Age" Width="100" Foreground="{StaticResource BaseDataGridRowForeground}" Binding="{Binding Age}"/>
+                <DataGridTemplateColumn Header="Test" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

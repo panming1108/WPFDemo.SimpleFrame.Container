@@ -88,6 +88,24 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public static readonly DependencyProperty PointFillBrushProperty =
             DependencyProperty.Register(nameof(PointFillBrush), typeof(Brush), typeof(LineWave), new PropertyMetadata(OnReDrawing));
 
+        public bool IsWaveFill
+        {
+            get { return (bool)GetValue(IsWaveFillProperty); }
+            set { SetValue(IsWaveFillProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsWaveFillProperty =
+            DependencyProperty.Register(nameof(IsWaveFill), typeof(bool), typeof(LineWave), new PropertyMetadata(OnReDrawing));
+
+        public Brush WaveFillBrush
+        {
+            get { return (Brush)GetValue(WaveFillBrushProperty); }
+            set { SetValue(WaveFillBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty WaveFillBrushProperty =
+            DependencyProperty.Register(nameof(WaveFillBrush), typeof(Brush), typeof(LineWave), new PropertyMetadata(OnReDrawing));
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -138,8 +156,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 
         private void DrawLineWave(DrawingContext drawingContext, Pen pen)
         {
-            PathGeometry pathGeometry = WaveIntervalConverter.CaculateCurveGeometry(ItemsSource, LineMode);
-            drawingContext.DrawGeometry(Brushes.Black, pen, pathGeometry);
+            PathGeometry pathGeometry = WaveIntervalConverter.CaculateCurveGeometry(ItemsSource, LineMode, IsWaveFill);
+            drawingContext.DrawGeometry(WaveFillBrush, pen, pathGeometry);
         }
 
         private static void OnReDrawing(DependencyObject d, DependencyPropertyChangedEventArgs e)

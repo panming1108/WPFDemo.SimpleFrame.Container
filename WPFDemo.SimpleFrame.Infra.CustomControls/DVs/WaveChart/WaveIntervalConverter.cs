@@ -22,6 +22,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         private int _ordinateCount;
         private Dictionary<string, double> _itemsSource;
 
+        private double _rt = 0.3;
+
         public WaveIntervalConverter(Dictionary<string, double> itemsSource, int ordinateCount, double width, double height, double offset, double yMin = 0)
         {
             _ordinateCount = ordinateCount;
@@ -70,12 +72,32 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             return datas;
         }
 
-        public PathGeometry CaculateCurveGeometry(Dictionary<string, double> itemsSource, LineModeEnum lineMode)
+        public PathGeometry CaculateCurveGeometry(Dictionary<string, double> itemsSource, LineModeEnum lineMode, bool isFill)
         {
             PathFigureCollection pathFigures = new PathFigureCollection();
             PathSegmentCollection pathSegments = GeneratePathSegmentsByItemsSource(lineMode);
-            PathFigure pathFigure = new PathFigure(DataConverter2Point(itemsSource.First()), pathSegments, false);
-            pathFigure.IsFilled = false;
+            PathFigure pathFigure;
+            if (isFill)
+            {
+                double avg = GetItemsSourceValueAvgYAxis(itemsSource);
+                Point startPoint = new Point(0, avg);
+                Point firstPoint = DataConverter2Point(itemsSource.First());
+                PathSegment firstLine = new LineSegment(startPoint, false);
+                var startControlPoint1 = GetControlPoint(_rt, startPoint, startPoint, firstPoint);
+                var startControlPoint2 = GetControlPoint(_rt, startPoint, firstPoint, DataConverter2Point(itemsSource.ElementAt(1)));
+                PathSegment secondLine = new BezierSegment(startControlPoint1.Item2, startControlPoint2.Item1, firstPoint, true);
+                PathSegment finalLine = new LineSegment(new Point(DataConverter2Point(itemsSource.Last()).X, _height), false);
+                pathSegments.Insert(0, firstLine);
+                pathSegments.Insert(1, secondLine);
+                pathSegments.Add(finalLine);
+                pathFigure = new PathFigure(new Point(0, _height), pathSegments, false);
+                pathFigure.IsFilled = true;
+            }
+            else
+            {
+                pathFigure = new PathFigure(DataConverter2Point(itemsSource.First()), pathSegments, false);
+                pathFigure.IsFilled = false;
+            }
             pathFigures.Add(pathFigure);
             PathGeometry pathGeometry = new PathGeometry(pathFigures);
             return pathGeometry;
@@ -102,10 +124,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 
         private PathSegmentCollection GenerateCurvePathSegment(Dictionary<string, double> itemsSource)
         {
-            var rt = 0.3;
             int count = itemsSource.Count - 1;
             PathSegmentCollection pathSegments = new PathSegmentCollection();
-            double ave = itemsSource.Values.Average();
+            double ave = GetItemsSourceValueAvgYAxis(itemsSource);
             for (int i = 0; i < count; i++)
             {
                 Point a, b, c, d;
@@ -127,8 +148,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                     a = DataConverter2Point(itemsSource.ElementAt(i - 1));
                     d = DataConverter2Point(itemsSource.ElementAt(i + 2));
                 }
-                tuple1 = GetControlPoint(rt, a, b, c);
-                tuple2 = GetControlPoint(rt, b, c, d);
+                tuple1 = GetControlPoint(_rt, a, b, c);
+                tuple2 = GetControlPoint(_rt, b, c, d);
                 BezierSegment bezierSegment = new BezierSegment(tuple1.Item2, tuple2.Item1, c, true);
                 pathSegments.Add(bezierSegment);
             }
@@ -169,6 +190,11 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                 var p2 = ncp2.Multiply(v1Len * rt).Add(vectorB);
                 return new Tuple<Point, Point>(p2.ToPoint(), p1.ToPoint());
             }
+        }
+
+        public double GetItemsSourceValueAvgYAxis(Dictionary<string, double> itemsSource)
+        {
+            return _height - (itemsSource.Values.Average() / YAxisIntervalValue) * YAxisInterval;
         }
 
         public Point DataConverter2Point(KeyValuePair<string, double> data)

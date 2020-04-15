@@ -199,7 +199,9 @@
                                                PointFillBrush="{TemplateBinding PointFillBrush}"
                                                PointRadius="{TemplateBinding PointRadius}"
                                                WaveStrokeBrush="{TemplateBinding WaveStrokeBrush}"
-                                               WaveStrokeThickness="{TemplateBinding WaveStrokeThickness}"/>
+                                               WaveStrokeThickness="{TemplateBinding WaveStrokeThickness}"
+                                               IsWaveFill="{TemplateBinding IsWaveFill}"
+                                               WaveFillBrush="{TemplateBinding WaveFillBrush}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
