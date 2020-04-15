@@ -13,69 +13,8 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
     public class ChartViewViewModel : BaseViewModel, IChartViewViewModel
     {
         private IChartViewBusi _chartViewBusi;
-        private Dictionary<DateTime, double> _smallChartData;
-        private Dictionary<DateTime, double> _smallAverageData;
-        private Dictionary<DateTime, double> _bigChartData;
-        private Dictionary<DateTime, double> _bigAverageData;
-        private Dictionary<DateTime, double> _fixChartData;
-        private Dictionary<DateTime, double> _fixAverageData;
-        public Dictionary<DateTime, double> SmallChartData
-        {
-            get => _smallChartData;
-            set
-            {
-                _smallChartData = value;
-                OnPropertyChanged(() => SmallChartData);
-            }
-        }
-        public Dictionary<DateTime, double> SmallAverageData
-        {
-            get => _smallAverageData;
-            set
-            {
-                _smallAverageData = value;
-                OnPropertyChanged(() => SmallAverageData);
-            }
-        }
-        public Dictionary<DateTime, double> BigChartData
-        {
-            get => _bigChartData;
-            set
-            {
-                _bigChartData = value;
-                OnPropertyChanged(() => BigChartData);
-            }
-        }
-        public Dictionary<DateTime, double> BigAverageData
-        {
-            get => _bigAverageData;
-            set
-            {
-                _bigAverageData = value;
-                OnPropertyChanged(() => BigAverageData);
-            }
-        }
 
-        public Dictionary<DateTime, double> FixChartData
-        {
-            get => _fixChartData;
-            set
-            {
-                _fixChartData = value;
-                OnPropertyChanged(() => FixChartData);
-            }
-        }
-        public Dictionary<DateTime, double> FixAverageData
-        {
-            get => _fixAverageData;
-            set
-            {
-                _fixAverageData = value;
-                OnPropertyChanged(() => FixAverageData);
-            }
-        }
-        public ICommand SmallChartDataChangeCommand { get; set; }
-        public ICommand BigChartDataChangeCommand { get; set; }
+        public ICommand DataChangeCommand { get; set; }
 
         private Dictionary<string, double> _waveSource;
         public Dictionary<string, double> WaveSource
@@ -97,40 +36,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.DVs
 
         private void InitCommands()
         {
-            SmallChartDataChangeCommand = new AsyncDelegateCommand(OnSmallChartDataChanged);
-            BigChartDataChangeCommand = new AsyncDelegateCommand(OnBigChartDataChanged);
+            DataChangeCommand = new AsyncDelegateCommand(OnChartDataChanged);
         }
 
-        private async Task OnFixChartDataChanged()
+        private async Task OnChartDataChanged()
         {
-            FixChartData = await _chartViewBusi.GetFixChartDatas();
-            FixAverageData = await _chartViewBusi.GetFixAverageDatas();
-        }
-
-        private async Task OnBigChartDataChanged()
-        {
-            BigChartData = await _chartViewBusi.GetBigChartDatas();
-            BigAverageData = await _chartViewBusi.GetBigAverageDatas();
-        }
-
-        private async Task OnSmallChartDataChanged()
-        {
-            SmallChartData = await _chartViewBusi.GetSmallChartDatas();
-            SmallAverageData = await _chartViewBusi.GetSmallAverageDatas();
+            WaveSource = await _chartViewBusi.GetChartDatas();
         }
 
         protected async override Task Loaded()
         {
-            await OnSmallChartDataChanged();
-            await OnFixChartDataChanged();
-            await OnBigChartDataChanged();
-
-            Dictionary<string, double> keyValuePairs = new Dictionary<string, double>();
-            foreach (var item in BigChartData)
-            {
-                keyValuePairs.Add(item.Key.ToString("dd"), item.Value);
-            }
-            WaveSource = keyValuePairs;
+            await OnChartDataChanged();
         }
 
         protected async override Task UnLoaded()

@@ -186,12 +186,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:EMCWaveChart">
                     <Grid>
-                        <EMCWaveChart:WaveAxis ItemsSource="{TemplateBinding ItemsSource}"
-                                               WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
-                                               IsDrawAbscissaAxis="{TemplateBinding IsDrawAbscissaAxis}"
-                                               IsDrawOrdinateAxis="{TemplateBinding IsDrawOrdinateAxis}"
-                                               AxisStrokeBrush="{TemplateBinding AxisStrokeBrush}"
-                                               AxisStrokeThickness="{TemplateBinding AxisStrokeThickness}"/>
                         <EMCWaveChart:LineWave ItemsSource="{TemplateBinding ItemsSource}"
                                                IsDrawPoint="{TemplateBinding IsDrawPoint}"
                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
@@ -202,6 +196,13 @@
                                                WaveStrokeThickness="{TemplateBinding WaveStrokeThickness}"
                                                IsWaveFill="{TemplateBinding IsWaveFill}"
                                                WaveFillBrush="{TemplateBinding WaveFillBrush}"/>
+                        <!-- 坐标轴放在最上面 -->
+                        <EMCWaveChart:WaveAxis ItemsSource="{TemplateBinding ItemsSource}"
+                                               WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
+                                               IsDrawAbscissaAxis="{TemplateBinding IsDrawAbscissaAxis}"
+                                               IsDrawOrdinateAxis="{TemplateBinding IsDrawOrdinateAxis}"
+                                               AxisStrokeBrush="{TemplateBinding AxisStrokeBrush}"
+                                               AxisStrokeThickness="{TemplateBinding AxisStrokeThickness}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
