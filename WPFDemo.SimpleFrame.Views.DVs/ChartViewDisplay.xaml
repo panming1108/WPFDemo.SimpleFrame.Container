@@ -37,11 +37,13 @@
                                    HorizontalAlignment="Center"
                                    ItemsSource="{Binding WaveSource}"
                                    LineMode="Curve"
-                                   IsDrawPoint="False"
-                                   IsWaveFill="True"
+                                   IsDrawPoint="True"
+                                   IsWaveFill="False"
                                    WaveStrokeThickness="1"
                                    WaveStrokeBrush="#26A6FB"
-                                   WaveFillBrush="#CCEAFE"/>
+                                   WaveFillBrush="#CCEAFE"
+                                   RectBorderBrush="#CCEAFE"
+                                   RectFillBrush="#CCEAFE"/>
         <EMCButton:EMCButton Height="36" 
                              Width="100" 
                              Grid.Row="1"

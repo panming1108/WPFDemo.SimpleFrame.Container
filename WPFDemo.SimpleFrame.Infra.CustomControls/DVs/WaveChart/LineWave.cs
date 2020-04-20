@@ -141,6 +141,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             {
                 return;
             }
+            _canvas.Children.Clear();
             foreach (var item in ItemsSource)
             {
                 Point point = WaveIntervalConverter.DataConverter2Point(item);

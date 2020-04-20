@@ -154,6 +154,33 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public static readonly DependencyProperty WaveFillBrushProperty =
             DependencyProperty.Register(nameof(WaveFillBrush), typeof(Brush), typeof(EMCWaveChart));
 
+        public double RectBorderThickness
+        {
+            get { return (double)GetValue(RectBorderThicknessProperty); }
+            set { SetValue(RectBorderThicknessProperty, value); }
+        }
+
+        public static readonly DependencyProperty RectBorderThicknessProperty =
+            DependencyProperty.Register(nameof(RectBorderThickness), typeof(double), typeof(EMCWaveChart), new PropertyMetadata(1.0));
+
+        public Brush RectBorderBrush
+        {
+            get { return (Brush)GetValue(RectBorderBrushProperty); }
+            set { SetValue(RectBorderBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty RectBorderBrushProperty =
+            DependencyProperty.Register(nameof(RectBorderBrush), typeof(Brush), typeof(EMCWaveChart));
+
+        public Brush RectFillBrush
+        {
+            get { return (Brush)GetValue(RectFillBrushProperty); }
+            set { SetValue(RectFillBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty RectFillBrushProperty =
+            DependencyProperty.Register(nameof(RectFillBrush), typeof(Brush), typeof(EMCWaveChart));
+
         public EMCWaveChart()
         {
             Loaded += EMCWaveChart_Loaded;

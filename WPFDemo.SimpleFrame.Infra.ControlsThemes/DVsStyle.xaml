@@ -164,11 +164,47 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    <Style TargetType="EMCWaveChart:DataRect">
+        <Setter Property="Width" Value="4"/>
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCWaveChart:DataRect">
+                    <Rectangle Width="{TemplateBinding Width}"
+                               Height="{TemplateBinding Height}"
+                               Fill="{TemplateBinding Background}"
+                               Stroke="{TemplateBinding BorderBrush}"
+                               StrokeThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness.Left}">
+                        <Rectangle.ToolTip>
+                            <toolTip:EMCToolTip Placement="Top">
+                                <TextBlock>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=XValue, StringFormat={}X:{0:F2}}"/>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YValue, StringFormat={} Y:{0:F2}}"/>
+                                </TextBlock>
+                            </toolTip:EMCToolTip>
+                        </Rectangle.ToolTip>
+                    </Rectangle>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="EMCWaveChart:LineWave">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:LineWave">
+                    <Grid Background="Transparent">
+                        <Canvas Background="Transparent"
+                                x:Name="PART_Canvas"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="EMCWaveChart:Histogram">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCWaveChart:Histogram">
                     <Grid Background="Transparent">
                         <Canvas Background="Transparent"
                                 x:Name="PART_Canvas"/>
@@ -182,10 +218,17 @@
         <Setter Property="AxisStrokeBrush" Value="Black"/>
         <Setter Property="WaveStrokeBrush" Value="Black"/>
         <Setter Property="PointFillBrush" Value="Black"/>
+        <Setter Property="RectFillBrush" Value="Black"/>
+        <Setter Property="RectBorderBrush" Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:EMCWaveChart">
                     <Grid>
+                        <EMCWaveChart:Histogram ItemsSource="{TemplateBinding ItemsSource}"
+                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
+                                                RectBorderBrush="{TemplateBinding RectBorderBrush}"
+                                                RectFillBrush="{TemplateBinding RectFillBrush}"
+                                                RectBorderThickness="{TemplateBinding RectBorderThickness}"/>
                         <EMCWaveChart:LineWave ItemsSource="{TemplateBinding ItemsSource}"
                                                IsDrawPoint="{TemplateBinding IsDrawPoint}"
                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
