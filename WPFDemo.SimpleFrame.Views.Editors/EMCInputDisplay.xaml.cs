@@ -26,5 +26,18 @@ namespace WPFDemo.SimpleFrame.Views.Editors
             InitializeComponent();
             DataContext = IocManagerInstance.ResolveType<IInputViewModel>();
         }
+
+        private void EMCInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (textBox1.Text == "")
+                textBox1.Text = 0.ToString();
+            int number = int.Parse(textBox1.Text);
+            if (number <= 100)
+            {
+                return;
+            }
+            textBox1.Text = "100";
+            textBox1.SelectionStart = textBox1.Text.Length;
+        }
     }
 }

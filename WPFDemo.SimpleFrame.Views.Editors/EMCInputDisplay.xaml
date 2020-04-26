@@ -16,6 +16,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <EMCEditors:EMCInput attach:EditorsAttachProperty.Watermark="请输入姓名"/>
+        <EMCEditors:EMCInput attach:EditorsAttachProperty.Watermark="请输入姓名"
+                             TextChanged="EMCInput_TextChanged"
+                             x:Name="textBox1"
+                             />
     </Grid>
 </UserControl>
