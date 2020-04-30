@@ -276,7 +276,8 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="NormalBrush" Value="#37B9FF"/>
         <Setter Property="AbnormalBrush" Value="#FF3C3C"/>
-        <Setter Property="HR" Value="-1"/>
+        <Setter Property="Foreground" Value="#FF3C3C"/>
+        <Setter Property="HR" Value="80"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="UnitFontSize" Value="12"/>
         <Setter Property="Template">

@@ -323,6 +323,10 @@
       <Project>{e75b1bd8-8447-4cdd-bf8e-110f0c16c125}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.DVs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.ECGTools\WPFDemo.SimpleFrame.IViewModels.ECGTools.csproj">
+      <Project>{2bad1895-c3b3-474d-aa0b-987f62a0195f}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModels.ECGTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.LayOut\WPFDemo.SimpleFrame.IViewModels.LayOut.csproj">
       <Project>{bc4b313d-d80d-4cac-b2da-9dad04fec137}</Project>
       <Name>WPFDemo.SimpleFrame.IViewModels.LayOut</Name>
@@ -358,6 +362,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.DVs\WPFDemo.SimpleFrame.ViewModels.DVs.csproj">
       <Project>{149de941-caa6-4ebe-abc0-29185c39c61b}</Project>
       <Name>WPFDemo.SimpleFrame.ViewModels.DVs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.ECGTools\WPFDemo.SimpleFrame.ViewModels.ECGTools.csproj">
+      <Project>{383a2772-0bb6-4499-8ab8-084fb8e55677}</Project>
+      <Name>WPFDemo.SimpleFrame.ViewModels.ECGTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.ViewModels.Editors\WPFDemo.SimpleFrame.ViewModels.Editors.csproj">
       <Project>{6d5abbaa-0acf-48cf-80c8-6a4c6ff651e9}</Project>

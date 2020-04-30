@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.8\lib\net40-client\NLog.dll</HintPath>
     </Reference>
@@ -54,6 +57,12 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="WPFDemo.SimpleFrame.Infra.Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Helper.1.0.1\lib\net40\WPFDemo.SimpleFrame.Infra.Helper.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Ioc.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Ioc.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +127,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
       <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.ECGTools\WPFDemo.SimpleFrame.IViewModels.ECGTools.csproj">
+      <Project>{2BAD1895-C3B3-474D-AA0B-987F62A0195F}</Project>
+      <Name>WPFDemo.SimpleFrame.IViewModels.ECGTools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

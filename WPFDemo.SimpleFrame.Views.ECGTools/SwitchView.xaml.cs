@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;
 using WPFDemo.SimpleFrame.Infra.Helper;
+using WPFDemo.SimpleFrame.Infra.Ioc;
+using WPFDemo.SimpleFrame.IViewModels.ECGTools;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
@@ -15,30 +17,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// </summary>
     public partial class SwitchView : UserControl
     {
-        private Timer _timer;
         public SwitchView()
         {
             InitializeComponent();
+            DataContext = IocManagerInstance.ResolveType<ISwitchViewModel>();
             Loaded += SwitchView_Loaded;
-            Unloaded += SwitchView_Unloaded;
-
-            _timer = new Timer(1000);
-            _timer.Elapsed += Timer_Elapsed;
-        }
-
-        private void SwitchView_Unloaded(object sender, RoutedEventArgs e)
-        {
-            _timer.Stop();
-            _timer.Dispose();
-        }
-
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            DispatcherHelper.InvokeOnUIThread(new Action(
-                    ()=> 
-                    {
-                        HR.HR = new Random().Next(40, 120);
-                    }));
         }
 
         private void SwitchView_Loaded(object sender, RoutedEventArgs e)
@@ -63,8 +46,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
             //PART_GroupLeadSwitch.SelectedItems.Add(list[0]);
             //PART_GroupLeadSwitch.SelectedItems.Add(list[1]);
-
-            _timer.Start();
         }
 
         private void PART_LayOutSwitch_SelectionChanged(object sender, LeadSwitchSelectionChangedEventArgs e)

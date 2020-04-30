@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.106
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.Container", "WPFDemo.SimpleFrame.Container\WPFDemo.SimpleFrame.Container.csproj", "{BEA21815-3F68-4E1F-8563-DE6449E9A75F}"
 EndProject
@@ -92,6 +92,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.IDAL", "WPFDemo.SimpleFrame.IDAL\WPFDemo.SimpleFrame.IDAL.csproj", "{309285C2-BE35-4FA7-B455-E3594EAAD69E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.DAL", "WPFDemo.SimpleFrame.DAL\WPFDemo.SimpleFrame.DAL.csproj", "{EE503551-1E5A-4E2A-B936-992E4C7FACC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.ViewModels.ECGTools", "WPFDemo.SimpleFrame.ViewModels.ECGTools\WPFDemo.SimpleFrame.ViewModels.ECGTools.csproj", "{383A2772-0BB6-4499-8AB8-084FB8E55677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.IViewModels.ECGTools", "WPFDemo.SimpleFrame.IViewModels.ECGTools\WPFDemo.SimpleFrame.IViewModels.ECGTools.csproj", "{2BAD1895-C3B3-474D-AA0B-987F62A0195F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -239,6 +243,14 @@ Global
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{383A2772-0BB6-4499-8AB8-084FB8E55677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{383A2772-0BB6-4499-8AB8-084FB8E55677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{383A2772-0BB6-4499-8AB8-084FB8E55677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{383A2772-0BB6-4499-8AB8-084FB8E55677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BAD1895-C3B3-474D-AA0B-987F62A0195F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BAD1895-C3B3-474D-AA0B-987F62A0195F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BAD1895-C3B3-474D-AA0B-987F62A0195F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BAD1895-C3B3-474D-AA0B-987F62A0195F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -284,6 +296,8 @@ Global
 		{730C9982-DDC8-4871-A70A-3B39D6DBF430} = {DD5D3BD8-339F-4807-864C-0B70C6EA6579}
 		{309285C2-BE35-4FA7-B455-E3594EAAD69E} = {72043ADD-ABE3-4F9E-BB22-3CB43CB76901}
 		{EE503551-1E5A-4E2A-B936-992E4C7FACC8} = {9F5D659E-5523-421D-B119-2A07BDD0FD5D}
+		{383A2772-0BB6-4499-8AB8-084FB8E55677} = {32E4B991-EC41-4B3D-B20C-56E089F1B6E1}
+		{2BAD1895-C3B3-474D-AA0B-987F62A0195F} = {B64691E5-47AE-4A02-BD8A-9C6E662558B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65EBE67F-9EF2-4F47-A70E-1A7EAB195C63}
