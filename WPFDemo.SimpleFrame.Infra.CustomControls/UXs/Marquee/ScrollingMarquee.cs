@@ -5,6 +5,7 @@ using System.Text;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
@@ -16,6 +17,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
         /// <summary>
         /// 文本数据框的名称
         /// </summary>
+        protected const string PARTNAME_SCROLLITEMGrid1 = "Part_ScrollItemGrid1";
+        protected const string PARTNAME_SCROLLITEMGrid2 = "Part_ScrollItemGrid2";
+        protected const string PARTNAME_SCROLLITEMGrid3 = "Part_ScrollItemGrid3";
         protected const string PARTNAME_TEXTBOX1 = "Part_TextBoxt1";
         protected const string PARTNAME_TEXTBOX2 = "Part_TextBoxt2";
         protected const string PARTNAME_TEXTBOX3 = "Part_TextBoxt3";
@@ -24,6 +28,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
         private TextBlock _textBox1;
         private TextBlock _textBox2;
         private TextBlock _textBox3;
+        private Grid _scrollItemGrid1;
+        private Grid _scrollItemGrid2;
+        private Grid _scrollItemGrid3;
         private Border _border;
         private StackPanel _stackPanel;
         private DispatcherTimer _timer;
@@ -41,20 +48,23 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
             if (_border != null)
             {
                 _border.Loaded -= OnLoaded;
+                _border.MouseEnter -= Border_MouseEnter;
+                _border.MouseLeave -= Border_MouseLeave;
                 _border.Unloaded -= OnUnLoaded;
             }
+            _scrollItemGrid1 = GetTemplateChild(PARTNAME_SCROLLITEMGrid1) as Grid;
+            _scrollItemGrid2 = GetTemplateChild(PARTNAME_SCROLLITEMGrid2) as Grid;
+            _scrollItemGrid3 = GetTemplateChild(PARTNAME_SCROLLITEMGrid3) as Grid;
             _textBox1 = GetTemplateChild(PARTNAME_TEXTBOX1) as TextBlock;
             _textBox2 = GetTemplateChild(PARTNAME_TEXTBOX2) as TextBlock;
             _textBox3 = GetTemplateChild(PARTNAME_TEXTBOX3) as TextBlock;
             _border = GetTemplateChild(ROOT_BORDER) as Border;
             _stackPanel = GetTemplateChild(PART_STACKPANEL) as StackPanel;
-            //if (_stackPanel != null)
-            //{
-            //    _stackPanel.Margin = new Thickness(0, Height * -1, 0, 0);
-            //}
             if (_border != null)
             {
                 _border.Loaded += OnLoaded;
+                _border.MouseEnter += Border_MouseEnter;
+                _border.MouseLeave += Border_MouseLeave;
                 _border.Unloaded += OnUnLoaded;
             }
         }
@@ -88,6 +98,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
         public static readonly DependencyProperty OrientationProperty =
             DependencyProperty.Register("Orientation", typeof(Orientation), typeof(ScrollingMarquee), new PropertyMetadata(Orientation.Horizontal));
 
+        public bool CanPause
+        {
+            get { return (bool)GetValue(CanPauseProperty); }
+            set { SetValue(CanPauseProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CanPause.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CanPauseProperty =
+            DependencyProperty.Register("CanPause", typeof(bool), typeof(ScrollingMarquee));
+
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CornerRadius.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ScrollingMarquee));
+
         private static void OnItemSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d != null)
@@ -110,7 +140,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
 
         private void Init()
         {
-            if (_timer == null)
+            if (_timer == null && _border != null)
             {
                 if(Orientation == Orientation.Horizontal)
                 {
@@ -130,18 +160,19 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
 
         private void StartScrolling()
         {
-            ItemSource.Reverse();
             _index = ItemSource.Count - 1;
 
             if(Orientation == Orientation.Horizontal)
             {
-                _stackPanel.Margin = new Thickness(ActualWidth, 0, 0, 0);
-                _stackPanel.RenderTransform = new TranslateTransform(ActualWidth * -1, 0);
+                _scrollItemGrid1.Width = ActualWidth;
+                _scrollItemGrid2.Width = ActualWidth;
+                _scrollItemGrid3.Width = ActualWidth;
+                _stackPanel.Margin = new Thickness(ActualWidth * -1, 0, 0, 0);
             }
             else
             {
-                _stackPanel.Margin = new Thickness(0, ActualHeight * -1, 0, 0);
-                _stackPanel.RenderTransform = new TranslateTransform(0, ActualHeight);
+                _stackPanel.Margin = new Thickness(0, Height * -1, 0, 0);
+                _stackPanel.RenderTransform = new TranslateTransform(0, Height);
             }
             ShowData();
 
@@ -162,13 +193,19 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
 
         private void OnTimeChange(object sender, EventArgs e)
         {
-
             if (ItemSource.Count == 0)
             {
                 return;
             }
-            _stackPanel.RenderTransform = new TranslateTransform(0, 0);
-            
+            if (Orientation == Orientation.Vertical)
+            {
+                _stackPanel.RenderTransform = new TranslateTransform(0, 0);
+            }
+            else
+            {
+                _stackPanel.RenderTransform = new TranslateTransform(ActualWidth, 0);
+            }
+
             _storyboard.Begin();
 
             _index--;
@@ -178,7 +215,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
             }
 
             ShowData();
-
         }
 
         private void ShowData()
@@ -215,6 +251,32 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
                 return ItemSource[i];
             }
             return null;
+        }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if(!CanPause)
+            {
+                return;
+            }
+            if (_storyboard != null && _timer != null)
+            {
+                _storyboard.Resume();
+                _timer.Start();
+            }
+        }
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!CanPause)
+            {
+                return;
+            }
+            if (_storyboard != null && _timer != null)
+            {
+                _storyboard.Pause();
+                _timer.Stop();
+            }
         }
     }
 }

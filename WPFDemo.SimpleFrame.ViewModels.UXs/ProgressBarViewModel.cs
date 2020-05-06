@@ -20,6 +20,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
         private double _percent;
         private double _total;
         private double _currentValue;
+        private List<string> _marqueeSource;
         private System.Timers.Timer _timer;
         public double Percent
         {
@@ -48,7 +49,18 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
                 OnPropertyChanged(() => CurrentValue);
             }
         }
-        
+
+        public List<string> MarqueeSource
+        {
+            get => _marqueeSource;
+            set
+            {
+                _marqueeSource = value;
+                OnPropertyChanged(() => MarqueeSource);
+            }
+        }
+
+
         public ICommand StartCommand { get; set; }
         public ICommand ResetCommand { get; set; }
 
@@ -66,6 +78,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
             CurrentValue = 0;
             Total = 1000;
             Percent = 0;
+            _marqueeSource = new List<string>();
         }
 
         private void OnTimerChanged(object sender, ElapsedEventArgs e)
@@ -98,6 +111,15 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
 
         protected async override Task Loaded()
         {
+            MarqueeSource = new List<string>() 
+            { 
+                "这是滚动数据一！！",
+                "这是滚动数据二！！",
+                "这是滚动数据三！！",
+                "这是滚动数据四！！",
+                "这是滚动数据五！！",
+                "这是滚动数据六！！",
+            };
             await TaskEx.FromResult(0);
         }
 

@@ -395,52 +395,63 @@
     <Style TargetType="{x:Type marquee:ScrollingMarquee}">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Width" Value="800"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="Margin" Value="0,0"/>
-        <Setter Property="DisplayTimeSpan" Value="3"/>
+        <Setter Property="DisplayTimeSpan" Value="5"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Background" Value="AliceBlue"/>
+        <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type marquee:ScrollingMarquee}">
                     <Border Height="{TemplateBinding Height}"
                             x:Name="Root_Border"
                             ClipToBounds="True" 
-                            CornerRadius="15"
+                            CornerRadius="{TemplateBinding CornerRadius}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Border.Resources>
                             <Storyboard x:Key="VerticalStoryboard">
-                                <DoubleAnimation Duration="0:0:1" To="{Binding ElementName=Root_Border, Path=Height}" Storyboard.TargetName="Part_StackPanel"  Storyboard.TargetProperty="RenderTransform.Y"/>
+                                <DoubleAnimation Duration="0:0:1" To="{Binding ElementName=Root_Border, Path=ActualHeight}" Storyboard.TargetName="Part_StackPanel"  Storyboard.TargetProperty="RenderTransform.Y"/>
                             </Storyboard>
                             <Storyboard x:Key="HorizontalStoryboard">
-                                <DoubleAnimation Duration="0:0:1" To="{Binding ElementName=Root_Border, Path=Height}" Storyboard.TargetName="Part_StackPanel"  Storyboard.TargetProperty="RenderTransform.Y"/>
+                                <DoubleAnimation Duration="0:0:1" To="0" Storyboard.TargetName="Part_StackPanel" Storyboard.TargetProperty="RenderTransform.X"/>
                             </Storyboard>
                         </Border.Resources>
-                        <StackPanel Orientation="{TemplateBinding Orientation}">
-                            <StackPanel x:Name="Part_StackPanel" Margin="5 0">
+                        <StackPanel>
+                            <StackPanel x:Name="Part_StackPanel" Margin="0"  Orientation="{TemplateBinding Orientation}">
                                 <StackPanel.RenderTransform>
                                     <TranslateTransform />
                                 </StackPanel.RenderTransform>
-                                <TextBlock Name="Part_TextBoxt1"
-                                                   Margin="0,5" 
-                                                   FontSize="{TemplateBinding FontSize}" 
-                                                   Foreground="{TemplateBinding Foreground}"
-                                                   Background="Transparent"
-                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                <TextBlock Name="Part_TextBoxt2" 
-                                               Margin="0,5" 
+                                <Grid x:Name="Part_ScrollItemGrid1"
+                                      Height="{TemplateBinding Height}">
+                                    <TextBlock Name="Part_TextBoxt1"
                                                FontSize="{TemplateBinding FontSize}" 
-                                               Foreground="{TemplateBinding Foreground}" 
+                                               Foreground="{TemplateBinding Foreground}"
                                                Background="Transparent"
-                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                <TextBlock Name="Part_TextBoxt3" 
-                                               Margin="0,5" 
-                                               FontSize="{TemplateBinding FontSize}" 
-                                               Foreground="{TemplateBinding Foreground}" 
-                                               Background="Transparent"
+                                               HorizontalAlignment="Left"
                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Grid>
+                                <Grid x:Name="Part_ScrollItemGrid2"
+                                      Height="{TemplateBinding Height}">
+                                    <TextBlock Name="Part_TextBoxt2"
+                                               FontSize="{TemplateBinding FontSize}" 
+                                               Foreground="{TemplateBinding Foreground}" 
+                                               Background="Transparent"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                </Grid>
+                                <Grid x:Name="Part_ScrollItemGrid3"
+                                      Height="{TemplateBinding Height}">
+                                    <TextBlock Name="Part_TextBoxt3"
+                                               FontSize="{TemplateBinding FontSize}" 
+                                               Foreground="{TemplateBinding Foreground}" 
+                                               Background="Transparent"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
                     </Border>

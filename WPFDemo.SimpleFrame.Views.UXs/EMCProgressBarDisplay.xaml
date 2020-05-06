@@ -7,6 +7,7 @@
              xmlns:EMCProgressBar="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ProgressBar;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:Indicator="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.BusyIndicator;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:marquee="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
@@ -22,6 +23,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
@@ -56,6 +58,9 @@
         </StackPanel>
         <Grid Grid.Column="2" Width="200" Height="200">
             <Indicator:UpLoadingIndicator IsUpLoading="True"/>
+        </Grid>
+        <Grid Grid.Column="3" Width="300" Height="25">
+            <marquee:ScrollingMarquee ItemSource="{Binding MarqueeSource}" CanPause="False" Orientation="Horizontal"/>
         </Grid>
     </Grid>
 </UserControl>
