@@ -160,6 +160,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.UXs.Marquee
 
         private void StartScrolling()
         {
+            //ItemSource.Reverse();
+
             _index = ItemSource.Count - 1;
 
             if(Orientation == Orientation.Horizontal)
