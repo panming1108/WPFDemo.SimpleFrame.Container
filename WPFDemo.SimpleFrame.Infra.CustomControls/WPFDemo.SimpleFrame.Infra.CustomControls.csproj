@@ -75,6 +75,7 @@
     <Compile Include="DMs\ListBox\LazyFlushListBox.cs" />
     <Compile Include="DMs\ListBox\LazyFlushListBoxItem.cs" />
     <Compile Include="DMs\ListBox\EMCListBox.cs" />
+    <Compile Include="DMs\ListBox\ListBoxAttachCommand.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="DVs\WaveChart\DataPoint.cs" />

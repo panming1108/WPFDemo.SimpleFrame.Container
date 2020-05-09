@@ -184,13 +184,27 @@
                                      VerticalAlignment="Center"
                                      ItemTemplate="{StaticResource ListBoxItemTemplate}"/>
         <Button Width="90" Height="30" Command="{Binding InsertCommand}" Content="插入数据"/>-->
-        <ListBox Grid.Row="1"
+        <!--<ListBox Grid.Row="1"
                  x:Name="list"
                  SelectionMode="Multiple"
                  ItemsSource="{Binding FileListSource}"
                  EMCListBox:CustomeSelectionItems.SelectedItems="{Binding SelectedFiles, Mode=TwoWay}"
                  EMCListBox:CustomeSelectionItems.CanSelectedItemsBinding="True"
-                 ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"/>
+                 ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"/>-->
+        <!--<ListBox Grid.Row="1"
+                 x:Name="list"
+                 SelectionMode="Multiple"
+                 ItemsSource="{Binding FileListSource}"
+                 EMCListBox:CustomeSelectionItems.SelectedItems="{Binding SelectedFiles, Mode=TwoWay}"
+                 EMCListBox:CustomeSelectionItems.CanSelectedItemsBinding="True"
+                 ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"/>-->
+        <ListBox Grid.Row="1"
+                 x:Name="list"
+                 SelectionMode="Multiple"
+                 ItemsSource="{Binding FileListSource}"
+                 ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"
+                 EMCListBox:ListBoxAttachCommand.SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                 EMCListBox:ListBoxAttachCommand.CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>
         <Button Width="90" Height="30" Command="{Binding SelectedItemsAnalysisCommand}" Content="获取数据" CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>
     </StackPanel>
 </UserControl>

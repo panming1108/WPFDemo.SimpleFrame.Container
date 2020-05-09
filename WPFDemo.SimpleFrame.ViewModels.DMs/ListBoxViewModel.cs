@@ -76,6 +76,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
         public ICommand InsertCommand { get; set; }
         public ICommand LazyLoadCommand { get; set; }
         public ICommand SelectedItemsAnalysisCommand { get; set; }
+        public ICommand SelectionChangedCommand { get; set; }
 
         public ListBoxViewModel(IListBoxBusi listBoxBusi)
         {
@@ -87,7 +88,13 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             InsertCommand = new AsyncDelegateCommand<object>(OnInsert);
             LazyLoadCommand = new AsyncDelegateCommand<object>(OnLazyLoad);
             SelectedItemsAnalysisCommand = new AsyncDelegateCommand<object>(OnSelectedItemsAnalysis);
+            SelectionChangedCommand = new AsyncDelegateCommand<object>(OnSelectionChanged);
             //_selectedFiles = new List<object>() { "999" };
+        }
+
+        private async Task OnSelectionChanged(object arg)
+        {
+            await TaskEx.FromResult(0);
         }
 
         private async Task OnSelectedItemsAnalysis(object arg)
