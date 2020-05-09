@@ -93,6 +93,12 @@
       <HintPath>..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.IO.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime, Version=2.6.8.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.1.1.8\lib\net40\System.Runtime.dll</HintPath>
     </Reference>
@@ -146,9 +152,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeValidationRule.cs" />
+    <Compile Include="DemoUserControl.xaml.cs">
+      <DependentUpon>DemoUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IViewModels\IDemoViewModel.cs" />
     <Compile Include="IViewModels\IHomePageViewModel.cs" />
     <Compile Include="IViewModels\IMainViewModel.cs" />
     <Compile Include="IViewModels\INaviPageViewModel.cs" />
@@ -188,10 +198,15 @@
     <Compile Include="TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\DemoViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NaviPageViewModel.cs" />
     <Compile Include="ViewModels\SchedulesViewModel.cs" />
+    <Page Include="DemoUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -314,6 +329,10 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
       <Project>{c9ad9862-4539-4eea-ba4d-1b01301263eb}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Tools\WPFDemo.SimpleFrame.Infra.Tools.csproj">
+      <Project>{0f3bfe1e-1c58-4216-8c1b-308c186d0c58}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.DMs\WPFDemo.SimpleFrame.IViewModels.DMs.csproj">
       <Project>{d27fb9fa-9c09-4272-9b88-021d24b8409e}</Project>
