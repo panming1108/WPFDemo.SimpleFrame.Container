@@ -14,16 +14,24 @@
     </UserControl.Resources>
     <Grid>
         <Grid>
-            <!-- Busy indicator -->
-            <Label Content="Loading..." 
+            <Grid Visibility="Collapsed">
+                <!-- Busy indicator -->
+                <Label Content="Loading..." 
                    Visibility="{Binding UrlByteCount.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <!-- Results -->
-            <Label Content="{Binding UrlByteCount.Result}" 
+                <!-- Results -->
+                <Label Content="{Binding UrlByteCount.Result}" 
                    Visibility="{Binding UrlByteCount.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <!-- Error details -->
-            <Label Content="{Binding UrlByteCount.ErrorMessage}" 
+                <!-- Error details -->
+                <Label Content="{Binding UrlByteCount.ErrorMessage}" 
                    Background="Red"
                    Visibility="{Binding UrlByteCount.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Grid>
+            <Label Width="60" 
+                   Height="30"
+                   Background="AliceBlue"
+                   mvvm:AttachEventCommand.Event="MouseDown"
+                   mvvm:AttachEventCommand.Command="{Binding MouseLeftCommand}"
+                   mvvm:AttachEventCommand.CommandParameter="1"/>
         </Grid>
     </Grid>
 </UserControl>
