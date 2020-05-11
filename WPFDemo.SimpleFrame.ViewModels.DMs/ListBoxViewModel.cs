@@ -157,7 +157,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
                 "888",
                 "999",
             };
-            SelectedFiles = new List<string>() { "999", "888" };
+            SelectedFiles = new List<string>() { "999", "888", "111" };
             ListBoxSource = new ObservableCollection<ListBoxModel>(await _listBoxBusi.GetListBoxSource());
         }
 
