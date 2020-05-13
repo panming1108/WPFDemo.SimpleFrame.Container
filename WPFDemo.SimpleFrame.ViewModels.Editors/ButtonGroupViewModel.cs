@@ -23,6 +23,16 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         private List<Student> _radioStudentSource;
         private List<Student> _notSelectedStudents;
         private List<Student> _haveCheckedStudent;
+        private List<string> _clickComboBoxItemsSource;
+        public List<string> ClickComboBoxItemsSource
+        {
+            get => _clickComboBoxItemsSource;
+            set
+            {
+                _clickComboBoxItemsSource = value;
+                OnPropertyChanged(() => ClickComboBoxItemsSource);
+            }
+        }
         public List<Student> HaveCheckStudent
         {
             get => _haveCheckedStudent;
@@ -109,6 +119,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             _checkBoxsSource = new List<string>();
             _radioButtonUnSelected = new List<string>();
             _notSelectedStudents = new List<Student>();
+            _clickComboBoxItemsSource = new List<string>();
             RadioButtonCommand = new AsyncDelegateCommand<Student>(OnRadioButtonChecked);
         }
 
@@ -123,6 +134,15 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             RadioButtonsSource = await _buttonGroupBusi.GetRadioButtonsSource();
             RadioStudentSource = await _buttonGroupBusi.GetRadioButtonsStudentSource();
             CheckBoxsSource = await _buttonGroupBusi.GetCheckBoxsSource();
+            var list = new List<string>()
+            { 
+                "全部",
+                "单发",
+                "成对",
+                "房速",
+                "房早未下传"
+            };
+            ClickComboBoxItemsSource = list;
         }
 
         protected async override Task UnLoaded()

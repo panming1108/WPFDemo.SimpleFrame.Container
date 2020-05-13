@@ -346,4 +346,217 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="{x:Type ToggleButton}" x:Key="ComboToggleButton">
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Background="{TemplateBinding Background}" 
+                            x:Name="Bg"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Path Stroke="{TemplateBinding Foreground}"
+                              Fill="{TemplateBinding Foreground}"
+                              StrokeThickness="1"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Data="M0,5 10,5 5,0Z"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Orange" />
+                            <Setter Property="Background" TargetName="Bg" Value="#9EBBDF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="DarkOrange" />
+                            <Setter Property="Background" TargetName="Bg" Value="#9EBBDF" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="DarkOrange" />
+                            <Setter Property="Background" TargetName="Bg" Value="#9EBBDF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type Button}" x:Key="ComboButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}" 
+                            x:Name="Bg"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="Bg" Value="#9EBBDF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="Bg" Value="#9EBBDF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--下拉条目样式-->
+    <Style TargetType="ComboBoxItem" x:Key="ComboBoxItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Grid Background="{TemplateBinding Background}" 
+                          Margin="0,0.5">
+                        <Border x:Name="ItemBackground" 
+                                IsHitTestVisible="False" 
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}" />
+                        <ContentPresenter x:Name="contentPresenter" 
+                                          Margin="{TemplateBinding Padding}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="ItemBackground" Property="Background" Value="#638EC9" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ItemBackground" Property="Background" Value="#9EBBDF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type attach:ClickComboBox}">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="77" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="#D8E7F5" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="#638EC9" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="MaxDropDownHeight" Value="400" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type attach:ClickComboBox}">
+                    <Grid x:Name="PART_Root">
+                        <Border x:Name="Bg" 
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2" />
+                                    <ColumnDefinition Width="21" />
+                                </Grid.ColumnDefinitions>
+                                <!--主内容区域-->
+                                <Button x:Name="PART_SelectedItem"
+                                        Background="{TemplateBinding Background}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        Style="{StaticResource ComboButton}"
+                                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                        Content="{TemplateBinding SelectionBoxItem}"
+                                        ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                        HorizontalAlignment="Stretch"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                        ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                                <StackPanel Orientation="Horizontal"
+                                            Grid.Column="1">
+                                    <Border Width="1"
+                                            BorderThickness="1" 
+                                            BorderBrush="#638EC9"
+                                            Margin="0,3"/>
+                                    <Border Width="1"
+                                            BorderThickness="1" 
+                                            BorderBrush="White"
+                                            Margin="0,3"/>
+                                </StackPanel>
+                                <ToggleButton x:Name="PART_DropDownToggle"
+                                              IsTabStop="False"
+                                              Grid.Column="2"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              Style="{StaticResource ComboToggleButton}" 
+                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Background="{TemplateBinding Background}"/>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="PART_Popup" 
+                               AllowsTransparency="True" 
+                               Focusable="False"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+                               Placement="Top">
+                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                  MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border x:Name="PopupBorder" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        HorizontalAlignment="Stretch"
+                                        Height="Auto" 
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        Background="#D8E7F5">
+                                    <ScrollViewer x:Name="DropDownScrollViewer" 
+                                              BorderThickness="0">
+                                        <ItemsPresenter x:Name="ItemsPresenter" 
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SelectionBoxItem" Value="全部">
+                            <Setter TargetName="PART_SelectedItem" Property="Content" Value="{Binding RelativeSource={RelativeSource AncestorType=attach:ClickComboBox}, Path=CategoryName}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="#9EBBDF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ClickComboBoxRadioButton" TargetType="RadioButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
