@@ -95,7 +95,9 @@
     <Compile Include="ECGTools\LeadLayOutSwitch\SwitchTypeEnum.cs" />
     <Compile Include="ECGTools\ScopeViewer.cs" />
     <Compile Include="Editors\CheckBox\CheckBoxGroup.cs" />
+    <Compile Include="Editors\ComboBox\CheckMultiComboBox.cs" />
     <Compile Include="Editors\ComboBox\ClickComboBox.cs" />
+    <Compile Include="Editors\ComboBox\MultiComboBox.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />
     <Compile Include="Editors\RadioButton\RadioButtonGroup.cs" />

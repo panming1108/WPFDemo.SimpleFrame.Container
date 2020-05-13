@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -24,6 +25,26 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         private List<Student> _notSelectedStudents;
         private List<Student> _haveCheckedStudent;
         private List<string> _clickComboBoxItemsSource;
+        private List<Student> _multiComboBoxItemsSource;
+        private List<Student> _initSelectedItems;
+        public List<Student> InitSelectedItems
+        {
+            get => _initSelectedItems;
+            set
+            {
+                _initSelectedItems = value;
+                OnPropertyChanged(() => InitSelectedItems);
+            }
+        }
+        public List<Student> MultiComboBoxItemsSource
+        {
+            get => _multiComboBoxItemsSource;
+            set
+            {
+                _multiComboBoxItemsSource = value;
+                OnPropertyChanged(() => MultiComboBoxItemsSource);
+            }
+        }
         public List<string> ClickComboBoxItemsSource
         {
             get => _clickComboBoxItemsSource;
@@ -111,6 +132,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         }    
 
         public ICommand RadioButtonCommand { get; set; }
+        public ICommand SelectionCommand { get; set; }
 
         public ButtonGroupViewModel(IButtonGroupBusi buttonGroupBusi)
         {
@@ -120,7 +142,14 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             _radioButtonUnSelected = new List<string>();
             _notSelectedStudents = new List<Student>();
             _clickComboBoxItemsSource = new List<string>();
+            _multiComboBoxItemsSource = new List<Student>();
             RadioButtonCommand = new AsyncDelegateCommand<Student>(OnRadioButtonChecked);
+            SelectionCommand = new AsyncDelegateCommand<object>(OnSelectionChanged);
+        }
+
+        private async Task OnSelectionChanged(object arg)
+        {            
+            await TaskEx.FromResult(0);
         }
 
         private async Task OnRadioButtonChecked(Student student)
@@ -141,8 +170,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
                 "成对",
                 "房速",
                 "房早未下传"
-            };
+            };            
             ClickComboBoxItemsSource = list;
+            MultiComboBoxItemsSource = new List<Student>() 
+            {
+                new Student(0,"全部", 10),
+                new Student(1,"单发", 20),
+                new Student(2,"成对", 30),
+                new Student(3,"房速", 40),
+                new Student(4,"房早未下传", 50),
+            };
+            InitSelectedItems = new List<Student>() { MultiComboBoxItemsSource[1], MultiComboBoxItemsSource[3] };
         }
 
         protected async override Task UnLoaded()

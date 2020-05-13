@@ -81,6 +81,19 @@
             </RadioButton>
             <TextBlock Text="{Binding ElementName=clickComboBox, Path=SelectedValue}" Margin="10,0,0,0"/>
             <TextBlock Text="{Binding ElementName=clickComboBox2, Path=SelectedValue}" Margin="10,0,0,0"/>
+
+            <!--<editors:MultiComboBox VerticalAlignment="Top"
+                                   SelectionChangedCommand="{Binding SelectionCommand}"
+                                   InitSelectedItems="{Binding InitSelectedItems}"
+                                   SelectAllBtnVisiblity="Collapsed"
+                                   ItemsSource="{Binding MultiComboBoxItemsSource}"/>-->
+            <editors:CheckMultiComboBox VerticalAlignment="Top"
+                                        Width="100"
+                                        Margin="10,0,0,0"
+                                        DisplayMemberPath="Name"
+                                        SelectionChangedCommand="{Binding SelectionCommand}"
+                                        InitSelectedItems="{Binding InitSelectedItems}"
+                                        ItemsSource="{Binding MultiComboBoxItemsSource}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -559,4 +559,211 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <Style x:Key="ComboBox_ToggleBtnStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="#5C8EC1" />
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Path Stroke="{TemplateBinding Foreground}"
+                              StrokeThickness="1"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Right"
+                              Margin="0,0,5,0"
+                              Data="M0,0 6,5 12,0"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CheckItemStyle" TargetType="{x:Type ListBoxItem}" >
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}" >
+                    <Border x:Name="Border" 
+                            Background="{TemplateBinding Background}" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <StackPanel Orientation="Horizontal" 
+                                    VerticalAlignment="Center"
+                                    Margin="5,0,0,0">
+                            <CheckBox IsChecked="{Binding Path=IsSelected,RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}" 
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </CheckBox>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#9EBBDF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="MultiComboBox_SelectedAllBtnStyle" TargetType="Button">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="#5C8EC1" />
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#9EBBDF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="attach:MultiComboBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#5C8EC1" />
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Watermark" Value="请选择"/>
+        <Setter Property="Padding" Value="5,0,0,0"/>
+        <Setter Property="SelectAllBtnVisiblity" Value="Collapsed"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="attach:MultiComboBox">
+                    <Grid x:Name="PART_Root">
+                        <Border x:Name="PART_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ToolTip="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Text}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="21"/>
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="PART_DropDownToggle" 
+                                              Panel.ZIndex="1" 
+                                              Grid.Column="0"
+                                              Grid.ColumnSpan="2"
+                                              IsTabStop="False" 
+                                              Style="{StaticResource ComboBox_ToggleBtnStyle}" 
+                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <!--文本-->
+                                <TextBlock x:Name="PART_Text"
+                                           Text="{TemplateBinding Text}"
+                                           TextTrimming="CharacterEllipsis"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Grid.Column="0"
+                                           Margin="{TemplateBinding Padding}"/>
+                                <!--水印-->
+                                <TextBlock x:Name="PART_Watermark"
+                                           Text="{TemplateBinding Watermark}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Grid.Column="0"
+                                           Visibility="Collapsed"
+                                           IsHitTestVisible="False"
+                                           Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </Border>
+                        <!--弹出多选列表-->
+                        <Popup x:Name="PART_Popup" 
+                               AllowsTransparency="True" 
+                               Focusable="False" 
+                               StaysOpen="False"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+                               Placement="Bottom">
+                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" 
+                                  MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border x:Name="PopupBorder" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        HorizontalAlignment="Stretch"
+                                        Height="Auto" 
+                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                        Background="{TemplateBinding Background}">
+                                    <StackPanel>
+                                        <Button x:Name="PART_SelectAllBtn"
+                                                Style="{StaticResource MultiComboBox_SelectedAllBtnStyle}"
+                                                Visibility="{TemplateBinding SelectAllBtnVisiblity}"
+                                                Width="{Binding ElementName=PART_ListBox, Path=ActualWidth}"
+                                                Content="全选"/>
+                                        <ListBox x:Name="PART_ListBox"
+                                                 BorderThickness="0"
+                                                 SelectionMode="Multiple" 
+                                                 ItemsSource="{Binding ItemsSource,RelativeSource={RelativeSource TemplatedParent}}"
+                                                 DisplayMemberPath="{TemplateBinding DisplayMemberPath}"
+                                                 ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                 MaxHeight="{TemplateBinding MaxDropDownHeight}" 
+                                                 ItemContainerStyle="{StaticResource CheckItemStyle}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="{x:Null}">
+                            <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                            <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="attach:NewOrderCheckBox" BasedOn="{StaticResource ResourceKey={x:Type CheckBox}}"/>
+    <Style TargetType="attach:CheckMultiComboBox">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Blue"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="SelectAllBtnVisiblity" Value="Visible"/>
+        <Setter Property="Watermark" Value="请选择"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="attach:CheckMultiComboBox">
+                    <WrapPanel x:Name="PART_Root">
+                        <attach:NewOrderCheckBox x:Name="PART_CheckBox"
+                                                 IsChecked="{Binding ElementName=PART_MultiComboBox, Path=IsCheckedAll}"/>
+                        <attach:MultiComboBox x:Name="PART_MultiComboBox"
+                                              InitSelectedItems="{TemplateBinding InitSelectedItems}"
+                                              SelectionChangedCommand="{TemplateBinding SelectionChangedCommand}"
+                                              SelectAllBtnVisiblity="{TemplateBinding SelectAllBtnVisiblity}"
+                                              Watermark="{TemplateBinding Watermark}"
+                                              DisplayMemberPath="{TemplateBinding DisplayMemberPath}"
+                                              ItemsSource="{TemplateBinding ItemsSource}"/> 
+                    </WrapPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
