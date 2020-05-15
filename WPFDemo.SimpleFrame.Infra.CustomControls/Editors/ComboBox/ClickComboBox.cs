@@ -31,6 +31,19 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
         public static readonly DependencyProperty CategoryNameProperty =
             DependencyProperty.Register(nameof(CategoryName), typeof(string), typeof(ClickComboBox));
 
+
+
+        public string DisplayText
+        {
+            get { return (string)GetValue(DisplayTextProperty); }
+            set { SetValue(DisplayTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayTextProperty =
+            DependencyProperty.Register(nameof(DisplayText), typeof(string), typeof(ClickComboBox));
+
+
+
         public ClickComboBox()
         {
             PreviewMouseLeftButtonDown += ClickComboBox_MouseLeftButtonDown;
@@ -63,6 +76,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             if(PART_SelectedItem != null)
             {
                 PART_SelectedItem.Click += PART_SelectedItem_Click;
+            }
+        }
+
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {           
+            base.OnSelectionChanged(e);
+            var item = SelectedItem;
+            if(item == null)
+            {
+                return;
+            }
+            Type type = item.GetType();
+            if (!string.IsNullOrEmpty(DisplayMemberPath))
+            {
+                var display = type.GetProperty(DisplayMemberPath);
+                if (display != null)
+                {
+                    var result = display.GetValue(item, null) ?? "null";
+                    DisplayText = result.ToString() == "全部" ? CategoryName : result.ToString();
+                }
             }
         }
 

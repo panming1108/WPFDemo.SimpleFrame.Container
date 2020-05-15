@@ -24,7 +24,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         private List<Student> _radioStudentSource;
         private List<Student> _notSelectedStudents;
         private List<Student> _haveCheckedStudent;
-        private List<string> _clickComboBoxItemsSource;
+        private List<Student> _clickComboBoxItemsSource;
         private List<Student> _multiComboBoxItemsSource;
         private List<Student> _initSelectedItems;
         public List<Student> InitSelectedItems
@@ -45,7 +45,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
                 OnPropertyChanged(() => MultiComboBoxItemsSource);
             }
         }
-        public List<string> ClickComboBoxItemsSource
+        public List<Student> ClickComboBoxItemsSource
         {
             get => _clickComboBoxItemsSource;
             set
@@ -141,7 +141,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             _checkBoxsSource = new List<string>();
             _radioButtonUnSelected = new List<string>();
             _notSelectedStudents = new List<Student>();
-            _clickComboBoxItemsSource = new List<string>();
+            _clickComboBoxItemsSource = new List<Student>();
             _multiComboBoxItemsSource = new List<Student>();
             RadioButtonCommand = new AsyncDelegateCommand<Student>(OnRadioButtonChecked);
             SelectionCommand = new AsyncDelegateCommand<object>(OnSelectionChanged);
@@ -163,13 +163,13 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             RadioButtonsSource = await _buttonGroupBusi.GetRadioButtonsSource();
             RadioStudentSource = await _buttonGroupBusi.GetRadioButtonsStudentSource();
             CheckBoxsSource = await _buttonGroupBusi.GetCheckBoxsSource();
-            var list = new List<string>()
-            { 
-                "全部",
-                "单发",
-                "成对",
-                "房速",
-                "房早未下传"
+            var list = new List<Student>()
+            {
+                new Student(0,"全部", 10),
+                new Student(1,"单发", 20),
+                new Student(2,"成对", 30),
+                new Student(3,"房速", 40),
+                new Student(4,"房早未下传", 50),
             };            
             ClickComboBoxItemsSource = list;
             MultiComboBoxItemsSource = new List<Student>() 

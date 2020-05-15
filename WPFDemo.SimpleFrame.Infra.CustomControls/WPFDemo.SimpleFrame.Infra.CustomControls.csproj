@@ -100,6 +100,7 @@
     <Compile Include="Editors\ComboBox\MultiComboBox.cs" />
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />
+    <Compile Include="Editors\Input\ViewTextBlock.cs" />
     <Compile Include="Editors\RadioButton\RadioButtonGroup.cs" />
     <Compile Include="LayOuts\Menu\EMCMenu.cs" />
     <Compile Include="LayOuts\Menu\EMCNaviMenu.cs" />

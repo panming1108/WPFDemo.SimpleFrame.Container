@@ -68,6 +68,8 @@
                                        VerticalAlignment="Top" 
                                        CategoryName="房早"
                                        ItemsSource="{Binding ClickComboBoxItemsSource}" 
+                                       DisplayMemberPath="Name"
+                                       SelectedValuePath="Name"
                                        SelectedIndex="0"
                                        IsChecked="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=IsChecked, Mode=TwoWay}"/>
             </RadioButton>
@@ -75,6 +77,8 @@
                 <editors:ClickComboBox x:Name="clickComboBox2" 
                                        VerticalAlignment="Top" 
                                        CategoryName="房早"
+                                       DisplayMemberPath="Name"
+                                       SelectedValuePath="Name"
                                        ItemsSource="{Binding ClickComboBoxItemsSource}" 
                                        SelectedIndex="0"
                                        IsChecked="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=IsChecked, Mode=TwoWay}"/>
@@ -94,6 +98,7 @@
                                         SelectionChangedCommand="{Binding SelectionCommand}"
                                         InitSelectedItems="{Binding InitSelectedItems}"
                                         ItemsSource="{Binding MultiComboBoxItemsSource}"/>
+            <editors:ViewTextBlock Text="测试缩放文字" Height="30" Width="200" Stretch="Uniform" VerticalAlignment="Top"/>
         </StackPanel>
     </Grid>
 </UserControl>
