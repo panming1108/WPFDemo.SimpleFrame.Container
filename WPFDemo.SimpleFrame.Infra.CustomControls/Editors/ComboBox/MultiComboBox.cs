@@ -14,6 +14,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
     [TemplatePart(Name = "PART_SelectAllBtn", Type = typeof(Button))]
     public class MultiComboBox : ComboBox
     {
+        private IList _initSelectedItems;
+        private bool _isListBoxLoaded;
         private ListBox PART_ListBox;
         private Button PART_SelectAllBtn;
 
@@ -65,6 +67,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
 
         public MultiComboBox()
         {
+            _isListBoxLoaded = false;
             Unloaded += MultiComboBox_Unloaded;
         }
 
@@ -76,7 +79,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             PART_SelectAllBtn = GetTemplateChild("PART_SelectAllBtn") as Button;
             if (PART_ListBox != null)
             {
+                _isListBoxLoaded = true;
                 PART_ListBox.SelectionChanged += PART_ListBox_SelectionChanged;
+                if (_initSelectedItems != null && _initSelectedItems.Count != 0)
+                {
+                    foreach (var item in _initSelectedItems)
+                    {
+                        PART_ListBox.SelectedItems.Add(item);
+                    }
+                    _initSelectedItems = null;
+                }
             }
             if(PART_SelectAllBtn != null)
             {
@@ -128,9 +140,16 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             var control = d as MultiComboBox;
             if (control != null)
             {
-                foreach (var item in (IList)e.NewValue)
+                if(control._isListBoxLoaded)
                 {
-                    control.PART_ListBox.SelectedItems.Add(item);
+                    foreach (var item in (IList)e.NewValue)
+                    {
+                        control.PART_ListBox.SelectedItems.Add(item);
+                    }
+                }
+                else
+                {
+                    control._initSelectedItems = (IList)e.NewValue;
                 }
             }
         }
@@ -173,6 +192,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             if (PART_ListBox != null)
             {
                 PART_ListBox.SelectionChanged -= PART_ListBox_SelectionChanged;
+                _isListBoxLoaded = false;
             }
             if (PART_SelectAllBtn != null)
             {

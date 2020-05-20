@@ -18,6 +18,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/EditorsStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -91,7 +92,9 @@
                                    InitSelectedItems="{Binding InitSelectedItems}"
                                    SelectAllBtnVisiblity="Collapsed"
                                    ItemsSource="{Binding MultiComboBoxItemsSource}"/>-->
+            <CheckBox x:Name="PART_Switch"/>
             <editors:CheckMultiComboBox VerticalAlignment="Top"
+                                        Visibility="{Binding ElementName=PART_Switch, Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Width="100"
                                         Margin="10,0,0,0"
                                         DisplayMemberPath="Name"
