@@ -60,7 +60,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="EMCWindowStyle" TargetType="EMCWindow:EMCWindow">
+    <Style TargetType="EMCWindow:EMCWindow">
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="Background" Value="{StaticResource EMCWindowBackground}"/>
@@ -84,7 +84,8 @@
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Effect="{StaticResource DefaultDropShadowEffect}">
+                            Effect="{StaticResource DefaultDropShadowEffect}"
+                            x:Name="PART_Root">
                         <Grid Background="Transparent">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="36"/>
@@ -109,18 +110,28 @@
                                           HorizontalAlignment="Right">
                                         <StackPanel Orientation="Horizontal">
                                             <Button Style="{StaticResource WindowButton}"
-                                                    Command="{x:Static shell:SystemCommands.MinimizeWindowCommand}">
+                                                    Command="{Binding Source={x:Static shell:SystemCommands.MinimizeWindowCommand}}">
                                                 <TextBlock Style="{StaticResource FIcon}"
                                                            Text="{StaticResource fa-window-minimize}"/>
                                             </Button>
-                                            <Button Style="{StaticResource WindowButton}"
-                                                    Command="{x:Static shell:SystemCommands.MaximizeWindowCommand}">
-                                                <TextBlock Style="{StaticResource FIcon}"
-                                                           x:Name="icon_WindowStates"
-                                                           Text="{StaticResource fa-window-maximize}"/>
-                                            </Button>
+                                            <Grid>
+                                                <Button Style="{StaticResource WindowButton}"
+                                                        x:Name="icon_WindowMaxStates"
+                                                        Visibility="Collapsed"
+                                                        Command="{Binding Source={x:Static shell:SystemCommands.MaximizeWindowCommand}}">
+                                                    <TextBlock Style="{StaticResource FIcon}"
+                                                               Text="{StaticResource fa-window-maximize}"/>
+                                                </Button>
+                                                <Button Style="{StaticResource WindowButton}"
+                                                        x:Name="icon_WindowNormalStates"
+                                                        Visibility="Visible"
+                                                        Command="{Binding Source={x:Static shell:SystemCommands.RestoreWindowCommand}}">
+                                                    <TextBlock Style="{StaticResource FIcon}"
+                                                               Text="{StaticResource fa-window-restore}"/>
+                                                </Button>
+                                            </Grid>
                                             <Button Style="{StaticResource WindowCloseButton}"
-                                                    Command="{x:Static shell:SystemCommands.CloseWindowCommand}">
+                                                    Command="{Binding Source={x:Static shell:SystemCommands.CloseWindowCommand}}">
                                                 <TextBlock Style="{StaticResource FIcon}"
                                                            Text="{StaticResource fa-remove}"/>
                                             </Button>
@@ -139,10 +150,13 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
-                            <Setter TargetName="icon_WindowStates" Property="Text" Value="{StaticResource fa-window-restore}"/>
+                            <Setter TargetName="icon_WindowMaxStates" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="icon_WindowNormalStates" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Root" Property="Margin" Value="7"/>
                         </Trigger>
                         <Trigger Property="WindowState" Value="Normal">
-                            <Setter TargetName="icon_WindowStates" Property="Text" Value="{StaticResource fa-window-maximize}"/>
+                            <Setter TargetName="icon_WindowMaxStates" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="icon_WindowNormalStates" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -14,6 +14,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window
         private CommandBinding MinimizeCommandBinding;
         private CommandBinding MaximizeCommandBinding;
         private CommandBinding CloseCommandBinding;
+        private CommandBinding RestoreCommandBinding;
 
         public Brush HeadBackground
         {
@@ -27,15 +28,27 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window
 
         public EMCWindow()
         {
-            var style = this.FindResource("EMCWindowStyle");
-            if(style != null)
-            {
-                this.Style = style as Style;
-            }
+            this.Style = (Style)this.FindResource(typeof(EMCWindow));
             this.MouseLeftButtonDown += EMCWindow_MouseLeftButtonDown;
-            RegisterCommand(this, MinimizeCommandBinding, SystemCommands.MinimizeWindowCommand, OnMinimizeExecuted, CanMinimizeExecuted);
-            RegisterCommand(this, MaximizeCommandBinding, SystemCommands.MaximizeWindowCommand, OnMaximizeExecuted, CanMaximizeExecuted);
-            RegisterCommand(this, CloseCommandBinding, SystemCommands.CloseWindowCommand, OnCloseExecuted, CanCloseExecuted);
+            this.Unloaded += EMCWindow_Unloaded;
+            MinimizeCommandBinding = new CommandBinding(SystemCommands.MinimizeWindowCommand, OnMinimizeExecuted, CanMinimizeExecuted);
+            MaximizeCommandBinding = new CommandBinding(SystemCommands.MaximizeWindowCommand, OnMaximizeExecuted, CanResizeExecuted);
+            RestoreCommandBinding = new CommandBinding(SystemCommands.RestoreWindowCommand, OnRestoreExecuted, CanResizeExecuted);
+            CloseCommandBinding = new CommandBinding(SystemCommands.CloseWindowCommand, OnCloseExecuted, CanCloseExecuted);
+            this.CommandBindings.Add(MinimizeCommandBinding);
+            this.CommandBindings.Add(MaximizeCommandBinding);
+            this.CommandBindings.Add(CloseCommandBinding);
+            this.CommandBindings.Add(RestoreCommandBinding);
+        }
+
+        private void EMCWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            this.CommandBindings.Remove(MinimizeCommandBinding);
+            this.CommandBindings.Remove(MaximizeCommandBinding);
+            this.CommandBindings.Remove(CloseCommandBinding);
+            this.CommandBindings.Remove(RestoreCommandBinding);
+            this.MouseLeftButtonDown -= EMCWindow_MouseLeftButtonDown;
+            this.Unloaded -= EMCWindow_Unloaded;
         }
 
         private void EMCWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -50,17 +63,22 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window
         #region Executed
         private void OnCloseExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            this.Close();
+            SystemCommands.CloseWindow(this);
         }
 
         private void OnMaximizeExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            this.WindowState = this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            SystemCommands.MaximizeWindow(this);
         }
+        private void OnRestoreExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SystemCommands.RestoreWindow(this);
+        }
+
 
         private void OnMinimizeExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            SystemCommands.MinimizeWindow(this);
         }
         #endregion
 
@@ -69,42 +87,15 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.LayOuts.Window
         {
             e.CanExecute = true;
         }
-        private void CanMaximizeExecuted(object sender, CanExecuteRoutedEventArgs e)
+        private void CanResizeExecuted(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            e.CanExecute = this.ResizeMode == ResizeMode.CanResize || this.ResizeMode == ResizeMode.CanResizeWithGrip;
         }
 
         private void CanMinimizeExecuted(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            e.CanExecute = this.ResizeMode != ResizeMode.NoResize;
         }
         #endregion
-
-        private void RegisterCommand(UIElement ui, CommandBinding bind, ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute)
-        {
-            //CommandManager.RegisterClassCommandBinding(typeof(EMCDataPager), new CommandBinding(command, executed, canExecute));
-            if (bind != null)
-            {
-                bind.Executed -= executed;
-                bind.CanExecute -= canExecute;
-                bind = null;
-            }
-            bind = new CommandBinding(command);
-            bind.Executed += executed;
-            bind.CanExecute += canExecute;
-            ui.CommandBindings.Add(bind);
-        }
-
-        private void UnRegisterCommand(UIElement ui, CommandBinding bind, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute)
-        {
-            //CommandManager.RegisterClassCommandBinding(typeof(EMCDataPager), new CommandBinding(command, executed, canExecute));
-            if (bind != null)
-            {
-                bind.Executed -= executed;
-                bind.CanExecute -= canExecute;
-                ui.CommandBindings.Remove(bind);
-                bind = null;
-            }
-        }
     }
 }
