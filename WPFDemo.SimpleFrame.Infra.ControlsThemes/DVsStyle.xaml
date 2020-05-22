@@ -153,10 +153,7 @@
                              StrokeThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness.Left}">
                         <Ellipse.ToolTip>
                             <toolTip:EMCToolTip Placement="Top">
-                                <TextBlock>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=XValue, StringFormat={}X:{0:F2}}"/>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=YValue, StringFormat={} Y:{0:F2}}"/>
-                                </TextBlock>
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=ToolTipText}"/>
                             </toolTip:EMCToolTip>
                         </Ellipse.ToolTip>
                     </Ellipse>

@@ -77,6 +77,7 @@
     <Compile Include="DMs\ListBox\ListBoxAttachProperty.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
+    <Compile Include="DVs\WaveChart\BezierAlgorithm.cs" />
     <Compile Include="DVs\WaveChart\DataPoint.cs" />
     <Compile Include="DVs\WaveChart\DataRect.cs" />
     <Compile Include="DVs\WaveChart\EMCWaveChart.cs" />

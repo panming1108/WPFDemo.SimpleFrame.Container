@@ -17,6 +17,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         private const string PART_CANVAS = "PART_Canvas";
         private Canvas _canvas;
         private DataPoint _currentPoint;
+        private List<Point> _allPoints;
 
         public Dictionary<string, double> ItemsSource
         {
@@ -133,26 +134,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             {
                 return;
             }
-            var allPoints = control.WaveIntervalConverter.GenerateCurvePoints(control.ItemsSource);
+            if(_allPoints == null)
+            {
+                _allPoints = control.WaveIntervalConverter.GenerateCurvePoints(control.ItemsSource);
+            }
             var currentPoint = e.GetPosition(control);
-            var minDistance = allPoints.Select(x => Math.Abs(x.X - currentPoint.X)).Min();
-            var selectedPoints = allPoints.Where(x => Math.Abs(x.X - currentPoint.X) == minDistance);
+            var minDistance = _allPoints.Select(x => Math.Abs(x.X - currentPoint.X)).Min();
+            var selectedPoints = _allPoints.Where(x => Math.Abs(x.X - currentPoint.X) == minDistance);
             var point = selectedPoints.First();
             if (_currentPoint == null)
             {
                 _currentPoint = new DataPoint(PointRadius * 4, PointRadius * 4, point.X, point.Y)
                 {
+                    IsHitTestVisible = false,
                     Background = Brushes.Red,
-                    //XValue = "111",
-                    //YValue = 20
                 };
             }
             else
             {
                 _currentPoint.X = point.X;
                 _currentPoint.Y = point.Y;
-                //_currentPoint.XValue = "22";
-                //_currentPoint.YValue = 33;               
             }
             if (!_canvas.Children.Contains(_currentPoint))
             {
@@ -187,6 +188,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             {
                 return;
             }
+            _allPoints = null;
             Pen pen = new Pen(WaveStrokeBrush, WaveStrokeThickness);
             DrawLineWave(drawingContext, pen);
             if(IsDrawPoint)
@@ -218,20 +220,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             DataPoint dataPoint = new DataPoint(PointRadius * 2, PointRadius * 2, point.X, point.Y)
             {
                 Background = PointFillBrush,
-                XValue = xValue,
-                YValue = yValue
+                ToolTipText = string.Format("X:{0:F2}, Y:{1:F2}", xValue, yValue)
             };
             _canvas.Children.Add(dataPoint);
         }
 
         private void DrawLineWave(DrawingContext drawingContext, Pen pen)
         {
-            //var points = WaveIntervalConverter.GenerateCurvePoints(ItemsSource);
-            //for (int i = 0; i < points.Count - 1; i++)
-            //{
-            //    drawingContext.DrawLine(pen, points[i], points[i + 1]);
-            //}
-
             PathGeometry pathGeometry = WaveIntervalConverter.CaculateCurveGeometry(ItemsSource, LineMode, IsWaveFill);
             drawingContext.DrawGeometry(WaveFillBrush, pen, pathGeometry);
         }
