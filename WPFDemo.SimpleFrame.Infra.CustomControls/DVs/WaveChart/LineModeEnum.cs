@@ -11,6 +11,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         [Description("直线")]
         StraightLine,
         [Description("曲线")]
-        Curve
+        Curve,
     }
 }

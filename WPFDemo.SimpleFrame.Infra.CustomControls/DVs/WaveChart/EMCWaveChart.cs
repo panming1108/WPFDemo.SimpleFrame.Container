@@ -181,6 +181,24 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public static readonly DependencyProperty RectFillBrushProperty =
             DependencyProperty.Register(nameof(RectFillBrush), typeof(Brush), typeof(EMCWaveChart));
 
+        public bool IsDisplayHistogram
+        {
+            get { return (bool)GetValue(IsDisplayHistogramProperty); }
+            set { SetValue(IsDisplayHistogramProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsDisplayHistogramProperty =
+            DependencyProperty.Register(nameof(IsDisplayHistogram), typeof(bool), typeof(EMCWaveChart));
+
+        public bool IsDisplayLineWave
+        {
+            get { return (bool)GetValue(IsDisplayLineWaveProperty); }
+            set { SetValue(IsDisplayLineWaveProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsDisplayLineWaveProperty =
+            DependencyProperty.Register(nameof(IsDisplayLineWave), typeof(bool), typeof(EMCWaveChart));
+
         public EMCWaveChart()
         {
             Loaded += EMCWaveChart_Loaded;

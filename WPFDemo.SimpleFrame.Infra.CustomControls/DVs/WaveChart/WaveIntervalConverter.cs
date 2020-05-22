@@ -49,7 +49,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             else
             {
                 YAxisInterval = (_height - _offset) / _ordinateCount;
-                YAxisIntervalValue = Math.Round((max - _yMin) / (_ordinateCount), 2);
+                YAxisIntervalValue = Math.Round((max - _yMin) / _ordinateCount, 2);
                 for (int i = 0; i < _ordinateCount; i++)
                 {
                     datas.Add((_yMin + ((i + 1) * YAxisIntervalValue)).ToString(), _height - (i + 1) * YAxisInterval);
@@ -124,33 +124,35 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         {
             int count = itemsSource.Count - 1;
             PathSegmentCollection pathSegments = new PathSegmentCollection();
-            double ave = GetItemsSourceValueAvgYAxis(itemsSource);
             for (int i = 0; i < count; i++)
             {
                 Point a, b, c, d;
+                a = DataConverter2Point(itemsSource.ElementAt(i - 1 < 0 ? 0 : i - 1));
                 b = DataConverter2Point(itemsSource.ElementAt(i));
                 c = DataConverter2Point(itemsSource.ElementAt(i + 1));
-                if (i == 0)
-                {
-                    a = new Point(b.X * 2 - c.X, ave);
-                    d = DataConverter2Point(itemsSource.ElementAt(2));
-                }
-                else if(i == count - 1)
-                {
-                    a = DataConverter2Point(itemsSource.ElementAt(i - 1));                  
-                    d = new Point(c.X * 2 - b.X, ave);
-                }
-                else
-                {
-                    a = DataConverter2Point(itemsSource.ElementAt(i - 1));
-                    d = DataConverter2Point(itemsSource.ElementAt(i + 2));
-                }
+                d = DataConverter2Point(itemsSource.ElementAt(i + 2 > count - 1 ? count : i + 2));
 
-                BezierSegment bezierSegment = GetBezierSegment(a,b,c,d);
-                
+                BezierSegment bezierSegment = GetBezierSegment(a, b, c, d);
                 pathSegments.Add(bezierSegment);
             }
             return pathSegments;
+        }
+
+        public List<Point> GenerateCurvePoints(Dictionary<string, double> itemsSource)
+        {
+            int count = itemsSource.Count - 1;
+            List<Point> points = new List<Point>();
+            for (int i = 0; i < count; i++)
+            {
+                Point a, b, c, d;
+                a = DataConverter2Point(itemsSource.ElementAt(i - 1 < 0 ? 0 : i - 1));
+                b = DataConverter2Point(itemsSource.ElementAt(i));
+                c = DataConverter2Point(itemsSource.ElementAt(i + 1));
+                d = DataConverter2Point(itemsSource.ElementAt(i + 2 > count - 1 ? count : i + 2));
+
+                points.AddRange(GetBezierPoints(a, b, c, d));
+            }
+            return points;
         }
 
         private BezierSegment GetBezierSegment(Point prev, Point current, Point next, Point nextNext, bool isStroked = true)
@@ -158,22 +160,45 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             var tuple1 = GetControlPoint(_rt, prev, current, next);
             var tuple2 = GetControlPoint(_rt, current, next, nextNext);
 
-            var centerPoint = new Point((current.X + next.X) / 2, (current.Y + next.Y) / 2);
+            return new BezierSegment(tuple1.Item2, tuple2.Item1, next, isStroked);
+        }
 
-            Point point1 = tuple1.Item2;
-            Point point2 = tuple2.Item1;
+        /// <summary>
+        /// 根据三次贝塞尔曲线公式，获取一段Bezier曲线上的所有点
+        /// </summary>
+        /// <param name="prev">前一个点</param>
+        /// <param name="current">当前点</param>
+        /// <param name="next">下一个点</param>
+        /// <param name="nextNext">下下一个点</param>
+        /// <returns></returns>
+        private List<Point> GetBezierPoints(Point prev, Point current, Point next, Point nextNext)
+        {
+            Point control1 = GetControlPoint(_rt, prev, current, next).Item2;
+            Point control2 = GetControlPoint(_rt, current, next, nextNext).Item1;
 
-            if (point1.X > centerPoint.X)
+            List<Point> points = new List<Point>();
+            var step = XAxisInterval == 0 ? 1 : 1 / XAxisInterval;
+
+            for (double t = 0; t <= 1; t += step)
             {
-                point1.X = centerPoint.X;
+                double p01X = (1 - t) * current.X + t * control1.X;
+                double p11X = (1 - t) * control1.X + t * control2.X;
+                double p21X = (1 - t) * control2.X + t * next.X;
+                double p02X = (1 - t) * p01X + t * p11X;
+                double p12X = (1 - t) * p11X + t * p21X;
+                double p03X = (1 - t) * p02X + t * p12X;
+
+                double p01Y = (1 - t) * current.Y + t * control1.Y;
+                double p11Y = (1 - t) * control1.Y + t * control2.Y;
+                double p21Y = (1 - t) * control2.Y + t * next.Y;
+                double p02Y = (1 - t) * p01Y + t * p11Y;
+                double p12Y = (1 - t) * p11Y + t * p21Y;
+                double p03Y = (1 - t) * p02Y + t * p12Y;
+
+                points.Add(new Point(p03X, p03Y));
             }
 
-            if (point2.X < centerPoint.X)
-            {
-                point2.X = centerPoint.X;
-            }
-
-            return new BezierSegment(point1, point2, next, isStroked);
+            return points;
         }
 
         private Tuple<Point, Point> GetControlPoint(double rt, Point pointPrev, Point pointCur, Point pointNext)
@@ -198,18 +223,40 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             var ncp1 = new Vector(centerV.Y, centerV.X * -1);
             var ncp2 = new Vector(centerV.Y * -1, centerV.X);
             Vector vectorB = new Vector(b.X, b.Y);
+            Vector item1, item2;
             if (ncp1.Angle(v1) < 90)
             {
-                var p1 = ncp1.Multiply(v1Len * rt).Add(vectorB);
-                var p2 = ncp2.Multiply(v2Len * rt).Add(vectorB);
-                return new Tuple<Point, Point>(p1.ToPoint(), p2.ToPoint());
+                item1 = ncp1.Multiply(v1Len * rt).Add(vectorB);
+                item2 = ncp2.Multiply(v2Len * rt).Add(vectorB);
             }
             else
             {
-                var p1 = ncp1.Multiply(v2Len * rt).Add(vectorB);
-                var p2 = ncp2.Multiply(v1Len * rt).Add(vectorB);
-                return new Tuple<Point, Point>(p2.ToPoint(), p1.ToPoint());
+                item1 = ncp2.Multiply(v1Len * rt).Add(vectorB);
+                item2 = ncp1.Multiply(v2Len * rt).Add(vectorB);
             }
+
+            Point item1Center = new Point((pointPrev.X + pointCur.X) / 2, (pointPrev.Y + pointCur.Y) / 2);
+            Point item2Center = new Point((pointCur.X + pointNext.X) / 2, (pointCur.Y + pointNext.Y) / 2);
+
+            if (item1.X > pointCur.X)
+            {
+                item1.X = pointCur.X;
+            }
+            if (item2.X < pointCur.X)
+            {
+                item2.X = pointCur.X;
+            }
+
+            if (item1.X < item1Center.X)
+            {
+                item1.X = item1Center.X;
+            }
+            if (item2.X > item2Center.X)
+            {
+                item2.X = item2Center.X;
+            }
+
+            return new Tuple<Point, Point>(item1.ToPoint(), item2.ToPoint());
         }
 
         public double GetItemsSourceValueAvgYAxis(Dictionary<string, double> itemsSource)
@@ -225,6 +272,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                 Y = _height - (data.Value / YAxisIntervalValue) * YAxisInterval
             };
             return point;
+        }
+
+        public KeyValuePair<string, double> PointConverter2Data(Point point)
+        {
+            string key = "";
+            double value = 1;
+            return new KeyValuePair<string, double>(key, value);
         }
     }
 }

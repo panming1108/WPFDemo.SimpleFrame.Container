@@ -43,7 +43,8 @@
                                    WaveStrokeBrush="#26A6FB"
                                    WaveFillBrush="#CCEAFE"
                                    RectBorderBrush="#CCEAFE"
-                                   RectFillBrush="#CCEAFE"/>
+                                   RectFillBrush="#CCEAFE"
+                                   IsDisplayHistogram="False"/>
         <EMCButton:EMCButton Height="36" 
                              Width="100" 
                              Grid.Row="1"

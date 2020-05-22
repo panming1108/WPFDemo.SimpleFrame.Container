@@ -220,6 +220,9 @@
         <Setter Property="PointFillBrush" Value="Black"/>
         <Setter Property="RectFillBrush" Value="Black"/>
         <Setter Property="RectBorderBrush" Value="Black"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="IsDisplayHistogram" Value="True" />
+        <Setter Property="IsDisplayLineWave" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:EMCWaveChart">
@@ -228,7 +231,9 @@
                                                 WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
                                                 RectBorderBrush="{TemplateBinding RectBorderBrush}"
                                                 RectFillBrush="{TemplateBinding RectFillBrush}"
-                                                RectBorderThickness="{TemplateBinding RectBorderThickness}"/>
+                                                RectBorderThickness="{TemplateBinding RectBorderThickness}"
+                                                Visibility="Visible"
+                                                x:Name="PART_Histogram"/>
                         <EMCWaveChart:LineWave ItemsSource="{TemplateBinding ItemsSource}"
                                                IsDrawPoint="{TemplateBinding IsDrawPoint}"
                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
@@ -238,7 +243,9 @@
                                                WaveStrokeBrush="{TemplateBinding WaveStrokeBrush}"
                                                WaveStrokeThickness="{TemplateBinding WaveStrokeThickness}"
                                                IsWaveFill="{TemplateBinding IsWaveFill}"
-                                               WaveFillBrush="{TemplateBinding WaveFillBrush}"/>
+                                               WaveFillBrush="{TemplateBinding WaveFillBrush}"
+                                               Visibility="Visible"
+                                               x:Name="PART_LineWave"/>
                         <!-- 坐标轴放在最上面 -->
                         <EMCWaveChart:WaveAxis ItemsSource="{TemplateBinding ItemsSource}"
                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
@@ -247,6 +254,20 @@
                                                AxisStrokeBrush="{TemplateBinding AxisStrokeBrush}"
                                                AxisStrokeThickness="{TemplateBinding AxisStrokeThickness}"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDisplayHistogram" Value="True">
+                            <Setter TargetName="PART_Histogram"  Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsDisplayHistogram" Value="False">
+                            <Setter TargetName="PART_Histogram"  Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsDisplayLineWave" Value="True">
+                            <Setter TargetName="PART_LineWave"  Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsDisplayLineWave" Value="False">
+                            <Setter TargetName="PART_LineWave"  Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
