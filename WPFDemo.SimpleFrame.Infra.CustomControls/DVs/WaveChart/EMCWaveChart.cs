@@ -5,11 +5,14 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 {
     public class EMCWaveChart : Control
     {
+        private DispatcherTimer _timer;
+
         public Dictionary<string, double> ItemsSource
         {
             get { return (Dictionary<string, double>)GetValue(ItemsSourceProperty); }
@@ -199,6 +202,33 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public static readonly DependencyProperty IsDisplayLineWaveProperty =
             DependencyProperty.Register(nameof(IsDisplayLineWave), typeof(bool), typeof(EMCWaveChart));
 
+        public bool IsAnimationOpen
+        {
+            get { return (bool)GetValue(IsAnimationOpenProperty); }
+            set { SetValue(IsAnimationOpenProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAnimationOpenProperty =
+            DependencyProperty.Register(nameof(IsAnimationOpen), typeof(bool), typeof(EMCWaveChart));
+
+        public Dictionary<string, double> RelayItemsSource
+        {
+            get { return (Dictionary<string, double>)GetValue(RelayItemsSourceProperty); }
+            set { SetValue(RelayItemsSourceProperty, value); }
+        }
+
+        public static readonly DependencyProperty RelayItemsSourceProperty =
+            DependencyProperty.Register(nameof(RelayItemsSource), typeof(Dictionary<string, double>), typeof(EMCWaveChart));
+
+        public double AnimationSeconds
+        {
+            get { return (double)GetValue(AnimationSecondsProperty); }
+            set { SetValue(AnimationSecondsProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimationSecondsProperty =
+            DependencyProperty.Register(nameof(AnimationSeconds), typeof(double), typeof(EMCWaveChart), new PropertyMetadata(0.1));
+
         public EMCWaveChart()
         {
             Loaded += EMCWaveChart_Loaded;
@@ -207,6 +237,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
 
         private void EMCWaveChart_Unloaded(object sender, RoutedEventArgs e)
         {
+            DisposeTimer();
             Loaded -= EMCWaveChart_Loaded;
             Unloaded -= EMCWaveChart_Unloaded;
         }
@@ -222,6 +253,14 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                 return;
             }
             WaveIntervalConverter = new WaveIntervalConverter(ItemsSource, OrdinateCount, ActualWidth, ActualHeight, AxisOffset);
+            if (IsAnimationOpen)
+            {
+                InitTimer();
+            }
+            else
+            {
+                RelayItemsSource = ItemsSource;
+            }
         }
 
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -243,7 +282,61 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
                     return;
                 }
                 waveChart.WaveIntervalConverter = new WaveIntervalConverter(newValue, waveChart.OrdinateCount, waveChart.ActualWidth, waveChart.ActualHeight, waveChart.AxisOffset);
+                if (waveChart.IsAnimationOpen)
+                {
+                    waveChart.InitTimer();
+                }
+                else
+                {
+                    waveChart.RelayItemsSource = newValue;
+                }
             }
+        }
+
+        private void InitTimer()
+        {
+            DisposeTimer();
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(42);
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
+
+        private void DisposeTimer()
+        {
+            if (_timer != null)
+            {
+                _count = 0;
+                _timer.Stop();
+                _timer = null;
+            }
+        }
+
+        private int _count = 0;
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            RelayItemsSource = GenerateRelayItemsSource(_count, out bool isEnd);
+            _count++;
+            if(isEnd)
+            {
+                DisposeTimer();
+            }
+        }
+
+        private Dictionary<string, double> GenerateRelayItemsSource(int count, out bool isEnd)
+        {
+            if(count * 24 >= AnimationSeconds * 1000)
+            {
+                isEnd = true;
+                return ItemsSource;
+            }
+            var result = new Dictionary<string, double>();
+            foreach (var item in ItemsSource)
+            {
+                result.Add(item.Key, item.Value * (count * 24 / (AnimationSeconds * 1000)));
+            }
+            isEnd = false;
+            return result;
         }
     }
 }

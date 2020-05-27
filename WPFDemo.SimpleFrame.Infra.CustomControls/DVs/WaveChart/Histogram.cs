@@ -25,7 +25,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register(nameof(ItemsSource), typeof(Dictionary<string, double>), typeof(Histogram));
+            DependencyProperty.Register(nameof(ItemsSource), typeof(Dictionary<string, double>), typeof(Histogram), new PropertyMetadata(OnReDrawing));
 
         public WaveIntervalConverter WaveIntervalConverter
         {

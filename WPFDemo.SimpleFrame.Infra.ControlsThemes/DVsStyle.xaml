@@ -224,14 +224,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="EMCWaveChart:EMCWaveChart">
                     <Grid>
-                        <EMCWaveChart:Histogram ItemsSource="{TemplateBinding ItemsSource}"
+                        <EMCWaveChart:Histogram ItemsSource="{TemplateBinding RelayItemsSource}"
                                                 WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
                                                 RectBorderBrush="{TemplateBinding RectBorderBrush}"
                                                 RectFillBrush="{TemplateBinding RectFillBrush}"
                                                 RectBorderThickness="{TemplateBinding RectBorderThickness}"
                                                 Visibility="Visible"
                                                 x:Name="PART_Histogram"/>
-                        <EMCWaveChart:LineWave ItemsSource="{TemplateBinding ItemsSource}"
+                        <EMCWaveChart:LineWave ItemsSource="{TemplateBinding RelayItemsSource}"
                                                IsDrawPoint="{TemplateBinding IsDrawPoint}"
                                                WaveIntervalConverter="{TemplateBinding WaveIntervalConverter}"
                                                LineMode="{TemplateBinding LineMode}"

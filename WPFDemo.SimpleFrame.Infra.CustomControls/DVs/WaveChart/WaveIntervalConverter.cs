@@ -40,15 +40,19 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         private Dictionary<string, double> CaculateYAxisIntervalMapping(double max)
         {
             Dictionary<string, double> datas = new Dictionary<string, double>();
-            datas.Add(_yMin.ToString(), _height);
             if (max == _yMin)
             {
+                datas.Add("0", _height);
                 YAxisInterval = _height / 2;
                 YAxisIntervalValue = max;
-                datas.Add(max.ToString(), _height - YAxisInterval);
+                if(max != 0)
+                {
+                    datas.Add(max.ToString(), _height - YAxisInterval);
+                }
             }
             else
             {
+                datas.Add(_yMin.ToString(), _height);
                 YAxisInterval = (_height - _offset) / _ordinateCount;
                 YAxisIntervalValue = Math.Round((max - _yMin) / _ordinateCount, 2);
                 for (int i = 0; i < _ordinateCount; i++)
@@ -76,7 +80,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
         public PathGeometry CaculateCurveGeometry(Dictionary<string, double> itemsSource, LineModeEnum lineMode, bool isFill)
         {
             PathFigureCollection pathFigures = new PathFigureCollection();
-            PathSegmentCollection pathSegments = GeneratePathSegmentsByItemsSource(lineMode);
+            PathSegmentCollection pathSegments = GeneratePathSegmentsByItemsSource(itemsSource, lineMode);
             PathFigure pathFigure;
             if (isFill)
             {
@@ -102,13 +106,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             return pathGeometry;
         }
 
-        private PathSegmentCollection GeneratePathSegmentsByItemsSource(LineModeEnum lineMode)
+        private PathSegmentCollection GeneratePathSegmentsByItemsSource(Dictionary<string, double> itemsSource, LineModeEnum lineMode)
         {
             PathSegmentCollection pathSegments;
             if(lineMode == LineModeEnum.StraightLine)
             {
                 pathSegments = new PathSegmentCollection();
-                foreach (var item in _itemsSource)
+                foreach (var item in itemsSource)
                 {
                     PathSegment pathSegment = new LineSegment(DataConverter2Point(item), true);
                     pathSegments.Add(pathSegment);
@@ -116,7 +120,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart
             }
             else
             {
-                pathSegments = GenerateCurvePathSegment(_itemsSource);
+                pathSegments = GenerateCurvePathSegment(itemsSource);
             }
             return pathSegments;
         }
