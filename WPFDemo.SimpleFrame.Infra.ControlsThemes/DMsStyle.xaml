@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
+                    xmlns:DMs="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCListBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.ListBox;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCDataGrid="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataGrid;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCDataPager="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
@@ -1211,5 +1212,170 @@
     <!--#endregion-->
     
     
+    <!--#endregion-->
+    
+    <!--#region MultiTreeView-->
+    <Style x:Key="Style_MultiTreeViewItem_CheckBoxStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="15" Height="15" 
+                                    Name="checkedBorder"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1" 
+                                    Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Path x:Name="checkedPath" Stroke="White" StrokeThickness="2" 
+                                          Panel.ZIndex="2" 
+                                          Visibility="Collapsed" Data="M2,5 L4,8 9,2"/>
+                                <Rectangle x:Name="nullRec" Width="15" Height="15" Panel.ZIndex="-1"
+                                                Fill="#21adff" Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter Grid.Column="1" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              RecognizesAccessKey="True" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="nullRec" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="checkedPath" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="checkedBorder" Property="BorderBrush" Value="#21adff"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter TargetName="checkedBorder" Property="BorderBrush" Value="#c5cdd9"/>
+                        </Trigger>
+                        <Trigger Property="HasContent" Value="true">
+                            <Setter Property="Padding" Value="4,0,0,0"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" ></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Style_MultiTreeViewItem_ExpandToggleBtn" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <TextBlock Text="+"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   x:Name="PART_Content"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="PART_Content" Property="Text" Value="-"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="MultiTreeViewItemStyle" TargetType="DMs:MultiTreeViewItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DMs:MultiTreeViewItem">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <StackPanel Orientation="Vertical">
+                            <Grid x:Name="PART_HeaderGrid" Height="25">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton x:Name="PART_ExpandToggleBtn"
+                                              Grid.Column="0"
+                                              IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsExpanded, Mode=TwoWay}"
+                                              Style="{TemplateBinding ToggleBtnStyle}"
+                                              Visibility="Collapsed"/>
+                                <Grid Grid.Column="1"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center">
+                                    <CheckBox x:Name="PART_CheckBox"
+                                              Content="{TemplateBinding Header}"
+                                              Style="{TemplateBinding CheckBoxStyle}"
+                                              VerticalContentAlignment="Center"
+                                              IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsChecked, Mode=TwoWay}"
+                                              Visibility="Collapsed"
+                                              Margin="5,0,0,0"/>
+                                    <TextBlock Text="{TemplateBinding Header}"
+                                               x:Name="PART_Header"                              
+                                               Visibility="Collapsed"/>
+                                </Grid>
+                            </Grid>
+                            <ItemsPresenter x:Name="PART_ItemsHost"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter TargetName="PART_ExpandToggleBtn" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_CheckBox" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="PART_ExpandToggleBtn" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_CheckBox" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="PART_ItemsHost" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter TargetName="PART_ItemsHost" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="DMs:MultiTreeView">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ToggleBtnStyle" Value="{StaticResource Style_MultiTreeViewItem_ExpandToggleBtn}"/>
+        <Setter Property="CheckBoxStyle" Value="{StaticResource Style_MultiTreeViewItem_CheckBoxStyle}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource MultiTreeViewItemStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DMs:MultiTreeView">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--#endregion-->
 </ResourceDictionary>

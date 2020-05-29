@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.DMs"
              xmlns:EMCListBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs.ListBox;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:DMs="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DMs;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
@@ -191,7 +192,7 @@
                  EMCListBox:CustomeSelectionItems.SelectedItems="{Binding SelectedFiles, Mode=TwoWay}"
                  EMCListBox:CustomeSelectionItems.CanSelectedItemsBinding="True"
                  ItemTemplate="{StaticResource RealTime_VerificationAlgorithm_ListBoxItemTemplate}"/>-->
-        <ListBox Grid.Row="1"
+        <!--<ListBox Grid.Row="1"
                  x:Name="list"
                  SelectionMode="Multiple"
                  ItemsSource="{Binding FileListSource}"
@@ -199,6 +200,13 @@
                  EMCListBox:ListBoxAttachProperty.SelectionChangedCommand="{Binding SelectionChangedCommand}"
                  EMCListBox:ListBoxAttachProperty.SelectedItems="{Binding SelectedFiles}"
                  EMCListBox:ListBoxAttachProperty.CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>
-        <Button Width="90" Height="30" Command="{Binding SelectedItemsAnalysisCommand}" Content="获取数据" CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>
+        <Button Width="90" Height="30" Command="{Binding SelectedItemsAnalysisCommand}" Content="获取数据" CommandParameter="{Binding ElementName=list, Path=SelectedItems}"/>-->
+        <DMs:MultiTreeView ItemsSource="{Binding TreeSource}"
+                           HeaderDisplayMemberPath="Data.Name"
+                           ChildrenDisplayMemberPath="Children"
+                           IsCheckedDisplayMemberPath="IsChecked"
+                           SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                           Grid.Row="1"/>
+        <TextBlock Text="{Binding TreeText}" VerticalAlignment="Bottom"/>
     </StackPanel>
 </UserControl>

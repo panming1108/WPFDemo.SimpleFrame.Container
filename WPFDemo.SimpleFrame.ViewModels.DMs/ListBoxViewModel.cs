@@ -73,6 +73,27 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         public List<FlushModel<Student>> AllStudents;
 
+        private List<TreeNode<Student>> _treeSource;
+        public List<TreeNode<Student>> TreeSource
+        {
+            get => _treeSource;
+            set
+            {
+                _treeSource = value;
+                OnPropertyChanged(() => TreeSource);
+            }
+        }
+        private string _treeText;
+        public string TreeText
+        {
+            get => _treeText;
+            set
+            {
+                _treeText = value;
+                OnPropertyChanged(() => TreeText);
+            }
+        }
+
         public ICommand InsertCommand { get; set; }
         public ICommand LazyLoadCommand { get; set; }
         public ICommand SelectedItemsAnalysisCommand { get; set; }
@@ -84,16 +105,24 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             _startLazyLoadCount = 20;
             _students = new ObservableCollection<FlushModel<Student>>();
             _fileListSource = new List<string>();
+            _treeSource = new List<TreeNode<Student>>();
             AllStudents = new List<FlushModel<Student>>();
             InsertCommand = new AsyncDelegateCommand<object>(OnInsert);
             LazyLoadCommand = new AsyncDelegateCommand<object>(OnLazyLoad);
             SelectedItemsAnalysisCommand = new AsyncDelegateCommand<object>(OnSelectedItemsAnalysis);
-            SelectionChangedCommand = new AsyncDelegateCommand<object>(OnSelectionChanged);
+            SelectionChangedCommand = new AsyncDelegateCommand<IList>(OnSelectionChanged);
             //_selectedFiles = new List<object>() { "999" };
         }
 
-        private async Task OnSelectionChanged(object arg)
+        private async Task OnSelectionChanged(IList selectedItems)
         {
+            string data = "";
+            foreach (var item in selectedItems)
+            {
+                var node = item as TreeNode<Student>;
+                data += node.Data.Name + ",";
+            }
+            TreeText = data.TrimEnd(',');
             await TaskEx.FromResult(0);
         }
 
@@ -159,11 +188,49 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             };
             SelectedFiles = new List<string>() { "999", "888", "111" };
             ListBoxSource = new ObservableCollection<ListBoxModel>(await _listBoxBusi.GetListBoxSource());
+
+            var node1 = new TreeNode<Student>(new Student("心率类"));
+            var node11 = new TreeNode<Student>(new Student("窦性心率")) { IsChecked = true };
+            var node12 = new TreeNode<Student>(new Student("房性心率"));
+            node1.Children = new List<TreeNode<Student>>() { node11, node12 };
+
+            var node2 = new TreeNode<Student>(new Student("室性早搏"));
+            var node21 = new TreeNode<Student>(new Student("频发室性早搏"));
+            var node211 = new TreeNode<Student>(new Student("频发房性早搏呈二联律")) { IsChecked = true };
+            node21.Children = new List<TreeNode<Student>>() { node211 };
+            var node22 = new TreeNode<Student>(new Student("偶发室性早搏"));
+            node2.Children = new List<TreeNode<Student>>() { node21, node22 };
+
+            var node3 = new TreeNode<Student>(new Student("心机梗塞"));
+            var node31 = new TreeNode<Student>(new Student("心机梗塞")) { IsChecked = true };
+            var node32 = new TreeNode<Student>(new Student("急性ST段抬高"));
+            node3.Children = new List<TreeNode<Student>>() { node31, node32 };
+
+            var node4 = new TreeNode<Student>(new Student("房室传导异常"));
+
+            var tree = new List<TreeNode<Student>>() { node1, node2, node3, node4 };
+            TreeSource = tree;
         }
 
         protected async override Task UnLoaded()
         {
             await TaskEx.FromResult(0);
         }
+    }
+
+    public class TreeNode<T>
+    {
+        public TreeNode()
+        {
+
+        }
+
+        public TreeNode(T data)
+        {
+            Data = data;
+        }
+        public T Data { get; set; }
+        public bool IsChecked { get; set; }
+        public List<TreeNode<T>> Children { get; set; }
     }
 }

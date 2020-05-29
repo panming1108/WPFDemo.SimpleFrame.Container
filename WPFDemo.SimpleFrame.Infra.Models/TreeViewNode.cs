@@ -21,6 +21,8 @@ namespace WPFDemo.SimpleFrame.Infra.Models
 
         public string GroupName { get; set; }
 
+        public bool IsChecked { get; set; }
+
         public TreeViewNode()
         {
 

@@ -17,6 +17,11 @@ namespace WPFDemo.SimpleFrame.Infra.Models
 
         }
 
+        public Student(string name)
+        {
+            Name = name;
+        }
+
         public Student(int id, string name, int age)
         {
             Id = id;
