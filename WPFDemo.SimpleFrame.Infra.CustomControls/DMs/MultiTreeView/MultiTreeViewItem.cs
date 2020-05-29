@@ -110,7 +110,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
         public MultiTreeViewItem()
         {
             Unloaded += MultiTreeViewItem_Unloaded;
-            var tree = ParentTreeView;
         }
 
         public override void OnApplyTemplate()
