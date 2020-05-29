@@ -9,6 +9,7 @@
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
              xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCWaveChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:EMCFanChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Navis.Button;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="900">
@@ -53,5 +54,11 @@
                              Margin="0,20,0,0"
                              HorizontalAlignment="Center"
                              Command="{Binding DataChangeCommand}"/>
+        <EMCFanChart:Ring Radius="50" StrokeThickness="10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="110">
+            <EMCFanChart:Fan StartPoint="50,0" EndPoint="100,50" Stroke="White"/>
+            <EMCFanChart:Fan StartPoint="100,50" EndPoint="50,100" Stroke="Red"/>
+            <EMCFanChart:Fan StartPoint="50,100" EndPoint="0,50" Stroke="Yellow"/>
+            <EMCFanChart:Fan StartPoint="0,50" EndPoint="50,0" Stroke="Green"/>
+        </EMCFanChart:Ring>
     </Grid>
 </UserControl>

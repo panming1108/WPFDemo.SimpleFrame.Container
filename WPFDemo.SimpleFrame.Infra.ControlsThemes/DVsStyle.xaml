@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
                     xmlns:EMCChartView="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.ChartView;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCWaveChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.WaveChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:EMCFanChart="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:toolTip="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.UXs.ToolTip;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
@@ -265,6 +266,36 @@
                             <Setter TargetName="PART_LineWave"  Property="Visibility" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
+    
+    <!--#region FanChart-->
+    <Style TargetType="EMCFanChart:Fan">
+        <Setter Property="Radius" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=Radius}" />
+        <Setter Property="StrokeThickness" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=StrokeThickness}" />
+    </Style>
+    <Style TargetType="EMCFanChart:Ring">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCFanChart:Ring">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter/>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
