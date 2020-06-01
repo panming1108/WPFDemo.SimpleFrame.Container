@@ -275,7 +275,8 @@
     <!--#region FanChart-->
     <Style TargetType="EMCFanChart:Fan">
         <Setter Property="Radius" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=Radius}" />
-        <Setter Property="StrokeThickness" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=StrokeThickness}" />
+        <Setter Property="FanThickness" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=RingThickness}" />
+        <Setter Property="CircleCenter" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=CircleCenter}"/>
     </Style>
     <Style TargetType="EMCFanChart:Ring">
         <Setter Property="Background" Value="Transparent" />
@@ -291,11 +292,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCFanChart:Ring">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
+                    <Canvas Background="{TemplateBinding Background}"
+                            ClipToBounds="True">
                         <ItemsPresenter/>
-                    </Border>
+                    </Canvas>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
