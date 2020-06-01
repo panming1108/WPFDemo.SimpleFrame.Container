@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +10,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
 {
     public class MultiTreeView : ItemsControl
     {
+        public event EventHandler<MultiTreeViewItemsChangedEventArgs> SelectionChanged;
+
         public Style ToggleBtnStyle
         {
             get { return (Style)GetValue(ToggleBtnStyleProperty); }
@@ -132,13 +132,26 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
         internal void SetSelectedItems(object selectedItem)
         {
             SelectedItems.Add(selectedItem);
+            OnSelectionChanged(new MultiTreeViewItemsChangedEventArgs(SelectedItems));
             SelectionChangedCommand?.Execute(SelectedItems);
         }
 
         internal void RemoveSelectedItems(object selectedItem)
         {
             SelectedItems.Remove(selectedItem);
+            OnSelectionChanged(new MultiTreeViewItemsChangedEventArgs(SelectedItems));
             SelectionChangedCommand?.Execute(SelectedItems);
+        }
+
+        private void OnSelectionChanged(MultiTreeViewItemsChangedEventArgs e)
+        {
+            OnSelectionChanged(this, e);
+            SelectionChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnSelectionChanged(object sender, MultiTreeViewItemsChangedEventArgs e)
+        {
+
         }
     }
 }
