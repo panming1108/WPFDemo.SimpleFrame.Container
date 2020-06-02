@@ -81,6 +81,7 @@
     <Compile Include="BasicDataGridViewModel.cs" />
     <Compile Include="DataPagerViewModel.cs" />
     <Compile Include="DataTableGridViewModel.cs" />
+    <Compile Include="ExpandRadioGroupViewModel.cs" />
     <Compile Include="ListBoxViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

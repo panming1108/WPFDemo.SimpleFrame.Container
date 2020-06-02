@@ -10,24 +10,27 @@
       Title="DMsPage">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.5*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <EMCDataGrid:BasicDataGrid Grid.Row="0"/>
-                <EMCDataGrid:DataTableGrid Grid.Row="1" Margin="0,10"/>
-                <EMCDataGrid:DataPagerDisplay Grid.Row="2"/>
+        <StackPanel>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <EMCDataGrid:BasicDataGrid Grid.Row="0"/>
+                    <EMCDataGrid:DataTableGrid Grid.Row="1" Margin="0,10"/>
+                    <EMCDataGrid:DataPagerDisplay Grid.Row="2"/>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <EMCDataGrid:EMCListBoxs/>
+                </Grid>
             </Grid>
-            <Grid Grid.Column="1">
-                <EMCDataGrid:EMCListBoxs/>
-            </Grid>
-        </Grid>
+            <EMCDataGrid:ExpandRadioGroupView Grid.ColumnSpan="2"/>
+        </StackPanel>
     </ScrollViewer>
 </Page>

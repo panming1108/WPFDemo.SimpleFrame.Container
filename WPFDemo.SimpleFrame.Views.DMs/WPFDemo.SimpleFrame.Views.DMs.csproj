@@ -65,6 +65,9 @@
     <Compile Include="EMCListBoxs.xaml.cs">
       <DependentUpon>EMCListBoxs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExpandRadioGroupView.xaml.cs">
+      <DependentUpon>ExpandRadioGroupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +84,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EMCListBoxs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExpandRadioGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
