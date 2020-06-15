@@ -33,8 +33,7 @@
                    mvvm:AttachEventCommand.Command="{Binding MouseLeftCommand}"
                    mvvm:AttachEventCommand.CommandParameter="1"/>
             <Button Width="70" Height="30"                    
-                    VerticalAlignment="Top"
-                    Click="Button_Click">
+                    VerticalAlignment="Top">
             </Button>
         </Grid>
     </Grid>

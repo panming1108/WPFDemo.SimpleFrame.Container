@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
+using System.Windows.Forms;
 
 namespace WPFDemo.SimpleFrame.Infra.Win32
 {
@@ -10,16 +8,23 @@ namespace WPFDemo.SimpleFrame.Infra.Win32
     {
         #region 常数和结构
 
+        #region KeyBoardHook
         public const int WM_KEYDOWN = 0x100;
-
         public const int WM_KEYUP = 0x101;
-
         public const int WM_SYSKEYDOWN = 0x104;
-
         public const int WM_SYSKEYUP = 0x105;
-
         public const int WH_KEYBOARD_LL = 13;
+        #endregion
 
+        #region 音量
+        public const uint WM_APPCOMMAND = 0x319;
+        public const uint APPCOMMAND_VOLUME_UP = 0x0a;
+        public const uint APPCOMMAND_VOLUME_DOWN = 0x09;
+        public const uint APPCOMMAND_VOLUME_MUTE = 0x08;
+        #endregion
+
+        //KeyEvent
+        public const int KEYEVENTF_KEYUP = 2;
 
 
         [StructLayout(LayoutKind.Sequential)] //声明键盘钩子的封送结构类型 
@@ -76,6 +81,11 @@ namespace WPFDemo.SimpleFrame.Infra.Win32
 
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, uint wParam, uint lParam);
+
+        [DllImport("user32.dll", EntryPoint = "keybd_event", SetLastError = true)]
+        public static extern void keybd_event(Keys bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
         #endregion
     }
 }

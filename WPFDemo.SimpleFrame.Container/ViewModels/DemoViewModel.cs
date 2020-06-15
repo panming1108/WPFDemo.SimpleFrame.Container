@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using WPFDemo.SimpleFrame.Container.IViewModels;
 using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
@@ -28,7 +29,6 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
         private async Task OnMouseLeft(object arg)
         {
             Console.WriteLine(arg);
-            SystemVoice.VoiceClose();
             await TaskEx.FromResult(0);
         }
 
@@ -37,7 +37,17 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
             kh = new KeyboardHook();
 
             kh.SetHook();
-            kh.OnKeyDownEvent = (k) => { Console.WriteLine(k.ToString()); };
+            kh.OnKeyDownEvent = 
+                (k) => 
+                {
+                    if(k == Keys.Tab)
+                    {
+                        SystemVoice.VoiceClose();
+                        SimulateKeyBoard.KeyEvent(Keys.LWin, false);
+                        SimulateKeyBoard.KeyEvent(Keys.D, false);
+                        SimulateKeyBoard.KeyEvent(Keys.LWin, true);
+                    }
+                };
 
             await TaskEx.FromResult(0);
         }

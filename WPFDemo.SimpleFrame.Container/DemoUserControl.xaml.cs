@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFDemo.SimpleFrame.Container.IViewModels;
 using WPFDemo.SimpleFrame.Infra.Ioc;
+using WPFDemo.SimpleFrame.Infra.Win32;
 
 namespace WPFDemo.SimpleFrame.Container
 {
@@ -23,22 +24,10 @@ namespace WPFDemo.SimpleFrame.Container
     /// </summary>
     public partial class DemoUserControl : System.Windows.Controls.UserControl
     {
-        [DllImport("user32.dll", EntryPoint = "keybd_event", SetLastError = true)]
-        public static extern void keybd_event(Keys bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
-
-        public const int KEYEVENTF_KEYUP = 2;
-
         public DemoUserControl()
         {
             InitializeComponent();
             DataContext = IocManagerInstance.ResolveType<IDemoViewModel>();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            keybd_event(Keys.LWin, 0, 0, 0);
-            keybd_event(Keys.D, 0, 0, 0);
-            keybd_event(Keys.LWin, 0, KEYEVENTF_KEYUP, 0);
         }
     }
 }

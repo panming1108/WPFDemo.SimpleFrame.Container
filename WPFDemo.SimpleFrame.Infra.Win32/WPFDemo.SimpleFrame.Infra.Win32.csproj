@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimulateKeyBoard.cs" />
     <Compile Include="SystemVoice.cs" />
     <Compile Include="Win32Api.cs" />
   </ItemGroup>
