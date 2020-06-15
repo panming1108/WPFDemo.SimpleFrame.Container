@@ -13,9 +13,10 @@ namespace WPFDemo.SimpleFrame.Infra.Win32
         int hHook;
 
         Win32Api.HookProc KeyboardHookDelegate;
-        public event KeyEventHandler OnKeyDownEvent;
-        public event KeyEventHandler OnKeyUpEvent;
-        public event KeyPressEventHandler OnKeyPressEvent;
+
+        public Action<Keys> OnKeyDownEvent { get; set; }
+        public Action<Keys> OnKeyUpEvent { get; set; }
+        public Action<char> OnKeyPressEvent { get; set; }
 
         public KeyboardHook() { }
         public void SetHook()
@@ -52,8 +53,7 @@ namespace WPFDemo.SimpleFrame.Infra.Win32
                 //WM_KEYDOWN和WM_SYSKEYDOWN消息，将会引发OnKeyDownEvent事件
                 if (OnKeyDownEvent != null && (wParam == Win32Api.WM_KEYDOWN || wParam == Win32Api.WM_SYSKEYDOWN))
                 {
-                    KeyEventArgs e = new KeyEventArgs(GetDownKeys(keyData));
-                    OnKeyDownEvent(this, e);
+                    OnKeyDownEvent(GetDownKeys(keyData));
                 }
                 //WM_KEYDOWN消息将引发OnKeyPressEvent 
                 if (OnKeyPressEvent != null && wParam == Win32Api.WM_KEYDOWN)
@@ -63,8 +63,7 @@ namespace WPFDemo.SimpleFrame.Infra.Win32
                     byte[] inBuffer = new byte[2];
                     if (Win32Api.ToAscii(KeyDataFromHook.vkCode, KeyDataFromHook.scanCode, keyState, inBuffer, KeyDataFromHook.flags) == 1)
                     {
-                        KeyPressEventArgs e = new KeyPressEventArgs((char)inBuffer[0]);
-                        OnKeyPressEvent(this, e);
+                        OnKeyPressEvent((char)inBuffer[0]);
                     }
                 }
 
@@ -83,8 +82,7 @@ namespace WPFDemo.SimpleFrame.Infra.Win32
                 //WM_KEYUP和WM_SYSKEYUP消息，将引发OnKeyUpEvent事件 
                 if (OnKeyUpEvent != null && (wParam == Win32Api.WM_KEYUP || wParam == Win32Api.WM_SYSKEYUP))
                 {
-                    KeyEventArgs e = new KeyEventArgs(GetDownKeys(keyData));
-                    OnKeyUpEvent(this, e);
+                    OnKeyUpEvent(GetDownKeys(keyData));
                 }
             }
             return Win32Api.CallNextHookEx(hHook, nCode, wParam, lParam);

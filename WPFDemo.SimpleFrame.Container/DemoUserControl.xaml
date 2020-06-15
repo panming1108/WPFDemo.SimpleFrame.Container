@@ -33,11 +33,8 @@
                    mvvm:AttachEventCommand.Command="{Binding MouseLeftCommand}"
                    mvvm:AttachEventCommand.CommandParameter="1"/>
             <Button Width="70" Height="30"                    
-                    VerticalAlignment="Top">
-                <Button.InputBindings>
-                    <KeyBinding Key="E" Command="{Binding MouseLeftCommand}"
-                                CommandParameter="1"/>
-                </Button.InputBindings>
+                    VerticalAlignment="Top"
+                    Click="Button_Click">
             </Button>
         </Grid>
     </Grid>

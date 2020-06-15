@@ -37,19 +37,15 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
             kh = new KeyboardHook();
 
             kh.SetHook();
-
-            kh.OnKeyDownEvent += kh_OnKeyDownEvent;
+            kh.OnKeyDownEvent = (k) => { Console.WriteLine(k.ToString()); };
 
             await TaskEx.FromResult(0);
         }
-
-        private void kh_OnKeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            
-        }
+        
 
         protected override async Task UnLoaded()
         {
+            kh.UnHook();
             await TaskEx.FromResult(0);
         }
     }
