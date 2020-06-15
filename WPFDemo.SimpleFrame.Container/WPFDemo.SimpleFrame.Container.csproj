@@ -150,6 +150,9 @@
     <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.1.0.2\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.dll</HintPath>
     </Reference>
+    <Reference Include="WPFDemo.SimpleFrame.Infra.Win32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Win32.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Win32.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeValidationRule.cs" />
@@ -334,10 +337,6 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Tools\WPFDemo.SimpleFrame.Infra.Tools.csproj">
       <Project>{0f3bfe1e-1c58-4216-8c1b-308c186d0c58}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Win32\WPFDemo.SimpleFrame.Infra.Win32.csproj">
-      <Project>{635cb673-9ed1-4e0f-b691-b10f739d5284}</Project>
-      <Name>WPFDemo.SimpleFrame.Infra.Win32</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.DMs\WPFDemo.SimpleFrame.IViewModels.DMs.csproj">
       <Project>{d27fb9fa-9c09-4272-9b88-021d24b8409e}</Project>
