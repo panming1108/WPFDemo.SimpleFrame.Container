@@ -44,15 +44,16 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         private async Task OnSelectedItemChanged(object arg)
         {
+            await TaskEx.Delay(2000);
             Student student = arg as Student;
             SelectedText = student.Name;
-            await TaskEx.FromResult(0);
         }
 
         protected async override Task Loaded()
         {
             List<Student> source = new List<Student>()
-            { 
+            {
+                new Student("2.1.0"),
                 new Student("2.1.1"),
                 new Student("2.1.2"),
                 new Student("2.1.3"),

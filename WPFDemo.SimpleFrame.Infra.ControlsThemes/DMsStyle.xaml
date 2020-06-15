@@ -1515,4 +1515,150 @@
         </Setter>
     </Style>
     <!--#endregion-->
+
+    <!--#region SwitchCheckListBox-->
+    <Style x:Key="SwitchCheckListBox_SwitchBtn_Style" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="57" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Height="14"
+                              Width="24"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center">
+                            <Path VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  Stroke="{TemplateBinding Foreground}"
+                                  StrokeThickness="2"
+                                  Stretch="Uniform"
+                                  Data="M24,0 12,7 24,14 M12,0 0,7 12,14"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#017DBF" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SwitchCheckListBox_DisplayListBoxItem_Style" TargetType="ListBoxItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="#017DBF" />
+        <Setter Property="BorderThickness" Value="0,0,1,0" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#017DBF" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <DataTemplate x:Key="SwitchCheckListBox_DisplayListBoxItem_ItemTemplate">
+        <Grid>
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <Border Height="22"
+                        Width="22"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Background="Red"
+                        CornerRadius="22">
+                    
+                </Border>
+                <TextBlock Text="{Binding Data.Name}"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           FontSize="16"
+                           Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+    <Style x:Key="SwitchCheckListBox_DisplayListBox_Style" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource SwitchCheckListBox_DisplayListBoxItem_Style}" />
+        <Setter Property="ItemTemplate" Value="{StaticResource SwitchCheckListBox_DisplayListBoxItem_ItemTemplate}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="DMs:SwitchCheckListBox">
+        <Setter Property="Background" Value="#1B2140" />
+        <Setter Property="BorderBrush" Value="#017DBF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DMs:SwitchCheckListBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="PART_PrevBtn"
+                                    Style="{StaticResource SwitchCheckListBox_SwitchBtn_Style}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    IsEnabled="{TemplateBinding CanMovePrev}"
+                                    BorderThickness="0,0,1,0"/>
+                            <ListBox x:Name="PART_ListBox"
+                                     Style="{StaticResource SwitchCheckListBox_DisplayListBox_Style}"
+                                     ItemsSource="{TemplateBinding DisplaySource}"/>
+                            <Button x:Name="PART_NextBtn"
+                                    Style="{StaticResource SwitchCheckListBox_SwitchBtn_Style}"
+                                    IsEnabled="{TemplateBinding CanMovetoNext}"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Button.RenderTransform>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Button.RenderTransform>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
 </ResourceDictionary>

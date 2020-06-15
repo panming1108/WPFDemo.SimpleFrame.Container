@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.IViewMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.Infra.Tools", "WPFDemo.SimpleFrame.Infra.Tools\WPFDemo.SimpleFrame.Infra.Tools.csproj", "{0F3BFE1E-1C58-4216-8C1B-308C186D0C58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDemo.SimpleFrame.Infra.Win32", "WPFDemo.SimpleFrame.Infra.Win32\WPFDemo.SimpleFrame.Infra.Win32.csproj", "{635CB673-9ED1-4E0F-B691-B10F739D5284}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +259,10 @@ Global
 		{0F3BFE1E-1C58-4216-8C1B-308C186D0C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F3BFE1E-1C58-4216-8C1B-308C186D0C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F3BFE1E-1C58-4216-8C1B-308C186D0C58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{635CB673-9ED1-4E0F-B691-B10F739D5284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{635CB673-9ED1-4E0F-B691-B10F739D5284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{635CB673-9ED1-4E0F-B691-B10F739D5284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{635CB673-9ED1-4E0F-B691-B10F739D5284}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -305,6 +311,7 @@ Global
 		{383A2772-0BB6-4499-8AB8-084FB8E55677} = {32E4B991-EC41-4B3D-B20C-56E089F1B6E1}
 		{2BAD1895-C3B3-474D-AA0B-987F62A0195F} = {B64691E5-47AE-4A02-BD8A-9C6E662558B2}
 		{0F3BFE1E-1C58-4216-8C1B-308C186D0C58} = {99FB4FA6-E9FC-4261-B73E-7F8A7F5B61B9}
+		{635CB673-9ED1-4E0F-B691-B10F739D5284} = {99FB4FA6-E9FC-4261-B73E-7F8A7F5B61B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65EBE67F-9EF2-4F47-A70E-1A7EAB195C63}

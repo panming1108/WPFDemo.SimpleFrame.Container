@@ -80,6 +80,8 @@
     <Compile Include="DMs\MultiTreeView\MultiTreeView.cs" />
     <Compile Include="DMs\MultiTreeView\MultiTreeViewItem.cs" />
     <Compile Include="DMs\MultiTreeView\MultiTreeViewItemsChangedEventArgs.cs" />
+    <Compile Include="DMs\SwitchCheckListBox\SwitchCheckListBox.cs" />
+    <Compile Include="DMs\SwitchCheckListBox\SwitchCheckListBoxItem.cs" />
     <Compile Include="DVs\ChartView\ChartViewModeEnum.cs" />
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="DVs\FanChart\EMCFanChart.cs" />

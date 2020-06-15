@@ -8,11 +8,13 @@ using System.Windows.Input;
 using WPFDemo.SimpleFrame.Container.IViewModels;
 using WPFDemo.SimpleFrame.Infra.MVVM.VMOnly;
 using WPFDemo.SimpleFrame.Infra.Tools;
+using WPFDemo.SimpleFrame.Infra.Win32;
 
 namespace WPFDemo.SimpleFrame.Container.ViewModels
 {
     public class DemoViewModel : BaseViewModel, IDemoViewModel
     {
+        KeyboardHook kh;
         public NotifyTaskCompletion<int> UrlByteCount { get; private set; }
 
         public ICommand MouseLeftCommand { get; set; }
@@ -26,12 +28,24 @@ namespace WPFDemo.SimpleFrame.Container.ViewModels
         private async Task OnMouseLeft(object arg)
         {
             Console.WriteLine(arg);
+            SystemVoice.VoiceClose();
             await TaskEx.FromResult(0);
         }
 
         protected override async Task Loaded()
         {
+            kh = new KeyboardHook();
+
+            kh.SetHook();
+
+            kh.OnKeyDownEvent += kh_OnKeyDownEvent;
+
             await TaskEx.FromResult(0);
+        }
+
+        private void kh_OnKeyDownEvent(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            
         }
 
         protected override async Task UnLoaded()

@@ -18,11 +18,16 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Height="600">
-        <DMs:ExpandRadioGroup ItemsSource="{Binding RadioGroupSource}"
+        <!--<DMs:ExpandRadioGroup ItemsSource="{Binding RadioGroupSource}"
                               DisplayCount="7"
                               SelectedItemChangedCommand="{Binding SelectedItemChangedCommand}"
                               DisplayMemberPath="Name"
-                              VerticalAlignment="Top"/>
+                              VerticalAlignment="Top"/>-->
         <TextBlock Text="{Binding SelectedText}" VerticalAlignment="Bottom"/>
+        <DMs:SwitchCheckListBox ItemsSource="{Binding RadioGroupSource}"
+                                SelectedIndex="0"
+                                HorizontalAlignment="Left"
+                                SelectedItemChangedCommand="{Binding SelectedItemChangedCommand}"
+                                VerticalAlignment="Top"/> 
     </Grid>
 </UserControl>
