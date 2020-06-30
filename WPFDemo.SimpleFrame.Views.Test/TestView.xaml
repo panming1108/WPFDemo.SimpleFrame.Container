@@ -37,10 +37,64 @@
                                   CommandParameter="{Binding}"/>
             </Navis:EMCContextMenu>
             <converters:IconConverter x:Key="IconConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <CollectionViewSource x:Key="studentsSource" Source="{Binding GroupStudents}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Parent" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                            <StackPanel>
+                                <Grid Margin="6,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border BorderBrush="Black"
+                                            BorderThickness="0,0,1,1"
+                                            Grid.Column="0"
+                                            Padding="3,0,0,0">
+                                        <TextBlock Text="{Binding Name.Id}"
+                                                   HorizontalAlignment="Left"/>
+                                    </Border>
+                                    <Border BorderBrush="Black"
+                                            BorderThickness="0,0,1,1"
+                                            Grid.Column="1"
+                                            Padding="3,0,0,0">
+                                        <TextBlock Text="{Binding Name.Name}"
+                                                   HorizontalAlignment="Left"/>
+                                    </Border>
+                                    <Border BorderBrush="Black"
+                                            BorderThickness="0,0,1,1"
+                                            Grid.Column="2"
+                                            Padding="3,0,0,0">
+                                        <TextBlock Text="{Binding Name.Age}"
+                                                   HorizontalAlignment="Left"/>
+                                    </Border>
+                                    <ToggleButton Content="-"
+                                                  Width="20"
+                                                  Margin="50,0,0,0"
+                                                  x:Name="PART_Toggle"
+                                                  IsChecked="True"/>
+                                </Grid>
+                                <ItemsPresenter Visibility="{Binding ElementName=PART_Toggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="AliceBlue">
-        <DMs:NewDataGrid Style="{StaticResource HaveDataPagerDataGridStyle}" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DMs:NewDataGrid Style="{StaticResource HaveDataPagerDataGridStyle}"
                          Margin="10,0,10,10"   
                          RowHeight="50"
                          Height="592"
@@ -95,5 +149,24 @@
                 </DataGridTemplateColumn>
             </DMs:NewDataGrid.Columns>
         </DMs:NewDataGrid>
+        <DataGrid Name="dataGridStudent"  AutoGenerateColumns="False"
+                  Width="500"
+                  ItemsSource="{Binding Source={StaticResource studentsSource}}"
+                  Grid.Column="1">
+            <DataGrid.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Age" Binding="{Binding Path=Age}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

@@ -36,6 +36,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             }
         }
 
+        private List<Student> _groupStudents;
+        public List<Student> GroupStudents
+        {
+            get => _groupStudents;
+            set
+            {
+                _groupStudents = value;
+                OnPropertyChanged(() => GroupStudents);
+            }
+        }
+
         public ICommand MouseDoubleClickCommand { get; set; }
         public ICommand MenuOneCommand { get; set; }
         public ICommand MenuTwoCommand { get; set; }
@@ -48,6 +59,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
         {
             _studentBusi = studentBusi;
             _selectedRows = new List<Student>();
+            _groupStudents = new List<Student>();
             PageSize = 10;
             PageSizeSource = new int[] { 10, 20, 30 };
             _iconsSource = new List<IconModel>();
@@ -112,6 +124,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             };
             IconsSource = icons;
             await PageSearch(PageSize, PageNo);
+            var source = new List<Student>()
+            {
+                new Student(){ Id = 0, Name = "张三", Age = 43, ParentId = -1 },
+                new Student(){ Id = 1, Name = "张三0", Age = 21, ParentId = 0 },
+                new Student(){ Id = 2, Name = "张三1", Age = 22, ParentId = 0 },
+                new Student(){ Id = 3, Name = "李四", Age = 47, ParentId = -1 },
+                new Student(){ Id = 4, Name = "李四0", Age = 23, ParentId = 3 },
+                new Student(){ Id = 5, Name = "李四1", Age = 24, ParentId = 3 },
+            };
+            source.ForEach(x => x.Parent = source.SingleOrDefault(w => w.Id == x.ParentId));
+            GroupStudents = source.Where(x => x.ParentId != -1).ToList();
         }
 
         protected async override Task UnLoaded()

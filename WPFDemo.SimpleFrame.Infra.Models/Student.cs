@@ -11,6 +11,8 @@ namespace WPFDemo.SimpleFrame.Infra.Models
         public string Name { get; set; }
         public int Age { get; set; }
         public bool IsEnabled { get; set; }
+        public Student Parent { get; set; }
+        public int ParentId { get; set; }
 
         public Student()
         {

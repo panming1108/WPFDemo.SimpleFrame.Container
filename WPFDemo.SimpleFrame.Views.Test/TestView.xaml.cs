@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFDemo.SimpleFrame.Infra.Ioc;
+using WPFDemo.SimpleFrame.Infra.Models;
 using WPFDemo.SimpleFrame.IViewModels.Test;
 
 namespace WPFDemo.SimpleFrame.Views.Test
@@ -22,10 +25,18 @@ namespace WPFDemo.SimpleFrame.Views.Test
     /// </summary>
     public partial class TestView : UserControl
     {
+        private ITestViewModel _vm;
         public TestView()
         {
             InitializeComponent();
-            DataContext = IocManagerInstance.ResolveType<ITestViewModel>();
+            DataContext = _vm = IocManagerInstance.ResolveType<ITestViewModel>();
+           
+            Loaded += TestView_Loaded;
+        }
+
+        private void TestView_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
