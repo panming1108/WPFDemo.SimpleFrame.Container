@@ -73,6 +73,16 @@
     <Compile Include="DMs\DataPager\TaskEx.cs" />
     <Compile Include="DMs\ExpandRadioGroup\ExpandRadioGroup.cs" />
     <Compile Include="DMs\ExpandRadioGroup\RowData.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridView.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewCell.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewCellPresenter.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewColumn.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewColumnCollection.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewColumnHeader.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewColumnHeaderPresenter.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewRow.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewTemplateColumn.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewTextColumn.cs" />
     <Compile Include="DMs\ListBox\LazyFlushListBox.cs" />
     <Compile Include="DMs\ListBox\LazyFlushListBoxItem.cs" />
     <Compile Include="DMs\ListBox\EMCListBox.cs" />

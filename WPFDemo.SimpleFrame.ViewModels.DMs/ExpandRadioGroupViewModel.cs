@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,6 +24,17 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             }
         }
 
+        private List<VerifyData> _verifyDataSource;
+        public List<VerifyData> VerifyDataSource
+        {
+            get => _verifyDataSource;
+            set
+            {
+                _verifyDataSource = value;
+                OnPropertyChanged(() => VerifyDataSource);
+            }
+        }
+
         private string _selectedText;
         public string SelectedText
         {
@@ -39,6 +51,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
         public ExpandRadioGroupViewModel()
         {
             _radioGroupSource = new List<Student>();
+            _verifyDataSource = new List<VerifyData>();
             SelectedItemChangedCommand = new AsyncDelegateCommand<object>(OnSelectedItemChanged);
         }
 
@@ -51,40 +64,26 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
         protected async override Task Loaded()
         {
-            List<Student> source = new List<Student>()
+            List<Student> source = new List<Student>();
+            for (int i = 0; i < 30; i++)
             {
-                new Student("2.1.0"),
-                new Student("2.1.1"),
-                new Student("2.1.2"),
-                new Student("2.1.3"),
-                new Student("2.1.4"),
-                new Student("2.1.5"),
-                new Student("2.1.6"),
-                new Student("2.1.7"),
-                new Student("2.1.8"),
-                new Student("2.1.9"),
-                new Student("2.1.10"),
-                new Student("2.1.11"),
-                new Student("2.1.12"),
-                new Student("2.1.13"),
-                new Student("2.1.14"),
-                new Student("2.1.15"),
-                new Student("2.1.16"),
-                new Student("2.1.17"),
-                new Student("2.1.18"),
-                new Student("2.1.19"),
-                new Student("2.1.20"),
-                new Student("2.1.21"),
-                new Student("2.1.22"),
-                new Student("2.1.23"),
-                new Student("2.1.24"),
-                new Student("2.1.25"),
-                new Student("2.1.26"),
-                new Student("2.1.27"),
-                new Student("2.1.28"),
-                new Student("2.1.29")
-            };
+                Student student = new Student(i, "张三" + i, 20 + i);
+                source.Add(student);
+            }
             RadioGroupSource = source;
+            VerifyData v1 = new VerifyData() { Id = 1, ParentId = 0, Type = "窦性心律", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v11 = new VerifyData() { Id = 2, ParentId = 1, Type = "窦性心律", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v12 = new VerifyData() { Id = 3, ParentId = 1, Type = "窦性心动过速", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v13 = new VerifyData() { Id = 4, ParentId = 1, Type = "窦性心动过缓", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v14 = new VerifyData() { Id = 5, ParentId = 1, Type = "窦性心律不齐", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v2 = new VerifyData() { Id = 6, ParentId = 0, Type = "房性心律", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v21 = new VerifyData() { Id = 7, ParentId = 6, Type = "房性心率", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v22 = new VerifyData() { Id = 8, ParentId = 6, Type = "房性心动过速", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+
+            v1.Children = new List<VerifyData>() { v11, v12, v13, v14 };
+            v2.Children = new List<VerifyData>() { v21, v22 };
+
+            VerifyDataSource = new List<VerifyData>() { v1, v2 };
             await TaskEx.FromResult(0);
         }
 
@@ -92,5 +91,19 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
         {
             await TaskEx.FromResult(0);
         }
+    }
+
+    public class VerifyData
+    {
+        public long Id { get; set; }
+        public long ParentId { get; set; }
+        public string Type { get; set; }
+        public int PositiveCount { get; set; }
+        public int NagetiveCount { get; set; }
+        public double PositiveRate { get; set; }
+        public double NagetiveRate { get; set; }
+        public double Sensitivity { get; set; }
+        public double Specificity { get; set; }
+        public List<VerifyData> Children { get; set; }
     }
 }

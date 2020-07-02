@@ -17,17 +17,102 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Height="600">
+    <Grid>
         <!--<DMs:ExpandRadioGroup ItemsSource="{Binding RadioGroupSource}"
                               DisplayCount="7"
                               SelectedItemChangedCommand="{Binding SelectedItemChangedCommand}"
                               DisplayMemberPath="Name"
                               VerticalAlignment="Top"/>-->
-        <TextBlock Text="{Binding SelectedText}" VerticalAlignment="Bottom"/>
+        <!--<TextBlock Text="{Binding SelectedText}" VerticalAlignment="Bottom"/>
         <DMs:SwitchCheckListBox ItemsSource="{Binding RadioGroupSource}"
                                 SelectedIndex="0"
                                 HorizontalAlignment="Left"
                                 SelectedItemChangedCommand="{Binding SelectedItemChangedCommand}"
-                                VerticalAlignment="Top"/> 
+                                VerticalAlignment="Top"/>-->
+        <DMs:GroupGridView ItemsSource="{Binding VerifyDataSource}"
+                           VerticalAlignment="Top"
+                           ItemsSourceDisplayMemberPath="Children"
+                           Height="405"
+                           Margin="2">
+            <DMs:GroupGridView.Columns>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding Type}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       Text="类别"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding PositiveCount}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="阳性样本数"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding NagetiveCount}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="阴性样本数"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding PositiveRate, StringFormat='{}{0:P1}'}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="阳性预测率"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding NagetiveRate, StringFormat='{}{0:P1}'}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="阴性预测率"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding Sensitivity, StringFormat='{}{0:P1}'}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="灵敏度"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>
+                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding Specificity, StringFormat='{}{0:P1}'}">
+                    <DMs:GroupGridViewTextColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="特异性"/>
+                        </Grid>
+                    </DMs:GroupGridViewTextColumn.Header>
+                </DMs:GroupGridViewTextColumn>               
+            </DMs:GroupGridView.Columns>
+        </DMs:GroupGridView>
     </Grid>
 </UserControl>
