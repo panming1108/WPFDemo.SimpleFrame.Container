@@ -32,7 +32,13 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
         }
 
         public static readonly DependencyProperty StartAngleProperty =
-            DependencyProperty.Register(nameof(StartAngle), typeof(double), typeof(Ring), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
+            DependencyProperty.Register(nameof(StartAngle), typeof(double), typeof(Ring), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnStartAngleChanged));
+
+        private static void OnStartAngleChanged(DependencyObject d, DependencyPropertyChangedEventArgs baseValue)
+        {
+            Ring ring = d as Ring;
+            ring.Fans.UpdateFanAngle();
+        }
 
         public static readonly DependencyProperty RingThicknessProperty =
             DependencyProperty.Register(nameof(RingThickness), typeof(double), typeof(Ring), new PropertyMetadata(10.0));
