@@ -54,11 +54,15 @@
                              Margin="0,20,0,0"
                              HorizontalAlignment="Center"
                              Command="{Binding DataChangeCommand}"/>
-        <EMCFanChart:Ring Radius="55" CircleCenter="55,55" RingThickness="30" VerticalAlignment="Center" HorizontalAlignment="Center" Width="110" Height="110">
-            <EMCFanChart:Fan StartAngle="0" EndAngle="30" Fill="White"/>
-            <EMCFanChart:Fan StartAngle="30" EndAngle="180" Fill="Red"/>
-            <EMCFanChart:Fan StartAngle="180" EndAngle="220" Fill="Yellow"/>
-            <EMCFanChart:Fan StartAngle="220" EndAngle="360" Fill="Green"/>
+        <EMCFanChart:Ring Radius="41"
+                          RingThickness="20"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          StartAngle="0">
+            <EMCFanChart:Fan Angle="90" Fill="White"/>
+            <EMCFanChart:Fan Angle="90" Fill="Red"/>
+            <EMCFanChart:Fan Angle="90" Fill="Yellow"/>
+            <EMCFanChart:Fan Angle="90" Fill="Green"/>
         </EMCFanChart:Ring>
     </Grid>
 </UserControl>

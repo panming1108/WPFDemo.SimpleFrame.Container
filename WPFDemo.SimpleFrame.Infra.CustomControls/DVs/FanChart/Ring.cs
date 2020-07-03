@@ -11,6 +11,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
 {
     public class Ring : ItemsControl
     {
+        private readonly FanCollection _fans;
+        public FanCollection Fans => _fans;
         public double Radius
         {
             get { return (double)GetValue(RadiusProperty); }
@@ -23,21 +25,33 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
             set { SetValue(RingThicknessProperty, value); }
         }
 
-
-        public Point CircleCenter
+        public double StartAngle
         {
-            get { return (Point)GetValue(CircleCenterProperty); }
-            set { SetValue(CircleCenterProperty, value); }
+            get { return (double)GetValue(StartAngleProperty); }
+            set { SetValue(StartAngleProperty, value); }
         }
 
-        public static readonly DependencyProperty CircleCenterProperty =
-            DependencyProperty.Register(nameof(CircleCenter), typeof(Point), typeof(Ring));
+        public static readonly DependencyProperty StartAngleProperty =
+            DependencyProperty.Register(nameof(StartAngle), typeof(double), typeof(Ring), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty RingThicknessProperty =
             DependencyProperty.Register(nameof(RingThickness), typeof(double), typeof(Ring), new PropertyMetadata(10.0));
 
         public static readonly DependencyProperty RadiusProperty =
-            DependencyProperty.Register(nameof(Radius), typeof(double), typeof(Ring), new FrameworkPropertyMetadata(50.0));
+            DependencyProperty.Register(nameof(Radius), typeof(double), typeof(Ring), new FrameworkPropertyMetadata(50.0, OnRadiusChanged));
+
+        private static void OnRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Ring ring = d as Ring;
+            ring.Width = (double)e.NewValue * 2;
+            ring.Height = (double)e.NewValue * 2;
+            ring.Fans.UpdateFanRadius();
+        }
+
+        public Ring()
+        {
+            _fans = new FanCollection(this);
+        }
 
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
@@ -52,6 +66,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
+            Fan fan = element as Fan;
+            fan.ParentRing = this;
+            Fans.Add(fan);
         }
     }
 }

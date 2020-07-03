@@ -97,6 +97,7 @@
     <Compile Include="DVs\ChartView\EMCChartView.cs" />
     <Compile Include="DVs\FanChart\EMCFanChart.cs" />
     <Compile Include="DVs\FanChart\Fan.cs" />
+    <Compile Include="DVs\FanChart\FanCollection.cs" />
     <Compile Include="DVs\FanChart\PolarCoordinate.cs" />
     <Compile Include="DVs\FanChart\QuadrantEnum.cs" />
     <Compile Include="DVs\FanChart\Ring.cs" />
