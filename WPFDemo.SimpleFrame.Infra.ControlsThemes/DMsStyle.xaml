@@ -1771,7 +1771,8 @@
                         <StackPanel Orientation="Vertical">
                             <Grid>
                                 <DMs:GroupGridViewCellPresenter ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=DMs:GroupGridView}, Path=Columns}"
-                                                                x:Name="PART_Header"/>
+                                                                x:Name="PART_Header"
+                                                                Background="{TemplateBinding Background}"/>
                                 <ToggleButton x:Name="PART_ToggleBtn"
                                               Style="{StaticResource GroupGridViewRow_ToggleBtn}"
                                               Visibility="Collapsed"
@@ -1794,10 +1795,10 @@
                         <Trigger Property="IsExpanded" Value="False">
                             <Setter TargetName="PART_Items" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                        <Trigger Property="GroupGridViewRowAlternationIndex" Value="0">
                             <Setter TargetName="PART_Header" Property="Background" Value="#151932"/>
                         </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Trigger Property="GroupGridViewRowAlternationIndex" Value="1">
                             <Setter TargetName="PART_Header" Property="Background" Value="#2D3358"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

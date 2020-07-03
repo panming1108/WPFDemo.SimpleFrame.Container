@@ -14,12 +14,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
 {
     public class GroupGridView : ItemsControl
     {
-		internal static int GroupGridViewRowCount = 0;
-
-		private GroupGridViewColumnCollection _columns;
+		private readonly GroupGridViewColumnCollection _columns;
         public ObservableCollection<GroupGridViewColumn> Columns => _columns;
 		internal GroupGridViewColumnCollection InternalColumns => _columns;
 
+		private readonly GroupGridViewRowCollection _rows;
+		internal GroupGridViewRowCollection Rows => _rows;
 
         public double ColumnHeaderHeight
 		{
@@ -51,54 +51,14 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
         public GroupGridView()
         {
             _columns = new GroupGridViewColumnCollection(this);
-            _columns.CollectionChanged += OnColumnsChanged;
-        }
-
-        private void OnColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-			switch (e.Action)
-			{
-				case NotifyCollectionChangedAction.Add:
-					UpdateGridViewReference(e.NewItems, clear: false);
-					break;
-				case NotifyCollectionChangedAction.Remove:
-					UpdateGridViewReference(e.OldItems, clear: true);
-					break;
-				case NotifyCollectionChangedAction.Replace:
-					UpdateGridViewReference(e.OldItems, clear: true);
-					UpdateGridViewReference(e.NewItems, clear: false);
-					break;
-			}
-			
-		}
-
-		internal void UpdateGridViewReference(IList list, bool clear)
-		{
-			int count = list.Count;
-			for (int i = 0; i < count; i++)
-			{
-				GroupGridViewColumn gridViewColumn = (GroupGridViewColumn)list[i];
-				if (clear)
-				{
-					if (gridViewColumn.OwnerGridView == this)
-					{
-						gridViewColumn.OwnerGridView = null;
-					}
-					continue;
-				}
-				if (gridViewColumn.OwnerGridView != null && gridViewColumn.OwnerGridView != this)
-				{
-					gridViewColumn.OwnerGridView.Columns.Remove(gridViewColumn);
-				}
-				gridViewColumn.OwnerGridView = this;
-			}
+			_rows = new GroupGridViewRowCollection(this);
 		}
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
 			_columns.SetAllColumnsWidth();
-        }
+		}
 
 		protected override DependencyObject GetContainerForItemOverride()
 		{
@@ -114,6 +74,9 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
         {
             base.PrepareContainerForItemOverride(element, item);
 			GroupGridViewRow row = element as GroupGridViewRow;
+			row.ParentGridView = this;
+			row.ParentItemControl = this;
+			Rows.Add(row);
 			row.ItemsSourceDisplayMemberPath = ItemsSourceDisplayMemberPath;
 			if (!string.IsNullOrEmpty(ItemsSourceDisplayMemberPath))
             {

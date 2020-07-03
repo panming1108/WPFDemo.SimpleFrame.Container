@@ -81,6 +81,7 @@
     <Compile Include="DMs\GroupGridView\GroupGridViewColumnHeader.cs" />
     <Compile Include="DMs\GroupGridView\GroupGridViewColumnHeaderPresenter.cs" />
     <Compile Include="DMs\GroupGridView\GroupGridViewRow.cs" />
+    <Compile Include="DMs\GroupGridView\GroupGridViewRowCollection.cs" />
     <Compile Include="DMs\GroupGridView\GroupGridViewTemplateColumn.cs" />
     <Compile Include="DMs\GroupGridView\GroupGridViewTextColumn.cs" />
     <Compile Include="DMs\ListBox\LazyFlushListBox.cs" />

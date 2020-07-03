@@ -76,11 +76,12 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             VerifyData v12 = new VerifyData() { Id = 3, ParentId = 1, Type = "窦性心动过速", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
             VerifyData v13 = new VerifyData() { Id = 4, ParentId = 1, Type = "窦性心动过缓", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
             VerifyData v14 = new VerifyData() { Id = 5, ParentId = 1, Type = "窦性心律不齐", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
+            VerifyData v15 = new VerifyData() { Id = 6, ParentId = 1, Type = "窦性心律不齐1", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
             VerifyData v2 = new VerifyData() { Id = 6, ParentId = 0, Type = "房性心律", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
             VerifyData v21 = new VerifyData() { Id = 7, ParentId = 6, Type = "房性心率", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
             VerifyData v22 = new VerifyData() { Id = 8, ParentId = 6, Type = "房性心动过速", PositiveCount = 200000, PositiveRate = 0.89, NagetiveCount = 18000, NagetiveRate = 0.74, Sensitivity = 0.74, Specificity = 0.89 };
 
-            v1.Children = new List<VerifyData>() { v11, v12, v13, v14 };
+            v1.Children = new List<VerifyData>() { v11, v12, v13, v14, v15 };
             v2.Children = new List<VerifyData>() { v21, v22 };
 
             VerifyDataSource = new List<VerifyData>() { v1, v2 };
