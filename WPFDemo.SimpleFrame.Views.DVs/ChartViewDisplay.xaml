@@ -59,10 +59,10 @@
                           VerticalAlignment="Center"
                           HorizontalAlignment="Center"
                           StartAngle="0">
-            <EMCFanChart:Fan Angle="90" Fill="White"/>
-            <EMCFanChart:Fan Angle="90" Fill="Red"/>
-            <EMCFanChart:Fan Angle="90" Fill="Yellow"/>
-            <EMCFanChart:Fan Angle="90" Fill="Green"/>
+            <EMCFanChart:Fan Angle="90" Stroke="White"/>
+            <EMCFanChart:Fan Angle="90" Stroke="Red"/>
+            <EMCFanChart:Fan Angle="90" Stroke="Yellow"/>
+            <EMCFanChart:Fan Angle="90" Stroke="Green"/>
         </EMCFanChart:Ring>
     </Grid>
 </UserControl>

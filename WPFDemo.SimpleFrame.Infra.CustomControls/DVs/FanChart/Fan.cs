@@ -12,15 +12,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
 {
     public class Fan : Shape
     {
+        public const double ANGLE180 = 2 * 2 * Math.PI / 4;
+
         internal Ring ParentRing { get; set; }
         internal double StartAngle { get; set; }
         internal double EndAngle => StartAngle + Angle;
         internal double Radius { get; set; }
-        public double FanThickness
-        {
-            get { return (double)GetValue(FanThicknessProperty); }
-            set { SetValue(FanThicknessProperty, value); }
-        }
 
         public double Angle
         {
@@ -30,9 +27,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
 
         public static readonly DependencyProperty AngleProperty =
             DependencyProperty.Register(nameof(Angle), typeof(double), typeof(Fan), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnAngleChanged));
-
-        public static readonly DependencyProperty FanThicknessProperty =
-            DependencyProperty.Register(nameof(FanThickness), typeof(double), typeof(Fan), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty RadiusProperty =
             DependencyProperty.Register(nameof(Radius), typeof(double), typeof(Fan), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
@@ -51,27 +45,30 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
         {
             get
             {
+                var angle = Angle;
+                if (Angle == 360)
+                {
+                    angle = 359;
+                }
                 var startAngle = StartAngle * 2 * Math.PI / 360;
-                var endAngle = EndAngle * 2 * Math.PI / 360;
-                var inRadius = Radius - FanThickness;
-                bool isLargeArc = endAngle - startAngle >= PolarCoordinate.ANGLE180;
-                Point circleCenter = new Point(Radius, Radius);
-                var startOutPolar = new PolarCoordinate(Radius, startAngle, circleCenter);
-                var endOutPolar = new PolarCoordinate(Radius, endAngle, circleCenter);
-                var startInPolar = new PolarCoordinate(inRadius, startAngle, circleCenter);
-                var endInPolar = new PolarCoordinate(inRadius, endAngle, circleCenter);
+                var endAngle = (angle + StartAngle) * 2 * Math.PI / 360;
+                var radius = Radius - (StrokeThickness / 2);
+                bool isLargeArc = endAngle - startAngle >= ANGLE180;
                 PathSegmentCollection pathSegments = new PathSegmentCollection
                 {
-                    new ArcSegment(endOutPolar.Convert2XYPoint(), new Size(Radius, Radius), 0, isLargeArc, SweepDirection.Clockwise, true),
-                    new LineSegment(endInPolar.Convert2XYPoint(), true),
-                    new ArcSegment(startInPolar.Convert2XYPoint(), new Size(inRadius, inRadius), 0, isLargeArc, SweepDirection.Counterclockwise, true)
+                    new ArcSegment(Convert2XYPoint(radius, endAngle), new Size(radius, radius), 0, isLargeArc, SweepDirection.Clockwise, true)
                 };
                 PathFigureCollection pathFigures = new PathFigureCollection()
                 {
-                    new PathFigure(startOutPolar.Convert2XYPoint(), pathSegments, true)
+                    new PathFigure(Convert2XYPoint(radius, startAngle), pathSegments, Angle == 360)
                 };
                 return new PathGeometry(pathFigures);
             }
+        }
+
+        private Point Convert2XYPoint(double radius, double angle)
+        {
+            return new Point(Radius + radius * Math.Cos(angle), Radius + radius * Math.Sin(angle));
         }
     }
 }

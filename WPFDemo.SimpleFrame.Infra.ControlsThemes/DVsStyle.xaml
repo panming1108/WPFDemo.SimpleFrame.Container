@@ -274,7 +274,7 @@
     
     <!--#region FanChart-->
     <Style TargetType="EMCFanChart:Fan">
-        <Setter Property="FanThickness" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=RingThickness}" />
+        <Setter Property="StrokeThickness" Value="{Binding RelativeSource={RelativeSource AncestorType=EMCFanChart:Ring}, Path=RingThickness}" />
     </Style>
     <Style TargetType="EMCFanChart:Ring">
         <Setter Property="Background" Value="Transparent" />
