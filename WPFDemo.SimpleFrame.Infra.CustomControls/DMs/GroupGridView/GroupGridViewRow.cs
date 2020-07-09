@@ -94,12 +94,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
             row.ParentItemControl = this;
             row.ParentGridView = ParentGridView;
             var index = ParentGridView.Rows.IndexOf(this) + _count;
-            ParentGridView.Rows.InsertRow(index, row);
             row.ItemsSourceDisplayMemberPath = ItemsSourceDisplayMemberPath;
             if (!string.IsNullOrEmpty(ItemsSourceDisplayMemberPath))
             {
                 row.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(ItemsSourceDisplayMemberPath));
             }
+            ParentGridView.Rows.InsertRow(index, row);
         }
     }
 }

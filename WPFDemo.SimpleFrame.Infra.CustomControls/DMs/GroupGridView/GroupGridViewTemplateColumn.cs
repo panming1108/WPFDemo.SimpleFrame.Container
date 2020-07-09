@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
 {
@@ -16,5 +17,11 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
 
         public static readonly DependencyProperty CellTemplateProperty =
             DependencyProperty.Register(nameof(CellTemplate), typeof(DataTemplate), typeof(GroupGridViewTemplateColumn));
+
+        protected override void LoadedGridViewCell(GroupGridViewCell cell)
+        {
+            cell.SetBinding(GroupGridViewCell.ContentProperty, new Binding());
+            cell.ContentTemplate = CellTemplate;
+        }
     }
 }

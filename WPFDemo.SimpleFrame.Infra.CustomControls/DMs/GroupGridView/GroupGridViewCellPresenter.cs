@@ -25,21 +25,8 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
             base.PrepareContainerForItemOverride(element, item);
             GroupGridViewCell cell = element as GroupGridViewCell;
             cell.DataContext = DataContext;
-            if (item is GroupGridViewTextColumn)
-            {
-                var column = item as GroupGridViewTextColumn;
-                cell.Width = column.Width.DisplayValue;
-                TextBlock textBlock = new TextBlock();
-                textBlock.SetBinding(TextBlock.TextProperty, column.Binding);
-                cell.Content = textBlock;
-            }
-            else if(item is GroupGridViewTemplateColumn)
-            {
-                var column = item as GroupGridViewTemplateColumn;
-                cell.Width = column.Width.DisplayValue;
-                cell.SetBinding(GroupGridViewCell.ContentProperty, new Binding());
-                cell.ContentTemplate = column.CellTemplate;
-            }
+            var column = item as GroupGridViewColumn;
+            column.InitGridViewCell(cell);
         }
     }
 }

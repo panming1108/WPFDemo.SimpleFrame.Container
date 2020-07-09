@@ -35,7 +35,7 @@
                            Height="405"
                            Margin="2">
             <DMs:GroupGridView.Columns>
-                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding Type}">
+                <DMs:GroupGridViewTextColumn Width="2*" Binding="{Binding Type}">
                     <DMs:GroupGridViewTextColumn.Header>
                         <Grid Background="#2D3358">
                             <TextBlock VerticalAlignment="Center"
@@ -101,7 +101,7 @@
                         </Grid>
                     </DMs:GroupGridViewTextColumn.Header>
                 </DMs:GroupGridViewTextColumn>
-                <DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding Specificity, StringFormat='{}{0:P1}'}">
+                <!--<DMs:GroupGridViewTextColumn Width="1*" Binding="{Binding Specificity, StringFormat='{}{0:P1}'}">
                     <DMs:GroupGridViewTextColumn.Header>
                         <Grid Background="#2D3358">
                             <TextBlock VerticalAlignment="Center"
@@ -111,7 +111,25 @@
                                        Text="特异性"/>
                         </Grid>
                     </DMs:GroupGridViewTextColumn.Header>
-                </DMs:GroupGridViewTextColumn>               
+                </DMs:GroupGridViewTextColumn>-->
+                <DMs:GroupGridViewTemplateColumn Width="2*">
+                    <DMs:GroupGridViewTemplateColumn.Header>
+                        <Grid Background="#2D3358">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="18"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       Text="特异性"/>
+                        </Grid>
+                    </DMs:GroupGridViewTemplateColumn.Header>
+                    <DMs:GroupGridViewTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Text="{Binding Specificity, StringFormat='{}{0:P1}'}"/>
+                        </DataTemplate>
+                    </DMs:GroupGridViewTemplateColumn.CellTemplate>
+                </DMs:GroupGridViewTemplateColumn>
             </DMs:GroupGridView.Columns>
         </DMs:GroupGridView>
     </Grid>

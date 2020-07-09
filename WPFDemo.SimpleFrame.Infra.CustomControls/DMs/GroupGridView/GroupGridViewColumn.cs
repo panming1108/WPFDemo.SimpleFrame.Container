@@ -53,5 +53,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
                 dataGridColumn._ignoreWidthChange = false;
             }
         }
+
+        internal void InitGridViewCell(GroupGridViewCell cell)
+        {
+            cell.Width = Width.DisplayValue;
+            LoadedGridViewCell(cell);
+        }
+        protected abstract void LoadedGridViewCell(GroupGridViewCell cell);
     }
 }

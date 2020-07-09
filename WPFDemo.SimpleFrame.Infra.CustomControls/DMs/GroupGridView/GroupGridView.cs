@@ -76,12 +76,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs
 			GroupGridViewRow row = element as GroupGridViewRow;
 			row.ParentGridView = this;
 			row.ParentItemControl = this;
-			Rows.Add(row);
 			row.ItemsSourceDisplayMemberPath = ItemsSourceDisplayMemberPath;
 			if (!string.IsNullOrEmpty(ItemsSourceDisplayMemberPath))
             {
 				row.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(ItemsSourceDisplayMemberPath));
             }
+			Rows.Add(row);
 		}
     }
 }
