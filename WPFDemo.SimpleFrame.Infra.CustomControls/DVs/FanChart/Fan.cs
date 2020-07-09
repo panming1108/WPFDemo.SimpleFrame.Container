@@ -28,16 +28,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DVs.FanChart
         public static readonly DependencyProperty AngleProperty =
             DependencyProperty.Register(nameof(Angle), typeof(double), typeof(Fan), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnAngleChanged));
 
-        public static readonly DependencyProperty RadiusProperty =
-            DependencyProperty.Register(nameof(Radius), typeof(double), typeof(Fan), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
-
         private static void OnAngleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Fan fan = d as Fan;
             if(fan.ParentRing != null)
             {
                 fan.ParentRing.Fans.UpdateFanAngle();
-                fan.InvalidateVisual();
             }
         }
 
