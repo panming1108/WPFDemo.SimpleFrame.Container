@@ -1,234 +1,243 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
-                    xmlns:EMCDatePicker="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Schedules.DateTimePicker;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
                     xmlns:EMCCalendar="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Schedules.Calendar;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-                    xmlns:ext="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:EMCDatePicker="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Schedules.DateTimePicker;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:ext="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
+                    xmlns:schedules="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Schedules;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml"/>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/Fonts/FontStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="ErrorTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="15"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <AdornedElementPlaceholder x:Name="adorner"/>
+            <AdornedElementPlaceholder x:Name="adorner" />
             <Path Grid.Column="1"
-                  Stroke="{StaticResource ErrorTemplateBackground}" 
-                  Fill="{StaticResource ErrorTemplateBackground}" 
-                  StrokeThickness="1" 
-                  Data="M0,5 10,0 10,10Z" 
-                  VerticalAlignment="Center" 
-                  HorizontalAlignment="Right"/>
-            <Border Grid.Column="2" 
-                    Background="{StaticResource ErrorTemplateBackground}"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Data="M0,5 10,0 10,10Z"
+                  Fill="{StaticResource ErrorTemplateBackground}"
+                  Stroke="{StaticResource ErrorTemplateBackground}"
+                  StrokeThickness="1" />
+            <Border Grid.Column="2"
+                    Padding="5"
                     VerticalAlignment="Center"
-                    Padding="5">
-                <TextBlock VerticalAlignment="Center" 
-                           HorizontalAlignment="Center"
-                           Text="{Binding ElementName=adorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}"
-                           Foreground="White"/>
+                    Background="{StaticResource ErrorTemplateBackground}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{Binding ElementName=adorner, Path=AdornedElement.(Validation.Errors)/ErrorContent}" />
             </Border>
         </Grid>
     </ControlTemplate>
 
-    <Style x:Key="CalendarPageButton" TargetType="Button">
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Cursor" Value="Hand"/>
+    <Style x:Key="CalendarPageButton"
+           TargetType="Button">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="border"
-                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}">
+                            BorderThickness="{TemplateBinding BorderThickness}">
                         <ContentPresenter x:Name="tb"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource BaseDataGridHeaderBorderBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource BaseDataGridHeaderBorderBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="CalendarEnsureButton" TargetType="Button">
-        <Setter Property="Width" Value="50"/>
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Cursor" Value="Hand"/>
+    <Style x:Key="CalendarEnsureButton"
+           TargetType="Button">
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Background" Value="{StaticResource IsCheckedBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}"
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="5">
-                        <TextBlock Text="{TemplateBinding Content}"
-                                   FontSize="{TemplateBinding FontSize}"
+                        <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Foreground="{TemplateBinding Foreground}"/>
+                                   FontSize="{TemplateBinding FontSize}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Text="{TemplateBinding Content}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}"/>
+                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="CalendarDayButtonStyle" TargetType="{x:Type CalendarDayButton}">
-        <Setter Property="MinWidth" Value="20"/>
-        <Setter Property="MinHeight" Value="20"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="{StaticResource CommonForeground}"/>
-        <Setter Property="Margin" Value="1"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="IsTabStop" Value="False"/>
-        <Setter Property="Cursor" Value="Hand"/>
+    <Style x:Key="CalendarDayButtonStyle"
+           TargetType="{x:Type CalendarDayButton}">
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{StaticResource CommonForeground}" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CalendarDayButton}">
-                    <Grid x:Name="Grid" Margin="{TemplateBinding Margin}" Background="Transparent">
-                        <Border x:Name="Bg" Background="{TemplateBinding Background}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                BorderBrush="{TemplateBinding Background}" 
-                                CornerRadius="100"/>
-                        <ContentPresenter x:Name="NormalText" 
-                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                    <Grid x:Name="Grid"
+                          Margin="{TemplateBinding Margin}"
+                          Background="Transparent">
+                        <Border x:Name="Bg"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="100" />
+                        <ContentPresenter x:Name="NormalText"
+                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                          TextElement.Foreground="{TemplateBinding Foreground}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <Trigger Property="IsToday" Value="True">
-                            <Setter TargetName="Bg" Property="BorderBrush" Value="{StaticResource BaseDataGridHeaderBorderBrush}"/>
+                            <Setter TargetName="Bg" Property="BorderBrush" Value="{StaticResource BaseDataGridHeaderBorderBrush}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
-                        <!-- 不可用日期 -->
+                        <!--  不可用日期  -->
                         <Trigger Property="IsBlackedOut" Value="true">
-                            <Setter Property="Opacity" Value="0.65" TargetName="Grid"/>
+                            <Setter TargetName="Grid" Property="Opacity" Value="0.65" />
                         </Trigger>
-                        <!--不在当月的日期-->
+                        <!--  不在当月的日期  -->
                         <Trigger Property="IsInactive" Value="True">
-                            <Setter Property="Opacity" Value="0.65" TargetName="Grid"/>
+                            <Setter TargetName="Grid" Property="Opacity" Value="0.65" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.65" TargetName="Grid"/>
+                            <Setter TargetName="Grid" Property="Opacity" Value="0.65" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="CalendarItemStyle" TargetType="{x:Type CalendarItem}">
+    <Style x:Key="CalendarItemStyle"
+           TargetType="{x:Type CalendarItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CalendarItem}">
                     <ControlTemplate.Resources>
                         <DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
-                            <TextBlock Text="{Binding}" 
-                                       FontWeight="Bold" 
-                                       Foreground="#9A9A9A"
-                                       FontSize="14" 
-                                       HorizontalAlignment="Center" 
+                            <TextBlock Margin="0,6,0,6"
+                                       HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       Margin="0,6,0,6"/>
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="#9A9A9A"
+                                       Text="{Binding}" />
                         </DataTemplate>
                     </ControlTemplate.Resources>
-                    <Grid x:Name="PART_Root" Background="{TemplateBinding Background}">
+                    <Grid x:Name="PART_Root"
+                          Background="{TemplateBinding Background}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <!--Header-->
-                        <Grid Grid.Row="0" 
-                                  HorizontalAlignment="Stretch" 
-                                  Background="{StaticResource IsCheckedBrush}">
+                        <!--  Header  -->
+                        <Grid Grid.Row="0"
+                              HorizontalAlignment="Stretch"
+                              Background="{StaticResource IsCheckedBrush}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="PART_PreviousButton" 
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Right"
-                                        Style="{StaticResource CalendarPageButton}">
-                                <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
-                                          StrokeThickness="2"
-                                          Data="{StaticResource CalendarPrevPagePathGeometry}"/>
+                            <Button x:Name="PART_PreviousButton"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Right"
+                                    Style="{StaticResource CalendarPageButton}">
+                                <Path Data="{StaticResource CalendarPrevPagePathGeometry}"
+                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
+                                      StrokeThickness="2" />
                             </Button>
-                            <Button x:Name="PART_HeaderButton" 
-                                        Grid.Column="1"
-                                        FontWeight="Bold"
-                                        HorizontalAlignment="Center"
-                                        Style="{StaticResource CalendarPageButton}"/>
-                            <Button x:Name="PART_NextButton" 
-                                        Grid.Column="2"
-                                        HorizontalAlignment="Left"
-                                        Style="{StaticResource CalendarPageButton}">
-                                <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
-                                          StrokeThickness="2"
-                                          Data="{StaticResource CalendarNextPagePathGeometry}"/>
+                            <Button x:Name="PART_HeaderButton"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Style="{StaticResource CalendarPageButton}" />
+                            <Button x:Name="PART_NextButton"
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource CalendarPageButton}">
+                                <Path Data="{StaticResource CalendarNextPagePathGeometry}"
+                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button, AncestorLevel=1}}"
+                                      StrokeThickness="2" />
                             </Button>
                         </Grid>
-                        <!--PART_MonthView-->
-                        <Grid x:Name="PART_MonthView" 
-                                  HorizontalAlignment="Stretch" 
-                                  VerticalAlignment="Stretch" 
-                                  Margin="6,1,6,6" 
-                                  Grid.Row="1" 
-                                  Visibility="Visible">
+                        <!--  PART_MonthView  -->
+                        <Grid x:Name="PART_MonthView"
+                              Grid.Row="1"
+                              Margin="6,1,6,6"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Visibility="Visible">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                         </Grid>
-                        <!--PART_YearView-->
-                        <Grid x:Name="PART_YearView" 
-                                  HorizontalAlignment="Stretch" 
-                                  VerticalAlignment="Stretch" 
-                                  Margin="6,10,6,10" 
-                                  Grid.Row="1" 
-                                  Visibility="Hidden">
+                        <!--  PART_YearView  -->
+                        <Grid x:Name="PART_YearView"
+                              Grid.Row="1"
+                              Margin="6,10,6,10"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Visibility="Hidden">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -244,15 +253,17 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" TargetName="PART_Root" Value="0.65" />
+                            <Setter TargetName="PART_Root" Property="Opacity" Value="0.65" />
                         </Trigger>
-                        <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}}" Value="Year">
-                            <Setter Property="Visibility" TargetName="PART_MonthView" Value="Hidden" />
-                            <Setter Property="Visibility" TargetName="PART_YearView" Value="Visible" />
+                        <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}}"
+                                     Value="Year">
+                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}}" Value="Decade">
-                            <Setter Property="Visibility" TargetName="PART_MonthView" Value="Hidden" />
-                            <Setter Property="Visibility" TargetName="PART_YearView" Value="Visible" />
+                        <DataTrigger Binding="{Binding DisplayMode, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}}"
+                                     Value="Decade">
+                            <Setter TargetName="PART_MonthView" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_YearView" Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -260,136 +271,131 @@
         </Setter>
     </Style>
 
-    <!--年、月按钮样式-->
-    <Style x:Key="CalendarButtonStyle" TargetType="{x:Type CalendarButton}">
+    <!--  年、月按钮样式  -->
+    <Style x:Key="CalendarButtonStyle"
+           TargetType="{x:Type CalendarButton}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="MinWidth" Value="42" />
         <Setter Property="MinHeight" Value="42" />
-        <Setter Property="MaxWidth" Value="42"/>
-        <Setter Property="MaxHeight" Value="42"/>
+        <Setter Property="MaxWidth" Value="42" />
+        <Setter Property="MaxHeight" Value="42" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="2" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CalendarButton}">
-                    <Grid x:Name="Grid" Margin="{TemplateBinding Margin}" Background="Transparent">
-                        <Border x:Name="Bg" Background="{TemplateBinding Background}" CornerRadius="100"/>
-                        <ContentPresenter x:Name="NormalText" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          Margin="2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    <Grid x:Name="Grid"
+                          Margin="{TemplateBinding Margin}"
+                          Background="Transparent">
+                        <Border x:Name="Bg"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="100" />
+                        <ContentPresenter x:Name="NormalText"
+                                          Margin="2"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           TextElement.Foreground="{TemplateBinding Foreground}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="{StaticResource IsCheckedBrush}" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="{StaticResource MouseOverBrush}" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
-                        <!--不在当月的日期-->
+                        <!--  不在当月的日期  -->
                         <Trigger Property="IsInactive" Value="True">
-                            <Setter Property="Opacity" Value="0.65" TargetName="Grid"></Setter>
+                            <Setter TargetName="Grid" Property="Opacity" Value="0.65" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.65" TargetName="Grid"></Setter>
+                            <Setter TargetName="Grid" Property="Opacity" Value="0.65" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <!--默认日历样式-->
-    <Style x:Key="TextBox_Style_Base" 
+    <!--  默认日历样式  -->
+    <Style x:Key="TextBox_Style_Base"
            TargetType="{x:Type TextBox}">
-        <Setter Property="BorderBrush" Value="#b9c3cb"/>
-        <Setter Property="FontSize" 
-                Value="16" />
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="#b9c3cb" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid x:Name="RootPanel">
-                        <Border x:Name="border" 
-                                SnapsToDevicePixels="True" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
+                        <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="4"/>
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                SnapsToDevicePixels="True" />
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-                            <ScrollViewer x:Name="PART_ContentHost" 
-                                      Focusable="False" 
-                                      HorizontalScrollBarVisibility="Hidden" 
-                                      VerticalScrollBarVisibility="Hidden"/>
-                            <ContentControl Name="WatermarkVisualElement" 
-                                        Margin="10 5 0 5" 
-                                        Opacity="0" 
-                                        IsTabStop="False" 
-                                        FontStyle="Normal" 
-                                        IsHitTestVisible="False" 
-                                        Foreground="#FFA9B2B7" 
-                                        Content="{Binding RelativeSource={RelativeSource AncestorType=EMCDatePicker:EMCDateTimePicker}, Path=WaterMark}"
-                                        Padding="{TemplateBinding Padding}" 
-                                        BorderThickness="{TemplateBinding BorderThickness}" 
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                            <!--附加内容区域-->
-                            <Border x:Name="PART_AttachContent" Grid.Column="1" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                                <ContentControl VerticalAlignment="Center" VerticalContentAlignment="Center" Template="{TemplateBinding ext:EditorsAttachProperty.AttachContent}" />
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden" />
+                            <ContentControl Name="WatermarkVisualElement"
+                                            Margin="10,5,0,5"
+                                            Padding="{TemplateBinding Padding}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Content="{Binding RelativeSource={RelativeSource AncestorType=EMCDatePicker:EMCDateTimePicker}, Path=WaterMark}"
+                                            FontStyle="Normal"
+                                            Foreground="#FFA9B2B7"
+                                            IsHitTestVisible="False"
+                                            IsTabStop="False"
+                                            Opacity="0" />
+                            <!--  附加内容区域  -->
+                            <Border x:Name="PART_AttachContent"
+                                    Grid.Column="1"
+                                    Margin="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                <ContentControl VerticalAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Template="{TemplateBinding ext:EditorsAttachProperty.AttachContent}" />
                             </Border>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" 
-                                 Value="False">
-                            <Setter Property="Opacity" 
-                                    TargetName="border" 
-                                    Value="0.56"/>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.56" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver" 
-                                 Value="True">
-                            <Setter Property="BorderBrush" 
-                                    TargetName="border" 
-                                    Value="#FF7EB4EA"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#FF7EB4EA" />
                         </Trigger>
-                        <Trigger Property="IsKeyboardFocused" 
-                                 Value="True">
-                            <Setter Property="BorderBrush" 
-                                    TargetName="border" 
-                                    Value="#FF569DE5"/>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#FF569DE5" />
                         </Trigger>
-                        <Trigger Property="Text" 
-                                 Value="{x:Null}">
-                            <Setter TargetName="WatermarkVisualElement" 
-                                    Property="Opacity" 
-                                    Value="1" />
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter TargetName="WatermarkVisualElement" Property="Opacity" Value="1" />
                         </Trigger>
-                        <Trigger Property="Text" 
-                                 Value="">
-                            <Setter TargetName="WatermarkVisualElement" 
-                                    Property="Opacity" 
-                                    Value="1" />
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="WatermarkVisualElement" Property="Opacity" Value="1" />
                         </Trigger>
-                        <Trigger Property="Validation.HasError" 
-                                 Value="True">
-                            <Setter TargetName="border" 
-                                    Property="BorderBrush" 
-                                    Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" />
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=BorderBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="DefaultCalendar" TargetType="Calendar">
+    <Style x:Key="DefaultCalendar"
+           TargetType="Calendar">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Foreground" Value="{StaticResource CommonForeground}" />
         <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CalendarDayButtonStyle}" />
@@ -397,53 +403,51 @@
         <Setter Property="CalendarButtonStyle" Value="{StaticResource CalendarButtonStyle}" />
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderThickness" Value="2" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="IsTodayHighlighted" Value="True"/>
+        <Setter Property="IsTodayHighlighted" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Calendar">
-                    <Border Background="{TemplateBinding Background}" 
-                            BorderThickness="2" 
+                    <Border Padding="0,0,0,3"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{StaticResource IsCheckedBrush}"
-                            CornerRadius="0,0,5,5"
-                            Padding="0,0,0,3">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <CalendarItem Grid.Row="0"
-                                          x:Name="PART_CalendarItem" Margin="0,-3,0,0" 
-                                          BorderBrush="{TemplateBinding BorderBrush}" 
-                                          FontSize="{TemplateBinding FontSize}"
-                                          FontFamily="{TemplateBinding FontFamily}"
-                                          Background="{TemplateBinding Background}"
-                                          Style="{TemplateBinding CalendarItemStyle}"/>
-                        </Grid>
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0,0,5,5">
+                        <CalendarItem x:Name="PART_CalendarItem"
+                                      Grid.Row="0"
+                                      Margin="0,-3,0,0"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      FontSize="{TemplateBinding FontSize}"
+                                      Style="{TemplateBinding CalendarItemStyle}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="CalendarToggleButton" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Width" Value="24"/>
-        <Setter Property="Height" Value="24"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Foreground" Value="#808080"/>
+    <Style x:Key="CalendarToggleButton"
+           TargetType="{x:Type ToggleButton}">
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="#808080" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
-                        <Path Stroke="{TemplateBinding Foreground}" StrokeThickness="1" Data="M3,4 21,4 21,21 3,21Z M8,1 8,8 M16,1 16,8 M3,9 20,9 M5,12 9,12 M10,12 14,12 M15,12 19,12 M5,15 9,15 M10,15 14,15 M15,15 19,15 M5,18 9,18 M10,18 14,18 M15,18 19,18"/>
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Path Data="M3,4 21,4 21,21 3,21Z M8,1 8,8 M16,1 16,8 M3,9 20,9 M5,12 9,12 M10,12 14,12 M15,12 19,12 M5,15 9,15 M10,15 14,15 M15,15 19,15 M5,18 9,18 M10,18 14,18 M15,18 19,18"
+                              Stroke="{TemplateBinding Foreground}"
+                              StrokeThickness="1" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -451,97 +455,122 @@
         </Setter>
     </Style>
 
-    <Style TargetType="EMCCalendar:CalendarWithHourAndMin" >
-        <Setter Property="Background" Value="White"></Setter>
+    <Style TargetType="EMCCalendar:CalendarWithHourAndMin">
+        <Setter Property="Background" Value="White" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCCalendar:CalendarWithHourAndMin">
-                    <Border Background="{TemplateBinding Background}" 
-                            BorderThickness="1 0 1 1" 
+                    <Border Padding="0,0,0,3"
+                            VerticalAlignment="Center"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="#b9c3cb"
-                            CornerRadius="0,0,5,5"
-                            Padding="0,0,0,3"
-                            VerticalAlignment="Center">
+                            BorderThickness="1,0,1,1"
+                            CornerRadius="0,0,5,5">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <CalendarItem Grid.Row="0" HorizontalAlignment="Center"
-                                          x:Name="PART_CalendarItem" Margin="0,0,0,0" 
-                                          BorderBrush="{TemplateBinding BorderBrush}" 
-                                          FontSize="{TemplateBinding FontSize}"
-                                          FontFamily="{TemplateBinding FontFamily}"
+                            <CalendarItem x:Name="PART_CalendarItem"
+                                          Grid.Row="0"
+                                          Margin="0,0,0,0"
+                                          HorizontalAlignment="Center"
+                                          HorizontalContentAlignment="Center"
                                           Background="{TemplateBinding Background}"
-                                          Style="{StaticResource CalendarItemStyle}"
-                                          HorizontalContentAlignment="Center">
-                            </CalendarItem>
-                            <Grid Grid.Row="1" 
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          FontFamily="{TemplateBinding FontFamily}"
+                                          FontSize="{TemplateBinding FontSize}"
+                                          Style="{StaticResource CalendarItemStyle}" />
+                            <Grid Grid.Row="1"
                                   Margin="5,0,5,5"
                                   HorizontalAlignment="Center">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBox Width="60"
-                                             x:Name="PART_Year" MaxLength="4" 
-                                             Height="25" Style="{StaticResource TextBox_Style_Base}"
-                                             FontSize="14" InputMethod.IsInputMethodEnabled="False"
-                                             VerticalContentAlignment="Center"/>
-                                    <TextBox Width="40"
+                                <StackPanel HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <TextBox x:Name="PART_Year"
+                                             Width="60"
+                                             Height="25"
+                                             VerticalContentAlignment="Center"
+                                             FontSize="14"
+                                             InputMethod.IsInputMethodEnabled="False"
+                                             MaxLength="4"
+                                             Style="{StaticResource TextBox_Style_Base}" />
+                                    <TextBox x:Name="PART_Month"
+                                             Width="40"
+                                             Height="25"
                                              Margin="4,0"
-                                             x:Name="PART_Month" InputMethod.IsInputMethodEnabled="False"
-                                             Height="25" MaxLength="2"
-                                             FontSize="14" Style="{StaticResource TextBox_Style_Base}"
-                                             VerticalContentAlignment="Center"/>
-                                    <TextBox Width="40" 
-                                             x:Name="PART_Day" InputMethod.IsInputMethodEnabled="False"
-                                             Height="25" Style="{StaticResource TextBox_Style_Base}"
-                                             FontSize="14" MaxLength="2"
-                                             VerticalContentAlignment="Center"/>
+                                             VerticalContentAlignment="Center"
+                                             FontSize="14"
+                                             InputMethod.IsInputMethodEnabled="False"
+                                             MaxLength="2"
+                                             Style="{StaticResource TextBox_Style_Base}" />
+                                    <TextBox x:Name="PART_Day"
+                                             Width="40"
+                                             Height="25"
+                                             VerticalContentAlignment="Center"
+                                             FontSize="14"
+                                             InputMethod.IsInputMethodEnabled="False"
+                                             MaxLength="2"
+                                             Style="{StaticResource TextBox_Style_Base}" />
                                 </StackPanel>
                             </Grid>
-                            <Grid Grid.Row="2" 
+                            <Grid Grid.Row="2"
                                   Margin="5,0,5,5"
                                   HorizontalAlignment="Center">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBox Width="40"
-                                             x:Name="PART_Hour" MaxLength="2" 
-                                             Height="25" Style="{StaticResource TextBox_Style_Base}"
-                                             FontSize="14" InputMethod.IsInputMethodEnabled="False"
-                                             VerticalContentAlignment="Center"/>
-                                    <TextBlock Text=":" VerticalAlignment="Center" Margin="5,0"/>
-                                    <TextBox Width="40"
-                                             x:Name="PART_Min" InputMethod.IsInputMethodEnabled="False"
-                                             Height="25" MaxLength="2"
-                                             FontSize="14" Style="{StaticResource TextBox_Style_Base}"
-                                             VerticalContentAlignment="Center"/>
-                                    <TextBlock Text=":" VerticalAlignment="Center" Margin="5,0" />
-                                    <TextBox Width="40" 
-                                             x:Name="PART_Second" InputMethod.IsInputMethodEnabled="False"
-                                             Height="25" Style="{StaticResource TextBox_Style_Base}"
-                                             FontSize="14" MaxLength="2"
-                                             VerticalContentAlignment="Center"/>
+                                <StackPanel HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <TextBox x:Name="PART_Hour"
+                                             Width="40"
+                                             Height="25"
+                                             VerticalContentAlignment="Center"
+                                             FontSize="14"
+                                             InputMethod.IsInputMethodEnabled="False"
+                                             MaxLength="2"
+                                             Style="{StaticResource TextBox_Style_Base}" />
+                                    <TextBlock Margin="5,0"
+                                               VerticalAlignment="Center"
+                                               Text=":" />
+                                    <TextBox x:Name="PART_Min"
+                                             Width="40"
+                                             Height="25"
+                                             VerticalContentAlignment="Center"
+                                             FontSize="14"
+                                             InputMethod.IsInputMethodEnabled="False"
+                                             MaxLength="2"
+                                             Style="{StaticResource TextBox_Style_Base}" />
+                                    <TextBlock Margin="5,0"
+                                               VerticalAlignment="Center"
+                                               Text=":" />
+                                    <TextBox x:Name="PART_Second"
+                                             Width="40"
+                                             Height="25"
+                                             VerticalContentAlignment="Center"
+                                             FontSize="14"
+                                             InputMethod.IsInputMethodEnabled="False"
+                                             MaxLength="2"
+                                             Style="{StaticResource TextBox_Style_Base}" />
                                 </StackPanel>
                             </Grid>
-                            <Grid Grid.Row="3" 
+                            <Grid Grid.Row="3"
                                   Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0"
-                                        x:Name="PART_EmptyBtn"
-                                        Style="{StaticResource CalendarEnsureButton}"
-                                        Content="清空"/>
-                                <Button Grid.Column="1"
-                                        x:Name="PART_ToDay"
-                                        Style="{StaticResource CalendarEnsureButton}"
-                                        Content="今天"/>
-                                <Button Grid.Column="2"
-                                        x:Name="PART_EnsureBtn"
-                                        Style="{StaticResource CalendarEnsureButton}"
-                                        Content="确定" />
+                                <Button x:Name="PART_EmptyBtn"
+                                        Grid.Column="0"
+                                        Content="清空"
+                                        Style="{StaticResource CalendarEnsureButton}" />
+                                <Button x:Name="PART_ToDay"
+                                        Grid.Column="1"
+                                        Content="今天"
+                                        Style="{StaticResource CalendarEnsureButton}" />
+                                <Button x:Name="PART_EnsureBtn"
+                                        Grid.Column="2"
+                                        Content="确定"
+                                        Style="{StaticResource CalendarEnsureButton}" />
                             </Grid>
                         </Grid>
                     </Border>
@@ -550,7 +579,7 @@
         </Setter>
     </Style>
 
-    <Style  TargetType="EMCDatePicker:EMCDateTimePicker">
+    <Style TargetType="EMCDatePicker:EMCDateTimePicker">
         <Setter Property="Foreground" Value="{StaticResource CommonForeground}" />
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderThickness" Value="1" />
@@ -562,61 +591,261 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="EMCDatePicker:EMCDateTimePicker">
                     <Grid x:Name="PART_Root">
-                        <Border x:Name="Bg" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}" CornerRadius="5"/>
-                        <Grid x:Name="PART_InnerGrid" Margin="2">
+                        <Border x:Name="Bg"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <Grid x:Name="PART_InnerGrid"
+                              Margin="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <!--下拉按钮-->
-                            <ToggleButton x:Name="PART_DropDownToggle" IsTabStop="False" Style="{StaticResource CalendarToggleButton}" 
-                                         IsChecked="False" Margin="1,1,3,1"
-                                         Grid.Column="1"/>
-                            <!--Date内容区-->
-                            <TextBox Grid.Column="0" x:Name="PART_TextBox" HorizontalAlignment="Stretch" Padding="5,2" 
-                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" IsHitTestVisible="True"
-                                     Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" VerticalContentAlignment="Center"
-                                     VerticalAlignment="Center" BorderThickness="0" Style="{StaticResource TextBox_Style_Base}" 
-                                     Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
-                                            UpdateSourceTrigger=LostFocus, Mode=TwoWay, Path=Content, 
-                                            StringFormat='yyyy-MM-dd HH:mm'}">
-                            </TextBox>
-                            <!--弹出日历-->
-                            <Popup x:Name="PART_Popup" 
-                                   IsOpen="{Binding ElementName=PART_DropDownToggle, Path=IsChecked, Mode=TwoWay}" 
-                                   AllowsTransparency="True" 
-                                   Placement="Bottom" 
+                            <!--  下拉按钮  -->
+                            <ToggleButton x:Name="PART_DropDownToggle"
+                                          Grid.Column="1"
+                                          Margin="1,1,3,1"
+                                          IsChecked="False"
+                                          IsTabStop="False"
+                                          Style="{StaticResource CalendarToggleButton}" />
+                            <!--  Date内容区  -->
+                            <TextBox x:Name="PART_TextBox"
+                                     Grid.Column="0"
+                                     Padding="5,2"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     BorderThickness="0"
+                                     FontSize="{TemplateBinding FontSize}"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     IsHitTestVisible="True"
+                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                     Style="{StaticResource TextBox_Style_Base}"
+                                     Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=LostFocus, Mode=TwoWay, Path=Content, StringFormat='yyyy-MM-dd HH:mm'}" />
+                            <!--  弹出日历  -->
+                            <Popup x:Name="PART_Popup"
                                    Width="{Binding ElementName=PART_Root, Path=ActualWidth}"
-                                   PlacementTarget="{Binding ElementName=PART_Root}" 
-                                   StaysOpen="False"                                    
-                                   PopupAnimation="Slide">
-                            </Popup>
+                                   AllowsTransparency="True"
+                                   IsOpen="{Binding ElementName=PART_DropDownToggle, Path=IsChecked, Mode=TwoWay}"
+                                   Placement="Bottom"
+                                   PlacementTarget="{Binding ElementName=PART_Root}"
+                                   PopupAnimation="Slide"
+                                   StaysOpen="False" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=PART_Popup, Path=IsOpen}" Value="True">
-                            <Setter TargetName="Bg" Property="CornerRadius" Value="5,5,0,0"/>
+                        <DataTrigger Binding="{Binding ElementName=PART_Popup, Path=IsOpen}"
+                                     Value="True">
+                            <Setter TargetName="Bg" Property="CornerRadius" Value="5,5,0,0" />
                         </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource MouseOverBrush}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource MouseOverBrush}" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter  Property="BorderBrush" Value="{StaticResource IsCheckedBrush}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource IsCheckedBrush}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter  Property="BorderBrush" Value="{StaticResource IsCheckedBrush}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource IsCheckedBrush}" />
                         </Trigger>
                         <!--<Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="PART_Root" Property="Opacity" Value="0.65" />
                         </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TwiceDatePicker_ToggleBtn_Style"
+           TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="#223B53" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="PART_Border" Property="CornerRadius" Value="4,4,0,0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TwiceDatePicker_OperationBtn_Style"
+           TargetType="Button">
+        <Setter Property="Background" Value="#21ADFF" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Width" Value="80" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="schedules:TwiceDatePicker">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="#DDE1E4" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Width" Value="300" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="schedules:TwiceDatePicker">
+                    <Grid x:Name="PART_Root">
+                        <Border x:Name="PART_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}" />
+                        <ToggleButton x:Name="PART_ToggleBtn"
+                                      IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
+                                      Style="{StaticResource TwiceDatePicker_ToggleBtn_Style}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="PART_StartTimeText"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=StartTime, StringFormat='yyyy-MM-dd'}" />
+                                <TextBlock x:Name="PART_StartTimeWatermark"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="#DDE1E4"
+                                           Text="请选择开始时间"
+                                           Visibility="Collapsed" />
+                                <Line Grid.Column="1"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Stroke="{TemplateBinding Foreground}"
+                                      StrokeThickness="1"
+                                      X1="0"
+                                      X2="10"
+                                      Y1="0"
+                                      Y2="0" />
+                                <TextBlock x:Name="PART_EndTimeText"
+                                           Grid.Column="2"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=EndTime, StringFormat='yyyy-MM-dd'}" />
+                                <TextBlock x:Name="PART_EndTimeWatermark"
+                                           Grid.Column="2"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="#DDE1E4"
+                                           Text="请选择结束时间"
+                                           Visibility="Collapsed" />
+                                <Path Grid.Column="3"
+                                      Width="20"
+                                      Height="20"
+                                      Margin="10,0"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Data="M3,4 21,4 21,21 3,21Z M8,1 8,8 M16,1 16,8 M3,9 20,9 M5,12 9,12 M10,12 14,12 M15,12 19,12 M5,15 9,15 M10,15 14,15 M15,15 19,15 M5,18 9,18 M10,18 14,18 M15,18 19,18"
+                                      Stretch="Uniform"
+                                      Stroke="#DDE1E4"
+                                      StrokeThickness="1" />
+                            </Grid>
+                        </ToggleButton>
+                        <Popup x:Name="PART_Popup"
+                               AllowsTransparency="True"
+                               IsOpen="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
+                               Placement="Bottom"
+                               PlacementTarget="{Binding ElementName=PART_ToggleBtn}"
+                               StaysOpen="False">
+                            <Grid Width="{Binding ElementName=PART_Root, Path=ActualWidth}"
+                                  Margin="5">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="2,0,2,2"
+                                        CornerRadius="0,0,4,4" />
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Calendar x:Name="PART_Calendar"
+                                              Margin="2"
+                                              BorderThickness="0"
+                                              SelectionMode="MultipleRange"
+                                              Style="{StaticResource DefaultCalendar}" />
+                                    <StackPanel Grid.Row="1"
+                                                Margin="0,0,0,20"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Button x:Name="PART_Empty"
+                                                Background="#C5CDD9"
+                                                Content="清空"
+                                                Style="{StaticResource TwiceDatePicker_OperationBtn_Style}" />
+                                        <Button x:Name="PART_Confirm"
+                                                Margin="20,0,0,0"
+                                                Content="确定"
+                                                Style="{StaticResource TwiceDatePicker_OperationBtn_Style}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="#21ADFF" />
+                        </Trigger>
+                        <Trigger Property="IsOpen" Value="True">
+                            <Setter Property="CornerRadius" Value="4,4,0,0" />
+                            <Setter Property="BorderThickness" Value="2" />
+                        </Trigger>
+                        <Trigger Property="StartTime" Value="{x:Null}">
+                            <Setter TargetName="PART_StartTimeWatermark" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="EndTime" Value="{x:Null}">
+                            <Setter TargetName="PART_EndTimeWatermark" Property="Visibility" Value="Visible" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
