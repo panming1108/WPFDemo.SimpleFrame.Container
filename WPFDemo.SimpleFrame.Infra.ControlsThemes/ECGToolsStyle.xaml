@@ -1,24 +1,23 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes"
-                    xmlns:ECGTool="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;assembly=WPFDemo.SimpleFrame.Infra.CustomControls">
+                    xmlns:ECGTool="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+                    xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Infra.ControlsThemes">
     <Style TargetType="ECGTool:EquiDistanceMeasure">
-        <Setter Property="FirstLineBrush" Value="#FC4B55"/>
-        <Setter Property="OtherLineBrush" Value="#0081E4"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="IsDisplayMultipleNum" Value="True"/>
+        <Setter Property="FirstLineBrush" Value="#FC4B55" />
+        <Setter Property="OtherLineBrush" Value="#0081E4" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="IsDisplayMultipleNum" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:EquiDistanceMeasure">
                     <Grid>
-                        <Canvas x:Name="EquiDistanceMeasureCanvas" 
+                        <Canvas x:Name="EquiDistanceMeasureCanvas"
+                                Background="{TemplateBinding Background}"
                                 ClipToBounds="True"
-                                Focusable="True" 
-                                Background="{TemplateBinding Background}">
-                        </Canvas>
+                                Focusable="True" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -26,21 +25,24 @@
     </Style>
 
 
-    <Style x:Key="BoxLineMeter_ThumbBase_Style" TargetType="Thumb">
+    <Style x:Key="BoxLineMeter_ThumbBase_Style"
+           TargetType="Thumb">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Rectangle Fill="{TemplateBinding Background}"
+                    <Rectangle Width="{TemplateBinding Width}"
                                Height="{TemplateBinding Height}"
-                               Width="{TemplateBinding Width}"/>
+                               Fill="{TemplateBinding Background}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="BoxLineMeter_Thumb_Style" TargetType="Thumb" BasedOn="{StaticResource BoxLineMeter_ThumbBase_Style}">
-        <Setter Property="Height" Value="4"/>
-        <Setter Property="Width" Value="4"/>
-        <Setter Property="Background" Value="Black"/>
+    <Style x:Key="BoxLineMeter_Thumb_Style"
+           BasedOn="{StaticResource BoxLineMeter_ThumbBase_Style}"
+           TargetType="Thumb">
+        <Setter Property="Height" Value="4" />
+        <Setter Property="Width" Value="4" />
+        <Setter Property="Background" Value="Black" />
     </Style>
     <Style TargetType="ECGTool:BoxLineValueThumb">
         <Setter Property="Template">
@@ -48,84 +50,83 @@
                 <ControlTemplate TargetType="ECGTool:BoxLineValueThumb">
                     <Border Background="{TemplateBinding Background}"
                             CornerRadius="5">
-                        <TextBlock VerticalAlignment="Center"
+                        <TextBlock Margin="5,0,0,0"
                                    HorizontalAlignment="Left"
-                                   Margin="5,0,0,0"
-                                   Foreground="White"
+                                   VerticalAlignment="Center"
                                    FontSize="15"
-                                   Text="{TemplateBinding Text}">
-                        </TextBlock>
+                                   Foreground="White"
+                                   Text="{TemplateBinding Text}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
     <Style TargetType="ECGTool:BoxLineMeter">
-        <Setter Property="TextBorderBackground" Value="#CC0F4983"/>
-        <Setter Property="HeartRate" Value="29"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="MeasuringLineBrush" Value="#0081E4"/>
-        <Setter Property="MeasuredLineBrush" Value="#00000D"/>
+        <Setter Property="TextBorderBackground" Value="#CC0F4983" />
+        <Setter Property="HeartRate" Value="29" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="MeasuringLineBrush" Value="#0081E4" />
+        <Setter Property="MeasuredLineBrush" Value="#00000D" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:BoxLineMeter">
                     <Grid>
-                        <Canvas x:Name="BoxLineMeterCanvas" 
+                        <Canvas x:Name="BoxLineMeterCanvas"
+                                Background="{TemplateBinding Background}"
                                 ClipToBounds="True"
-                                Focusable="True" 
-                                Background="{TemplateBinding Background}">
-                            <Rectangle Height="{TemplateBinding RectangleHeight}"
+                                Focusable="True">
+                            <Rectangle x:Name="PART_Rectangle"
                                        Width="{TemplateBinding RectangleWidth}"
-                                       x:Name="PART_Rectangle"
-                                       StrokeThickness="2"
+                                       Height="{TemplateBinding RectangleHeight}"
                                        Stroke="{TemplateBinding LineBrush}"
-                                       Visibility="{TemplateBinding OtherControlsVisiblty}"/>
-                            <ECGTool:BoxLineValueThumb Width="150"
+                                       StrokeThickness="2"
+                                       Visibility="{TemplateBinding OtherControlsVisiblty}" />
+                            <ECGTool:BoxLineValueThumb x:Name="PART_TimeThumb"
+                                                       Width="150"
                                                        Height="20"
-                                                       Cursor="SizeAll"
-                                                       x:Name="PART_TimeThumb"
                                                        Background="{TemplateBinding TextBorderBackground}"
+                                                       Cursor="SizeAll"
                                                        Text="{TemplateBinding TimeText}"
-                                                       Visibility="{TemplateBinding OtherControlsVisiblty}"/>
-                            <ECGTool:BoxLineValueThumb Width="75"
+                                                       Visibility="{TemplateBinding OtherControlsVisiblty}" />
+                            <ECGTool:BoxLineValueThumb x:Name="PART_VoltageThumb"
+                                                       Width="75"
                                                        Height="20"
-                                                       x:Name="PART_VoltageThumb"
                                                        Background="{TemplateBinding TextBorderBackground}"
                                                        Cursor="SizeAll"
                                                        Text="{TemplateBinding Voltage}"
-                                                       Visibility="{TemplateBinding OtherControlsVisiblty}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_LeftUpThumb"
+                                                       Visibility="{TemplateBinding OtherControlsVisiblty}" />
+                            <Thumb x:Name="PART_LeftUpThumb"
                                    Cursor="SizeNWSE"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_CenterUpThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_CenterUpThumb"
                                    Cursor="SizeNS"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_RightUpThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_RightUpThumb"
                                    Cursor="SizeNESW"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_LeftCenterThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_LeftCenterThumb"
                                    Cursor="SizeWE"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_RightCenterThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_RightCenterThumb"
                                    Cursor="SizeWE"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_LeftDownThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_LeftDownThumb"
                                    Cursor="SizeNESW"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_CenterDownThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_CenterDownThumb"
                                    Cursor="SizeNS"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
-                            <Thumb Style="{StaticResource BoxLineMeter_Thumb_Style}"
-                                   x:Name="PART_RightDownThumb"
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
+                            <Thumb x:Name="PART_RightDownThumb"
                                    Cursor="SizeNWSE"
-                                   Visibility="{TemplateBinding ThumbVisiblity}"/>
+                                   Style="{StaticResource BoxLineMeter_Thumb_Style}"
+                                   Visibility="{TemplateBinding ThumbVisiblity}" />
                         </Canvas>
                     </Grid>
                 </ControlTemplate>
@@ -134,31 +135,31 @@
     </Style>
 
     <Style TargetType="ECGTool:ScopeViewer">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="ScopeHeight" Value="274"/>
-        <Setter Property="ScopeWidth" Value="274"/>
-        <Setter Property="ScopeMargin" Value="22,22,0,0"/>
-        <Setter Property="ScopeVisibility" Value="Collapsed"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="ScopeHeight" Value="274" />
+        <Setter Property="ScopeWidth" Value="274" />
+        <Setter Property="ScopeMargin" Value="22,22,0,0" />
+        <Setter Property="ScopeVisibility" Value="Collapsed" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:ScopeViewer">
                     <Grid>
-                        <ContentPresenter/>
-                        <Canvas Background="Transparent"
-                                Visibility="{TemplateBinding ScopeVisibility}"
+                        <ContentPresenter />
+                        <Canvas x:Name="PART_Canvas"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="Transparent"
                                 Cursor="None"
-                                x:Name="PART_Canvas" 
-                                HorizontalAlignment="Stretch" 
-                                VerticalAlignment="Stretch">
-                            <Grid x:Name="PART_GridToMove" >
+                                Visibility="{TemplateBinding ScopeVisibility}">
+                            <Grid x:Name="PART_GridToMove">
                                 <Ellipse Width="{TemplateBinding ScopeWidth}"
-                                         Height="{TemplateBinding ScopeWidth}" 
-                                         Margin="{TemplateBinding ScopeMargin}" 
-                                         HorizontalAlignment="Left" 
+                                         Height="{TemplateBinding ScopeWidth}"
+                                         Margin="{TemplateBinding ScopeMargin}"
+                                         HorizontalAlignment="Left"
                                          VerticalAlignment="Top">
                                     <Ellipse.Fill>
-                                        <VisualBrush Stretch="Fill" 
-                                                     x:Name="PART_VisualBrush"
+                                        <VisualBrush x:Name="PART_VisualBrush"
+                                                     Stretch="Fill"
                                                      ViewboxUnits="Absolute" />
                                     </Ellipse.Fill>
                                 </Ellipse>
@@ -170,11 +171,12 @@
         </Setter>
     </Style>
 
-    <Style x:Key="GroupLeadSwitchListBoxItem" TargetType="ListBoxItem">
-        <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="Cursor" Value="Hand"/>
+    <Style x:Key="GroupLeadSwitchListBoxItem"
+           TargetType="ListBoxItem">
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -182,7 +184,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsSelected, Mode=TwoWay}">
-                            <ContentPresenter/>
+                            <ContentPresenter />
                         </CheckBox>
                     </Border>
                 </ControlTemplate>
@@ -191,11 +193,11 @@
     </Style>
 
     <Style TargetType="ECGTool:GroupLeadSwitch">
-        <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="SelectionMode" Value="Multiple"/>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource GroupLeadSwitchListBoxItem}"/>
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="SelectionMode" Value="Multiple" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource GroupLeadSwitchListBoxItem}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:GroupLeadSwitch">
@@ -203,12 +205,13 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <StackPanel Orientation="Vertical">
-                            <Button Content="全选" x:Name="PART_SelectAllBtn"/>
-                            <ListBox ItemsSource="{TemplateBinding GroupSource}" 
+                            <Button x:Name="PART_SelectAllBtn"
+                                    Content="全选" />
+                            <ListBox x:Name="PART_GroupListBox"
                                      DisplayMemberPath="Key"
-                                     x:Name="PART_GroupListBox"
-                                     SelectedValuePath="Key"/>
-                            <ItemsPresenter/>
+                                     ItemsSource="{TemplateBinding GroupSource}"
+                                     SelectedValuePath="Key" />
+                            <ItemsPresenter />
                         </StackPanel>
                     </Border>
                 </ControlTemplate>
@@ -217,48 +220,48 @@
     </Style>
 
     <Style TargetType="ECGTool:LeadLayOutSwitch">
-        <Setter Property="StaysOpen" Value="False"/>
-        <Setter Property="SwitchType" Value="LayOut"/>
+        <Setter Property="StaysOpen" Value="False" />
+        <Setter Property="SwitchType" Value="LayOut" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:LeadLayOutSwitch">
-                    <Popup IsOpen="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
+                    <Popup x:Name="PART_RootPopup"
                            AllowsTransparency="True"
+                           HorizontalOffset="{TemplateBinding HorizontalOffset}"
+                           IsOpen="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsOpen, Mode=TwoWay}"
+                           Placement="{TemplateBinding Placement}"
                            PlacementTarget="{TemplateBinding PlacementTarget}"
                            StaysOpen="{TemplateBinding StaysOpen}"
-                           Placement="{TemplateBinding Placement}"
-                           VerticalOffset="{TemplateBinding VerticalOffset}"
-                           HorizontalOffset="{TemplateBinding HorizontalOffset}"
-                           x:Name="PART_RootPopup">
+                           VerticalOffset="{TemplateBinding VerticalOffset}">
                         <Grid>
                             <ListBox x:Name="PART_LayOutSwitch"
-                                     ItemsSource="{TemplateBinding ItemsSource}"
-                                     Style="{TemplateBinding ListBoxStyle}"
                                      ItemContainerStyle="{TemplateBinding ListBoxItemStyle}"
                                      ItemTemplate="{TemplateBinding ItemTemplate}"
+                                     ItemsSource="{TemplateBinding ItemsSource}"
+                                     SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"
                                      SelectionMode="Multiple"
-                                     Visibility="Collapsed"
-                                     SelectedItem="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"/>
+                                     Style="{TemplateBinding ListBoxStyle}"
+                                     Visibility="Collapsed" />
                             <ECGTool:GroupLeadSwitch x:Name="PART_GroupLeadSwitch"
                                                      GroupSource="{TemplateBinding GroupSource}"
-                                                     Visibility="Collapsed"/>
+                                                     Visibility="Collapsed" />
                         </Grid>
                     </Popup>
                     <ControlTemplate.Triggers>
                         <Trigger Property="SwitchType" Value="LayOut">
-                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Single"/>
-                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Single" />
+                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="SwitchType" Value="Lead">
-                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Multiple"/>
-                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Multiple" />
+                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="SwitchType" Value="GroupLead">
-                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Multiple"/>
-                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Collapsed"/>
-                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_LayOutSwitch" Property="SelectionMode" Value="Multiple" />
+                            <Setter TargetName="PART_LayOutSwitch" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_GroupLeadSwitch" Property="Visibility" Value="Visible" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -267,33 +270,180 @@
     </Style>
 
     <Style TargetType="ECGTool:HRMonitor">
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="Unit" Value="bpm"/>
-        <Setter Property="Minimum" Value="60"/>
-        <Setter Property="Maximum" Value="100"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="NormalBrush" Value="#37B9FF"/>
-        <Setter Property="AbnormalBrush" Value="#FF3C3C"/>
-        <Setter Property="Foreground" Value="#FF3C3C"/>
-        <Setter Property="HR" Value="80"/>
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="UnitFontSize" Value="12"/>
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="Unit" Value="bpm" />
+        <Setter Property="Minimum" Value="60" />
+        <Setter Property="Maximum" Value="100" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="NormalBrush" Value="#37B9FF" />
+        <Setter Property="AbnormalBrush" Value="#FF3C3C" />
+        <Setter Property="Foreground" Value="#FF3C3C" />
+        <Setter Property="HR" Value="80" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="UnitFontSize" Value="12" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ECGTool:HRMonitor">
-                    <Border BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}"
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <TextBlock>
                             <TextBlock FontSize="{TemplateBinding FontSize}"
-                                       Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HR}"/>
-                            <TextBlock FontSize="{TemplateBinding UnitFontSize}"
-                                       Text="{TemplateBinding Unit}"
-                                       Margin="-5,0,0,0"/>
+                                       Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=HR}" />
+                            <TextBlock Margin="-5,0,0,0"
+                                       FontSize="{TemplateBinding UnitFontSize}"
+                                       Text="{TemplateBinding Unit}" />
                         </TextBlock>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ECGTool:BeatItem">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="#DBE0E3" />
+        <Setter Property="Height" Value="125" />
+        <Setter Property="Width" Value="125" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="R" Value="{Binding}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:BeatItem">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2" />
+                        <Canvas Margin="2"
+                                ClipToBounds="True">
+                            <ECGTool:WaveControl WaveData="{TemplateBinding WaveData}" />
+                        </Canvas>
+                        <Grid Width="25"
+                              Height="20"
+                              Margin="2,2,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Background="#EBFAFF">
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Foreground="#299EE3"
+                                       Text="{TemplateBinding BeatTypeName}" />
+                        </Grid>
+                        <TextBlock Margin="0,2,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Foreground="#ACB6C5"
+                                   Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Percent, StringFormat='{}{0}%'}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="#299EE3" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="#299EE3" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ECGTool:BeatItemListBox}, Path=IsWide}"
+                                     Value="True">
+                            <Setter Property="Width" Value="250" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ECGTool:BeatItemListBox">
+        <Setter Property="Background" Value="AliceBlue" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:BeatItemListBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer x:Name="PART_ScrollViewer"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ECGTool:BeatItemListView">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ECGTool:BeatItemListView">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <TextBlock>
+                                    <TextBlock Text="共" />
+                                    <TextBlock Foreground="#299EE3"
+                                               Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Total}" />
+                                    <TextBlock Text="个，已选" />
+                                    <TextBlock Foreground="#299EE3"
+                                               Text="{Binding ElementName=PART_BeatItemListBox, Path=SelectedItems.Count}" />
+                                    <TextBlock Text="个" />
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Button Width="40"
+                                        Height="28"
+                                        Command="{x:Static ECGTool:BeatItemListViewCommands.SelectedAllCommand}"
+                                        Content="全选" />
+                                <Button Width="40"
+                                        Height="28"
+                                        Margin="5,0,0,0"
+                                        Command="{x:Static ECGTool:BeatItemListViewCommands.ReverseSelectedCommand}"
+                                        Content="反选" />
+                                <ToggleButton x:Name="PART_StrechToggleBtn"
+                                              Width="40"
+                                              Height="28"
+                                              Margin="5,0,0,0"
+                                              Content="展开"
+                                              IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsWide, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Grid>
+                        <ECGTool:BeatItemListBox x:Name="PART_BeatItemListBox"
+                                                 Grid.Row="1"
+                                                 IsWide="{TemplateBinding IsWide}"
+                                                 ItemsSource="{TemplateBinding ItemsSource}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsWide" Value="True">
+                            <Setter TargetName="PART_StrechToggleBtn" Property="Content" Value="收缩" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

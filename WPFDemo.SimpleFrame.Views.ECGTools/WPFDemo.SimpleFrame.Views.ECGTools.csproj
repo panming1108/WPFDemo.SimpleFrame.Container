@@ -66,6 +66,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeatItemListView.xaml.cs">
+      <DependentUpon>BeatItemListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>
@@ -102,6 +105,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="BeatItemListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BoxLineMeterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

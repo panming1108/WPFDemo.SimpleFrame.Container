@@ -109,6 +109,11 @@
     <Compile Include="DVs\WaveChart\Vector.cs" />
     <Compile Include="DVs\WaveChart\WaveAxis.cs" />
     <Compile Include="DVs\WaveChart\WaveIntervalConverter.cs" />
+    <Compile Include="ECGTools\BeatItemList\BeatItem.cs" />
+    <Compile Include="ECGTools\BeatItemList\BeatItemListBox.cs" />
+    <Compile Include="ECGTools\BeatItemList\BeatItemListView.cs" />
+    <Compile Include="ECGTools\BeatItemList\BeatItemListViewCommands.cs" />
+    <Compile Include="ECGTools\BeatItemList\WaveControl.cs" />
     <Compile Include="ECGTools\BoxLineMeter.cs" />
     <Compile Include="ECGTools\EuqiDistanceMeasure.cs" />
     <Compile Include="ECGTools\HRMonitor.cs" />

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.ECGTools.BeatItemListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ecgTool="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
+             mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ECGToolsStyle.xaml" />
+    </UserControl.Resources>
+    <Grid>
+        <ecgTool:BeatItemListView Width="775"
+                                  Height="800"
+                                  ItemsSource="{Binding RList}"
+                                  Total="30" />
+    </Grid>
+</UserControl>
