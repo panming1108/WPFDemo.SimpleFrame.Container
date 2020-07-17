@@ -145,7 +145,7 @@
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.Messager.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.Messager.dll</HintPath>
     </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VMOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.1\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
     </Reference>
     <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.1.0.3\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VOnly.dll</HintPath>

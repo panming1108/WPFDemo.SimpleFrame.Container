@@ -59,7 +59,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WPFDemo.SimpleFrame.Infra.MVVM.VMOnly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.0\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
+      <HintPath>..\packages\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.1.0.1\lib\net40\WPFDemo.SimpleFrame.Infra.MVVM.VMOnly.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

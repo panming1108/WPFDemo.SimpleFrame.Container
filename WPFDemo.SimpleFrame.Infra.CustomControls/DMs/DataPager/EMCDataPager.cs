@@ -297,15 +297,23 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
         public static readonly DependencyProperty LastEllipsisVisibilityProperty =
             DependencyProperty.Register("LastEllipsisVisibility", typeof(Visibility), typeof(EMCDataPager));
 
-        public Func<int, int, Task> SearchCallBack
+        public ICommand SearchCommand
         {
-            get { return (Func<int, int, Task>)GetValue(SearchCallBackProperty); }
-            set { SetValue(SearchCallBackProperty, value); }
+            get { return (ICommand)GetValue(SearchCommandProperty); }
+            set { SetValue(SearchCommandProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SearchCallBack.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SearchCallBackProperty =
-            DependencyProperty.Register("SearchCallBack", typeof(Func<int, int, Task>), typeof(EMCDataPager));
+        public static readonly DependencyProperty SearchCommandProperty =
+            DependencyProperty.Register("SearchCommand", typeof(ICommand), typeof(EMCDataPager));
+
+        public bool IsSearching
+        {
+            get { return (bool)GetValue(IsSearchingProperty); }
+            set { SetValue(IsSearchingProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsSearchingProperty =
+            DependencyProperty.Register("IsSearching", typeof(bool), typeof(EMCDataPager));
         #endregion
 
         public EMCDataPager()
@@ -694,15 +702,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
                 dataPager.GenerateDisplayNumbers(num2);
                 dataPager.CanMoveToPreviousPage = num2 > 1;
                 dataPager.CanMoveToNextPage = num2 < dataPager.PageCount;
-                dataPager.IsEnabled = false;
-                dataPager.SearchCallBack?.Invoke(num2, dataPager.PageSize).ContinueWith((t) => 
-                {
-                    Application.Current.Dispatcher.Invoke(new Action(
-                        ()=> 
-                        {
-                            dataPager.IsEnabled = true;
-                        }));
-                });
+                dataPager.SearchCommand?.Execute(null);
                 CommandManager.InvalidateRequerySuggested();
             }
             dataPager.OnPageNoChanged(num, num2);
@@ -740,16 +740,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.DMs.DataPager
             var result = dataPager.ChangePageCount();
             if (!result)
             {
-                dataPager.IsEnabled = false;
-                dataPager.SearchCallBack?.Invoke(dataPager.PageNo, (int)e.NewValue).ContinueWith(
-                    (t) => 
-                    {
-                        Application.Current.Dispatcher.Invoke(new Action(
-                        () =>
-                        {
-                            dataPager.IsEnabled = true;
-                        }));
-                    });
+                dataPager.SearchCommand?.Execute(null);
             }
             if (dataPager._textBox == null)
             {

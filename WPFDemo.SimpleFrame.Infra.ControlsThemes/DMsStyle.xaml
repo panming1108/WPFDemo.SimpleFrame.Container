@@ -422,6 +422,11 @@
                             </StackPanel>
                         </WrapPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSearching" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

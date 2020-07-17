@@ -142,7 +142,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.Test
             await TaskEx.FromResult(0);
         }
 
-        protected async override Task PageSearch(int pageSize, int pageNo)
+        protected async override Task PageSearch(int pageNo, int pageSize)
         {
             var result = await _studentBusi.GetStudents(pageNo, pageSize);
             ItemCount = 9999;
