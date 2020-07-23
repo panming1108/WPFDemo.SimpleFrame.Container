@@ -32,6 +32,9 @@
             <TabItem Header="BeatItemList">
                 <ECGTools:BeatItemListView />
             </TabItem>
+            <TabItem Header="DiagCompleteECG">
+                <ECGTools:DiagCompleteECG />
+            </TabItem>
         </TabControl>
 
     </Grid>
