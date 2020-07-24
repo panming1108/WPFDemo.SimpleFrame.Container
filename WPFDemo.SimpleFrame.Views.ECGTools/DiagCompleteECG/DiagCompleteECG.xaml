@@ -16,7 +16,7 @@
                   X1="0,0"
                   X2="1000,800" />
         </Grid>
-        <Canvas x:Name="PART_Canvas" />
+        <local:MaskPaint x:Name="PART_Paint" />
         <StackPanel HorizontalAlignment="Right"
                     VerticalAlignment="Top">
             <CheckBox x:Name="PART_Equi"

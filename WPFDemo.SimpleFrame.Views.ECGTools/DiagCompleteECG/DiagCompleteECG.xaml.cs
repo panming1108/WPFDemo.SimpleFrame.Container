@@ -21,10 +21,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// </summary>
     public partial class DiagCompleteECG : UserControl
     {
-        private readonly DragArea _dragArea = new DragArea();
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
-        private bool _isUseDragArea;
+        private readonly DragAreaAction _dragArea = new DragAreaAction();
+        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20);
+        private IMaskAction _currentAction;
         public DiagCompleteECG()
         {
             InitializeComponent();
@@ -37,39 +38,40 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Unloaded += DiagCompleteECG_Unloaded;
             MouseLeftButtonDown += DiagCompleteECG_MouseLeftButtonDown;
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
+            MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
+            PART_Paint.DragAreaCollection.IsDisplay = true;
+            PART_Paint.DragAreaCollection.IsReDraw = true;
+            _dragArea.IsDisplay = true;
+            _dragArea.Priority = 0;
 
-            _isUseDragArea = true;
+            //_equiDistance.Priority = 1;
+            _currentAction = _dragArea;
+        }
+
+        private void DiagCompleteECG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu = _dragArea.RectHitTest(e.GetPosition(this));
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if(Mouse.GetPosition(this) != _originPoint)
+            var currentPoint = Mouse.GetPosition(this);
+            if (currentPoint != _originPoint)
             {
-                if(_isUseDragArea)
-                {
-                    PART_Canvas.Children.Clear();
-                    BrushConverter brushConverter = new BrushConverter();
-                    Brush lineBrush = Brushes.Red;
-                    Brush rectBrush = (Brush)brushConverter.ConvertFromString("#6021ADFF");
-                    Point leftTopPoint = new Point(Math.Min(Mouse.GetPosition(this).X, _originPoint.X), 0);
-                    Point rightBottomPoint = new Point(Math.Max(Mouse.GetPosition(this).X, _originPoint.X), ActualHeight);
-                    PART_Canvas.Children.Add(_dragArea.RenderDragAreaRect(leftTopPoint, rightBottomPoint, rectBrush));
-                    PART_Canvas.Children.Add(_dragArea.RenderLine(new Point(leftTopPoint.X, 0), new Point(leftTopPoint.X, ActualHeight), lineBrush, 1));
-                    PART_Canvas.Children.Add(_dragArea.RenderLine(new Point(rightBottomPoint.X, 0), new Point(rightBottomPoint.X, ActualHeight), lineBrush, 1));
-                }
+                PART_Paint.DragAreaCollection.DrawingCollection = _dragArea.DrawingArea(_originPoint, currentPoint, ActualHeight);
+                PART_Paint.DrawingHandler();
             }
         }
 
         private void DiagCompleteECG_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _dispatcherTimer.Stop();
-            if (Mouse.GetPosition(this) == _originPoint)
+            var currentPoint = e.GetPosition(this);
+            if (currentPoint == _originPoint)
             {
-                if(_isUseDragArea)
-                {
-                    PART_Canvas.Children.Clear();
-                    PART_Canvas.Children.Add(_dragArea.RenderLine(new Point(_originPoint.X, 0), new Point(_originPoint.X, ActualHeight), Brushes.Orange, 1));
-                }
+                PART_Paint.DragAreaCollection.DrawingCollection = _dragArea.DrawingSingleLine(currentPoint, ActualHeight);
+                PART_Paint.EquiCollection.DrawingCollection = _equiDistance.DrawingAllLines(currentPoint, ActualHeight, ActualWidth);
+                PART_Paint.DrawingHandler();
             }
         }
 
@@ -89,6 +91,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Loaded -= DiagCompleteECG_Loaded;
             Unloaded -= DiagCompleteECG_Unloaded;
             MouseLeftButtonDown -= DiagCompleteECG_MouseLeftButtonDown;
+            MouseRightButtonDown -= DiagCompleteECG_MouseRightButtonDown;
             _dispatcherTimer.Stop();
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;
@@ -96,46 +99,32 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_Equi_Checked(object sender, RoutedEventArgs e)
         {
-            _isUseDragArea = false;
-            PART_Canvas.Children.Clear();
-            EquiDistanceMeasure equiDistanceMeasure = new EquiDistanceMeasure()
-            {
-                Width = PART_Canvas.ActualWidth,
-                Height = PART_Canvas.ActualHeight
-            };
-            Grid grid = new Grid();
-            grid.Children.Add(equiDistanceMeasure);
-            Canvas.SetLeft(grid, 0);
-            Canvas.SetTop(grid, 0);
-            PART_Canvas.Children.Add(grid);
+            PART_Paint.DragAreaCollection.IsReDraw = false;
+            PART_Paint.EquiCollection.IsDisplay = true;
+            PART_Paint.EquiCollection.IsReDraw = true;
+            PART_Paint.DrawingHandler();
         }
 
         private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
         {
-            _isUseDragArea = true;
-            PART_Canvas.Children.Clear();
+            PART_Paint.DragAreaCollection.IsReDraw = true;
+            PART_Paint.EquiCollection.IsDisplay = false;
+            PART_Paint.DrawingHandler();
         }
 
         private void PART_Box_Checked(object sender, RoutedEventArgs e)
         {
-            _isUseDragArea = false;
-            PART_Canvas.Children.Clear();
-            BoxLineMeter boxLineMeter = new BoxLineMeter()
-            {
-                Width = PART_Canvas.ActualWidth,
-                Height = PART_Canvas.ActualHeight
-            };
-            Grid grid = new Grid();
-            grid.Children.Add(boxLineMeter);
-            Canvas.SetLeft(grid, 0);
-            Canvas.SetTop(grid, 0);
-            PART_Canvas.Children.Add(grid);
+            
         }
 
         private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
         {
-            _isUseDragArea = true;
-            PART_Canvas.Children.Clear();
+            
+        }
+
+        private bool CompareActionPriority(IMaskAction compareAction)
+        {
+            return compareAction.Priority >= _currentAction.Priority;
         }
     }
 }

@@ -72,14 +72,13 @@
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DiagCompleteECG\BoxLineMeterBehavior.cs" />
     <Compile Include="DiagCompleteECG\DiagCompleteECG.xaml.cs">
       <DependentUpon>DiagCompleteECG.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DiagCompleteECG\DragArea.cs" />
-    <Compile Include="DiagCompleteECG\DragAreaBehavior.cs" />
-    <Compile Include="DiagCompleteECG\IContainerBehavior.cs" />
-    <Compile Include="DiagCompleteECG\EquiDistanceMeasureBehavior.cs" />
+    <Compile Include="DiagCompleteECG\DragAreaAction.cs" />
+    <Compile Include="DiagCompleteECG\MaskDrawings.cs" />
+    <Compile Include="DiagCompleteECG\EquiDistanceAction.cs" />
+    <Compile Include="DiagCompleteECG\IMaskAction.cs" />
     <Compile Include="DiagCompleteECG\MaskPaint.cs" />
     <Compile Include="EuqiDistanceMeasureView.xaml.cs">
       <DependentUpon>EuqiDistanceMeasureView.xaml</DependentUpon>
