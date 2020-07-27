@@ -25,7 +25,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private DispatcherTimer _dispatcherTimer;
         private readonly DragAreaAction _dragArea = new DragAreaAction();
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20);
-        private IMaskAction _currentAction;
         public DiagCompleteECG()
         {
             InitializeComponent();
@@ -39,13 +38,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseLeftButtonDown += DiagCompleteECG_MouseLeftButtonDown;
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
-            PART_Paint.DragAreaCollection.IsDisplay = true;
-            PART_Paint.DragAreaCollection.IsReDraw = true;
-            _dragArea.IsDisplay = true;
-            _dragArea.Priority = 0;
 
-            //_equiDistance.Priority = 1;
-            _currentAction = _dragArea;
+            _dragArea.IsDisplay = true;
+            _dragArea.IsReDraw = true;
         }
 
         private void DiagCompleteECG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -58,8 +53,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var currentPoint = Mouse.GetPosition(this);
             if (currentPoint != _originPoint)
             {
-                PART_Paint.DragAreaCollection.DrawingCollection = _dragArea.DrawingArea(_originPoint, currentPoint, ActualHeight);
-                PART_Paint.DrawingHandler();
+                _dragArea.DrawingArea(_originPoint, currentPoint, ActualHeight);
+                _equiDistance.DrawingMouseMoveAllLines(currentPoint, ActualHeight, ActualWidth);
+                RenderMaskPaint();
             }
         }
 
@@ -69,9 +65,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var currentPoint = e.GetPosition(this);
             if (currentPoint == _originPoint)
             {
-                PART_Paint.DragAreaCollection.DrawingCollection = _dragArea.DrawingSingleLine(currentPoint, ActualHeight);
-                PART_Paint.EquiCollection.DrawingCollection = _equiDistance.DrawingAllLines(currentPoint, ActualHeight, ActualWidth);
-                PART_Paint.DrawingHandler();
+                _dragArea.DrawingSingleLine(currentPoint, ActualHeight);
+                _equiDistance.DrawingMouseUpAllLines(currentPoint, ActualHeight, ActualWidth);
+                RenderMaskPaint();
             }
         }
 
@@ -99,17 +95,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_Equi_Checked(object sender, RoutedEventArgs e)
         {
-            PART_Paint.DragAreaCollection.IsReDraw = false;
-            PART_Paint.EquiCollection.IsDisplay = true;
-            PART_Paint.EquiCollection.IsReDraw = true;
-            PART_Paint.DrawingHandler();
+            _dragArea.IsReDraw = false;
+            _equiDistance.IsDisplay = true;
+            _equiDistance.IsReDraw = true;
+            RenderMaskPaint();
         }
 
         private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
         {
-            PART_Paint.DragAreaCollection.IsReDraw = true;
-            PART_Paint.EquiCollection.IsDisplay = false;
-            PART_Paint.DrawingHandler();
+            _dragArea.IsReDraw = true;
+            _equiDistance.IsDisplay = false;
+            RenderMaskPaint();
         }
 
         private void PART_Box_Checked(object sender, RoutedEventArgs e)
@@ -122,9 +118,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             
         }
 
-        private bool CompareActionPriority(IMaskAction compareAction)
+        private void RenderMaskPaint()
         {
-            return compareAction.Priority >= _currentAction.Priority;
+            PART_Paint.DrawingHandler((drawingContext) => 
+            {
+                foreach (var item in _dragArea.DrawingChildren)
+                {
+                    drawingContext.DrawDrawing(item);
+                }
+                foreach (var item in _equiDistance.DrawingChildren)
+                {
+                    drawingContext.DrawDrawing(item);
+                }
+            });
         }
     }
 }

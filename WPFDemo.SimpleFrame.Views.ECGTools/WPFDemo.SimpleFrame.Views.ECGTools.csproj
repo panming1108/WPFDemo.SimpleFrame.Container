@@ -78,7 +78,7 @@
     <Compile Include="DiagCompleteECG\DragAreaAction.cs" />
     <Compile Include="DiagCompleteECG\MaskDrawings.cs" />
     <Compile Include="DiagCompleteECG\EquiDistanceAction.cs" />
-    <Compile Include="DiagCompleteECG\IMaskAction.cs" />
+    <Compile Include="DiagCompleteECG\MaskActionBase.cs" />
     <Compile Include="DiagCompleteECG\MaskPaint.cs" />
     <Compile Include="EuqiDistanceMeasureView.xaml.cs">
       <DependentUpon>EuqiDistanceMeasureView.xaml</DependentUpon>

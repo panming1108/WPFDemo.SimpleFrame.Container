@@ -9,36 +9,18 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
-    public class DragAreaAction : IMaskAction
+    public class DragAreaAction : MaskActionBase
     {
         private Point _originPoint;
 
         private Rect _originRect;
 
-        public bool IsDisplay { get; set; }
-        public int Priority { get; set; }
-
-        public void CheckAndExecuteAction(bool isReDraw, DrawingContext drawingContext, DrawingCollection drawings, Action drawingAction)
+        public void DrawingArea(Point startPoint, Point endPoint, double height)
         {
-            if (!IsDisplay)
+            if(!CanReSetDrawingChildren)
             {
                 return;
             }
-            if (isReDraw)
-            {
-                drawingAction();
-            }
-            else
-            {
-                foreach (var item in drawings)
-                {
-                    drawingContext.DrawDrawing(item);
-                }
-            }
-        }
-
-        public DrawingCollection DrawingArea(Point startPoint, Point endPoint, double height)
-        {
             DrawingCollection drawings = new DrawingCollection();
 
             _originPoint = startPoint;
@@ -66,11 +48,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             drawings.Add(rectangleDrawing);
             drawings.Add(lineDrawing1);
             drawings.Add(lineDrawing2);
-            return drawings;
+            DrawingChildren = drawings;
         }
 
-        public DrawingCollection DrawingSingleLine(Point startPoint, double height)
+        public void DrawingSingleLine(Point startPoint, double height)
         {
+            if(!CanReSetDrawingChildren)
+            {
+                return;
+            }
             DrawingCollection drawings = new DrawingCollection();
             LineGeometry lineGeometry;          
             if (_originRect.Contains(startPoint))
@@ -85,7 +71,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             drawings.Add(lineDrawing);
             _originRect = default;
             _originPoint = default;
-            return drawings;
+            DrawingChildren = drawings;
         }
 
         public ContextMenu RectHitTest(Point currentPoint)

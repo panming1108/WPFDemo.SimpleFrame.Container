@@ -10,28 +10,26 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class MaskPaint : FrameworkElement
     {
-        public MaskDrawings DragAreaCollection { get; set; }
-        public MaskDrawings EquiCollection { get; set; }
-
         private readonly DrawingVisual _drawingVisual = new DrawingVisual();
         public MaskPaint()
         {
             AddVisualChild(_drawingVisual);
-            DragAreaCollection = new MaskDrawings();
-            EquiCollection = new MaskDrawings();
         }
 
-        public void DrawingHandler()
+        public void DrawingHandler(IEnumerable<Drawing> drawings)
         {
             var drawingContext = _drawingVisual.RenderOpen();
-            foreach (var item in DragAreaCollection.DrawingCollection)
+            foreach (var item in drawings)
             {
                 drawingContext.DrawDrawing(item);
             }
-            foreach (var item in EquiCollection.DrawingCollection)
-            {
-                drawingContext.DrawDrawing(item);
-            }
+            drawingContext.Close();
+        }
+
+        public void DrawingHandler(Action<DrawingContext> drawingAction)
+        {
+            var drawingContext = _drawingVisual.RenderOpen();
+            drawingAction(drawingContext);
             drawingContext.Close();
         }
 
