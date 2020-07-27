@@ -16,26 +16,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             AddVisualChild(_drawingVisual);
         }
 
-        public void DrawingHandler(IEnumerable<Drawing> drawings)
-        {
-            var drawingContext = _drawingVisual.RenderOpen();
-            foreach (var item in drawings)
-            {
-                drawingContext.DrawDrawing(item);
-            }
-            drawingContext.Close();
-        }
-
         public void DrawingHandler(Action<DrawingContext> drawingAction)
         {
             var drawingContext = _drawingVisual.RenderOpen();
             drawingAction(drawingContext);
             drawingContext.Close();
-        }
-
-        public DrawingCollection GetDrawings()
-        {
-            return _drawingVisual.Drawing?.Children;
         }
 
         protected override int VisualChildrenCount

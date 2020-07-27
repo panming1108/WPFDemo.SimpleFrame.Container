@@ -12,23 +12,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     public class DragAreaAction : MaskActionBase
     {
         private Point _originPoint;
+        private double _rectStartX;
 
         private Rect _originRect;
 
-        public void DrawingArea(Point startPoint, Point endPoint, double height)
+        public void DrawingArea(Point endPoint)
         {
-            if(!CanReSetDrawingChildren)
-            {
-                return;
-            }
             DrawingCollection drawings = new DrawingCollection();
 
-            _originPoint = startPoint;
-
-            var left = Math.Min(endPoint.X, _originPoint.X);
-            var right = Math.Max(endPoint.X, _originPoint.X);
+            _rectStartX = _originPoint.X;
+            var left = Math.Min(endPoint.X, _rectStartX);
+            var right = Math.Max(endPoint.X, _rectStartX);
             Point leftTopPoint = new Point(left, 0);
-            Point rightBottomPoint = new Point(right, height);
+            Point rightBottomPoint = new Point(right, Height);
             _originRect = new Rect(leftTopPoint, rightBottomPoint);
 
             BrushConverter brushConverter = new BrushConverter();
@@ -38,7 +34,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Pen linePen = new Pen(lineBrush, 1);
 
             RectangleGeometry rectangleGeometry = new RectangleGeometry(_originRect);
-            LineGeometry lineGeometry1 = new LineGeometry(leftTopPoint, new Point(left, height));
+            LineGeometry lineGeometry1 = new LineGeometry(leftTopPoint, new Point(left, Height));
             LineGeometry lineGeometry2 = new LineGeometry(new Point(right, 0), rightBottomPoint);
 
             GeometryDrawing rectangleDrawing = new GeometryDrawing(rectBrush, rectPen, rectangleGeometry);
@@ -51,21 +47,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingChildren = drawings;
         }
 
-        public void DrawingSingleLine(Point startPoint, double height)
+        public void DrawingSingleLine(Point startPoint)
         {
-            if(!CanReSetDrawingChildren)
-            {
-                return;
-            }
             DrawingCollection drawings = new DrawingCollection();
             LineGeometry lineGeometry;          
             if (_originRect.Contains(startPoint))
             {
-                lineGeometry = new LineGeometry(new Point(_originPoint.X, 0), new Point(_originPoint.X, height));
+                lineGeometry = new LineGeometry(new Point(_rectStartX, 0), new Point(_rectStartX, Height));
             }
             else
             {
-                lineGeometry = new LineGeometry(new Point(startPoint.X, 0), new Point(startPoint.X, height));
+                lineGeometry = new LineGeometry(new Point(startPoint.X, 0), new Point(startPoint.X, Height));
             }
             GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
             drawings.Add(lineDrawing);
@@ -74,7 +66,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingChildren = drawings;
         }
 
-        public ContextMenu RectHitTest(Point currentPoint)
+        public ContextMenu GetDragContextMenu(Point currentPoint)
         {
             if(_originRect.Contains(currentPoint))
             {
@@ -84,6 +76,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 return null;
             }
+        }
+
+        public override void PrepareMask(Point current, double height, double width)
+        {
+            _originPoint = current;
+            Height = height;
+            Width = width;
+        }
+
+        public override void ResetMask()
+        {
+            _originRect = default;
+            _originPoint = default;
         }
     }
 }

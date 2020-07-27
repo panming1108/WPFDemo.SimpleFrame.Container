@@ -25,6 +25,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private DispatcherTimer _dispatcherTimer;
         private readonly DragAreaAction _dragArea = new DragAreaAction();
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20);
+        private bool _isMouseDown;
+        private MaskActionCollection _maskList;
+        private MaskActionBase _currentUsingMask;
         public DiagCompleteECG()
         {
             InitializeComponent();
@@ -32,6 +35,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Send);
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(20);
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
+            _dispatcherTimer.Start();
 
             Loaded += DiagCompleteECG_Loaded;
             Unloaded += DiagCompleteECG_Unloaded;
@@ -39,42 +43,65 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
 
-            _dragArea.IsDisplay = true;
-            _dragArea.IsReDraw = true;
+            _maskList = new MaskActionCollection(this)
+            {
+                _dragArea
+            };
         }
 
         private void DiagCompleteECG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ContextMenu = _dragArea.RectHitTest(e.GetPosition(this));
+            SetContextMenu(e);           
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             var currentPoint = Mouse.GetPosition(this);
-            if (currentPoint != _originPoint)
+            //鼠标是否移动了
+            if(currentPoint == _originPoint)
             {
-                _dragArea.DrawingArea(_originPoint, currentPoint, ActualHeight);
-                _equiDistance.DrawingMouseMoveAllLines(currentPoint, ActualHeight, ActualWidth);
+                return;
+            }
+            if (!_isMouseDown)
+            {
+                SetCursor(currentPoint);               
+            }
+            else
+            {
+                if (_currentUsingMask is DragAreaAction)
+                {
+                    _dragArea.DrawingArea(currentPoint);
+                }
+                if (_currentUsingMask is EquiDistanceAction)
+                {
+                    _equiDistance.DrawingMouseMoveAllLines(currentPoint);
+                }
                 RenderMaskPaint();
             }
         }
 
         private void DiagCompleteECG_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _dispatcherTimer.Stop();
+            _isMouseDown = false;
+            ReleaseMouseCapture();
             var currentPoint = e.GetPosition(this);
             if (currentPoint == _originPoint)
-            {
-                _dragArea.DrawingSingleLine(currentPoint, ActualHeight);
-                _equiDistance.DrawingMouseUpAllLines(currentPoint, ActualHeight, ActualWidth);
-                RenderMaskPaint();
+            {               
+                if (_currentUsingMask is DragAreaAction)
+                {
+                    _dragArea.DrawingSingleLine(currentPoint);
+                }
+                RenderMaskPaint();              
             }
         }
 
         private void DiagCompleteECG_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _originPoint = e.GetPosition(this);
-            _dispatcherTimer.Start();
+            _isMouseDown = true;
+            CaptureMouse();
+            _currentUsingMask = _maskList.GetCurrentMask(_originPoint);
+            _currentUsingMask.PrepareMask(_originPoint, ActualHeight, ActualWidth);
         }
 
         private void DiagCompleteECG_Loaded(object sender, RoutedEventArgs e)
@@ -93,18 +120,35 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dispatcherTimer = null;
         }
 
+        private void SetCursor(Point point)
+        {
+            if(_maskList.Contains(_equiDistance))
+            {
+                Cursor = _equiDistance.GetMouseOverCursor(point);
+            }
+            else
+            {
+                Cursor = Cursors.Arrow;
+            }
+        }
+
+        private void SetContextMenu(MouseButtonEventArgs e)
+        {
+            ContextMenu = _dragArea.GetDragContextMenu(e.GetPosition(this));
+        }
+
         private void PART_Equi_Checked(object sender, RoutedEventArgs e)
         {
-            _dragArea.IsReDraw = false;
-            _equiDistance.IsDisplay = true;
-            _equiDistance.IsReDraw = true;
+            _maskList.Add(_equiDistance);
+            _equiDistance.PrepareMask(new Point(ActualWidth / 2, 0), ActualHeight, ActualWidth);
+            _equiDistance.DrawingMouseUpAllLines(new Point(ActualWidth / 2, 0));
             RenderMaskPaint();
         }
 
         private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
         {
-            _dragArea.IsReDraw = true;
-            _equiDistance.IsDisplay = false;
+            _maskList.Remove(_equiDistance);
+            _equiDistance.ResetMask();
             RenderMaskPaint();
         }
 
@@ -122,13 +166,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             PART_Paint.DrawingHandler((drawingContext) => 
             {
-                foreach (var item in _dragArea.DrawingChildren)
+                foreach (var item in _maskList)
                 {
-                    drawingContext.DrawDrawing(item);
-                }
-                foreach (var item in _equiDistance.DrawingChildren)
-                {
-                    drawingContext.DrawDrawing(item);
+                    foreach (var drawing in item.DrawingChildren)
+                    {
+                        drawingContext.DrawDrawing(drawing);
+                    }
                 }
             });
         }
