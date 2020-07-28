@@ -34,6 +34,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("en-us");
         private readonly Typeface _typeface = new Typeface("Klavika");
         private readonly double _emSize = 15d;
+
         public override void DrawingDrag(Point currentPoint)
         {           
             switch (_boxLineMeterStatus)
@@ -43,23 +44,274 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     DragTextRect(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.LeftTopThumb:
+                    DragLeftTopPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.LeftCenterThumb:
+                    DragLeftCenterPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.LeftBottomThumb:
+                    DragLeftBottomPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.RightTopThumb:
+                    DragRightTopPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.RightCenterThumb:
+                    DragRightCenterPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.RightBottomThumb:
+                    DragRightBottomPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.CenterTopThumb:
+                    DragCenterTopPoint(currentPoint);
                     break;
                 case BoxLineMeterStatusEnum.CenterBottomThumb:
+                    DragCenterBottomPoint(currentPoint);
                     break;
             }
             _lastPoint = currentPoint;
+        }
+
+        private void DragCenterBottomPoint(Point currentPoint)
+        {
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+            
+            var height = _originRect.Height + yOffset;
+            if (height < 1)
+            {
+                _originRect.Height = 1;
+            }
+            else if (height > Height - _originRect.Y)
+            {
+                _originRect.Height = Height - _originRect.Y;
+            }
+            else
+            {
+                _originRect.Height = height;
+            }
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragCenterTopPoint(Point currentPoint)
+        {
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+            
+            var leftUpPointY = _originRect.Y + yOffset;
+            var height = _originRect.Height - yOffset;
+
+            if (leftUpPointY < _textRectHeight)
+            {
+                _originRect.Y = _textRectHeight;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (height < 1)
+            {
+                _originRect.Height = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+
+            _originRect.Y = leftUpPointY;
+            _originRect.Height = height;
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragRightBottomPoint(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+
+            var width = _originRect.Width + xOffset;
+            var height = _originRect.Height + yOffset;
+            if (height < 1)
+            {
+                _originRect.Height = 1;
+            }
+            else if (height > Height - _originRect.Y)
+            {
+                _originRect.Height = Height - _originRect.Y;
+            }
+            else
+            {
+                _originRect.Height = height;
+            }
+            if (width < 1)
+            {
+                _originRect.Width = 1;
+            }
+            else if (width >Width - _originRect.X)
+            {
+                _originRect.Width = Width - _originRect.X;
+            }
+            else
+            {
+                _originRect.Width = width;
+            }
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragRightCenterPoint(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+            
+            var width = _originRect.Width + xOffset;
+            if (width < 1)
+            {
+                _originRect.Width = 1;
+            }
+            else if (width > Width - _originRect.X)
+            {
+                _originRect.Width = Width - _originRect.X;
+            }
+            else
+            {
+                _originRect.Width = width;
+            }
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragRightTopPoint(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+            
+            var leftUpPointY = _originRect.Y + yOffset;
+            var height = _originRect.Height - yOffset;
+            var width = _originRect.Width + xOffset;
+
+            if (height < 1)
+            {
+                _originRect.Height = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (leftUpPointY < _textRectHeight)
+            {
+                _originRect.Y = _textRectHeight;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (width < 1)
+            {
+                _originRect.Width = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            else if (width > Width - _originRect.X)
+            {
+                _originRect.Width = Width - _originRect.X;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            _originRect.Y = leftUpPointY;
+            _originRect.Width = width;
+            _originRect.Height = height;
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragLeftBottomPoint(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+
+            var leftUpPointX = _originRect.X + xOffset;
+            var height = _originRect.Height + yOffset;
+            var width = _originRect.Width - xOffset;
+
+            if (height < 1)
+            {
+                _originRect.Height = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            else if (height > Height - _originRect.Y)
+            {
+                _originRect.Height = Height - _originRect.Y;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (leftUpPointX < _vTextRectWidth)
+            {
+                _originRect.X = _vTextRectWidth;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (width < 1)
+            {
+                _originRect.Width = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            _originRect.X = leftUpPointX;
+            _originRect.Width = width;
+            _originRect.Height = height;
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragLeftCenterPoint(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+
+            var leftUpPointX = _originRect.X + xOffset;
+            var width = _originRect.Width - xOffset;
+
+            if (leftUpPointX < _vTextRectWidth)
+            {
+                _originRect.X = _vTextRectWidth;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (width < 1)
+            {
+                _originRect.Width = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+
+            _originRect.X = leftUpPointX;
+            _originRect.Width = width;
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+        }
+
+        private void DragLeftTopPoint(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+
+            var leftUpPointY = _originRect.Y + yOffset;
+            var leftUpPointX = _originRect.X + xOffset;
+            var height = _originRect.Height - yOffset;
+            var width = _originRect.Width - xOffset;
+
+            if (height < 1)
+            {
+                _originRect.Height = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (leftUpPointY < _textRectHeight)
+            {
+                _originRect.Y = _textRectHeight;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (width < 1)
+            {
+                _originRect.Width = 1;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            if (leftUpPointX < _vTextRectWidth)
+            {
+                _originRect.X = _vTextRectWidth;
+                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                return;
+            }
+            _originRect.Y = leftUpPointY;
+            _originRect.X = leftUpPointX;
+            _originRect.Width = width;
+            _originRect.Height = height;
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragTextRect(Point currentPoint)
