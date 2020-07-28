@@ -28,14 +28,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20);
         private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction();
         private bool _isMouseDown;
-        private MaskActionCollection _maskList;
+        private readonly MaskActionCollection _maskList;
         private MaskActionBase _currentUsingMask;
         public DiagCompleteECG()
         {
             InitializeComponent();
 
-            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Send);
-            _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(20);
+            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Send)
+            {
+                Interval = TimeSpan.FromMilliseconds(20)
+            };
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
 
