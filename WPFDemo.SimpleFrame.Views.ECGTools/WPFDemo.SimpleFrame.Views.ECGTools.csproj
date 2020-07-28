@@ -72,6 +72,7 @@
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DiagCompleteECG\BoxLineMeterAction.cs" />
     <Compile Include="DiagCompleteECG\DiagCompleteECG.xaml.cs">
       <DependentUpon>DiagCompleteECG.xaml</DependentUpon>
     </Compile>
@@ -80,6 +81,7 @@
     <Compile Include="DiagCompleteECG\MaskActionBase.cs" />
     <Compile Include="DiagCompleteECG\MaskActionCollection.cs" />
     <Compile Include="DiagCompleteECG\MaskPaint.cs" />
+    <Compile Include="DiagCompleteECG\MaskText.cs" />
     <Compile Include="EuqiDistanceMeasureView.xaml.cs">
       <DependentUpon>EuqiDistanceMeasureView.xaml</DependentUpon>
     </Compile>

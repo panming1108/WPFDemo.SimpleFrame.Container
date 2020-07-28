@@ -11,7 +11,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class EquiDistanceAction : MaskActionBase
     {
-        private double _minInterval;
+        private readonly double _minInterval;
         private double _firstPoint;
         private double _interval = 100;
         private Pen _mainPen = new Pen(Brushes.Red, 1);
@@ -25,37 +25,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _minInterval = minInterval;
         }
 
-        public void DrawingMouseUpAllLines(Point mainPoint)
-        {
-            _firstPoint = mainPoint.X;
-            DrawingAllLines(Height, Width);
-        }
-
-        public void DrawingMouseMoveAllLines(Point currentPoint)
-        {
-            switch (_equiStatus)
-            {
-                case EquiStatusEnum.MainLine:
-                    _firstPoint = currentPoint.X;
-                    
-                    break;
-                case EquiStatusEnum.OtherLine:
-                    _interval += (currentPoint.X - _lastPointX) / _currentMultiple;
-                    if (_interval < _minInterval)
-                    {
-                        _interval = _minInterval;
-                    }
-                    _lastPointX = currentPoint.X;
-                    break;
-                default:
-                    break;
-            }
-            DrawingAllLines(Height, Width);           
-        }
-
         private void SetEquiStatus(Point currentPoint)
         {
-            if(currentPoint.X >= _firstPoint - 10 && currentPoint.X <= _firstPoint + 10)
+            if(currentPoint.X >= _firstPoint - 2.5 && currentPoint.X <= _firstPoint + 2.5)
             {
                 _equiStatus = EquiStatusEnum.MainLine;
             }
@@ -63,7 +35,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 double multiple = Math.Round((currentPoint.X - _firstPoint) / _interval, MidpointRounding.ToEven);
                 double currentLineX = _firstPoint + multiple * _interval;
-                if(currentPoint.X >= currentLineX - 10 && currentPoint.X <= currentLineX + 10)
+                if(currentPoint.X >= currentLineX - 2.5 && currentPoint.X <= currentLineX + 2.5)
                 {
                     _equiStatus = EquiStatusEnum.OtherLine;
                     _currentMultiple = multiple;
@@ -75,7 +47,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public Cursor GetMouseOverCursor(Point currentPoint)
+        public override Cursor GetMouseOverCursor(Point currentPoint)
         {
             SetEquiStatus(currentPoint);
             Cursor cursor = Cursors.Arrow;
@@ -140,12 +112,42 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Height = height;
             Width = width;
         }
+
+        public override void DrawingDrag(Point currentPoint)
+        {
+            switch (_equiStatus)
+            {
+                case EquiStatusEnum.MainLine:
+                    _firstPoint = currentPoint.X;
+
+                    break;
+                case EquiStatusEnum.OtherLine:
+                    _interval += (currentPoint.X - _lastPointX) / _currentMultiple;
+                    if (_interval < _minInterval)
+                    {
+                        _interval = _minInterval;
+                    }
+                    _lastPointX = currentPoint.X;
+                    break;
+                default:
+                    break;
+            }
+            DrawingAllLines(Height, Width);
+        }
+
+        public override void DrawingMouseUp(Point currentPoint)
+        {
+            _firstPoint = currentPoint.X;
+            DrawingAllLines(Height, Width);
+        }
+
+        public enum EquiStatusEnum
+        {
+            None = 0,
+            MainLine = 1,
+            OtherLine = 2,
+        }
     }
 
-    public enum EquiStatusEnum
-    {
-        None = 0,
-        MainLine = 1,
-        OtherLine = 2,
-    }
+    
 }

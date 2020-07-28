@@ -23,6 +23,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             drawingContext.Close();
         }
 
+        public DrawingCollection GetDrawings()
+        {
+            return _drawingVisual.Drawing.Children;
+        }
+
         protected override int VisualChildrenCount
         {
             get { return 1; }

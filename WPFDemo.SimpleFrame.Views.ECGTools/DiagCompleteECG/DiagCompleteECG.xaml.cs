@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private DispatcherTimer _dispatcherTimer;
         private readonly DragAreaAction _dragArea = new DragAreaAction();
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20);
+        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction();
         private bool _isMouseDown;
         private MaskActionCollection _maskList;
         private MaskActionBase _currentUsingMask;
@@ -64,18 +66,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             if (!_isMouseDown)
             {
-                SetCursor(currentPoint);               
+                Cursor = _maskList.GetCurrentMask(currentPoint).GetMouseOverCursor(currentPoint);
+                if(_maskList.Contains(_boxLineMeter))
+                {
+                    _boxLineMeter.DrawingMouseMove(currentPoint);
+                    RenderMaskPaint();
+                }
             }
             else
             {
-                if (_currentUsingMask is DragAreaAction)
-                {
-                    _dragArea.DrawingArea(currentPoint);
-                }
-                if (_currentUsingMask is EquiDistanceAction)
-                {
-                    _equiDistance.DrawingMouseMoveAllLines(currentPoint);
-                }
+                _currentUsingMask.DrawingDrag(currentPoint);
                 RenderMaskPaint();
             }
         }
@@ -86,11 +86,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             ReleaseMouseCapture();
             var currentPoint = e.GetPosition(this);
             if (currentPoint == _originPoint)
-            {               
-                if (_currentUsingMask is DragAreaAction)
-                {
-                    _dragArea.DrawingSingleLine(currentPoint);
-                }
+            {
+                _currentUsingMask.DrawingMouseUp(currentPoint);
                 RenderMaskPaint();              
             }
         }
@@ -120,18 +117,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dispatcherTimer = null;
         }
 
-        private void SetCursor(Point point)
-        {
-            if(_maskList.Contains(_equiDistance))
-            {
-                Cursor = _equiDistance.GetMouseOverCursor(point);
-            }
-            else
-            {
-                Cursor = Cursors.Arrow;
-            }
-        }
-
         private void SetContextMenu(MouseButtonEventArgs e)
         {
             ContextMenu = _dragArea.GetDragContextMenu(e.GetPosition(this));
@@ -141,7 +126,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _maskList.Add(_equiDistance);
             _equiDistance.PrepareMask(new Point(ActualWidth / 2, 0), ActualHeight, ActualWidth);
-            _equiDistance.DrawingMouseUpAllLines(new Point(ActualWidth / 2, 0));
+            _equiDistance.DrawingMouseUp(new Point(ActualWidth / 2, 0));
             RenderMaskPaint();
         }
 
@@ -154,12 +139,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_Box_Checked(object sender, RoutedEventArgs e)
         {
-            
+            _maskList.Add(_boxLineMeter);
+            _boxLineMeter.PrepareMask(new Point(ActualWidth / 2, ActualHeight / 2), ActualHeight, ActualWidth);
+            _boxLineMeter.DrawingRect(new Point(ActualWidth / 2 - 175, ActualHeight / 2 - 125), 250, 350);
+            RenderMaskPaint();
         }
 
         private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
         {
-            
+            _maskList.Remove(_boxLineMeter);
+            _boxLineMeter.ResetMask();
+            RenderMaskPaint();
         }
 
         private void RenderMaskPaint()
@@ -171,6 +161,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     foreach (var drawing in item.DrawingChildren)
                     {
                         drawingContext.DrawDrawing(drawing);
+                    }
+                    foreach (var text in item.DrawingTexts)
+                    {
+                        drawingContext.DrawText(text.Text, text.Position);
                     }
                 }
             });

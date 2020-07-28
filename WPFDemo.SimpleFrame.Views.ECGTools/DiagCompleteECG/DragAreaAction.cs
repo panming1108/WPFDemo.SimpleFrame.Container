@@ -16,13 +16,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private Rect _originRect;
 
-        public void DrawingArea(Point endPoint)
+        public override void DrawingDrag(Point currentPoint)
         {
             DrawingCollection drawings = new DrawingCollection();
 
             _rectStartX = _originPoint.X;
-            var left = Math.Min(endPoint.X, _rectStartX);
-            var right = Math.Max(endPoint.X, _rectStartX);
+            var left = Math.Min(currentPoint.X, _rectStartX);
+            var right = Math.Max(currentPoint.X, _rectStartX);
             Point leftTopPoint = new Point(left, 0);
             Point rightBottomPoint = new Point(right, Height);
             _originRect = new Rect(leftTopPoint, rightBottomPoint);
@@ -47,17 +47,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingChildren = drawings;
         }
 
-        public void DrawingSingleLine(Point startPoint)
+        public override void DrawingMouseUp(Point currentPoint)
         {
             DrawingCollection drawings = new DrawingCollection();
-            LineGeometry lineGeometry;          
-            if (_originRect.Contains(startPoint))
+            LineGeometry lineGeometry;
+            if (_originRect.Contains(currentPoint))
             {
                 lineGeometry = new LineGeometry(new Point(_rectStartX, 0), new Point(_rectStartX, Height));
             }
             else
             {
-                lineGeometry = new LineGeometry(new Point(startPoint.X, 0), new Point(startPoint.X, Height));
+                lineGeometry = new LineGeometry(new Point(currentPoint.X, 0), new Point(currentPoint.X, Height));
             }
             GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
             drawings.Add(lineDrawing);
