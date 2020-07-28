@@ -20,7 +20,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private double _currentMultiple;
         private double _lastPointX;
 
-        public EquiDistanceAction(double minInterval)
+        public EquiDistanceAction(double minInterval, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
             _minInterval = minInterval;
         }
@@ -65,33 +65,35 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void DrawingAllLines(double height, double width)
         {
+            height += TopOffset;
+            width += LeftOffset;
             if(_firstPoint <= 0 || _firstPoint >= width)
             {
                 return;
             }
             DrawingCollection drawings = new DrawingCollection();
-            LineGeometry mainLineGeometry = new LineGeometry(new Point(_firstPoint, 0), new Point(_firstPoint, height));
+            LineGeometry mainLineGeometry = new LineGeometry(new Point(_firstPoint, TopOffset), new Point(_firstPoint, height));
             GeometryDrawing mainLineDrawing = new GeometryDrawing(_mainPen.Brush, _mainPen, mainLineGeometry);
             drawings.Add(mainLineDrawing);
             //往前画
-            for (double i = _firstPoint - _interval; i >= 0; i -= _interval)
+            for (double i = _firstPoint - _interval; i >= LeftOffset; i -= _interval)
             {
                 if(i > width)
                 {
                     continue;
                 }
-                LineGeometry otherLineGeometry = new LineGeometry(new Point(i, 0), new Point(i, height));
+                LineGeometry otherLineGeometry = new LineGeometry(new Point(i, TopOffset), new Point(i, height));
                 GeometryDrawing otherLineDrawing = new GeometryDrawing(_otherPen.Brush, _otherPen, otherLineGeometry);
                 drawings.Add(otherLineDrawing);
             }
             //往后画
             for (double i = _firstPoint + _interval; i < width; i += _interval)
             {
-                if (i < 0)
+                if (i < LeftOffset)
                 {
                     continue;
                 }
-                LineGeometry otherLineGeometry = new LineGeometry(new Point(i, 0), new Point(i, height));
+                LineGeometry otherLineGeometry = new LineGeometry(new Point(i, TopOffset), new Point(i, height));
                 GeometryDrawing otherLineDrawing = new GeometryDrawing(_otherPen.Brush, _otherPen, otherLineGeometry);
                 drawings.Add(otherLineDrawing);
             }
@@ -106,11 +108,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _currentMultiple = 0;
         }
 
-        public override void PrepareMask(Point current, double height, double width)
+        public override void PrepareMask(Point current)
         {
             _lastPointX = current.X;
-            Height = height;
-            Width = width;
         }
 
         public override void DrawingDrag(Point currentPoint)

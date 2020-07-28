@@ -8,16 +8,24 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid Background="White">
-        <Grid x:Name="PART_DiagECG"
-              Background="AliceBlue">
-            <Line Stretch="Uniform"
-                  Stroke="Black"
-                  StrokeThickness="2"
-                  X1="0,0"
-                  X2="1000,800" />
+        <Grid Background="AliceBlue">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid x:Name="PART_ECG"
+                  Grid.Row="1"
+                  Background="Pink">
+                <Line Stretch="Uniform"
+                      Stroke="Black"
+                      StrokeThickness="2"
+                      X1="0,0"
+                      X2="1000,800" />
+            </Grid>
         </Grid>
         <local:MaskPaint x:Name="PART_Paint" />
-        <StackPanel HorizontalAlignment="Right"
+        <StackPanel Margin="0,100,0,0"
+                    HorizontalAlignment="Right"
                     VerticalAlignment="Top">
             <CheckBox x:Name="PART_Equi"
                       Checked="PART_Equi_Checked"

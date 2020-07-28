@@ -35,6 +35,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly Typeface _typeface = new Typeface("Klavika");
         private readonly double _emSize = 15d;
 
+        public BoxLineMeterAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        {
+        }
+
         public override void DrawingDrag(Point currentPoint)
         {           
             switch (_boxLineMeterStatus)
@@ -80,9 +84,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _originRect.Height = 1;
             }
-            else if (height > Height - _originRect.Y)
+            else if (height > Height + TopOffset - _originRect.Y)
             {
-                _originRect.Height = Height - _originRect.Y;
+                _originRect.Height = Height + TopOffset - _originRect.Y;
             }
             else
             {
@@ -98,9 +102,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var leftUpPointY = _originRect.Y + yOffset;
             var height = _originRect.Height - yOffset;
 
-            if (leftUpPointY < _textRectHeight)
+            if (leftUpPointY < _textRectHeight + TopOffset)
             {
-                _originRect.Y = _textRectHeight;
+                _originRect.Y = _textRectHeight + TopOffset;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -127,9 +131,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _originRect.Height = 1;
             }
-            else if (height > Height - _originRect.Y)
+            else if (height > Height + TopOffset - _originRect.Y)
             {
-                _originRect.Height = Height - _originRect.Y;
+                _originRect.Height = Height + TopOffset - _originRect.Y;
             }
             else
             {
@@ -139,9 +143,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _originRect.Width = 1;
             }
-            else if (width >Width - _originRect.X)
+            else if (width >Width + LeftOffset - _originRect.X)
             {
-                _originRect.Width = Width - _originRect.X;
+                _originRect.Width = Width + LeftOffset - _originRect.X;
             }
             else
             {
@@ -159,9 +163,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _originRect.Width = 1;
             }
-            else if (width > Width - _originRect.X)
+            else if (width > Width + LeftOffset - _originRect.X)
             {
-                _originRect.Width = Width - _originRect.X;
+                _originRect.Width = Width + LeftOffset - _originRect.X;
             }
             else
             {
@@ -185,9 +189,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
-            if (leftUpPointY < _textRectHeight)
+            if (leftUpPointY < _textRectHeight + TopOffset)
             {
-                _originRect.Y = _textRectHeight;
+                _originRect.Y = _textRectHeight + TopOffset;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -197,9 +201,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
-            else if (width > Width - _originRect.X)
+            else if (width > Width + LeftOffset - _originRect.X)
             {
-                _originRect.Width = Width - _originRect.X;
+                _originRect.Width = Width + LeftOffset - _originRect.X;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -224,15 +228,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
-            else if (height > Height - _originRect.Y)
+            else if (height > Height + TopOffset - _originRect.Y)
             {
-                _originRect.Height = Height - _originRect.Y;
+                _originRect.Height = Height + TopOffset - _originRect.Y;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
-            if (leftUpPointX < _vTextRectWidth)
+            if (leftUpPointX < _vTextRectWidth + LeftOffset)
             {
-                _originRect.X = _vTextRectWidth;
+                _originRect.X = _vTextRectWidth + LeftOffset;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -255,9 +259,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var leftUpPointX = _originRect.X + xOffset;
             var width = _originRect.Width - xOffset;
 
-            if (leftUpPointX < _vTextRectWidth)
+            if (leftUpPointX < _vTextRectWidth + LeftOffset)
             {
-                _originRect.X = _vTextRectWidth;
+                _originRect.X = _vTextRectWidth + LeftOffset;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -289,9 +293,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
-            if (leftUpPointY < _textRectHeight)
+            if (leftUpPointY < _textRectHeight + TopOffset)
             {
-                _originRect.Y = _textRectHeight;
+                _originRect.Y = _textRectHeight + TopOffset;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -301,9 +305,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
-            if (leftUpPointX < _vTextRectWidth)
+            if (leftUpPointX < _vTextRectWidth + LeftOffset)
             {
-                _originRect.X = _vTextRectWidth;
+                _originRect.X = _vTextRectWidth + LeftOffset;
                 DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
                 return;
             }
@@ -320,21 +324,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var yOffset = currentPoint.Y - _lastPoint.Y;
             _originRect.X += xOffset;
             _originRect.Y += yOffset;
-            if (_originRect.TopLeft.X <= _vTextRectWidth)
+            if (_originRect.TopLeft.X <= _vTextRectWidth + LeftOffset)
             {
-                _originRect.X = _vTextRectWidth;
+                _originRect.X = _vTextRectWidth + LeftOffset;
             }
-            if (_originRect.TopLeft.X >= Width - _originRect.Width)
+            if (_originRect.X >= Width + LeftOffset - _originRect.Width)
             {
-                _originRect.X = Width - _originRect.Width;
+                _originRect.X = Width + LeftOffset - _originRect.Width;
             }
-            if (_originRect.TopLeft.Y <= _textRectHeight)
+            if (_originRect.Y <= _textRectHeight + TopOffset)
             {
-                _originRect.Y = _textRectHeight;
+                _originRect.Y = _textRectHeight + TopOffset;
             }
-            if (_originRect.TopLeft.Y >= Height - _originRect.Height)
+            if (_originRect.Y >= Height + TopOffset - _originRect.Height)
             {
-                _originRect.Y = Height - _originRect.Height;
+                _originRect.Y = Height + TopOffset - _originRect.Height;
             }
             DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width);
         }
@@ -467,10 +471,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             return _originRect.Height + "uV";
         }
 
-        public override void PrepareMask(Point current, double height, double width)
+        public override void PrepareMask(Point current)
         {
-            Height = height;
-            Width = width;
             _lastPoint = current;
         }
 

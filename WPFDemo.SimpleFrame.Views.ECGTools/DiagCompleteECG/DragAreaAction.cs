@@ -16,6 +16,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private Rect _originRect;
 
+        public DragAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        {
+            
+        }
+
         public override void DrawingDrag(Point currentPoint)
         {
             DrawingCollection drawings = new DrawingCollection();
@@ -23,8 +28,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _rectStartX = _originPoint.X;
             var left = Math.Min(currentPoint.X, _rectStartX);
             var right = Math.Max(currentPoint.X, _rectStartX);
-            Point leftTopPoint = new Point(left, 0);
-            Point rightBottomPoint = new Point(right, Height);
+            Point leftTopPoint = new Point(left, TopOffset);
+            Point rightBottomPoint = new Point(right, TopOffset + Height);
             _originRect = new Rect(leftTopPoint, rightBottomPoint);
 
             BrushConverter brushConverter = new BrushConverter();
@@ -34,8 +39,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Pen linePen = new Pen(lineBrush, 1);
 
             RectangleGeometry rectangleGeometry = new RectangleGeometry(_originRect);
-            LineGeometry lineGeometry1 = new LineGeometry(leftTopPoint, new Point(left, Height));
-            LineGeometry lineGeometry2 = new LineGeometry(new Point(right, 0), rightBottomPoint);
+            LineGeometry lineGeometry1 = new LineGeometry(leftTopPoint, new Point(left, TopOffset + Height));
+            LineGeometry lineGeometry2 = new LineGeometry(new Point(right, TopOffset), rightBottomPoint);
 
             GeometryDrawing rectangleDrawing = new GeometryDrawing(rectBrush, rectPen, rectangleGeometry);
             GeometryDrawing lineDrawing1 = new GeometryDrawing(lineBrush, linePen, lineGeometry1);
@@ -53,11 +58,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             LineGeometry lineGeometry;
             if (_originRect.Contains(currentPoint))
             {
-                lineGeometry = new LineGeometry(new Point(_rectStartX, 0), new Point(_rectStartX, Height));
+                lineGeometry = new LineGeometry(new Point(_rectStartX, TopOffset), new Point(_rectStartX, TopOffset + Height));
             }
             else
             {
-                lineGeometry = new LineGeometry(new Point(currentPoint.X, 0), new Point(currentPoint.X, Height));
+                lineGeometry = new LineGeometry(new Point(currentPoint.X, TopOffset), new Point(currentPoint.X, TopOffset + Height));
             }
             GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
             drawings.Add(lineDrawing);
@@ -78,11 +83,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public override void PrepareMask(Point current, double height, double width)
+        public override void PrepareMask(Point current)
         {
             _originPoint = current;
-            Height = height;
-            Width = width;
         }
 
         public override void ResetMask()

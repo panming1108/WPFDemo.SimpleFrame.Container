@@ -24,9 +24,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
-        private readonly DragAreaAction _dragArea = new DragAreaAction();
-        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20);
-        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction();
+        private readonly DragAreaAction _dragArea = new DragAreaAction(0, 40);
+        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20, 0, 40);
+        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 40);
         private bool _isMouseDown;
         private readonly MaskActionCollection _maskList;
         private MaskActionBase _currentUsingMask;
@@ -100,7 +100,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _isMouseDown = true;
             CaptureMouse();
             _currentUsingMask = _maskList.GetCurrentMask(_originPoint);
-            _currentUsingMask.PrepareMask(_originPoint, ActualHeight, ActualWidth);
+            _currentUsingMask.PrepareMask(_originPoint);
         }
 
         private void DiagCompleteECG_Loaded(object sender, RoutedEventArgs e)
@@ -127,7 +127,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_Equi_Checked(object sender, RoutedEventArgs e)
         {
             _maskList.Add(_equiDistance);
-            _equiDistance.PrepareMask(new Point(ActualWidth / 2, 0), ActualHeight, ActualWidth);
+            _equiDistance.PrepareMask(new Point(ActualWidth / 2, 0));
             _equiDistance.DrawingMouseUp(new Point(ActualWidth / 2, 0));
             RenderMaskPaint();
         }
@@ -142,7 +142,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_Box_Checked(object sender, RoutedEventArgs e)
         {
             _maskList.Add(_boxLineMeter);
-            _boxLineMeter.PrepareMask(new Point(ActualWidth / 2, ActualHeight / 2), ActualHeight, ActualWidth);
+            _boxLineMeter.PrepareMask(new Point(ActualWidth / 2, ActualHeight / 2));
             _boxLineMeter.DrawingRect(new Point(ActualWidth / 2 - 175, ActualHeight / 2 - 125), 250, 350);
             RenderMaskPaint();
         }
@@ -152,6 +152,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _maskList.Remove(_boxLineMeter);
             _boxLineMeter.ResetMask();
             RenderMaskPaint();
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            _dragArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
         }
 
         private void RenderMaskPaint()

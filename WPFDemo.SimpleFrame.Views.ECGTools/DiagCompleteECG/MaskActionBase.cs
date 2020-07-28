@@ -12,13 +12,28 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         public double Height { get; set; }
         public double Width { get; set; }
+        public double LeftOffset { get; set; }
+        public double TopOffset { get; set; }
         public DrawingCollection DrawingChildren { get; set; } = new DrawingCollection();
         public List<MaskText> DrawingTexts { get; set; } = new List<MaskText>();
 
-        public abstract void PrepareMask(Point current, double height, double width);
+        public MaskActionBase(double leftOffset, double topOffset)
+        {
+            LeftOffset = leftOffset;
+            TopOffset = topOffset;
+        }
+
+        public abstract void PrepareMask(Point current);
         public abstract void ResetMask();
         public abstract void DrawingDrag(Point currentPoint);
         public abstract void DrawingMouseUp(Point currentPoint);
+
+        public void RenderMaskSize(double height, double width)
+        {
+            Height = height;
+            Width = width;
+        }
+
         public virtual Cursor GetMouseOverCursor(Point currentPoint)
         {
             return Cursors.Arrow;
