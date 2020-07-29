@@ -106,6 +106,7 @@
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DiagCompleteECG\AFAreaAction.cs" />
     <Compile Include="DiagCompleteECG\BeatInfoCache.cs" />
     <Compile Include="DiagCompleteECG\BeatMarkAction.cs" />
     <Compile Include="DiagCompleteECG\BeatMarkHelper.cs" />

@@ -37,5 +37,35 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             return resultBeat;
         }
+
+        public static double GetNearBeat(double currentX)
+        {
+            double resultBeat = BeatInfoCache.GetBeats()[0].Position;
+            double minDistance = Math.Abs(BeatInfoCache.GetBeats()[0].Position - currentX);
+            foreach (var item in BeatInfoCache.GetBeats())
+            {
+                var tempDistance = Math.Abs(item.Position - currentX);
+                if (tempDistance < minDistance)
+                {
+                    minDistance = tempDistance;
+                    resultBeat = item.Position;
+                }
+            }
+            return resultBeat;           
+        }
+
+        public static Tuple<double, double> GetAfArea(double currentX)
+        {
+            var startAF = 50 + 7 * 100;
+            var endAF = 50 + 11 * 100;
+            if (currentX >= startAF && currentX <= endAF)
+            {
+                return new Tuple<double, double>(50 + 7 * 100, 50 + 11 * 100);
+            }
+            else
+            {
+                return new Tuple<double, double>(0, 0);
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class BeatMarkAction : MaskActionBase
     {
+        private double _mouseUpPointX;
         private readonly bool _canClick;
         private double _selectBeat;
         private double SelectBeat
@@ -20,6 +21,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             set
             {
                 _selectBeat = value;
+                DrawingSelectedBeatBar(_selectBeat);
                 DrawingBeatMarkMask();
             }
         }
@@ -48,33 +50,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
         }
 
-        private async Task OnDragAreaMouseUp(double x)
+        private Task OnDragAreaMouseUp(double currentX)
         {
-            if(!_canClick)
-            {
-                return;
-            }
-            var beat = BeatMarkHelper.GetCurrentBeat(x);
-            _lineDrawings.Clear();
-            if (beat != 0)
-            {
-                //画诊断图选中条
-                Rect beatRect = new Rect(LeftOffset + beat - _beatRectWidth / 2, TopOffset, _beatRectWidth, _beatRectHeight);
-                Rect selectRect = new Rect(beatRect.X, beatRect.Y + beatRect.Height + 8, beatRect.Width, Height - beatRect.Height - 8);
-                RectangleGeometry selectRectGeometry = new RectangleGeometry(selectRect);
-                Brush selectRectBackground = (Brush)_brushConverter.ConvertFromString("#33B260FF");
-                GeometryDrawing selectRectDrawing = new GeometryDrawing(selectRectBackground, new Pen(Brushes.Transparent, 0), selectRectGeometry);
-                _lineDrawings.Add(selectRectDrawing);                
-            }
-            else
-            {
-                //画黄线
-                LineGeometry lineGeometry = new LineGeometry(new Point(x, TopOffset + _beatRectHeight + 8), new Point(x, Height- TopOffset - _beatRectHeight - 8));
-                GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
-                _lineDrawings.Add(lineDrawing);
-            }
-            SelectBeat = beat;
-            await TaskEx.FromResult(0);
+            _mouseUpPointX = currentX;
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentX);
+            return TaskEx.FromResult(0);
         }
 
         private async Task OnStartDragArea(string arg)
@@ -87,20 +67,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void DrawingDrag(Point currentPoint)
         {
-            DrawingMouseUp(currentPoint);
+
         }
 
         public override void DrawingMouseUp(Point currentPoint)
         {
-            if (currentPoint.Y < TopOffset || currentPoint.Y > TopOffset + Height)
-            {
-                return;
-            }
-            if (currentPoint.X < LeftOffset || currentPoint.X > LeftOffset + Width)
-            {
-                return;
-            }
-            OnDragAreaMouseUp(currentPoint.X);
+
         }
 
         public void DrawingMouseMove(Point currentPoint)
@@ -129,7 +101,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingChildren = drawings;
         }
 
-        public void DrawingBeatMark()
+        private void DrawingBeatMark()
         {
             _beatDrawings.Clear();
             DrawingTexts.Clear();
@@ -186,6 +158,45 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
+        private void DrawingSelectedBeatBar(double beat)
+        {
+            if (!_canClick)
+            {
+                return;
+            }
+            _lineDrawings.Clear();
+            if (beat != 0)
+            {
+                //画诊断图选中条
+                Rect beatRect = new Rect(LeftOffset + beat - _beatRectWidth / 2, TopOffset, _beatRectWidth, _beatRectHeight);
+                Rect selectRect = new Rect(beatRect.X, beatRect.Y + beatRect.Height + 8, beatRect.Width, Height - beatRect.Height - 8);
+                RectangleGeometry selectRectGeometry = new RectangleGeometry(selectRect);
+                Brush selectRectBackground = (Brush)_brushConverter.ConvertFromString("#33B260FF");
+                GeometryDrawing selectRectDrawing = new GeometryDrawing(selectRectBackground, new Pen(Brushes.Transparent, 0), selectRectGeometry);
+                _lineDrawings.Add(selectRectDrawing);
+            }
+            else
+            {
+                //画黄线
+                LineGeometry lineGeometry = new LineGeometry(new Point(_mouseUpPointX, TopOffset + _beatRectHeight + 8), new Point(_mouseUpPointX, Height - TopOffset - _beatRectHeight - 8));
+                GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
+                _lineDrawings.Add(lineDrawing);
+            }
+        }
+        public void DrawingDoubleClick()
+        {
+            if(MouseOverBeat == 0)
+            {
+                return;
+            }
+            var afArea = BeatMarkHelper.GetAfArea(MouseOverBeat);
+            if(afArea.Item1 == afArea.Item2)
+            {
+                return;
+            }
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.RenderAFMask, afArea);
+        }
+
         public override void RenderMaskSize(double height, double width)
         {
             base.RenderMaskSize(height, width);
@@ -196,12 +207,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void PrepareMask(Point current)
         {
+            _mouseUpPointX = current.X;
             SelectBeat = BeatMarkHelper.GetCurrentBeat(current.X);
         }
 
         public override void ResetMask()
         {
-            _selectBeat = 0;
+            _selectBeat = 0;           
         }
 
         public override void Dispose()

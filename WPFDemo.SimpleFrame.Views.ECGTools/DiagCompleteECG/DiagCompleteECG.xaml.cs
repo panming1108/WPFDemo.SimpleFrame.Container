@@ -28,6 +28,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20, 0, 30);
         private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
         private readonly BeatMarkAction _beatMark = new BeatMarkAction(true, 0, 0);
+        private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
         private bool _isMouseDown;
         private readonly MaskActionCollection _maskList;
         private MaskActionBase _currentUsingMask;
@@ -47,12 +48,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseLeftButtonDown += DiagCompleteECG_MouseLeftButtonDown;
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
+            MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
 
-            _maskList = new MaskActionCollection(this)
+            _maskList = new MaskActionCollection()
             {
-                _beatMark,
                 _dragArea,
+                _beatMark,
+                _aFArea,
             };
+        }
+
+        private void DiagCompleteECG_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(_maskList.Contains(_beatMark))
+            {
+                _beatMark.DrawingDoubleClick();
+            }
         }
 
         private void DiagCompleteECG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -71,14 +82,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             if (!_isMouseDown)
             {
                 Cursor = _maskList.GetCurrentMask(currentPoint)?.GetMouseOverCursor(currentPoint);
-                if(_maskList.Contains(_boxLineMeter))
-                {
-                    _boxLineMeter.DrawingMouseMove(currentPoint);
-                    RenderMaskPaint();
-                }
                 if(_maskList.Contains(_beatMark))
                 {
                     _beatMark.DrawingMouseMove(currentPoint);
+                    RenderMaskPaint();
+                }
+                if(_maskList.Contains(_boxLineMeter))
+                {
+                    _boxLineMeter.DrawingMouseMove(currentPoint);
                     RenderMaskPaint();
                 }
             }
@@ -98,6 +109,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _currentUsingMask?.DrawingMouseUp(currentPoint);
                 RenderMaskPaint();
+            }
+            else
+            {
+                if(_maskList.Contains(_aFArea))
+                {
+                    _aFArea.DrawingMouseUp(currentPoint);
+                }
             }
         }
 
@@ -172,6 +190,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
+            _aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             RenderMaskPaint();
         }
 

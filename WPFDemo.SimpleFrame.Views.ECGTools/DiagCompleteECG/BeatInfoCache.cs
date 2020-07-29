@@ -11,12 +11,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             string[] data = new string[] { "U", "N", "Af" };
             List<BeatInfo> beats = new List<BeatInfo>();
-            for (double i = 50; i < 2000; i += 100)
+            for (int i = 0; i < 18; i++)
             {
+                var beatType = data[(int)i % 3];
+                if( i >= 7 && i < 11)
+                {
+                    beatType = data[2];
+                }
                 beats.Add(new BeatInfo()
                 {
-                    BeatType = data[(int)i % 3],
-                    Position = i,
+                    BeatType = beatType,
+                    Position = 50 + i * 100,
                     Interval = 100,
                 });
             }

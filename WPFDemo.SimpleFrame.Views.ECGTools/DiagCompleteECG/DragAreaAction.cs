@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,12 +23,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public DragAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
-            
+            MessagerInstance.GetMessager().Register<Tuple<double, double>>(this, MaskMessageKeyEnum.RenderAFMask, OnClearRectDrawing);
+        }
+
+        private Task OnClearRectDrawing(Tuple<double, double> arg)
+        {
+            _rectDrawings.Clear();
+            DrawingDragAreaMask();
+            return TaskEx.FromResult(0);
         }
 
         public override void Dispose()
         {
-            
+            MessagerInstance.GetMessager().Unregister<Tuple<double, double>>(this, MaskMessageKeyEnum.RenderAFMask, OnClearRectDrawing);
         }
 
         public override void DrawingDrag(Point currentPoint)

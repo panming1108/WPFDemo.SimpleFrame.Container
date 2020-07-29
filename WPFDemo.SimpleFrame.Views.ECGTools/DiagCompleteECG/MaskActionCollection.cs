@@ -11,12 +11,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class MaskActionCollection : ObservableCollection<MaskActionBase>
     {
-        private FrameworkElement _ownerElement;
-        public MaskActionCollection(FrameworkElement ownerElement)
-        {
-            _ownerElement = ownerElement;
-        }
-
         public MaskActionBase GetCurrentMask(Point point)
         {
             MaskActionBase resultMask = null;
