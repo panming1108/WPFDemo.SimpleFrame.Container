@@ -71,10 +71,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 return;
             }
-            DrawingCollection drawings = new DrawingCollection();
+            DrawingChildren.Clear();
             LineGeometry mainLineGeometry = new LineGeometry(new Point(_firstPoint, TopOffset), new Point(_firstPoint, height));
             GeometryDrawing mainLineDrawing = new GeometryDrawing(_mainPen.Brush, _mainPen, mainLineGeometry);
-            drawings.Add(mainLineDrawing);
+            DrawingChildren.Add(mainLineDrawing);
             //往前画
             for (double i = _firstPoint - _interval; i >= LeftOffset; i -= _interval)
             {
@@ -84,7 +84,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 }
                 LineGeometry otherLineGeometry = new LineGeometry(new Point(i, TopOffset), new Point(i, height));
                 GeometryDrawing otherLineDrawing = new GeometryDrawing(_otherPen.Brush, _otherPen, otherLineGeometry);
-                drawings.Add(otherLineDrawing);
+                DrawingChildren.Add(otherLineDrawing);
             }
             //往后画
             for (double i = _firstPoint + _interval; i < width; i += _interval)
@@ -95,9 +95,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 }
                 LineGeometry otherLineGeometry = new LineGeometry(new Point(i, TopOffset), new Point(i, height));
                 GeometryDrawing otherLineDrawing = new GeometryDrawing(_otherPen.Brush, _otherPen, otherLineGeometry);
-                drawings.Add(otherLineDrawing);
+                DrawingChildren.Add(otherLineDrawing);
             }
-            DrawingChildren = drawings;
         }
 
         public override void ResetMask()
@@ -139,6 +138,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _firstPoint = currentPoint.X;
             DrawingAllLines(Height, Width);
+        }
+
+        public override void Dispose()
+        {
+            
         }
 
         public enum EquiStatusEnum

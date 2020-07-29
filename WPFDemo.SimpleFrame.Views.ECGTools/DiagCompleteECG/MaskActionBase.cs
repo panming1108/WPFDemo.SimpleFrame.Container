@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
-    public abstract class MaskActionBase
+    public abstract class MaskActionBase : IDisposable
     {
         public double Height { get; set; }
         public double Width { get; set; }
@@ -16,6 +16,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public double TopOffset { get; set; }
         public DrawingCollection DrawingChildren { get; set; } = new DrawingCollection();
         public List<MaskText> DrawingTexts { get; set; } = new List<MaskText>();
+
+        protected BrushConverter _brushConverter = new BrushConverter();
 
         public MaskActionBase(double leftOffset, double topOffset)
         {
@@ -28,7 +30,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public abstract void DrawingDrag(Point currentPoint);
         public abstract void DrawingMouseUp(Point currentPoint);
 
-        public void RenderMaskSize(double height, double width)
+        public virtual void RenderMaskSize(double height, double width)
         {
             Height = height;
             Width = width;
@@ -38,5 +40,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             return Cursors.Arrow;
         }
+
+        public abstract void Dispose();
     }
 }

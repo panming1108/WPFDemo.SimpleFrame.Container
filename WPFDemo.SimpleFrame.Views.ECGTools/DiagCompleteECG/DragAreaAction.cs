@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using WPFDemo.SimpleFrame.Infra.Messager;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
@@ -16,25 +17,43 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private Rect _originRect;
 
+        private DrawingCollection _rectDrawings = new DrawingCollection();
+        private DrawingCollection _backgroundDrawings = new DrawingCollection();
+
         public DragAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        {
+            
+        }
+
+        public override void Dispose()
         {
             
         }
 
         public override void DrawingDrag(Point currentPoint)
         {
-            DrawingCollection drawings = new DrawingCollection();
+            if(currentPoint.Y < TopOffset || currentPoint.Y > TopOffset + Height)
+            {
+                return;
+            }
+            if(currentPoint.X < LeftOffset || currentPoint.X > LeftOffset + Width)
+            {
+                return;
+            }
+            _rectDrawings.Clear();
 
             _rectStartX = _originPoint.X;
+
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.StartDragArea, string.Empty);
+
             var left = Math.Min(currentPoint.X, _rectStartX);
             var right = Math.Max(currentPoint.X, _rectStartX);
             Point leftTopPoint = new Point(left, TopOffset);
             Point rightBottomPoint = new Point(right, TopOffset + Height);
             _originRect = new Rect(leftTopPoint, rightBottomPoint);
 
-            BrushConverter brushConverter = new BrushConverter();
             Brush lineBrush = Brushes.Red;
-            Brush rectBrush = (Brush)brushConverter.ConvertFromString("#6021ADFF");
+            Brush rectBrush = (Brush)_brushConverter.ConvertFromString("#6021ADFF");
             Pen rectPen = new Pen(Brushes.Transparent, 1);
             Pen linePen = new Pen(lineBrush, 1);
 
@@ -46,29 +65,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             GeometryDrawing lineDrawing1 = new GeometryDrawing(lineBrush, linePen, lineGeometry1);
             GeometryDrawing lineDrawing2 = new GeometryDrawing(lineBrush, linePen, lineGeometry2);
 
-            drawings.Add(rectangleDrawing);
-            drawings.Add(lineDrawing1);
-            drawings.Add(lineDrawing2);
-            DrawingChildren = drawings;
+            _rectDrawings.Add(rectangleDrawing);
+            _rectDrawings.Add(lineDrawing1);
+            _rectDrawings.Add(lineDrawing2);
+            DrawingDragAreaMask();
         }
 
         public override void DrawingMouseUp(Point currentPoint)
         {
-            DrawingCollection drawings = new DrawingCollection();
-            LineGeometry lineGeometry;
+            _rectDrawings.Clear();
+            double resultX = currentPoint.X;
             if (_originRect.Contains(currentPoint))
             {
-                lineGeometry = new LineGeometry(new Point(_rectStartX, TopOffset), new Point(_rectStartX, TopOffset + Height));
+                resultX = _rectStartX;
             }
-            else
-            {
-                lineGeometry = new LineGeometry(new Point(currentPoint.X, TopOffset), new Point(currentPoint.X, TopOffset + Height));
-            }
-            GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
-            drawings.Add(lineDrawing);
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.DragAreaMouseUp, resultX);
             _originRect = default;
             _originPoint = default;
-            DrawingChildren = drawings;
+            DrawingDragAreaMask();
         }
 
         public ContextMenu GetDragContextMenu(Point currentPoint)
@@ -86,6 +100,31 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void PrepareMask(Point current)
         {
             _originPoint = current;
+        }
+
+        public override void RenderMaskSize(double height, double width)
+        {
+            base.RenderMaskSize(height, width);
+            _backgroundDrawings.Clear();
+            _rectDrawings.Clear();
+            Rect backRect = new Rect(LeftOffset, TopOffset, Width, Height);
+            RectangleGeometry backRectGeometry = new RectangleGeometry(backRect);
+            GeometryDrawing backRectDrawing = new GeometryDrawing(Brushes.Transparent, new Pen(Brushes.Transparent, 0), backRectGeometry);
+            _backgroundDrawings.Add(backRectDrawing);
+            DrawingDragAreaMask();
+        }
+
+        private void DrawingDragAreaMask()
+        {
+            DrawingChildren.Clear();
+            foreach (var item in _backgroundDrawings)
+            {
+                DrawingChildren.Add(item);
+            }
+            foreach (var item in _rectDrawings)
+            {
+                DrawingChildren.Add(item);
+            }
         }
 
         public override void ResetMask()

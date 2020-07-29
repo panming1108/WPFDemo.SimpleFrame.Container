@@ -363,19 +363,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public void DrawingRect(Point leftTopPoint, double height, double width, bool isMeasuring = false)
         {
-            DrawingCollection drawings = new DrawingCollection();
-            List<MaskText> maskTexts = new List<MaskText>();
+            DrawingChildren.Clear();
+            DrawingTexts.Clear();
             string brushString = isMeasuring ? "#0081E4" : "#00000D";
-            BrushConverter brushConverter = new BrushConverter();
 
             #region DrawRect
             Rect rect = new Rect(leftTopPoint.X, leftTopPoint.Y, width, height);
             _originRect = rect;
-            Brush penBrush = (Brush)brushConverter.ConvertFromString(brushString);
+            Brush penBrush = (Brush)_brushConverter.ConvertFromString(brushString);
             Pen rectPen = new Pen(penBrush, 2);
             RectangleGeometry rectangleGeometry = new RectangleGeometry(rect);
             GeometryDrawing rectangleDrawing = new GeometryDrawing(Brushes.Transparent, rectPen, rectangleGeometry);
-            drawings.Add(rectangleDrawing);
+            DrawingChildren.Add(rectangleDrawing);
             #endregion
 
             #region DrawThumb
@@ -423,14 +422,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 GeometryDrawing rightBottomThumbDrawing = new GeometryDrawing(thumbBackground, thumbPen, rightBottomThumbGeometry);
                 #endregion
                 #region AddThumbDrawings
-                drawings.Add(leftTopThumbDrawing);
-                drawings.Add(leftCenterThumbDrawing);
-                drawings.Add(leftBottomThumbDrawing);
-                drawings.Add(centerTopThumbDrawing);
-                drawings.Add(centerBottomThumbDrawing);
-                drawings.Add(rightTopThumbDrawing);
-                drawings.Add(rightCenterThumbDrawing);
-                drawings.Add(rightBottomThumbDrawing);
+                DrawingChildren.Add(leftTopThumbDrawing);
+                DrawingChildren.Add(leftCenterThumbDrawing);
+                DrawingChildren.Add(leftBottomThumbDrawing);
+                DrawingChildren.Add(centerTopThumbDrawing);
+                DrawingChildren.Add(centerBottomThumbDrawing);
+                DrawingChildren.Add(rightTopThumbDrawing);
+                DrawingChildren.Add(rightCenterThumbDrawing);
+                DrawingChildren.Add(rightBottomThumbDrawing);
                 #endregion
             }
             #endregion
@@ -440,25 +439,23 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Rect tTextRect = new Rect(leftTopPoint.X, leftTopPoint.Y - _textRectHeight, _tTextRectWidth, _textRectHeight);
             _originVTextRect = vTextRect;
             _originTTextRect = tTextRect;
-            Brush textRectBrush = (Brush)brushConverter.ConvertFromString("#CC0F4983");
+            Brush textRectBrush = (Brush)_brushConverter.ConvertFromString("#CC0F4983");
             Pen textRectPen = new Pen(textRectBrush, 1);
             RectangleGeometry vTextGeometry = new RectangleGeometry(vTextRect, 5, 5);
             RectangleGeometry tTextGeometry = new RectangleGeometry(tTextRect, 5, 5);
             GeometryDrawing vTextDrawing = new GeometryDrawing(textRectBrush, textRectPen, vTextGeometry);
             GeometryDrawing tTextDrawing = new GeometryDrawing(textRectBrush, textRectPen, tTextGeometry);
-            drawings.Add(vTextDrawing);
-            drawings.Add(tTextDrawing);
+            DrawingChildren.Add(vTextDrawing);
+            DrawingChildren.Add(tTextDrawing);
 
             FormattedText vText = new FormattedText(GetVText(), _culture, FlowDirection.LeftToRight, _typeface, _emSize, Brushes.White);
             FormattedText tText = new FormattedText(GetTText(), _culture, FlowDirection.LeftToRight, _typeface, _emSize, Brushes.White);
             var fontTextOffset = (_textRectHeight - _emSize) / 2;
             Point vTextPosition = new Point(vTextRect.Left + fontTextOffset, vTextRect.Top + fontTextOffset);
             Point tTextPosition = new Point(tTextRect.Left + fontTextOffset, tTextRect.Top + fontTextOffset);
-            maskTexts.Add(new MaskText() { Text = vText, Position = vTextPosition });
-            maskTexts.Add(new MaskText() { Text = tText, Position = tTextPosition });
+            DrawingTexts.Add(new MaskText() { Text = vText, Position = vTextPosition });
+            DrawingTexts.Add(new MaskText() { Text = tText, Position = tTextPosition });
             #endregion
-            DrawingTexts = maskTexts;
-            DrawingChildren = drawings;
         }
 
         private string GetTText()
@@ -569,6 +566,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     break;
             }
             return result;
+        }
+
+        public override void Dispose()
+        {
+            
         }
 
         public enum BoxLineMeterStatusEnum

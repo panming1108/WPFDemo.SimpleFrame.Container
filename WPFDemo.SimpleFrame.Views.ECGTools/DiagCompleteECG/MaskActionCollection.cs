@@ -35,7 +35,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     }
                 }
             }
-            return resultMask ?? this.First();
+            return resultMask;
         }
     }
 }

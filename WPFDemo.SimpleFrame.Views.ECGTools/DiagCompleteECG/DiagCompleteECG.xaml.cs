@@ -24,9 +24,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
-        private readonly DragAreaAction _dragArea = new DragAreaAction(0, 40);
-        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20, 0, 40);
-        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 40);
+        private readonly DragAreaAction _dragArea = new DragAreaAction(0, 30);
+        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(20, 0, 30);
+        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
+        private readonly BeatMarkAction _beatMark = new BeatMarkAction(true, 0, 0);
         private bool _isMouseDown;
         private readonly MaskActionCollection _maskList;
         private MaskActionBase _currentUsingMask;
@@ -49,7 +50,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
             _maskList = new MaskActionCollection(this)
             {
-                _dragArea
+                _beatMark,
+                _dragArea,
             };
         }
 
@@ -68,16 +70,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             if (!_isMouseDown)
             {
-                Cursor = _maskList.GetCurrentMask(currentPoint).GetMouseOverCursor(currentPoint);
+                Cursor = _maskList.GetCurrentMask(currentPoint)?.GetMouseOverCursor(currentPoint);
                 if(_maskList.Contains(_boxLineMeter))
                 {
                     _boxLineMeter.DrawingMouseMove(currentPoint);
                     RenderMaskPaint();
                 }
+                if(_maskList.Contains(_beatMark))
+                {
+                    _beatMark.DrawingMouseMove(currentPoint);
+                    RenderMaskPaint();
+                }
             }
             else
             {
-                _currentUsingMask.DrawingDrag(currentPoint);
+                _currentUsingMask?.DrawingDrag(currentPoint);
                 RenderMaskPaint();
             }
         }
@@ -89,8 +96,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var currentPoint = e.GetPosition(this);
             if (currentPoint == _originPoint)
             {
-                _currentUsingMask.DrawingMouseUp(currentPoint);
-                RenderMaskPaint();              
+                _currentUsingMask?.DrawingMouseUp(currentPoint);
+                RenderMaskPaint();
             }
         }
 
@@ -100,7 +107,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _isMouseDown = true;
             CaptureMouse();
             _currentUsingMask = _maskList.GetCurrentMask(_originPoint);
-            _currentUsingMask.PrepareMask(_originPoint);
+            _currentUsingMask?.PrepareMask(_originPoint);
         }
 
         private void DiagCompleteECG_Loaded(object sender, RoutedEventArgs e)
@@ -117,6 +124,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dispatcherTimer.Stop();
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;
+            _dragArea.Dispose();
+            _equiDistance.Dispose();
+            _boxLineMeter.Dispose();
+            _beatMark.Dispose();
         }
 
         private void SetContextMenu(MouseButtonEventArgs e)
@@ -160,6 +171,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dragArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
+            RenderMaskPaint();
+        }
+
+        private void PART_Changed_Checked(object sender, RoutedEventArgs e)
+        {
+            _beatMark.RenderMaskSize(ActualHeight, ActualWidth / 2);
+        }
+
+        private void PART_Changed_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
         }
 
         private void RenderMaskPaint()

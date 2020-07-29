@@ -10,7 +10,7 @@
     <Grid Background="White">
         <Grid Background="AliceBlue">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
+                <RowDefinition Height="30" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid x:Name="PART_ECG"
@@ -35,6 +35,10 @@
                       Checked="PART_Box_Checked"
                       Content="拉取测量"
                       Unchecked="PART_Box_Unchecked" />
+            <CheckBox x:Name="PART_Changed"
+                      Checked="PART_Changed_Checked"
+                      Content="修改布局"
+                      Unchecked="PART_Changed_Unchecked" />
         </StackPanel>
     </Grid>
 </UserControl>
