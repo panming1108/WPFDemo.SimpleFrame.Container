@@ -78,8 +78,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void DrawingDrag(Point currentPoint)
         {
-            var xOffSet = currentPoint.X - _lastPoint;
+            if(currentPoint.X < LeftOffset || currentPoint.X > LeftOffset + Width)
+            {
+                _lastPoint = currentPoint.X;
+                return;
+            }
             Tuple<double, double> result;
+            var xOffSet = currentPoint.X - _lastPoint;
             double start;
             double end;
             switch (_aFAreaStatus)
@@ -125,19 +130,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void PrepareMask(Point current)
         {
             _lastPoint = current.X;
-            SetAfAreaStatus(current);
         }
 
         public override Cursor GetMouseOverCursor(Point currentPoint)
         {
+            SetAfAreaStatus(currentPoint);
             Cursor cursor = Cursors.Arrow;
-            if (_startLineDrawing.Bounds.Contains(currentPoint))
+            switch (_aFAreaStatus)
             {
-                cursor = Cursors.SizeWE;
-            }
-            else if (_endLineDrawing.Bounds.Contains(currentPoint))
-            {
-                cursor = Cursors.SizeWE;
+                case AFAreaStatusEnum.StartLine:
+                case AFAreaStatusEnum.EndLine:
+                    cursor = Cursors.SizeWE;
+                    break;
             }
             return cursor;
         }

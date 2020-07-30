@@ -15,9 +15,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private BoxLineMeterStatusEnum _boxLineMeterStatus;
         private Point _lastPoint;
-        private double _vTextRectWidth = 75;
-        private double _tTextRectWidth = 150;
-        private double _textRectHeight = 20;
+        private readonly double _vTextRectWidth = 75;
+        private readonly double _tTextRectWidth = 150;
+        private readonly double _textRectHeight = 20;
 
         private Rect _originRect;
         private Rect _originVTextRect;
@@ -40,12 +40,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         }
 
         public override void DrawingDrag(Point currentPoint)
-        {           
+        {
+            bool isMeasuring = true;
             switch (_boxLineMeterStatus)
             {
                 case BoxLineMeterStatusEnum.VText:
                 case BoxLineMeterStatusEnum.TText:
                     DragTextRect(currentPoint);
+                    isMeasuring = false;
                     break;
                 case BoxLineMeterStatusEnum.LeftTopThumb:
                     DragLeftTopPoint(currentPoint);
@@ -72,7 +74,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     DragCenterBottomPoint(currentPoint);
                     break;
             }
-            _lastPoint = currentPoint;
+            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, isMeasuring);
         }
 
         private void DragCenterBottomPoint(Point currentPoint)
@@ -80,19 +82,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var yOffset = currentPoint.Y - _lastPoint.Y;
             
             var height = _originRect.Height + yOffset;
-            if (height < 1)
-            {
-                _originRect.Height = 1;
-            }
-            else if (height > Height + TopOffset - _originRect.Y)
-            {
-                _originRect.Height = Height + TopOffset - _originRect.Y;
-            }
-            else
+
+            if (height >= 1 && height <= Height + TopOffset - _originRect.Y)
             {
                 _originRect.Height = height;
-            }
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
+                _lastPoint.Y = currentPoint.Y;
+            }           
         }
 
         private void DragCenterTopPoint(Point currentPoint)
@@ -102,22 +97,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var leftUpPointY = _originRect.Y + yOffset;
             var height = _originRect.Height - yOffset;
 
-            if (leftUpPointY < _textRectHeight + TopOffset)
+            if (height >= 1 && leftUpPointY >= _textRectHeight + TopOffset)
             {
-                _originRect.Y = _textRectHeight + TopOffset;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Y = leftUpPointY;
+                _originRect.Height = height;
+                _lastPoint.Y = currentPoint.Y;
             }
-            if (height < 1)
-            {
-                _originRect.Height = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-
-            _originRect.Y = leftUpPointY;
-            _originRect.Height = height;
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragRightBottomPoint(Point currentPoint)
@@ -127,31 +112,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
             var width = _originRect.Width + xOffset;
             var height = _originRect.Height + yOffset;
-            if (height < 1)
-            {
-                _originRect.Height = 1;
-            }
-            else if (height > Height + TopOffset - _originRect.Y)
-            {
-                _originRect.Height = Height + TopOffset - _originRect.Y;
-            }
-            else
+
+            if (height >= 1 && height <= Height + TopOffset - _originRect.Y)
             {
                 _originRect.Height = height;
+                _lastPoint.Y = currentPoint.Y;
             }
-            if (width < 1)
-            {
-                _originRect.Width = 1;
-            }
-            else if (width >Width + LeftOffset - _originRect.X)
-            {
-                _originRect.Width = Width + LeftOffset - _originRect.X;
-            }
-            else
+            if (width >= 1 && width <= Width + LeftOffset - _originRect.X)
             {
                 _originRect.Width = width;
+                _lastPoint.X = currentPoint.X;
             }
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragRightCenterPoint(Point currentPoint)
@@ -159,19 +130,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var xOffset = currentPoint.X - _lastPoint.X;
             
             var width = _originRect.Width + xOffset;
-            if (width < 1)
-            {
-                _originRect.Width = 1;
-            }
-            else if (width > Width + LeftOffset - _originRect.X)
-            {
-                _originRect.Width = Width + LeftOffset - _originRect.X;
-            }
-            else
+
+            if (width >= 1 && width <= Width + LeftOffset - _originRect.X)
             {
                 _originRect.Width = width;
+                _lastPoint.X = currentPoint.X;
             }
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragRightTopPoint(Point currentPoint)
@@ -183,34 +147,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var height = _originRect.Height - yOffset;
             var width = _originRect.Width + xOffset;
 
-            if (height < 1)
+            if (height >= 1 && leftUpPointY >= _textRectHeight + TopOffset)
             {
-                _originRect.Height = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Height = height;
+                _originRect.Y = leftUpPointY;
+                _lastPoint.Y = currentPoint.Y;
             }
-            if (leftUpPointY < _textRectHeight + TopOffset)
+            if (width >= 1 && width <= Width + LeftOffset - _originRect.X)
             {
-                _originRect.Y = _textRectHeight + TopOffset;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Width = width;
+                _lastPoint.X = currentPoint.X;
             }
-            if (width < 1)
-            {
-                _originRect.Width = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-            else if (width > Width + LeftOffset - _originRect.X)
-            {
-                _originRect.Width = Width + LeftOffset - _originRect.X;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-            _originRect.Y = leftUpPointY;
-            _originRect.Width = width;
-            _originRect.Height = height;
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragLeftBottomPoint(Point currentPoint)
@@ -222,34 +169,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var height = _originRect.Height + yOffset;
             var width = _originRect.Width - xOffset;
 
-            if (height < 1)
+            if (height >= 1 && height <= Height + TopOffset - _originRect.Y)
             {
-                _originRect.Height = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Height = height;
+                _lastPoint.Y = currentPoint.Y;
             }
-            else if (height > Height + TopOffset - _originRect.Y)
+            if (width >= 1 && leftUpPointX >= _vTextRectWidth + LeftOffset)
             {
-                _originRect.Height = Height + TopOffset - _originRect.Y;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Width = width;
+                _originRect.X = leftUpPointX;
+                _lastPoint.X = currentPoint.X;
             }
-            if (leftUpPointX < _vTextRectWidth + LeftOffset)
-            {
-                _originRect.X = _vTextRectWidth + LeftOffset;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-            if (width < 1)
-            {
-                _originRect.Width = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-            _originRect.X = leftUpPointX;
-            _originRect.Width = width;
-            _originRect.Height = height;
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragLeftCenterPoint(Point currentPoint)
@@ -259,22 +189,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var leftUpPointX = _originRect.X + xOffset;
             var width = _originRect.Width - xOffset;
 
-            if (leftUpPointX < _vTextRectWidth + LeftOffset)
+            if (width >= 1 && leftUpPointX >= _vTextRectWidth + LeftOffset)
             {
-                _originRect.X = _vTextRectWidth + LeftOffset;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.X = leftUpPointX;
+                _originRect.Width = width;
+                _lastPoint.X = currentPoint.X;
             }
-            if (width < 1)
-            {
-                _originRect.Width = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-
-            _originRect.X = leftUpPointX;
-            _originRect.Width = width;
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragLeftTopPoint(Point currentPoint)
@@ -287,60 +207,36 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var height = _originRect.Height - yOffset;
             var width = _originRect.Width - xOffset;
 
-            if (height < 1)
+            if (height >= 1 && leftUpPointY >= _textRectHeight + TopOffset)
             {
-                _originRect.Height = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Height = height;
+                _originRect.Y = leftUpPointY;
+                _lastPoint.Y = currentPoint.Y;
             }
-            if (leftUpPointY < _textRectHeight + TopOffset)
+            if (width >= 1 && leftUpPointX >= _vTextRectWidth + LeftOffset)
             {
-                _originRect.Y = _textRectHeight + TopOffset;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
+                _originRect.Width = width;
+                _originRect.X = leftUpPointX;
+                _lastPoint.X = currentPoint.X;
             }
-            if (width < 1)
-            {
-                _originRect.Width = 1;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-            if (leftUpPointX < _vTextRectWidth + LeftOffset)
-            {
-                _originRect.X = _vTextRectWidth + LeftOffset;
-                DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
-                return;
-            }
-            _originRect.Y = leftUpPointY;
-            _originRect.X = leftUpPointX;
-            _originRect.Width = width;
-            _originRect.Height = height;
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, true);
         }
 
         private void DragTextRect(Point currentPoint)
         {
             var xOffset = currentPoint.X - _lastPoint.X;
             var yOffset = currentPoint.Y - _lastPoint.Y;
-            _originRect.X += xOffset;
-            _originRect.Y += yOffset;
-            if (_originRect.TopLeft.X <= _vTextRectWidth + LeftOffset)
+            var newLeftTopX = _originRect.X + xOffset;
+            var newLeftTopY = _originRect.Y + yOffset;
+            if (newLeftTopX >= _vTextRectWidth + LeftOffset && newLeftTopX <= Width + LeftOffset - _originRect.Width)
             {
-                _originRect.X = _vTextRectWidth + LeftOffset;
+                _originRect.X = newLeftTopX;
+                _lastPoint.X = currentPoint.X;
             }
-            if (_originRect.X >= Width + LeftOffset - _originRect.Width)
+            if(newLeftTopY >= _textRectHeight + TopOffset && newLeftTopY <= Height + TopOffset - _originRect.Height)
             {
-                _originRect.X = Width + LeftOffset - _originRect.Width;
+                _originRect.Y = newLeftTopY;
+                _lastPoint.Y = currentPoint.Y;
             }
-            if (_originRect.Y <= _textRectHeight + TopOffset)
-            {
-                _originRect.Y = _textRectHeight + TopOffset;
-            }
-            if (_originRect.Y >= Height + TopOffset - _originRect.Height)
-            {
-                _originRect.Y = Height + TopOffset - _originRect.Height;
-            }
-            DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width);
         }
 
         public override void DrawingMouseUp(Point currentPoint)
@@ -466,6 +362,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private string GetVText()
         {
             return _originRect.Height + "uV";
+        }
+
+        public override void InitMask()
+        {
+            base.InitMask();
+            DrawingRect(new Point(LeftOffset + _vTextRectWidth + 50, TopOffset + _textRectHeight + 50), 200, 250);
         }
 
         public override void PrepareMask(Point current)

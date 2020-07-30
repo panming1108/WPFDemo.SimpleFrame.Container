@@ -25,22 +25,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             TopOffset = topOffset;
         }
 
-        public abstract void PrepareMask(Point current);
-        public abstract void ResetMask();
-        public abstract void DrawingDrag(Point currentPoint);
-        public abstract void DrawingMouseUp(Point currentPoint);
-
+        public virtual void DrawingDrag(Point currentPoint) { }
+        public virtual void DrawingMouseUp(Point currentPoint) { }
+        public virtual void InitMask() { }
+        public virtual void PrepareMask(Point currentPoint) { }
+        public virtual void ResetMask() { }
+        public abstract void Dispose();
         public virtual void RenderMaskSize(double height, double width)
         {
             Height = height;
             Width = width;
         }
-
         public virtual Cursor GetMouseOverCursor(Point currentPoint)
         {
             return Cursors.Arrow;
         }
-
-        public abstract void Dispose();
     }
 }

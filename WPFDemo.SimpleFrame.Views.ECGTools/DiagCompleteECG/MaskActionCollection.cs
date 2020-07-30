@@ -1,35 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Windows;
-using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
-    public class MaskActionCollection : ObservableCollection<MaskActionBase>
+    public class MaskActionCollection : IDisposable
     {
+        private List<MaskActionBase> _masks;
+        public List<MaskActionBase> Masks => _masks;
+        public MaskActionCollection()
+        {
+            _masks = new List<MaskActionBase>();
+        }
+        public void Dispose()
+        {
+            foreach (var item in _masks)
+            {
+                item.Dispose();
+            }
+            _masks.Clear();
+        }
+
         public MaskActionBase GetCurrentMask(Point point)
         {
             MaskActionBase resultMask = null;
-            using (IEnumerator<MaskActionBase> enumerator = GetEnumerator())
+            foreach (var item in _masks)
             {
-                while (enumerator.MoveNext())
+                foreach (var drawing in item.DrawingChildren)
                 {
-                    foreach (var drawing in enumerator.Current.DrawingChildren)
+                    Rect rect = new Rect(drawing.Bounds.X - 2.5, drawing.Bounds.Y - 2.5, drawing.Bounds.Width + 5, drawing.Bounds.Height + 5);
+                    if (rect.Contains(point))
                     {
-                        Rect rect = new Rect(drawing.Bounds.X - 2.5, drawing.Bounds.Y - 2.5, drawing.Bounds.Width + 5, drawing.Bounds.Height + 5);
-                        if (rect.Contains(point))
-                        {
-                            resultMask = enumerator.Current;
-                            break;
-                        }
+                        resultMask = item;
+                        break;
                     }
                 }
             }
             return resultMask;
+        }
+        public void Add(MaskActionBase maskAction)
+        {
+            _masks.Add(maskAction);
+            maskAction.InitMask();
+        }
+        public void Remove(MaskActionBase maskAction)
+        {
+            maskAction.ResetMask();
+            _masks.Remove(maskAction);
+        }
+
+        public bool Contains(MaskActionBase maskAction)
+        {
+            return _masks.Contains(maskAction);
         }
     }
 }

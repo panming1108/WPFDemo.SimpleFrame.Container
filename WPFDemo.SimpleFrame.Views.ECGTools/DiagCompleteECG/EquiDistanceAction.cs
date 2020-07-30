@@ -107,6 +107,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _currentMultiple = 0;
         }
 
+        public override void InitMask()
+        {
+            base.InitMask();
+            DrawingMouseUp(new Point(Width == 0 ? LeftOffset + 200 : LeftOffset + Width / 2, 0));
+        }
+
         public override void PrepareMask(Point current)
         {
             _lastPointX = current.X;
