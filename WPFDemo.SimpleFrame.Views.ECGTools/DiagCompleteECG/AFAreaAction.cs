@@ -162,11 +162,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public override void ResetMask()
-        {
-            
-        }
-
         private enum AFAreaStatusEnum
         {
             None,

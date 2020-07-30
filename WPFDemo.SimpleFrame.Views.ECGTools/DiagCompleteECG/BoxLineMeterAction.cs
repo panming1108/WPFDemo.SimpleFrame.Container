@@ -239,12 +239,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public override void DrawingMouseUp(Point currentPoint)
-        {
-            
-        }
-
-        public void DrawingMouseMove(Point currentPoint)
+        public override void DrawingMouseOver(Point currentPoint)
         {
             Rect controlRect = new Rect(_originRect.X - 2, _originRect.Y - 2, _originRect.Width + 4, _originRect.Height + 4);
             if(controlRect.Contains(currentPoint))
@@ -373,11 +368,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void PrepareMask(Point current)
         {
             _lastPoint = current;
-        }
-
-        public override void ResetMask()
-        {
-            
         }
 
         private void SetBoxLineMeterStatus(Point currentPoint)

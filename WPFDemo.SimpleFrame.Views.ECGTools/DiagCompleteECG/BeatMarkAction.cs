@@ -65,17 +65,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             await TaskEx.FromResult(0);
         }
 
-        public override void DrawingDrag(Point currentPoint)
-        {
-
-        }
-
-        public override void DrawingMouseUp(Point currentPoint)
-        {
-
-        }
-
-        public void DrawingMouseMove(Point currentPoint)
+        public override void DrawingMouseOver(Point currentPoint)
         {
             if (currentPoint.Y < TopOffset || currentPoint.Y > TopOffset + _beatRectHeight)
             {
@@ -183,7 +173,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 _lineDrawings.Add(lineDrawing);
             }
         }
-        public void DrawingDoubleClick()
+        public override void DrawingMouseDoubleClick(Point currentPoint)
         {
             if(MouseOverBeat == 0)
             {

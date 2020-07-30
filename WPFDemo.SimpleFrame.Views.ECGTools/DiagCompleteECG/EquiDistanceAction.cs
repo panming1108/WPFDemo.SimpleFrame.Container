@@ -11,7 +11,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class EquiDistanceAction : MaskActionBase
     {
-        private readonly double _minInterval;
+        private readonly double _minInterval = 20;
         private double _firstPoint;
         private double _interval = 100;
         private Pen _mainPen = new Pen(Brushes.Red, 1);
@@ -20,9 +20,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private double _currentMultiple;
         private double _lastPointX;
 
-        public EquiDistanceAction(double minInterval, double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        public EquiDistanceAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
-            _minInterval = minInterval;
+            
         }
 
         private void SetEquiStatus(Point currentPoint)
@@ -124,15 +124,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 case EquiStatusEnum.MainLine:
                     _firstPoint = currentPoint.X;
-
                     break;
                 case EquiStatusEnum.OtherLine:
-                    _interval += (currentPoint.X - _lastPointX) / _currentMultiple;
-                    if (_interval < _minInterval)
+                    var newInterval = _interval + (currentPoint.X - _lastPointX) / _currentMultiple;
+                    if (newInterval >= _minInterval)
                     {
-                        _interval = _minInterval;
+                        _interval = newInterval;
+                        _lastPointX = currentPoint.X;
                     }
-                    _lastPointX = currentPoint.X;
                     break;
                 default:
                     break;

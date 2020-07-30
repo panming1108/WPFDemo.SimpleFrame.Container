@@ -93,7 +93,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingDragAreaMask();
         }
 
-        public ContextMenu GetDragContextMenu(Point currentPoint)
+        public override ContextMenu GetContextMenu(Point currentPoint)
         {
             if(_originRect.Contains(currentPoint))
             {
