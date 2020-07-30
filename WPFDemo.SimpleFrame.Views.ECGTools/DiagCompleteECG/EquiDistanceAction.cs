@@ -47,7 +47,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public override Cursor GetMouseOverCursor(Point currentPoint)
+        protected override Cursor SetMouseOverCursor(Point currentPoint)
         {
             SetEquiStatus(currentPoint);
             Cursor cursor = Cursors.Arrow;

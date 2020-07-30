@@ -118,6 +118,7 @@
     <Compile Include="DiagCompleteECG\EquiDistanceAction.cs" />
     <Compile Include="DiagCompleteECG\MaskActionBase.cs" />
     <Compile Include="DiagCompleteECG\MaskActionCollection.cs" />
+    <Compile Include="DiagCompleteECG\MaskMenuHelper.cs" />
     <Compile Include="DiagCompleteECG\MaskMessageKeyEnum.cs" />
     <Compile Include="DiagCompleteECG\MaskPaint.cs" />
     <Compile Include="DiagCompleteECG\MaskText.cs" />

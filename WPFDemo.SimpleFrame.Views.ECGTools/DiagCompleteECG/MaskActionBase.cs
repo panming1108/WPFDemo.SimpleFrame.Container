@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// </summary>
         public List<MaskText> DrawingTexts { get; set; } = new List<MaskText>();
 
+        /// <summary>
+        /// 光标
+        /// </summary>
+        public Cursor Cursor { get; private set; }
+
+        /// <summary>
+        /// 右击菜单
+        /// </summary>
+        public IEnumerable ContextMenuItems { get; private set; }
+
         protected BrushConverter _brushConverter = new BrushConverter();
 
         public MaskActionBase(double leftOffset, double topOffset)
@@ -77,12 +88,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// 鼠标悬浮
         /// </summary>
         /// <param name="currentPoint"></param>
-        public virtual void DrawingMouseOver(Point currentPoint) { }
+        public virtual void DrawingMouseOver(Point currentPoint) 
+        {
+            Cursor = SetMouseOverCursor(currentPoint);
+        }
 
         /// <summary>
         /// 鼠标右击
         /// </summary>
-        public virtual void DrawingMouseRightButtonDown(Point currentPoint) { }
+        public virtual void DrawingMouseRightButtonDown(Point currentPoint) 
+        {
+            ContextMenuItems = SetContextMenuItems(currentPoint);
+        }
 
         /// <summary>
         /// 滚轮
@@ -127,7 +144,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// </summary>
         /// <param name="currentPoint"></param>
         /// <returns></returns>
-        public virtual Cursor GetMouseOverCursor(Point currentPoint)
+        protected virtual Cursor SetMouseOverCursor(Point currentPoint)
         {
             return Cursors.Arrow;
         }
@@ -136,7 +153,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// 获取右击菜单
         /// </summary>
         /// <returns></returns>
-        public virtual ContextMenu GetContextMenu(Point currentPoint)
+        protected virtual IEnumerable SetContextMenuItems(Point currentPoint)
         {
             return null;
         }

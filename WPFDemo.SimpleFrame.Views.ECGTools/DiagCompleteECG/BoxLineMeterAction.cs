@@ -241,6 +241,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void DrawingMouseOver(Point currentPoint)
         {
+            base.DrawingMouseOver(currentPoint);
             Rect controlRect = new Rect(_originRect.X - 2, _originRect.Y - 2, _originRect.Width + 4, _originRect.Height + 4);
             if(controlRect.Contains(currentPoint))
             {
@@ -422,7 +423,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public override Cursor GetMouseOverCursor(Point point)
+        protected override Cursor SetMouseOverCursor(Point point)
         {
             SetBoxLineMeterStatus(point);
             Cursor result = Cursors.Arrow;

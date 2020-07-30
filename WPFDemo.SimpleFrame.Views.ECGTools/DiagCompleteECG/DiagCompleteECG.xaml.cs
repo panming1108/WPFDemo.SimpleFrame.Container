@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private bool _isMouseDown;
         private readonly MaskActionCollection _maskList;
         private MaskActionBase _currentUsingMask;
+        private string[] _defaultContextMenuItems = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
         public DiagCompleteECG()
         {
             InitializeComponent();
@@ -49,11 +51,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
-
             _maskList = new MaskActionCollection();
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
             _maskList.Add(_aFArea);
+
+            PART_ContextMenu.ItemsSource = _defaultContextMenuItems;
         }
 
         private void DiagCompleteECG_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -64,8 +67,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void DiagCompleteECG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var currentPoint = e.GetPosition(this);
-            ContextMenu = _currentUsingMask?.GetContextMenu(currentPoint);
             _currentUsingMask?.DrawingMouseRightButtonDown(currentPoint);
+            PART_ContextMenu.ItemsSource = _currentUsingMask?.ContextMenuItems ?? _defaultContextMenuItems;
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -95,11 +98,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void MouseMoveHandler(Point currentPoint)
         {
             _currentUsingMask = _maskList.GetCurrentMask(currentPoint);
-            Cursor = _currentUsingMask?.GetMouseOverCursor(currentPoint);
             foreach (var item in _maskList.Masks)
             {
                 item.DrawingMouseOver(currentPoint);
             }
+            Cursor = _currentUsingMask?.Cursor;
             RenderMaskPaint();
         }
 
@@ -152,8 +155,38 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;
             _maskList.Dispose();
+        }        
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            _dragArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
+            _aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            RenderMaskPaint();
         }
 
+        private void RenderMaskPaint()
+        {
+            PART_Paint.DrawingHandler((drawingContext) => 
+            {
+                foreach (var item in _maskList.Masks)
+                {
+                    foreach (var drawing in item.DrawingChildren)
+                    {
+                        drawingContext.DrawDrawing(drawing);
+                    }
+                    foreach (var text in item.DrawingTexts)
+                    {
+                        drawingContext.DrawText(text.Text, text.Position);
+                    }
+                }
+            });
+        }
+
+        #region 工具开关
         private void PART_Equi_Checked(object sender, RoutedEventArgs e)
         {
             _maskList.Add(_equiDistance);
@@ -178,17 +211,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             RenderMaskPaint();
         }
 
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            base.OnRenderSizeChanged(sizeInfo);
-            _dragArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
-            _aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            RenderMaskPaint();
-        }
-
         private void PART_Changed_Checked(object sender, RoutedEventArgs e)
         {
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth / 2);
@@ -198,23 +220,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
         }
-
-        private void RenderMaskPaint()
-        {
-            PART_Paint.DrawingHandler((drawingContext) => 
-            {
-                foreach (var item in _maskList.Masks)
-                {
-                    foreach (var drawing in item.DrawingChildren)
-                    {
-                        drawingContext.DrawDrawing(drawing);
-                    }
-                    foreach (var text in item.DrawingTexts)
-                    {
-                        drawingContext.DrawText(text.Text, text.Position);
-                    }
-                }
-            });
-        }
+        #endregion
     }
 }

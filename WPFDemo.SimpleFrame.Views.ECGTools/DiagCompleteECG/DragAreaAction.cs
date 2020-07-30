@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private DrawingCollection _rectDrawings = new DrawingCollection();
         private DrawingCollection _backgroundDrawings = new DrawingCollection();
+
+        private string[] _rectContextMenu = new string[] { "正常", "房颤", "房早", "删除心搏" };
+        private string[] _outContextMenu = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
 
         public DragAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
@@ -93,15 +97,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingDragAreaMask();
         }
 
-        public override ContextMenu GetContextMenu(Point currentPoint)
+        protected override IEnumerable SetContextMenuItems(Point currentPoint)
         {
             if(_originRect.Contains(currentPoint))
             {
-                return new ContextMenu();
+                return _rectContextMenu;
             }
             else
             {
-                return null;
+                return _outContextMenu;
             }
         }
 

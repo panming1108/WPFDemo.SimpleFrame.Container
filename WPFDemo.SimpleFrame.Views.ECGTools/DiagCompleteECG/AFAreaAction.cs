@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using WPFDemo.SimpleFrame.Infra.Messager;
@@ -12,15 +14,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class AFAreaAction : MaskActionBase
     {
-        private GeometryDrawing _afRectDrawing;
-        private GeometryDrawing _startLineDrawing;
-        private GeometryDrawing _endLineDrawing;
+        private GeometryDrawing _afRectDrawing = new GeometryDrawing();
+        private GeometryDrawing _startLineDrawing = new GeometryDrawing();
+        private GeometryDrawing _endLineDrawing = new GeometryDrawing();
 
         private AFAreaStatusEnum _aFAreaStatus;
         private Tuple<double, double> _originAfAreaTuple;
         private double _lastPoint;
 
         private bool _isAfChanging;
+
+        private string[] _rectContextMenu = new string[] { "取消本次房颤", "正常", "房颤", "房早", "删除心搏" };
 
         public AFAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
@@ -108,7 +112,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        public override void DrawingMouseUp(Point currentPoint)
+        public override void DrawingDragOver(Point currentPoint)
         {
             _isAfChanging = true;
             var beat = BeatMarkHelper.GetNearBeat(currentPoint.X);
@@ -132,7 +136,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _lastPoint = current.X;
         }
 
-        public override Cursor GetMouseOverCursor(Point currentPoint)
+        protected override Cursor SetMouseOverCursor(Point currentPoint)
         {
             SetAfAreaStatus(currentPoint);
             Cursor cursor = Cursors.Arrow;
@@ -160,6 +164,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _aFAreaStatus = AFAreaStatusEnum.Rect;
             }
+        }
+
+        protected override IEnumerable SetContextMenuItems(Point currentPoint)
+        {
+            return _rectContextMenu;
         }
 
         private enum AFAreaStatusEnum

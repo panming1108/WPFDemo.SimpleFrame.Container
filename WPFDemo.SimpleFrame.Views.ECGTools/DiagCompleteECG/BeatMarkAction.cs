@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using WPFDemo.SimpleFrame.Infra.Messager;
 
@@ -42,6 +44,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private DrawingCollection _beatDrawings = new DrawingCollection();
         private DrawingCollection _lineDrawings = new DrawingCollection();
+
+        private string[] _rectContextMenu = new string[] { "正常", "房颤", "房早", "删除心搏" };
+        private string[] _lineContextMenu = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
 
         public BeatMarkAction(bool canClick, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
@@ -168,7 +173,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             else
             {
                 //画黄线
-                LineGeometry lineGeometry = new LineGeometry(new Point(_mouseUpPointX, TopOffset + _beatRectHeight + 8), new Point(_mouseUpPointX, Height - TopOffset - _beatRectHeight - 8));
+                LineGeometry lineGeometry = new LineGeometry(new Point(_mouseUpPointX, TopOffset + _beatRectHeight + 8), new Point(_mouseUpPointX, Height + TopOffset));
                 GeometryDrawing lineDrawing = new GeometryDrawing(Brushes.Orange, new Pen(Brushes.Orange, 1), lineGeometry);
                 _lineDrawings.Add(lineDrawing);
             }
@@ -204,6 +209,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void ResetMask()
         {
             _selectBeat = 0;           
+        }
+
+        public override void DrawingMouseRightButtonDown(Point currentPoint)
+        {
+            base.DrawingMouseRightButtonDown(currentPoint);
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X);
+        }
+
+        protected override IEnumerable SetContextMenuItems(Point currentPoint)
+        {
+            var beat = BeatMarkHelper.GetCurrentBeat(currentPoint.X);
+            if(beat == 0)
+            {
+                return _lineContextMenu;
+            }
+            else
+            {
+                return _rectContextMenu;
+            }
         }
 
         public override void Dispose()
