@@ -66,11 +66,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void DrawingAllLines(double height, double width)
         {
             height += TopOffset;
-            width += LeftOffset;
-            if(_firstPoint <= 0 || _firstPoint >= width)
-            {
-                return;
-            }
+            width += LeftOffset;           
             DrawingChildren.Clear();
             LineGeometry mainLineGeometry = new LineGeometry(new Point(_firstPoint, TopOffset), new Point(_firstPoint, height));
             GeometryDrawing mainLineDrawing = new GeometryDrawing(_mainPen.Brush, _mainPen, mainLineGeometry);
@@ -123,7 +119,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             switch (_equiStatus)
             {
                 case EquiStatusEnum.MainLine:
-                    _firstPoint = currentPoint.X;
+                    if (currentPoint.X >= 0 && currentPoint.X <= Width)
+                    {
+                        _firstPoint = currentPoint.X;
+                    }
                     break;
                 case EquiStatusEnum.OtherLine:
                     var newInterval = _interval + (currentPoint.X - _lastPointX) / _currentMultiple;
@@ -135,7 +134,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     break;
                 default:
                     break;
-            }
+            }            
+            DrawingAllLines(Height, Width);
+        }
+
+        public override void DrawingMouseWheel(double offset)
+        {
+            base.DrawingMouseWheel(offset);
+            _firstPoint += offset;
             DrawingAllLines(Height, Width);
         }
 

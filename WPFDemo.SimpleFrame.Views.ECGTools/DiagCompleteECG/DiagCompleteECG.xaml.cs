@@ -51,12 +51,28 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
+            MouseWheel += DiagCompleteECG_MouseWheel;
             _maskList = new MaskActionCollection();
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
             _maskList.Add(_aFArea);
 
             PART_ContextMenu.ItemsSource = _defaultContextMenuItems;
+        }
+
+        private int _currentPosition;
+        private void DiagCompleteECG_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            _currentPosition -= e.Delta / 10;
+            if(_currentPosition < 0)
+            {
+                _currentPosition = 0;
+                return;
+            }
+            foreach (var item in _maskList.Masks)
+            {
+                item.DrawingMouseWheel(e.Delta / 10);
+            }
         }
 
         private void DiagCompleteECG_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -150,7 +166,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Loaded -= DiagCompleteECG_Loaded;
             Unloaded -= DiagCompleteECG_Unloaded;
             MouseLeftButtonDown -= DiagCompleteECG_MouseLeftButtonDown;
+            MouseLeftButtonUp -= DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown -= DiagCompleteECG_MouseRightButtonDown;
+            MouseDoubleClick -= DiagCompleteECG_MouseDoubleClick;
+            MouseWheel -= DiagCompleteECG_MouseWheel;
             _dispatcherTimer.Stop();
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;
