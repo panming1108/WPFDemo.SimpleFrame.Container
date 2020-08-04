@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
-    public class BoxLineMeterAction : MaskActionBase
+    public class BoxLineMeterAction : MaskActionBase, IScreenDragAction
     {
         private BoxLineMeterStatusEnum _boxLineMeterStatus;
         private Point _lastPoint;
@@ -34,6 +34,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("en-us");
         private readonly Typeface _typeface = new Typeface("Klavika");
         private readonly double _emSize = 15d;
+
+        public int DragPriority { get; set; }
 
         public BoxLineMeterAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
@@ -73,8 +75,31 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 case BoxLineMeterStatusEnum.CenterBottomThumb:
                     DragCenterBottomPoint(currentPoint);
                     break;
+                default:
+                    DragRender(currentPoint);
+                    isMeasuring = false;
+                    break;
             }
             DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, isMeasuring);
+        }
+
+        private void DragRender(Point currentPoint)
+        {
+            var xOffset = currentPoint.X - _lastPoint.X;
+            var yOffset = currentPoint.Y - _lastPoint.Y;
+
+            if (currentPoint.Y < _textRectHeight)
+            {
+                currentPoint.Y = _textRectHeight;
+            }
+            if (currentPoint.X < _vTextRectWidth)
+            {
+                currentPoint.X = _vTextRectWidth;
+            }
+            _originRect.Height = Math.Abs(yOffset);
+            _originRect.Width = Math.Abs(xOffset);
+            _originRect.X = Math.Min(_lastPoint.X, currentPoint.X);
+            _originRect.Y = Math.Min(_lastPoint.Y, currentPoint.Y);
         }
 
         private void DragCenterBottomPoint(Point currentPoint)
@@ -242,6 +267,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void DrawingMouseOver(Point currentPoint)
         {
             base.DrawingMouseOver(currentPoint);
+            if(_originRect.Width == 0 && _originRect.Height == 0)
+            {
+                return;
+            }
             Rect controlRect = new Rect(_originRect.X - 2, _originRect.Y - 2, _originRect.Width + 4, _originRect.Height + 4);
             if(controlRect.Contains(currentPoint))
             {
@@ -358,12 +387,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private string GetVText()
         {
             return _originRect.Height + "uV";
-        }
-
-        public override void InitMask()
-        {
-            base.InitMask();
-            DrawingRect(new Point(LeftOffset + _vTextRectWidth + 50, TopOffset + _textRectHeight + 50), 200, 250);
         }
 
         public override void PrepareMask(Point current)

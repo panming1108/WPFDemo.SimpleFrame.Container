@@ -12,7 +12,7 @@ using WPFDemo.SimpleFrame.Infra.Messager;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
-    public class DragAreaAction : MaskActionBase
+    public class DragAreaAction : MaskActionBase, IScreenDragAction, IScreenMouseUpAction
     {
         private Point _originPoint;
         private double _rectStartX;
@@ -25,8 +25,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private string[] _rectContextMenu = new string[] { "正常", "房颤", "房早", "删除心搏" };
         private string[] _outContextMenu = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
 
-        public DragAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        private bool _canDrag;
+
+        public int DragPriority { get; set; }
+        public int MouseUpPriority { get; set; }
+
+        public DragAreaAction(bool canDrag, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
+            _canDrag = canDrag;
             MessagerInstance.GetMessager().Register<Tuple<double, double>>(this, MaskMessageKeyEnum.RenderAFMask, OnClearRectDrawing);
         }
 
@@ -44,6 +50,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void DrawingDrag(Point currentPoint)
         {
+            if(!_canDrag)
+            {
+                return;
+            }
             if(currentPoint.Y < TopOffset || currentPoint.Y > TopOffset + Height)
             {
                 return;

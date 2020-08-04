@@ -25,14 +25,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
-        private readonly DragAreaAction _dragArea = new DragAreaAction(0, 30);
+        private readonly DragAreaAction _dragArea = new DragAreaAction(true, 0, 30);
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
         private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
         private readonly BeatMarkAction _beatMark = new BeatMarkAction(true, 0, 0);
         private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
         private bool _isMouseDown;
         private readonly MaskActionCollection _maskList;
-        private MaskActionBase _currentUsingMask;
         private string[] _defaultContextMenuItems = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
         public DiagCompleteECG()
         {
@@ -52,6 +51,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
             MouseWheel += DiagCompleteECG_MouseWheel;
+
+            _dragArea.DragPriority = 0;
+            _boxLineMeter.DragPriority = 1;
+
             _maskList = new MaskActionCollection();
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
@@ -77,14 +80,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void DiagCompleteECG_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _currentUsingMask?.DrawingMouseDoubleClick(e.GetPosition(this));
+            _maskList.MouseOverMask?.DrawingMouseDoubleClick(e.GetPosition(this));
         }
 
         private void DiagCompleteECG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var currentPoint = e.GetPosition(this);
-            _currentUsingMask?.DrawingMouseRightButtonDown(currentPoint);
-            PART_ContextMenu.ItemsSource = _currentUsingMask?.ContextMenuItems ?? _defaultContextMenuItems;
+            _maskList.MouseOverMask?.DrawingMouseRightButtonDown(currentPoint);
+            PART_ContextMenu.ItemsSource = _maskList.MouseOverMask?.ContextMenuItems ?? _defaultContextMenuItems;
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -97,28 +100,28 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             if (!_isMouseDown)
             {
-                MouseMoveHandler(currentPoint);                
+                MouseMoveHandler(currentPoint);
             }
             else
             {
-                MouseDragHandler(currentPoint);                
+                MouseDragHandler(currentPoint);
             }
         }
 
         private void MouseDragHandler(Point currentPoint)
         {
-            _currentUsingMask?.DrawingDrag(currentPoint);
+            _maskList.DragMask?.DrawingDrag(currentPoint);
             RenderMaskPaint();
         }
 
         private void MouseMoveHandler(Point currentPoint)
         {
-            _currentUsingMask = _maskList.GetCurrentMask(currentPoint);
+            _maskList.SetMouseOverMask(currentPoint);
             foreach (var item in _maskList.Masks)
             {
                 item.DrawingMouseOver(currentPoint);
             }
-            Cursor = _currentUsingMask?.Cursor;
+            Cursor = _maskList.MouseOverMask?.Cursor;
             RenderMaskPaint();
         }
 
@@ -133,18 +136,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                DragOverHandler(currentPoint);                
+                DragOverHandler(currentPoint);
             }
         }
 
         private void DragOverHandler(Point currentPoint)
         {
-            _currentUsingMask?.DrawingDragOver(currentPoint);
+            _maskList.DragMask?.DrawingDragOver(currentPoint);
         }
 
         private void MouseLeftButtonUpHandler(Point currentPoint)
         {
-            _currentUsingMask?.DrawingMouseUp(currentPoint);
+            _maskList.MouseUpMask?.DrawingMouseUp(currentPoint);
             RenderMaskPaint();
         }
 
@@ -153,7 +156,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _originPoint = e.GetPosition(this);
             _isMouseDown = true;
             CaptureMouse();
-            _currentUsingMask?.PrepareMask(_originPoint);
+            _maskList.SetScreenDragMask();
+            _maskList.SetScreenMouseUpMask();
+            _maskList.DragMask?.PrepareMask(_originPoint);
+            _maskList.MouseUpMask?.PrepareMask(_originPoint);
         }
 
         private void DiagCompleteECG_Loaded(object sender, RoutedEventArgs e)
