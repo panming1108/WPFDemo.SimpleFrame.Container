@@ -25,14 +25,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
-        private readonly DragAreaAction _dragArea = new DragAreaAction(true, 0, 30);
-        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
-        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
-        private readonly BeatMarkAction _beatMark = new BeatMarkAction(true, 0, 0);
-        private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
+        private readonly DragAreaAction _dragArea;
+        //private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
+        //private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
+        private readonly BeatMarkAction _beatMark;
+        //private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
         private bool _isMouseDown;
+        private int _currentPosition;
         private readonly MaskActionCollection _maskList;
-        private string[] _defaultContextMenuItems = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
         public DiagCompleteECG()
         {
             InitializeComponent();
@@ -52,29 +52,57 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
             MouseWheel += DiagCompleteECG_MouseWheel;
 
-            _dragArea.DragPriority = 0;
-            _boxLineMeter.DragPriority = 1;
+            _dragArea = new DragAreaAction(true, 0, 30)
+            {
+                DragPriority = 0
+            };
+            _beatMark = new BeatMarkAction(true, 0, 0);
+
+            _dragArea.StartDragArea += DragArea_StartDragArea;
+            _dragArea.DragAreaMouseUp += DragArea_DragAreaMouseUp;
+
+            //_boxLineMeter.DragPriority = 1;
 
             _maskList = new MaskActionCollection();
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
-            _maskList.Add(_aFArea);
-
-            PART_ContextMenu.ItemsSource = _defaultContextMenuItems;
+            //_maskList.Add(_aFArea);
         }
 
-        private int _currentPosition;
+        private void DragArea_DragAreaMouseUp(object sender, PositionEventArgs e)
+        {
+            _beatMark.OnDragAreaMouseUp(e.Position);
+        }
+
+        private void DragArea_StartDragArea(object sender, EventArgs e)
+        {
+            _beatMark.OnStartDragArea(string.Empty);
+        }
+
         private void DiagCompleteECG_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            _currentPosition -= e.Delta / 10;
-            if(_currentPosition < 0)
+            var newPosition = _currentPosition - e.Delta;
+            if(newPosition < 0)
             {
-                _currentPosition = 0;
-                return;
+                newPosition = 0;
             }
-            foreach (var item in _maskList.Masks)
+            var delta = _currentPosition - newPosition;
+            _currentPosition = newPosition;
+            if (delta != 0)
             {
-                item.DrawingMouseWheel(e.Delta / 10);
+                if(_isMouseDown)
+                {
+                    //鼠标按住后滚动
+                    _maskList.MouseOverMask?.DrawingMouseDownWheel(delta, Mouse.GetPosition(this));
+                }
+                else
+                {
+                    //全部滚动
+                    foreach (var item in _maskList.Masks)
+                    {
+                        item.DrawingMouseWheel(delta);
+                    }
+                }
             }
         }
 
@@ -87,7 +115,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             var currentPoint = e.GetPosition(this);
             _maskList.MouseOverMask?.DrawingMouseRightButtonDown(currentPoint);
-            PART_ContextMenu.ItemsSource = _maskList.MouseOverMask?.ContextMenuItems ?? _defaultContextMenuItems;
+            var itemsSource = _maskList.MouseOverMask?.ContextMenuItems;
+            if(itemsSource != null)
+            {
+                ContextMenu = new ContextMenu() { ItemsSource = itemsSource };
+            }
+            else
+            {
+                ContextMenu = null;
+            }
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -176,6 +212,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseRightButtonDown -= DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick -= DiagCompleteECG_MouseDoubleClick;
             MouseWheel -= DiagCompleteECG_MouseWheel;
+            _dragArea.StartDragArea -= DragArea_StartDragArea;
+            _dragArea.DragAreaMouseUp -= DragArea_DragAreaMouseUp;
             _dispatcherTimer.Stop();
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;
@@ -186,10 +224,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             base.OnRenderSizeChanged(sizeInfo);
             _dragArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            //_equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            //_boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
-            _aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            //_aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             RenderMaskPaint();
         }
 
@@ -212,39 +250,39 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         }
 
         #region 工具开关
-        private void PART_Equi_Checked(object sender, RoutedEventArgs e)
-        {
-            _maskList.Add(_equiDistance);
-            RenderMaskPaint();
-        }
+        //private void PART_Equi_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    _maskList.Add(_equiDistance);
+        //    RenderMaskPaint();
+        //}
 
-        private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
-        {
-            _maskList.Remove(_equiDistance);
-            RenderMaskPaint();
-        }
+        //private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    _maskList.Remove(_equiDistance);
+        //    RenderMaskPaint();
+        //}
 
-        private void PART_Box_Checked(object sender, RoutedEventArgs e)
-        {
-            _maskList.Add(_boxLineMeter);
-            RenderMaskPaint();
-        }
+        //private void PART_Box_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    _maskList.Add(_boxLineMeter);
+        //    RenderMaskPaint();
+        //}
 
-        private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
-        {
-            _maskList.Remove(_boxLineMeter);
-            RenderMaskPaint();
-        }
+        //private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    _maskList.Remove(_boxLineMeter);
+        //    RenderMaskPaint();
+        //}
 
-        private void PART_Changed_Checked(object sender, RoutedEventArgs e)
-        {
-            _beatMark.RenderMaskSize(ActualHeight, ActualWidth / 2);
-        }
+        //private void PART_Changed_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    _beatMark.RenderMaskSize(ActualHeight, ActualWidth / 2);
+        //}
 
-        private void PART_Changed_Unchecked(object sender, RoutedEventArgs e)
-        {
-            _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
-        }
+        //private void PART_Changed_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
+        //}
         #endregion
     }
 }

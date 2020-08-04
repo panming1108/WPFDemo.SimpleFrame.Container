@@ -14,38 +14,41 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class DragAreaAction : MaskActionBase, IScreenDragAction, IScreenMouseUpAction
     {
-        private Point _originPoint;
-        private double _rectStartX;
+        private double _originX;
+        private double _contextMenuX;
 
-        private Rect _originRect;
+        private GeometryDrawing _rectDrawing;
+        private GeometryDrawing _startLineDrawing;
+        private GeometryDrawing _endLineDrawing;
 
-        private DrawingCollection _rectDrawings = new DrawingCollection();
-        private DrawingCollection _backgroundDrawings = new DrawingCollection();
+        private readonly DrawingCollection _rectDrawings = new DrawingCollection();
+        private readonly DrawingCollection _backgroundDrawings = new DrawingCollection();
 
-        private string[] _rectContextMenu = new string[] { "正常", "房颤", "房早", "删除心搏" };
-        private string[] _outContextMenu = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
+        private readonly string[] _rectContextMenu = new string[] { "正常", "房颤", "房早", "删除心搏" };
+        private MenuItem _setFlagMenuItem;
+        private MenuItem _endFlagMenuItem;
+        private MenuItem _clearFlagMenuItem;
 
-        private bool _canDrag;
+        //是否右键标记创建
+        private bool _isFlag;
+        private readonly bool _canDrag;
 
         public int DragPriority { get; set; }
         public int MouseUpPriority { get; set; }
 
+        public event EventHandler StartDragArea;
+        public event EventHandler<PositionEventArgs> DragAreaMouseUp;
+
         public DragAreaAction(bool canDrag, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
             _canDrag = canDrag;
-            MessagerInstance.GetMessager().Register<Tuple<double, double>>(this, MaskMessageKeyEnum.RenderAFMask, OnClearRectDrawing);
-        }
-
-        private Task OnClearRectDrawing(Tuple<double, double> arg)
-        {
-            _rectDrawings.Clear();
-            DrawingDragAreaMask();
-            return TaskEx.FromResult(0);
         }
 
         public override void Dispose()
         {
-            MessagerInstance.GetMessager().Unregister<Tuple<double, double>>(this, MaskMessageKeyEnum.RenderAFMask, OnClearRectDrawing);
+            _setFlagMenuItem.Click -= SetStartFlag_Click;
+            _endFlagMenuItem.Click -= EndFlagMenuItem_Click;
+            _clearFlagMenuItem.Click -= ClearFlagMenuItem_Click;
         }
 
         public override void DrawingDrag(Point currentPoint)
@@ -62,66 +65,106 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 return;
             }
-            _rectDrawings.Clear();
-
-            _rectStartX = _originPoint.X;
-
-            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.StartDragArea, string.Empty);
-
-            var left = Math.Min(currentPoint.X, _rectStartX);
-            var right = Math.Max(currentPoint.X, _rectStartX);
-            Point leftTopPoint = new Point(left, TopOffset);
-            Point rightBottomPoint = new Point(right, TopOffset + Height);
-            _originRect = new Rect(leftTopPoint, rightBottomPoint);
-
-            Brush lineBrush = Brushes.Red;
-            Brush rectBrush = (Brush)_brushConverter.ConvertFromString("#6021ADFF");
-            Pen rectPen = new Pen(Brushes.Transparent, 1);
-            Pen linePen = new Pen(lineBrush, 1);
-
-            RectangleGeometry rectangleGeometry = new RectangleGeometry(_originRect);
-            LineGeometry lineGeometry1 = new LineGeometry(leftTopPoint, new Point(left, TopOffset + Height));
-            LineGeometry lineGeometry2 = new LineGeometry(new Point(right, TopOffset), rightBottomPoint);
-
-            GeometryDrawing rectangleDrawing = new GeometryDrawing(rectBrush, rectPen, rectangleGeometry);
-            GeometryDrawing lineDrawing1 = new GeometryDrawing(lineBrush, linePen, lineGeometry1);
-            GeometryDrawing lineDrawing2 = new GeometryDrawing(lineBrush, linePen, lineGeometry2);
-
-            _rectDrawings.Add(rectangleDrawing);
-            _rectDrawings.Add(lineDrawing1);
-            _rectDrawings.Add(lineDrawing2);
-            DrawingDragAreaMask();
+            _isFlag = false;
+            StartDragArea?.Invoke(this, new EventArgs());
+            DrawingDragArea(_originX, currentPoint.X);
         }
 
         public override void DrawingMouseUp(Point currentPoint)
         {
-            _rectDrawings.Clear();
             double resultX = currentPoint.X;
-            if (_originRect.Contains(currentPoint))
+            if (_rectDrawing != null && _rectDrawing.Bounds.Contains(currentPoint))
             {
-                resultX = _rectStartX;
+                resultX = _startLineDrawing.Bounds.Left;
             }
-            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.DragAreaMouseUp, resultX);
-            _originRect = default;
-            _originPoint = default;
+            DragAreaMouseUp?.Invoke(this, new PositionEventArgs(resultX));
+            if(!_isFlag)
+            {
+                ResetMask();
+            }
             DrawingDragAreaMask();
+        }
+
+        public override void DrawingMouseWheel(double offset)
+        {
+            base.DrawingMouseWheel(offset);
+            if(_rectDrawing == null && _startLineDrawing == null && _endLineDrawing == null)
+            {
+                return;
+            }
+            if(_endLineDrawing == null)
+            {
+                _rectDrawings.Clear();
+                _startLineDrawing = DrawingLine(_startLineDrawing.Bounds.Left + offset);
+                _rectDrawings.Add(_startLineDrawing);
+                DrawingDragAreaMask();
+            }
+            else
+            {
+                DrawingDragArea(_startLineDrawing.Bounds.Left + offset, _endLineDrawing.Bounds.Left + offset);
+            }
+        }
+
+        public override void DrawingMouseDownWheel(double offset, Point currentPoint)
+        {
+            base.DrawingMouseDownWheel(offset, currentPoint);
+            _originX += offset;
+            DrawingDrag(new Point(currentPoint.X - offset, currentPoint.Y));
+        }
+
+        private void DrawingDragArea(double start, double end)
+        {
+            _rectDrawings.Clear();
+            Point leftTopPoint = new Point(Math.Min(start, end), TopOffset);
+            Point rightBottomPoint = new Point(Math.Max(start, end), TopOffset + Height);
+            Rect rect = new Rect(leftTopPoint, rightBottomPoint);
+
+            _rectDrawing = DrawingRect(rect);
+            _startLineDrawing = DrawingLine(start);
+            _endLineDrawing = DrawingLine(end);
+
+            _rectDrawings.Add(_rectDrawing);
+            _rectDrawings.Add(_startLineDrawing);
+            _rectDrawings.Add(_endLineDrawing);
+            DrawingDragAreaMask();
+        }
+
+        private GeometryDrawing DrawingRect(Rect rect)
+        {
+            Brush rectBrush = (Brush)_brushConverter.ConvertFromString("#6021ADFF");
+            Pen rectPen = new Pen(Brushes.Transparent, 1);
+            RectangleGeometry rectangleGeometry = new RectangleGeometry(rect);
+            return new GeometryDrawing(rectBrush, rectPen, rectangleGeometry);
+        }
+
+        private GeometryDrawing DrawingLine(double position)
+        {
+            Brush lineBrush = Brushes.Red;
+            Pen linePen = new Pen(lineBrush, 1);
+            LineGeometry lineGeometry = new LineGeometry(new Point(position, TopOffset), new Point(position, TopOffset + Height));
+            return new GeometryDrawing(lineBrush, linePen, lineGeometry);
         }
 
         protected override IEnumerable SetContextMenuItems(Point currentPoint)
         {
-            if(_originRect.Contains(currentPoint))
+            _contextMenuX = currentPoint.X;
+            if(_startLineDrawing == null)
+            {
+                return new MenuItem[] { _setFlagMenuItem };
+            }
+            else if(_rectDrawing != null && _rectDrawing.Bounds.Contains(currentPoint))
             {
                 return _rectContextMenu;
             }
             else
             {
-                return _outContextMenu;
+                return new MenuItem[] { _setFlagMenuItem, _endFlagMenuItem, _clearFlagMenuItem };
             }
         }
 
         public override void PrepareMask(Point current)
         {
-            _originPoint = current;
+            _originX = current.X;
         }
 
         public override void RenderMaskSize(double height, double width)
@@ -149,10 +192,63 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
+        public override void InitMask()
+        {
+            base.InitMask();
+            _setFlagMenuItem = new MenuItem
+            {
+                Header = "标记开始位置"
+            };
+            _setFlagMenuItem.Click += SetStartFlag_Click;
+
+            _endFlagMenuItem = new MenuItem
+            {
+                Header = "标记结束位置"
+            };
+            _endFlagMenuItem.Click += EndFlagMenuItem_Click;
+
+            _clearFlagMenuItem = new MenuItem
+            {
+                Header = "取消标记位置"
+            };
+            _clearFlagMenuItem.Click += ClearFlagMenuItem_Click;
+        }
+
+        private void ClearFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ResetMask();
+            DrawingDragAreaMask();
+        }
+
+        private void EndFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _isFlag = true;
+            DrawingDragArea(_startLineDrawing.Bounds.Left, _contextMenuX);
+        }
+
+        private void SetStartFlag_Click(object sender, RoutedEventArgs e)
+        {
+            _isFlag = true;
+            if(_rectDrawing == null && _endLineDrawing == null)
+            {
+                _rectDrawings.Clear();
+                _startLineDrawing = DrawingLine(_contextMenuX);
+                _rectDrawings.Add(_startLineDrawing);
+                DrawingDragAreaMask();
+            }
+            else
+            {
+                DrawingDragArea(_contextMenuX, _endLineDrawing.Bounds.Left);
+            }
+        }
+
         public override void ResetMask()
         {
-            _originRect = default;
-            _originPoint = default;
+            _rectDrawings.Clear();
+            _rectDrawing = null;
+            _startLineDrawing = null;
+            _endLineDrawing = null;
+            _originX = default;
         }
     }
 }

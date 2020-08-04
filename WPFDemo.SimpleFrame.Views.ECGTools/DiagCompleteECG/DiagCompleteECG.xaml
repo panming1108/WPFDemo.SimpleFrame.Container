@@ -7,11 +7,6 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <UserControl.ContextMenu>
-        <ContextMenu x:Name="PART_ContextMenu"
-                     Effect="{x:Null}"
-                     StaysOpen="False" />
-    </UserControl.ContextMenu>
     <Grid Background="White">
         <Grid Background="AliceBlue">
             <Grid.RowDefinitions>
@@ -29,7 +24,7 @@
             </Grid>
         </Grid>
         <local:MaskPaint x:Name="PART_Paint" />
-        <StackPanel Margin="0,100,0,0"
+        <!--<StackPanel Margin="0,100,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top">
             <CheckBox x:Name="PART_Equi"
@@ -44,6 +39,6 @@
                       Checked="PART_Changed_Checked"
                       Content="修改布局"
                       Unchecked="PART_Changed_Unchecked" />
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </UserControl>

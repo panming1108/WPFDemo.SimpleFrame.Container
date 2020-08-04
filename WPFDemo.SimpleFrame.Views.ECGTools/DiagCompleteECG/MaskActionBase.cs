@@ -108,6 +108,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public virtual void DrawingMouseWheel(double offset) { }
 
         /// <summary>
+        /// 鼠标按住后滚轮
+        /// </summary>
+        /// <param name="offset"></param>
+        public virtual void DrawingMouseDownWheel(double offset, Point currentPoint) { }
+
+        /// <summary>
         /// 初始化工具遮罩，Add时触发
         /// </summary>
         public virtual void InitMask() { }

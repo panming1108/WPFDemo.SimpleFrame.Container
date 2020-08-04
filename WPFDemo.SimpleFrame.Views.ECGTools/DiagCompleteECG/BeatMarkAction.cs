@@ -51,23 +51,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public BeatMarkAction(bool canClick, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
             _canClick = canClick;
-            MessagerInstance.GetMessager().Register<string>(this, MaskMessageKeyEnum.StartDragArea, OnStartDragArea);
-            MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
         }
 
-        private Task OnDragAreaMouseUp(double currentX)
+        public void OnDragAreaMouseUp(double currentX)
         {
             _mouseUpPointX = currentX;
             SelectBeat = BeatMarkHelper.GetCurrentBeat(currentX);
-            return TaskEx.FromResult(0);
         }
 
-        private async Task OnStartDragArea(string arg)
+        public void OnStartDragArea(string arg)
         {
             _selectBeat = 0;
             _lineDrawings.Clear();
             DrawingBeatMarkMask();
-            await TaskEx.FromResult(0);
         }
 
         public override void DrawingMouseOver(Point currentPoint)
@@ -232,8 +228,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void Dispose()
         {
-            MessagerInstance.GetMessager().Unregister<string>(this, MaskMessageKeyEnum.StartDragArea, OnStartDragArea);
-            MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
+
         }
     }
 }
