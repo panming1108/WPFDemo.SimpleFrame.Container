@@ -48,11 +48,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 DragPriority = 0
             };
-            _beatMark = new BeatMarkAction(true, 0, 0);
-            _beatMark.BeatInfos = BeatInfoCache.GetBeats();
-
-            _dragArea.StartDragArea += DragArea_StartDragArea;
-            _dragArea.DragAreaMouseUp += DragArea_DragAreaMouseUp;
+            _beatMark = new BeatMarkAction(true, 0, 0)
+            {
+                BeatInfos = BeatInfoCache.GetBeats()
+            };
 
             _boxLineMeter.DragPriority = 1;
 
@@ -64,6 +63,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void RegisterMessages()
         {
+            MessagerInstance.GetMessager().Register<string>(this, MaskMessageKeyEnum.StartDragArea, OnStartDragArea);
+            MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
+
             MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.SetStartFlag, OnSetStartFlag);
             MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.SetEndFlag, OnSetEndFlag);
             MessagerInstance.GetMessager().Register<string>(this, MaskMessageKeyEnum.ClearFlag, OnClearFlag);
@@ -71,9 +73,26 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void UnRegisterMessages()
         {
+            MessagerInstance.GetMessager().Unregister<string>(this, MaskMessageKeyEnum.StartDragArea, OnStartDragArea);
+            MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
+
             MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.SetStartFlag, OnSetStartFlag);
             MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.SetEndFlag, OnSetEndFlag);
             MessagerInstance.GetMessager().Unregister<string>(this, MaskMessageKeyEnum.ClearFlag, OnClearFlag);
+        }
+
+        private Task OnDragAreaMouseUp(double resultX)
+        {
+            _beatMark.OnDragAreaMouseUp(resultX);
+            RenderMaskPaint();
+            return TaskEx.FromResult(0);
+        }
+
+        private Task OnStartDragArea(string arg)
+        {
+            _beatMark.OnStartDragArea();
+            RenderMaskPaint();
+            return TaskEx.FromResult(0);
         }
 
         private Task OnSetStartFlag(double contextMenuX)
@@ -95,18 +114,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _dragArea.OnClearFlag();
             RenderMaskPaint();
             return TaskEx.FromResult(0);
-        }
-
-        private void DragArea_DragAreaMouseUp(object sender, PositionEventArgs e)
-        {
-            _beatMark.OnDragAreaMouseUp(e.Position);
-            RenderMaskPaint();
-        }
-
-        private void DragArea_StartDragArea(object sender, EventArgs e)
-        {
-            _beatMark.OnStartDragArea(string.Empty);
-            RenderMaskPaint();
         }
 
         private void DiagCompleteECG_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -243,8 +250,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseRightButtonDown -= DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick -= DiagCompleteECG_MouseDoubleClick;
             MouseWheel -= DiagCompleteECG_MouseWheel;
-            _dragArea.StartDragArea -= DragArea_StartDragArea;
-            _dragArea.DragAreaMouseUp -= DragArea_DragAreaMouseUp;
             _dispatcherTimer.Stop();
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;

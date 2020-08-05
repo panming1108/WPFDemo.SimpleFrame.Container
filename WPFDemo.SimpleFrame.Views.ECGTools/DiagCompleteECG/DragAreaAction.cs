@@ -36,9 +36,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public int DragPriority { get; set; }
         public int MouseUpPriority { get; set; }
 
-        public event EventHandler StartDragArea;
-        public event EventHandler<PositionEventArgs> DragAreaMouseUp;
-
         public DragAreaAction(bool canDrag, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
             _canDrag = canDrag;
@@ -66,7 +63,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 return;
             }
             _isFlag = false;
-            StartDragArea?.Invoke(this, new EventArgs());
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.StartDragArea, string.Empty);
             DrawingDragArea(_originX, currentPoint.X);
         }
 
@@ -77,7 +74,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 resultX = _startLineDrawing.Bounds.Left;
             }
-            DragAreaMouseUp?.Invoke(this, new PositionEventArgs(resultX));
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.DragAreaMouseUp, resultX);
             if(!_isFlag)
             {
                 ResetMask();

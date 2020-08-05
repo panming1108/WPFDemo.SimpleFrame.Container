@@ -66,7 +66,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             SelectBeat = BeatMarkHelper.GetCurrentBeat(currentX + _position);
         }
 
-        public void OnStartDragArea(string arg)
+        public void OnStartDragArea()
         {
             _selectBeat = 0;
             _lineDrawings.Clear();
