@@ -140,8 +140,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private GeometryDrawing DrawingLine(double position)
         {
             Brush lineBrush = Brushes.Red;
-            Pen linePen = new Pen(lineBrush, 1);
-            LineGeometry lineGeometry = new LineGeometry(new Point(position, TopOffset), new Point(position, TopOffset + Height));
+            double lineThickness = 2;
+            Pen linePen = new Pen(lineBrush, lineThickness);
+            LineGeometry lineGeometry = new LineGeometry(new Point(position + lineThickness / 2, TopOffset), new Point(position + lineThickness / 2, TopOffset + Height));
             return new GeometryDrawing(lineBrush, linePen, lineGeometry);
         }
 
@@ -213,33 +214,45 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             };
             _clearFlagMenuItem.Click += ClearFlagMenuItem_Click;
         }
-
-        private void ClearFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        public void OnClearFlag()
         {
             ResetMask();
             DrawingDragAreaMask();
         }
-
-        private void EndFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        public void OnSetEndFlag(double contextMenuX)
         {
             _isFlag = true;
-            DrawingDragArea(_startLineDrawing.Bounds.Left, _contextMenuX);
+            DrawingDragArea(_startLineDrawing.Bounds.Left, contextMenuX);
         }
-
-        private void SetStartFlag_Click(object sender, RoutedEventArgs e)
+        public void OnSetStartFlag(double contextMenuX)
         {
             _isFlag = true;
-            if(_rectDrawing == null && _endLineDrawing == null)
+            if (_rectDrawing == null && _endLineDrawing == null)
             {
                 _rectDrawings.Clear();
-                _startLineDrawing = DrawingLine(_contextMenuX);
+                _startLineDrawing = DrawingLine(contextMenuX);
                 _rectDrawings.Add(_startLineDrawing);
                 DrawingDragAreaMask();
             }
             else
             {
-                DrawingDragArea(_contextMenuX, _endLineDrawing.Bounds.Left);
+                DrawingDragArea(contextMenuX, _endLineDrawing.Bounds.Left);
             }
+        }
+
+        private void ClearFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.ClearFlag, string.Empty);           
+        }
+
+        private void EndFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.SetEndFlag, _contextMenuX);          
+        }
+
+        private void SetStartFlag_Click(object sender, RoutedEventArgs e)
+        {
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.SetStartFlag, _contextMenuX);            
         }
 
         public override void ResetMask()

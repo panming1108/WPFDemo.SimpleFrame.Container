@@ -14,6 +14,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class BeatMarkAction : MaskActionBase
     {
+        private double _contextMenuX;
+        //计算屏幕坐标时-，计算心搏位置时+
+        private double _position;
         private double _mouseUpPointX;
         private readonly bool _canClick;
         private double _selectBeat;
@@ -46,7 +49,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private DrawingCollection _lineDrawings = new DrawingCollection();
 
         private string[] _rectContextMenu = new string[] { "正常", "房颤", "房早", "删除心搏" };
-        private string[] _lineContextMenu = new string[] { "添加典型图", "设置为最快心率", "设置为最慢心率", "标记开始位置" };
+        private MenuItem _setFlagMenuItem;
+        private MenuItem _endFlagMenuItem;
+        private MenuItem _clearFlagMenuItem;
+
+        public List<BeatInfo> BeatInfos { get; set; }
 
         public BeatMarkAction(bool canClick, double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
@@ -56,7 +63,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public void OnDragAreaMouseUp(double currentX)
         {
             _mouseUpPointX = currentX;
-            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentX);
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentX + _position);
         }
 
         public void OnStartDragArea(string arg)
@@ -64,6 +71,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _selectBeat = 0;
             _lineDrawings.Clear();
             DrawingBeatMarkMask();
+        }
+
+        public override void DrawingMouseWheel(double offset)
+        {
+            base.DrawingMouseWheel(offset);
+            _position -= offset;
+            if(_lineDrawings.Count > 0)
+            {
+                _mouseUpPointX += offset;
+                DrawingSelectedBeatBar(_selectBeat);
+            }
+            DrawingBeatMark();
         }
 
         public override void DrawingMouseOver(Point currentPoint)
@@ -74,7 +93,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                MouseOverBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X);
+                MouseOverBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X + _position);
             }
         }
         public void DrawingBeatMarkMask()
@@ -96,15 +115,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _beatDrawings.Clear();
             DrawingTexts.Clear();
-            for (int i = 0; i < BeatInfoCache.GetBeats().Count; i++)
+            for (int i = 0; i < BeatInfos.Count; i++)
             {
-                var item = BeatInfoCache.GetBeats()[i];
-                if(item.Position < LeftOffset || item.Position > Width + LeftOffset)
+                var item = BeatInfos[i];
+                if(item.Position < LeftOffset + _position || item.Position > Width + LeftOffset + _position)
                 {
                     continue;
                 }
                 #region 画心搏边框
-                Rect beatRect = new Rect(LeftOffset + item.Position - _beatRectWidth / 2, TopOffset, _beatRectWidth, _beatRectHeight);
+                Rect beatRect = new Rect(LeftOffset + item.Position - _position - _beatRectWidth / 2, TopOffset, _beatRectWidth, _beatRectHeight);
                 Brush beatRectBackground = (Brush)_brushConverter.ConvertFromString("#EBFAFF");
                 Brush beatRectStroke = (Brush)_brushConverter.ConvertFromString("#DBE0E3");
                 if (_canClick && (item.Position == _selectBeat || item.Position == _mouseOverBeat))
@@ -129,18 +148,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
                 if (i > 0)
                 {
-                    var prevItem = BeatInfoCache.GetBeats()[i - 1];
+                    var prevItem = BeatInfos[i - 1];
                     Typeface beatAndInternalFace = new Typeface(new FontFamily("Klavika"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
                     #region 画心率文字
                     FormattedText beatText = new FormattedText(item.Position.ToString(), _culture, FlowDirection.LeftToRight, beatAndInternalFace, 10d, Brushes.Black);
-                    double beatTextXOffset = prevItem.Position + (item.Position - prevItem.Position - beatTypeText.Width) / 2;
+                    double beatTextXOffset = prevItem.Position - _position + (item.Position - prevItem.Position - beatTypeText.Width) / 2;
                     double beatTextYOffset = beatRect.Y + beatRect.Width  / 2;
                     Point beatPosition = new Point(beatTextXOffset, beatTextYOffset);
                     DrawingTexts.Add(new MaskText() { Text = beatText, Position = beatPosition });
                     #endregion
                     #region 画间期文字
                     FormattedText beatIntervalText = new FormattedText(item.Interval.ToString(), _culture, FlowDirection.LeftToRight, beatAndInternalFace, 10d, Brushes.Black);
-                    double beatIntervalTextXOffset = prevItem.Position + (item.Position - prevItem.Position - beatTypeText.Width) / 2 + (beatText.Width - beatIntervalText.Width) / 2;
+                    double beatIntervalTextXOffset = prevItem.Position - _position + (item.Position - prevItem.Position - beatTypeText.Width) / 2 + (beatText.Width - beatIntervalText.Width) / 2;
                     double beatIntervalTextYOffset = beatRect.Y + beatRect.Width / 2 + beatText.Height + 5;
                     Point beatIntervalPosition = new Point(beatIntervalTextXOffset, beatIntervalTextYOffset);
                     DrawingTexts.Add(new MaskText() { Text = beatIntervalText, Position = beatIntervalPosition });
@@ -159,7 +178,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             if (beat != 0)
             {
                 //画诊断图选中条
-                Rect beatRect = new Rect(LeftOffset + beat - _beatRectWidth / 2, TopOffset, _beatRectWidth, _beatRectHeight);
+                Rect beatRect = new Rect(LeftOffset - _position + beat - _beatRectWidth / 2, TopOffset, _beatRectWidth, _beatRectHeight);
                 Rect selectRect = new Rect(beatRect.X, beatRect.Y + beatRect.Height + 8, beatRect.Width, Height - beatRect.Height - 8);
                 RectangleGeometry selectRectGeometry = new RectangleGeometry(selectRect);
                 Brush selectRectBackground = (Brush)_brushConverter.ConvertFromString("#33B260FF");
@@ -199,7 +218,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void PrepareMask(Point current)
         {
             _mouseUpPointX = current.X;
-            SelectBeat = BeatMarkHelper.GetCurrentBeat(current.X);
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(current.X + _position);
         }
 
         public override void ResetMask()
@@ -210,15 +229,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void DrawingMouseRightButtonDown(Point currentPoint)
         {
             base.DrawingMouseRightButtonDown(currentPoint);
-            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X);
+            _contextMenuX = currentPoint.X;
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X + _position);
         }
 
         protected override IEnumerable SetContextMenuItems(Point currentPoint)
         {
-            var beat = BeatMarkHelper.GetCurrentBeat(currentPoint.X);
+            var beat = BeatMarkHelper.GetCurrentBeat(currentPoint.X + _position);
             if(beat == 0)
             {
-                return _lineContextMenu;
+                return new MenuItem[] { _setFlagMenuItem, _endFlagMenuItem, _clearFlagMenuItem };
             }
             else
             {
@@ -226,9 +246,48 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
+        public override void InitMask()
+        {
+            base.InitMask();
+            _setFlagMenuItem = new MenuItem
+            {
+                Header = "标记开始位置"
+            };
+            _setFlagMenuItem.Click += SetStartFlag_Click;
+
+            _endFlagMenuItem = new MenuItem
+            {
+                Header = "标记结束位置"
+            };
+            _endFlagMenuItem.Click += EndFlagMenuItem_Click;
+
+            _clearFlagMenuItem = new MenuItem
+            {
+                Header = "取消标记位置"
+            };
+            _clearFlagMenuItem.Click += ClearFlagMenuItem_Click;
+        }
+
+        private void ClearFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.ClearFlag, string.Empty);
+        }
+
+        private void EndFlagMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.SetEndFlag, _contextMenuX);
+        }
+
+        private void SetStartFlag_Click(object sender, RoutedEventArgs e)
+        {
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.SetStartFlag, _contextMenuX);
+        }
+
         public override void Dispose()
         {
-
+            _setFlagMenuItem.Click -= SetStartFlag_Click;
+            _endFlagMenuItem.Click -= EndFlagMenuItem_Click;
+            _clearFlagMenuItem.Click -= ClearFlagMenuItem_Click;
         }
     }
 }

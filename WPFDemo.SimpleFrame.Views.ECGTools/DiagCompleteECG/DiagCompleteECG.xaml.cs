@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using WPFDemo.SimpleFrame.Infra.CustomControls.ECGTools;
+using WPFDemo.SimpleFrame.Infra.Messager;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
@@ -26,8 +16,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
         private readonly DragAreaAction _dragArea;
-        //private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
-        //private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
+        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
+        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
         private readonly BeatMarkAction _beatMark;
         //private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
         private bool _isMouseDown;
@@ -52,16 +42,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
             MouseWheel += DiagCompleteECG_MouseWheel;
 
+            RegisterMessages();
+
             _dragArea = new DragAreaAction(true, 0, 30)
             {
                 DragPriority = 0
             };
             _beatMark = new BeatMarkAction(true, 0, 0);
+            _beatMark.BeatInfos = BeatInfoCache.GetBeats();
 
             _dragArea.StartDragArea += DragArea_StartDragArea;
             _dragArea.DragAreaMouseUp += DragArea_DragAreaMouseUp;
 
-            //_boxLineMeter.DragPriority = 1;
+            _boxLineMeter.DragPriority = 1;
 
             _maskList = new MaskActionCollection();
             _maskList.Add(_dragArea);
@@ -69,14 +62,51 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             //_maskList.Add(_aFArea);
         }
 
+        private void RegisterMessages()
+        {
+            MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.SetStartFlag, OnSetStartFlag);
+            MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.SetEndFlag, OnSetEndFlag);
+            MessagerInstance.GetMessager().Register<string>(this, MaskMessageKeyEnum.ClearFlag, OnClearFlag);
+        }
+
+        private void UnRegisterMessages()
+        {
+            MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.SetStartFlag, OnSetStartFlag);
+            MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.SetEndFlag, OnSetEndFlag);
+            MessagerInstance.GetMessager().Unregister<string>(this, MaskMessageKeyEnum.ClearFlag, OnClearFlag);
+        }
+
+        private Task OnSetStartFlag(double contextMenuX)
+        {
+            _dragArea.OnSetStartFlag(contextMenuX);
+            RenderMaskPaint();
+            return TaskEx.FromResult(0);
+        }
+
+        private Task OnSetEndFlag(double contextMenuX)
+        {
+            _dragArea.OnSetEndFlag(contextMenuX);
+            RenderMaskPaint();
+            return TaskEx.FromResult(0);
+        }
+
+        private Task OnClearFlag(string arg)
+        {
+            _dragArea.OnClearFlag();
+            RenderMaskPaint();
+            return TaskEx.FromResult(0);
+        }
+
         private void DragArea_DragAreaMouseUp(object sender, PositionEventArgs e)
         {
             _beatMark.OnDragAreaMouseUp(e.Position);
+            RenderMaskPaint();
         }
 
         private void DragArea_StartDragArea(object sender, EventArgs e)
         {
             _beatMark.OnStartDragArea(string.Empty);
+            RenderMaskPaint();
         }
 
         private void DiagCompleteECG_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -90,16 +120,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _currentPosition = newPosition;
             if (delta != 0)
             {
-                if(_isMouseDown)
+                foreach (var item in _maskList.Masks)
                 {
-                    //鼠标按住后滚动
-                    _maskList.MouseOverMask?.DrawingMouseDownWheel(delta, Mouse.GetPosition(this));
-                }
-                else
-                {
-                    //全部滚动
-                    foreach (var item in _maskList.Masks)
+                    if(_isMouseDown && item == _maskList.MouseOverMask)
                     {
+                        //鼠标按住后滚动
+                        item.DrawingMouseDownWheel(delta, Mouse.GetPosition(this));
+                    }
+                    else
+                    {
+                        //全部滚动
                         item.DrawingMouseWheel(delta);
                     }
                 }
@@ -205,6 +235,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void DiagCompleteECG_Unloaded(object sender, RoutedEventArgs e)
         {
+            UnRegisterMessages();
             Loaded -= DiagCompleteECG_Loaded;
             Unloaded -= DiagCompleteECG_Unloaded;
             MouseLeftButtonDown -= DiagCompleteECG_MouseLeftButtonDown;
@@ -224,8 +255,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             base.OnRenderSizeChanged(sizeInfo);
             _dragArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            //_equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            //_boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
             //_aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             RenderMaskPaint();
@@ -250,39 +281,39 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         }
 
         #region 工具开关
-        //private void PART_Equi_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    _maskList.Add(_equiDistance);
-        //    RenderMaskPaint();
-        //}
+        private void PART_Equi_Checked(object sender, RoutedEventArgs e)
+        {
+            _maskList.Add(_equiDistance);
+            RenderMaskPaint();
+        }
 
-        //private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
-        //{
-        //    _maskList.Remove(_equiDistance);
-        //    RenderMaskPaint();
-        //}
+        private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _maskList.Remove(_equiDistance);
+            RenderMaskPaint();
+        }
 
-        //private void PART_Box_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    _maskList.Add(_boxLineMeter);
-        //    RenderMaskPaint();
-        //}
+        private void PART_Box_Checked(object sender, RoutedEventArgs e)
+        {
+            _maskList.Add(_boxLineMeter);
+            RenderMaskPaint();
+        }
 
-        //private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
-        //{
-        //    _maskList.Remove(_boxLineMeter);
-        //    RenderMaskPaint();
-        //}
+        private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _maskList.Remove(_boxLineMeter);
+            RenderMaskPaint();
+        }
 
-        //private void PART_Changed_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    _beatMark.RenderMaskSize(ActualHeight, ActualWidth / 2);
-        //}
+        private void PART_Changed_Checked(object sender, RoutedEventArgs e)
+        {
+            _beatMark.RenderMaskSize(ActualHeight, ActualWidth / 2);
+        }
 
-        //private void PART_Changed_Unchecked(object sender, RoutedEventArgs e)
-        //{
-        //    _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
-        //}
+        private void PART_Changed_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
+        }
         #endregion
     }
 }

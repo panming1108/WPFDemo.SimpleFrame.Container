@@ -11,7 +11,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             string[] data = new string[] { "U", "N", "Af" };
             List<BeatInfo> beats = new List<BeatInfo>();
-            for (int i = 0; i < 18; i++)
+            for (int i = 0; i < 200; i++)
             {
                 var beatType = data[(int)i % 3];
                 if( i >= 7 && i < 11)
