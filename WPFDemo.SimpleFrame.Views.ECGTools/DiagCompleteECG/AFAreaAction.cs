@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using WPFDemo.SimpleFrame.Infra.Messager;
@@ -20,8 +22,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private GeometryDrawing _endLineDrawing = new GeometryDrawing();
         private GeometryDrawing _leftEllipseDrawing = new GeometryDrawing();
         private GeometryDrawing _rightEllipseDrawing = new GeometryDrawing();
+        private GeometryDrawing _toolTipRectDrawing = new GeometryDrawing();
+        private MaskText _toolTipContent = new MaskText();
 
         private AFAreaStatusEnum _aFAreaStatus;
+
+        private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("en-us");
 
         private MenuItem _rectMenuItem;
 
@@ -53,7 +59,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void DrawingMouseWheel(double offset)
         {
             base.DrawingMouseWheel(offset);
-            if(DrawingChildren.Count <= 0)
+            if (DrawingChildren.Count <= 0 && DrawingTexts.Count <= 0)
             {
                 return;
             }
@@ -92,10 +98,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var left = Math.Min(start, end);
             var right = Math.Max(start, end);
             DrawingChildren.Clear();
+            DrawingTexts.Clear();
 
             Rect afRect = new Rect(left, TopOffset, right - left, Height);
 
-            _afRectDrawing = DrawingRect(afRect);
+            _afRectDrawing = DrawingRect(afRect, new Pen(Brushes.Transparent, 0), (Brush)_brushConverter.ConvertFromString("#80007200"));
             _startLineDrawing = DrawingLine(start);
             _endLineDrawing = DrawingLine(end);
 
@@ -120,6 +127,37 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 DrawingRightCircleButton();
             }
+        }
+
+        public override void DrawingMouseOver(Point currentPoint)
+        {
+            base.DrawingMouseOver(currentPoint);
+            DrawingTexts.Clear();
+            if (DrawingChildren.Contains(_toolTipRectDrawing))
+            {
+                DrawingChildren.Remove(_toolTipRectDrawing);
+            }
+            if (_aFAreaStatus != AFAreaStatusEnum.LeftCircle && _aFAreaStatus != AFAreaStatusEnum.RightCircle)
+            {
+                _toolTipRectDrawing = null;
+                return;
+            }
+            if(_toolTipRectDrawing == null || _toolTipRectDrawing.Bounds == default)
+            {
+                var toolTipRect = new Rect(currentPoint.X, currentPoint.Y, 122, 27);
+                var toolTipContent = _aFAreaStatus == AFAreaStatusEnum.LeftCircle ? "定位到房颤开始位置" : "定位到房颤结束位置";
+                _toolTipRectDrawing = DrawingRect(toolTipRect, new Pen((Brush)_brushConverter.ConvertFromString("#767676"), 1), (Brush)_brushConverter.ConvertFromString("#F1F2F7"));
+
+                Typeface internalFace = new Typeface(new FontFamily("微软雅黑"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+                FormattedText text = new FormattedText(toolTipContent, _culture, FlowDirection.LeftToRight, internalFace, 12d, (Brush)_brushConverter.ConvertFromString("#575757"));
+                double textXOffset = toolTipRect.X + (toolTipRect.Width - text.Width) / 2;
+                double textYOffset = toolTipRect.Y + (toolTipRect.Height - text.Height) / 2;
+                Point textPosition = new Point(textXOffset, textYOffset);
+                _toolTipContent.Text = text;
+                _toolTipContent.Position = textPosition;
+            }
+            DrawingChildren.Add(_toolTipRectDrawing);
+            DrawingTexts.Add(_toolTipContent);
         }
 
         private void DrawingLeftCircleButton()
@@ -162,12 +200,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingChildren.Add(rightLineDrawing3);
         }
 
-        private GeometryDrawing DrawingRect(Rect rect)
+        private GeometryDrawing DrawingRect(Rect rect, Pen pen, Brush fill)
         {
-            Brush rectBrush = (Brush)_brushConverter.ConvertFromString("#80007200");
-            Pen rectPen = new Pen(Brushes.Transparent, 0);
             RectangleGeometry rectangleGeometry = new RectangleGeometry(rect);
-            return new GeometryDrawing(rectBrush, rectPen, rectangleGeometry);
+            return new GeometryDrawing(fill, pen, rectangleGeometry);
         }
 
         private GeometryDrawing DrawingLine(double position)

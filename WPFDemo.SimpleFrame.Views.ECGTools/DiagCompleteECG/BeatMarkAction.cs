@@ -76,6 +76,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void DrawingMouseWheel(double offset)
         {
             base.DrawingMouseWheel(offset);
+            if (DrawingChildren.Count <= 0 && DrawingTexts.Count <= 0)
+            {
+                return;
+            }
             _position -= offset;
             if(_lineDrawings.Count > 0)
             {

@@ -85,11 +85,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void DrawingMouseWheel(double offset)
         {
             base.DrawingMouseWheel(offset);
-            if(_rectDrawing == null && _startLineDrawing == null && _endLineDrawing == null)
+            if (DrawingChildren.Count <= 0 && DrawingTexts.Count <= 0)
             {
                 return;
             }
-            if(_endLineDrawing == null)
+            if(_startLineDrawing == null)
+            {
+                return;
+            }
+            if (_endLineDrawing == null)
             {
                 _rectDrawings.Clear();
                 _startLineDrawing = DrawingLine(_startLineDrawing.Bounds.Left + _startLineDrawing.Bounds.Width + offset);
