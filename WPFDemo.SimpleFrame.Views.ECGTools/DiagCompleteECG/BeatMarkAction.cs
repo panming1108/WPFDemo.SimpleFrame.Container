@@ -82,7 +82,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 _mouseUpPointX += offset;
                 DrawingSelectedBeatBar(_selectBeat);
             }
-            DrawingBeatMark();
+            DrawingBeatMarkMask();
         }
 
         public override void DrawingMouseOver(Point currentPoint)
@@ -199,12 +199,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 return;
             }
-            var afArea = BeatMarkHelper.GetAfArea(MouseOverBeat);
-            if(afArea.Item1 == afArea.Item2)
-            {
-                return;
-            }
-            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.RenderAFMask, afArea);
+            MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.RenderAFMask, MouseOverBeat);
         }
 
         public override void RenderMaskSize(double height, double width)
@@ -251,19 +246,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             base.InitMask();
             _setFlagMenuItem = new MenuItem
             {
-                Header = "标记开始位置"
+                Header = "标记开始位置",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
             };
             _setFlagMenuItem.Click += SetStartFlag_Click;
 
             _endFlagMenuItem = new MenuItem
             {
-                Header = "标记结束位置"
+                Header = "标记结束位置",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
             };
             _endFlagMenuItem.Click += EndFlagMenuItem_Click;
 
             _clearFlagMenuItem = new MenuItem
             {
-                Header = "取消标记位置"
+                Header = "取消标记位置",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
             };
             _clearFlagMenuItem.Click += ClearFlagMenuItem_Click;
         }

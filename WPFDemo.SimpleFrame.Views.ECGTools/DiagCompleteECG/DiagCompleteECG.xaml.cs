@@ -19,9 +19,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
         private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
         private readonly BeatMarkAction _beatMark;
-        //private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
+        private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
         private bool _isMouseDown;
-        private int _currentPosition;
+        private double _currentPosition;
         private readonly MaskActionCollection _maskList;
         public DiagCompleteECG()
         {
@@ -46,7 +46,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
             _dragArea = new DragAreaAction(true, 0, 30)
             {
-                DragPriority = 0
+                DragPriority = 0,
+                MouseUpPriority = 0,
             };
             _beatMark = new BeatMarkAction(true, 0, 0)
             {
@@ -54,15 +55,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             };
 
             _boxLineMeter.DragPriority = 1;
+            _equiDistance.MouseUpPriority = 1;
 
             _maskList = new MaskActionCollection();
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
-            //_maskList.Add(_aFArea);
+            _maskList.Add(_aFArea);
         }
 
         private void RegisterMessages()
         {
+            MessagerInstance.GetMessager().Register<Tuple<double, double>>(this, MaskMessageKeyEnum.DragAFMaskOver, OnDragAFMaskOver);
+            MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.RenderAFMask, OnRenderAFMask);
+            MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.ChangedMaskPosition, OnMaskPositionChanged);
+
             MessagerInstance.GetMessager().Register<string>(this, MaskMessageKeyEnum.StartDragArea, OnStartDragArea);
             MessagerInstance.GetMessager().Register<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
 
@@ -73,12 +79,55 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void UnRegisterMessages()
         {
+            MessagerInstance.GetMessager().Unregister<Tuple<double, double>>(this, MaskMessageKeyEnum.DragAFMaskOver, OnDragAFMaskOver);
+            MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.RenderAFMask, OnRenderAFMask);
+            MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.ChangedMaskPosition, OnMaskPositionChanged);
+
             MessagerInstance.GetMessager().Unregister<string>(this, MaskMessageKeyEnum.StartDragArea, OnStartDragArea);
             MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.DragAreaMouseUp, OnDragAreaMouseUp);
 
             MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.SetStartFlag, OnSetStartFlag);
             MessagerInstance.GetMessager().Unregister<double>(this, MaskMessageKeyEnum.SetEndFlag, OnSetEndFlag);
             MessagerInstance.GetMessager().Unregister<string>(this, MaskMessageKeyEnum.ClearFlag, OnClearFlag);
+        }
+
+        private Task OnMaskPositionChanged(double position)
+        {
+            var offset = ActualWidth / 2 - position;
+            var newPosition = _currentPosition - offset;
+            if (newPosition < 0)
+            {
+                newPosition = 0;
+            }
+            var delta = _currentPosition - newPosition;
+            _currentPosition = newPosition;
+            if (delta != 0)
+            {
+                foreach (var item in _maskList.Masks)
+                {
+                    item.DrawingMouseWheel(delta);
+                }
+                RenderMaskPaint();
+            }
+            return TaskEx.FromResult(0);
+        }
+
+        private Task OnDragAFMaskOver(Tuple<double, double> afArea)
+        {
+            _aFArea.OnDragAFMaskOver(BeatMarkHelper.GetNearBeat(afArea.Item1 + _currentPosition) - _currentPosition, BeatMarkHelper.GetNearBeat(afArea.Item2 + _currentPosition) - _currentPosition);
+            return TaskEx.FromResult(0);
+        }
+
+        private Task OnRenderAFMask(double beat)
+        {
+            var afArea = BeatMarkHelper.GetAfArea(beat);
+            if (afArea.Item1 != afArea.Item2)
+            {
+                _aFArea.OnRenderAFMask(afArea.Item1 - _currentPosition, afArea.Item2 - _currentPosition);
+                _dragArea.OnClearFlag();
+            }
+            RenderMaskPaint();
+            return TaskEx.FromResult(0);
         }
 
         private Task OnDragAreaMouseUp(double resultX)
@@ -91,6 +140,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private Task OnStartDragArea(string arg)
         {
             _beatMark.OnStartDragArea();
+            _aFArea.OnClearAfArea();
             RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
@@ -140,6 +190,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                         item.DrawingMouseWheel(delta);
                     }
                 }
+                RenderMaskPaint();
             }
         }
 
@@ -216,6 +267,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void DragOverHandler(Point currentPoint)
         {
             _maskList.DragMask?.DrawingDragOver(currentPoint);
+            RenderMaskPaint();
         }
 
         private void MouseLeftButtonUpHandler(Point currentPoint)
@@ -263,7 +315,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _equiDistance.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
-            //_aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
+            _aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             RenderMaskPaint();
         }
 

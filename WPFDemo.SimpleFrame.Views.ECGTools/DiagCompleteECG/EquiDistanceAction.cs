@@ -9,9 +9,9 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
-    public class EquiDistanceAction : MaskActionBase
+    public class EquiDistanceAction : MaskActionBase, IScreenMouseUpAction
     {
-        private readonly double _minInterval = 20;
+        private readonly double _minInterval = 1;
         private double _firstPoint;
         private double _interval = 100;
         private Pen _mainPen = new Pen(Brushes.Red, 1);
@@ -19,6 +19,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private EquiStatusEnum _equiStatus;
         private double _currentMultiple;
         private double _lastPointX;
+
+        public int MouseUpPriority { get; set; }
 
         public EquiDistanceAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
         {
@@ -103,12 +105,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _currentMultiple = 0;
         }
 
-        public override void InitMask()
-        {
-            base.InitMask();
-            DrawingMouseUp(new Point(Width == 0 ? LeftOffset + 200 : LeftOffset + Width / 2, 0));
-        }
-
         public override void PrepareMask(Point current)
         {
             _lastPointX = current.X;
@@ -163,6 +159,4 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             OtherLine = 2,
         }
     }
-
-    
 }

@@ -72,7 +72,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             double resultX = currentPoint.X;
             if (_rectDrawing != null && _rectDrawing.Bounds.Contains(currentPoint))
             {
-                resultX = _startLineDrawing.Bounds.Left;
+                resultX = _startLineDrawing.Bounds.Left + _startLineDrawing.Bounds.Width;
             }
             MessagerInstance.GetMessager().Send(MaskMessageKeyEnum.DragAreaMouseUp, resultX);
             if(!_isFlag)
@@ -92,13 +92,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             if(_endLineDrawing == null)
             {
                 _rectDrawings.Clear();
-                _startLineDrawing = DrawingLine(_startLineDrawing.Bounds.Left + offset);
+                _startLineDrawing = DrawingLine(_startLineDrawing.Bounds.Left + _startLineDrawing.Bounds.Width + offset);
                 _rectDrawings.Add(_startLineDrawing);
                 DrawingDragAreaMask();
             }
             else
             {
-                DrawingDragArea(_startLineDrawing.Bounds.Left + offset, _endLineDrawing.Bounds.Left + offset);
+                DrawingDragArea(_startLineDrawing.Bounds.Left + _startLineDrawing.Bounds.Width + offset, _endLineDrawing.Bounds.Left + _endLineDrawing.Bounds.Width + offset);
             }
         }
 
@@ -137,9 +137,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private GeometryDrawing DrawingLine(double position)
         {
             Brush lineBrush = Brushes.Red;
-            double lineThickness = 2;
-            Pen linePen = new Pen(lineBrush, lineThickness);
-            LineGeometry lineGeometry = new LineGeometry(new Point(position + lineThickness / 2, TopOffset), new Point(position + lineThickness / 2, TopOffset + Height));
+            Pen linePen = new Pen(lineBrush, 2);
+            LineGeometry lineGeometry = new LineGeometry(new Point(position, TopOffset), new Point(position, TopOffset + Height));
             return new GeometryDrawing(lineBrush, linePen, lineGeometry);
         }
 
@@ -195,19 +194,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             base.InitMask();
             _setFlagMenuItem = new MenuItem
             {
-                Header = "标记开始位置"
+                Header = "标记开始位置",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
             };
             _setFlagMenuItem.Click += SetStartFlag_Click;
 
             _endFlagMenuItem = new MenuItem
             {
-                Header = "标记结束位置"
+                Header = "标记结束位置",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
             };
             _endFlagMenuItem.Click += EndFlagMenuItem_Click;
 
             _clearFlagMenuItem = new MenuItem
             {
-                Header = "取消标记位置"
+                Header = "取消标记位置",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
             };
             _clearFlagMenuItem.Click += ClearFlagMenuItem_Click;
         }
@@ -219,7 +224,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public void OnSetEndFlag(double contextMenuX)
         {
             _isFlag = true;
-            DrawingDragArea(_startLineDrawing.Bounds.Left, contextMenuX);
+            DrawingDragArea(_startLineDrawing.Bounds.Left + _startLineDrawing.Bounds.Width, contextMenuX);
         }
         public void OnSetStartFlag(double contextMenuX)
         {
@@ -233,7 +238,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                DrawingDragArea(contextMenuX, _endLineDrawing.Bounds.Left);
+                DrawingDragArea(contextMenuX, _endLineDrawing.Bounds.Left + +_endLineDrawing.Bounds.Width);
             }
         }
 
