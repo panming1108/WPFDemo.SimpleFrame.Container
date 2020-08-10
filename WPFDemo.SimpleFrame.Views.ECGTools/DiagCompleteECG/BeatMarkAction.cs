@@ -63,7 +63,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public void OnDragAreaMouseUp(double currentX)
         {
             _mouseUpPointX = currentX;
-            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentX + _position);
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(BeatInfos, currentX + _position);
         }
 
         public void OnStartDragArea()
@@ -97,7 +97,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                MouseOverBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X + _position);
+                MouseOverBeat = BeatMarkHelper.GetCurrentBeat(BeatInfos, currentPoint.X + _position);
             }
         }
         public void DrawingBeatMarkMask()
@@ -217,7 +217,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public override void PrepareMask(Point current)
         {
             _mouseUpPointX = current.X;
-            SelectBeat = BeatMarkHelper.GetCurrentBeat(current.X + _position);
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(BeatInfos, current.X + _position);
         }
 
         public override void ResetMask()
@@ -229,12 +229,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             base.DrawingMouseRightButtonDown(currentPoint);
             _contextMenuX = currentPoint.X;
-            SelectBeat = BeatMarkHelper.GetCurrentBeat(currentPoint.X + _position);
+            SelectBeat = BeatMarkHelper.GetCurrentBeat(BeatInfos, currentPoint.X + _position);
         }
 
         protected override IEnumerable SetContextMenuItems(Point currentPoint)
         {
-            var beat = BeatMarkHelper.GetCurrentBeat(currentPoint.X + _position);
+            var beat = BeatMarkHelper.GetCurrentBeat(BeatInfos, currentPoint.X + _position);
             if(beat == 0)
             {
                 return new MenuItem[] { _setFlagMenuItem, _endFlagMenuItem, _clearFlagMenuItem };

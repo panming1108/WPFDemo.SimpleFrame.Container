@@ -41,6 +41,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
             MouseWheel += DiagCompleteECG_MouseWheel;
+            KeyUp += DiagCompleteECG_KeyUp;
 
             RegisterMessages();
 
@@ -61,6 +62,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
             _maskList.Add(_aFArea);
+        }
+
+        private void DiagCompleteECG_KeyUp(object sender, KeyEventArgs e)
+        {
+            Console.WriteLine("鼠标按下:" + e.Key);
         }
 
         private void RegisterMessages()
@@ -302,6 +308,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseRightButtonDown -= DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick -= DiagCompleteECG_MouseDoubleClick;
             MouseWheel -= DiagCompleteECG_MouseWheel;
+            KeyUp -= DiagCompleteECG_KeyUp;
             _dispatcherTimer.Stop();
             _dispatcherTimer.IsEnabled = false;
             _dispatcherTimer = null;

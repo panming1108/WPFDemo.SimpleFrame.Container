@@ -8,7 +8,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class BeatMarkHelper
     {
-        public static double GetCurrentBeat(double currentX)
+        public static double GetCurrentBeat(List<BeatInfo> beatInfos, double currentX)
         {
             double resultBeat;
             var beats = BeatInfoCache.GetBeats().Where(x => currentX >= x.Position - 15 && currentX <= x.Position + 15).ToList();
