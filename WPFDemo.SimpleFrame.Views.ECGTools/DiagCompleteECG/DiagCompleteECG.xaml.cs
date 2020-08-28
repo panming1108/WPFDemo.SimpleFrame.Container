@@ -50,7 +50,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 DragPriority = 0,
                 MouseUpPriority = 0,
             };
-            _beatMark = new BeatMarkAction(true, 0, 0)
+            _beatMark = new BeatMarkAction(false, 0, 0)
             {
                 BeatInfos = BeatInfoCache.GetBeats()
             };
