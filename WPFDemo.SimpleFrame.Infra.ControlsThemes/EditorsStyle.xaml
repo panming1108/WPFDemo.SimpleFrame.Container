@@ -965,7 +965,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="Padding" Value="10,0,0,0" />
+        <Setter Property="Padding" Value="6,0,0,0" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="ToggleBtnStyle" Value="{StaticResource LoadingComboBox_ToggleButtonStyle}" />
         <Setter Property="SearchBtnStyle" Value="{StaticResource LoadingComboBox_SearchButtonStyle}" />

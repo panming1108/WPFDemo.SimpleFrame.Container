@@ -252,7 +252,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             var listBox = sender as ListBox;
             if(e.AddedItems.Count > 0 && listBox.SelectedItem != null)
             {
-                if(DisplayMemberPath != null)
+                if(!string.IsNullOrEmpty(DisplayMemberPath))
                 {
                     TextBlock textBlock = new TextBlock
                     {
