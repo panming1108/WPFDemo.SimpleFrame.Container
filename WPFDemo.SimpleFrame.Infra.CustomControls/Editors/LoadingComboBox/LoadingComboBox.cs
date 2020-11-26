@@ -7,19 +7,18 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
 {
     [TemplatePart(Name = "PART_ListBox", Type = typeof(ListBox))]
     [TemplatePart(Name = "PART_ScrollViewer", Type = typeof(ScrollViewer))]
     [TemplatePart(Name = "PART_SearchBtn", Type = typeof(Button))]
-    [TemplatePart(Name = "PART_Content", Type = typeof(ContentControl))]
-    public class LoadingComboBox : Control
+    public class LoadingComboBox : ContentControl
     {
         private ListBox PART_ListBox;
         private ScrollViewer PART_ScrollViewer;
         private Button PART_SearchBtn;
-        private ContentControl PART_Content;
 
         public IEnumerable ItemsSource
         {
@@ -130,7 +129,6 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             PART_ListBox = GetTemplateChild("PART_ListBox") as ListBox;            
             PART_ScrollViewer = GetTemplateChild("PART_ScrollViewer") as ScrollViewer;
             PART_SearchBtn = GetTemplateChild("PART_SearchBtn") as Button;
-            PART_Content = GetTemplateChild("PART_Content") as ContentControl;
             if (PART_ListBox != null)
             {
                 PART_ListBox.SelectionChanged += PART_ListBox_SelectionChanged;
@@ -178,12 +176,23 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             {
                 if(DisplayMemberPath != null)
                 {
-                    PART_Content.DataContext = listBox.SelectedItem;
-                    PART_Content.SetBinding(ContentControl.ContentProperty, new Binding(DisplayMemberPath));
+                    TextBlock textBlock = new TextBlock
+                    {
+                        DataContext = listBox.SelectedItem,
+                        TextTrimming = TextTrimming.CharacterEllipsis,
+                    };
+                    textBlock.SetBinding(TextBlock.TextProperty, new Binding(DisplayMemberPath));
+                    Binding toolTipBinding = new Binding
+                    {
+                        RelativeSource = new RelativeSource() { Mode = RelativeSourceMode.Self },
+                        Path = new PropertyPath(nameof(textBlock.Text))
+                    };
+                    textBlock.SetBinding(ToolTipProperty, toolTipBinding);
+                    Content = textBlock;
                 }
                 else
                 {
-                    PART_Content.Content = listBox.SelectedItem;
+                    Content = listBox.SelectedItem;
                 }
                 IsDropDownOpen = false;
             }

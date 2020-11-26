@@ -832,7 +832,7 @@
                                     <Storyboard Storyboard.TargetName="PART_Path" Storyboard.TargetProperty="RenderTransform.Angle">
                                         <DoubleAnimation From="0"
                                                          To="180"
-                                                         Duration="0:0:0.25" />
+                                                         Duration="0:0:0.2" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -841,7 +841,7 @@
                                     <Storyboard Storyboard.TargetName="PART_Path" Storyboard.TargetProperty="RenderTransform.Angle">
                                         <DoubleAnimation From="180"
                                                          To="0"
-                                                         Duration="0:0:0.25" />
+                                                         Duration="0:0:0.2" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -931,13 +931,9 @@
                                       BorderThickness="{TemplateBinding BorderThickness}"
                                       IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsDropDownOpen, Mode=TwoWay}"
                                       Style="{TemplateBinding ToggleBtnStyle}">
-                            <ContentControl x:Name="PART_Content"
-                                            Margin="{TemplateBinding Padding}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            FontSize="{TemplateBinding FontSize}"
-                                            Foreground="{TemplateBinding Foreground}"
-                                            IsHitTestVisible="False" />
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </ToggleButton>
                         <Popup AllowsTransparency="True"
                                IsOpen="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsDropDownOpen, Mode=TwoWay}"
