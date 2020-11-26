@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -129,7 +130,45 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
                 _checkBoxsSource = value;
                 OnPropertyChanged(() => CheckBoxsSource);
             }
-        }    
+        }
+
+        #region LoadingComboBox
+        private ObservableCollection<Student> _loadingSource;
+        public ObservableCollection<Student> LoadingSource
+        {
+            get => _loadingSource;
+            set
+            {
+                _loadingSource = value;
+                OnPropertyChanged(() => LoadingSource);
+            }
+        }
+        private Student _selectedLoadingSource;
+        public Student SelectedLoadingSource
+        {
+            get => _selectedLoadingSource;
+            set
+            {
+                if(value != null)
+                {
+                    _selectedLoadingSource = value;
+                    OnPropertyChanged(() => SelectedLoadingSource);
+                }
+            }
+        }
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(() => IsLoading);
+            }
+        }
+        public ICommand LoadDataCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
+        #endregion
 
         public ICommand RadioButtonCommand { get; set; }
         public ICommand SelectionCommand { get; set; }
@@ -143,11 +182,14 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
             _notSelectedStudents = new List<Student>();
             _clickComboBoxItemsSource = new List<Student>();
             _multiComboBoxItemsSource = new List<Student>();
+            _loadingSource = new ObservableCollection<Student>();
             RadioButtonCommand = new AsyncDelegateCommand<Student>(OnRadioButtonChecked);
-            SelectionCommand = new AsyncDelegateCommand<object>(OnSelectionChanged);
+            SelectionCommand = new AsyncDelegateCommand<object>(OnLoadData);
+            LoadDataCommand = new AsyncDelegateCommand<string>(OnLoadSource);
+            SearchCommand = new AsyncDelegateCommand<string>(OnSearchSource);
         }
 
-        private async Task OnSelectionChanged(object arg)
+        private async Task OnLoadData(object arg)
         {            
             await TaskEx.FromResult(0);
         }
@@ -181,6 +223,76 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
                 new Student(4,"房早未下传", 50),
             };
             InitSelectedItems = new List<Student>() { MultiComboBoxItemsSource[1], MultiComboBoxItemsSource[3] };
+            LoadingSource = new ObservableCollection<Student>() 
+            {
+                new Student(0,"全部", 10),
+                new Student(1,"单发", 20),
+                new Student(2,"成对", 30),
+                new Student(3,"房速", 40),
+                new Student(4,"房早未下传", 50),
+                new Student(0,"全部", 10),
+                new Student(1,"单发", 20),
+                new Student(2,"成对", 30),
+                new Student(3,"房速", 40),
+                new Student(4,"房早未下传", 50),
+                new Student(0,"全部", 10),
+                new Student(1,"单发", 20),
+                new Student(2,"成对", 30),
+                new Student(3,"房速", 40),
+                new Student(4,"房早未下传", 50),
+                new Student(0,"全部", 10),
+                new Student(1,"单发", 20),
+                new Student(2,"成对", 30),
+                new Student(3,"房速", 40),
+                new Student(4,"房早未下传1111111111111111111111111111111111", 50),
+            };
+            SelectedLoadingSource = LoadingSource[0];
+        }
+
+        private async Task OnLoadSource(string arg)
+        {
+            if(LoadingSource.Count > 50)
+            {
+                return;
+            }
+            IsLoading = true;
+            await TaskEx.Delay(1000);
+            LoadingSource.Add(new Student(0, arg + "Load全部", 10));
+            LoadingSource.Add(new Student(1, arg + "Load单发", 20));
+            LoadingSource.Add(new Student(2, arg + "Load成对", 30));
+            LoadingSource.Add(new Student(3, arg + "Load房速", 40));
+            LoadingSource.Add(new Student(4, arg + "Load房早未下传", 50));
+            IsLoading = false;
+        }
+
+        private async Task OnSearchSource(string arg)
+        {
+            IsLoading = true;
+            await TaskEx.Delay(1000);
+            LoadingSource = new ObservableCollection<Student>()
+            {
+                new Student(0,arg + "全部", 10),
+                new Student(1,arg + "单发", 20),
+                new Student(2,arg + "成对", 30),
+                new Student(3,arg + "房速", 40),
+                new Student(4,arg + "房早未下传", 50),
+                new Student(0,arg + "全部", 10),
+                new Student(1,arg + "单发", 20),
+                new Student(2,arg + "成对", 30),
+                new Student(3,arg + "房速", 40),
+                new Student(4,arg + "房早未下传", 50),
+                new Student(0,arg + "全部", 10),
+                new Student(1,arg + "单发", 20),
+                new Student(2,arg + "成对", 30),
+                new Student(3,arg + "房速", 40),
+                new Student(4,arg + "房早未下传", 50),
+                new Student(0,arg + "全部", 10),
+                new Student(1,arg + "单发", 20),
+                new Student(2,arg + "成对", 30),
+                new Student(3,arg + "房速", 40),
+                new Student(4,arg + "房早未下传", 50),
+            };
+            IsLoading = false;
         }
 
         protected async override Task UnLoaded()

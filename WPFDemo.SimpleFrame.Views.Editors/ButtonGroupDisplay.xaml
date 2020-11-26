@@ -1,107 +1,125 @@
-﻿<UserControl
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.Editors.ButtonGroupDisplay"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Editors"
-             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
-             xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
              xmlns:EMCCheckBox="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.CheckBox;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:EMCRadioButton="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors.RadioButton;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:editors="clr-namespace:WPFDemo.SimpleFrame.Infra.CustomControls.Editors;assembly=WPFDemo.SimpleFrame.Infra.CustomControls"
-             x:Class="WPFDemo.SimpleFrame.Views.Editors.ButtonGroupDisplay"
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.Editors"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:WPFDemo.SimpleFrame.Infra.MVVM.VOnly;assembly=WPFDemo.SimpleFrame.Infra.MVVM.VOnly"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
              mvvm:FELifeAttachCommand.LoadedCommand="{Binding LoadedCommand}"
              mvvm:FELifeAttachCommand.UnLoadedCommand="{Binding UnLoadedCommand}"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/EditorsStyle.xaml"/>
+                <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/EditorsStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <EMCRadioButton:RadioButtonGroup ItemsSource="{Binding RadioButtonsSource}"
-                                             Orientation="Horizontal"
+            <EMCRadioButton:RadioButtonGroup Background="AliceBlue"
                                              FontSize="14"
+                                             ItemsSource="{Binding RadioButtonsSource}"
                                              NotSelectedItems="{Binding RadioButtonUnSelected, Mode=TwoWay}"
-                                             SelectedItem="{Binding RadioButtonSelectedString}"
-                                             Background="AliceBlue"/>
-            <TextBlock Margin="10,0,0,0"><Run Text="选中的值:"/><Run Text=" "/><Run Text="{Binding RadioButtonSelectedString}"/></TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="1">
-            <EMCRadioButton:RadioButtonGroup ItemsSource="{Binding RadioStudentSource}"
                                              Orientation="Horizontal"
-                                             FontSize="14"
-                                             NotSelectedItems="{Binding NotSelectedStudents, Mode=TwoWay}"
-                                             SelectedItem="{Binding SelectedStudent}"
-                                             DisplayMemberPath="Name"
-                                             Command="{Binding RadioButtonCommand}"
-                                             Background="AliceBlue"/>
-            <TextBlock Margin="10,0,0,0"><Run Text="选中的值:"/><Run Text=" "/><Run Text="{Binding SelectedStudent.Age}"/></TextBlock>
+                                             SelectedItem="{Binding RadioButtonSelectedString}" />
+            <TextBlock Margin="10,0,0,0"><Run Text="选中的值:" /><Run Text=" " /><Run Text="{Binding RadioButtonSelectedString}" /></TextBlock>
         </StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="2">
-            <EMCCheckBox:CheckBoxGroup ItemsSource="{Binding RadioStudentSource}"
-                                       Orientation="Horizontal"
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <EMCRadioButton:RadioButtonGroup Background="AliceBlue"
+                                             Command="{Binding RadioButtonCommand}"
+                                             DisplayMemberPath="Name"
+                                             FontSize="14"
+                                             ItemsSource="{Binding RadioStudentSource}"
+                                             NotSelectedItems="{Binding NotSelectedStudents, Mode=TwoWay}"
+                                             Orientation="Horizontal"
+                                             SelectedItem="{Binding SelectedStudent}" />
+            <TextBlock Margin="10,0,0,0"><Run Text="选中的值:" /><Run Text=" " /><Run Text="{Binding SelectedStudent.Age}" /></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <EMCCheckBox:CheckBoxGroup Background="AliceBlue"
+                                       Command="{Binding RadioButtonCommand}"
+                                       DisplayMemberPath="Name"
                                        FontSize="14"
                                        HaveSelectedItems="{Binding HaveCheckStudent, Mode=TwoWay}"
+                                       ItemsSource="{Binding RadioStudentSource}"
                                        NotSelectedItems="{Binding NotSelectedStudents, Mode=TwoWay}"
-                                       DisplayMemberPath="Name"
-                                       Command="{Binding RadioButtonCommand}"
-                                       Background="AliceBlue"/>
-            <TextBlock Margin="10,0,0,0"><Run Text="选中的值:"/><Run Text=" "/><Run Text="{Binding SelectedStudent.Age}"/></TextBlock>
+                                       Orientation="Horizontal" />
+            <TextBlock Margin="10,0,0,0"><Run Text="选中的值:" /><Run Text=" " /><Run Text="{Binding SelectedStudent.Age}" /></TextBlock>
         </StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="4">
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
             <RadioButton GroupName="zzz" Style="{StaticResource ClickComboBoxRadioButton}">
-                <editors:ClickComboBox x:Name="clickComboBox" 
-                                       VerticalAlignment="Top" 
-                                       CategoryName="房早"
-                                       ItemsSource="{Binding ClickComboBoxItemsSource}" 
-                                       DisplayMemberPath="Name"
-                                       SelectedValuePath="Name"
-                                       SelectedIndex="0"
-                                       IsChecked="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=IsChecked, Mode=TwoWay}"/>
-            </RadioButton>
-            <RadioButton GroupName="zzz" Style="{StaticResource ClickComboBoxRadioButton}" Margin="10,0,0,0">
-                <editors:ClickComboBox x:Name="clickComboBox2" 
-                                       VerticalAlignment="Top" 
+                <editors:ClickComboBox x:Name="clickComboBox"
+                                       VerticalAlignment="Top"
                                        CategoryName="房早"
                                        DisplayMemberPath="Name"
-                                       SelectedValuePath="Name"
-                                       ItemsSource="{Binding ClickComboBoxItemsSource}" 
+                                       IsChecked="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=IsChecked, Mode=TwoWay}"
+                                       ItemsSource="{Binding ClickComboBoxItemsSource}"
                                        SelectedIndex="0"
-                                       IsChecked="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=IsChecked, Mode=TwoWay}"/>
+                                       SelectedValuePath="Name" />
             </RadioButton>
-            <TextBlock Text="{Binding ElementName=clickComboBox, Path=SelectedValue}" Margin="10,0,0,0"/>
-            <TextBlock Text="{Binding ElementName=clickComboBox2, Path=SelectedValue}" Margin="10,0,0,0"/>
+            <RadioButton Margin="10,0,0,0"
+                         GroupName="zzz"
+                         Style="{StaticResource ClickComboBoxRadioButton}">
+                <editors:ClickComboBox x:Name="clickComboBox2"
+                                       VerticalAlignment="Top"
+                                       CategoryName="房早"
+                                       DisplayMemberPath="Name"
+                                       IsChecked="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=IsChecked, Mode=TwoWay}"
+                                       ItemsSource="{Binding ClickComboBoxItemsSource}"
+                                       SelectedIndex="0"
+                                       SelectedValuePath="Name" />
+            </RadioButton>
+            <TextBlock Margin="10,0,0,0" Text="{Binding ElementName=clickComboBox, Path=SelectedValue}" />
+            <TextBlock Margin="10,0,0,0" Text="{Binding ElementName=clickComboBox2, Path=SelectedValue}" />
 
             <!--<editors:MultiComboBox VerticalAlignment="Top"
                                    SelectionChangedCommand="{Binding SelectionCommand}"
                                    InitSelectedItems="{Binding InitSelectedItems}"
                                    SelectAllBtnVisiblity="Collapsed"
                                    ItemsSource="{Binding MultiComboBoxItemsSource}"/>-->
-            <CheckBox x:Name="PART_Switch"/>
-            <editors:CheckMultiComboBox VerticalAlignment="Top"
-                                        Visibility="{Binding ElementName=PART_Switch, Path=IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Width="100"
+            <CheckBox x:Name="PART_Switch" />
+            <editors:CheckMultiComboBox Width="100"
                                         Margin="10,0,0,0"
+                                        VerticalAlignment="Top"
                                         DisplayMemberPath="Name"
-                                        SelectionChangedCommand="{Binding SelectionCommand}"
                                         InitSelectedItems="{Binding InitSelectedItems}"
-                                        ItemsSource="{Binding MultiComboBoxItemsSource}"/>
-            <editors:ViewTextBlock Text="测试缩放文字" Height="30" Width="200" Stretch="Uniform" VerticalAlignment="Top"/>
+                                        ItemsSource="{Binding MultiComboBoxItemsSource}"
+                                        SelectionChangedCommand="{Binding SelectionCommand}"
+                                        Visibility="{Binding ElementName=PART_Switch, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <editors:ViewTextBlock Width="200"
+                                   Height="30"
+                                   VerticalAlignment="Top"
+                                   Stretch="Uniform"
+                                   Text="测试缩放文字" />
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <editors:LoadingComboBox Width="200"
+                                     Height="35"
+                                     Margin="0,5,0,0"
+                                     DisplayMemberPath="Name"
+                                     IsLoading="{Binding IsLoading}"
+                                     ItemsSource="{Binding LoadingSource}"
+                                     LoadDataCommand="{Binding LoadDataCommand}"
+                                     SearchCommand="{Binding SearchCommand}"
+                                     SelectedItem="{Binding SelectedLoadingSource, Mode=TwoWay}" />
+            <TextBlock Margin="10,0,0,0"
+                       VerticalAlignment="Center"
+                       Text="{Binding SelectedLoadingSource.Name}" />
         </StackPanel>
     </Grid>
 </UserControl>
