@@ -14,12 +14,19 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
     [TemplatePart(Name = "PART_ListBox", Type = typeof(ListBox))]
     [TemplatePart(Name = "PART_ScrollViewer", Type = typeof(ScrollViewer))]
     [TemplatePart(Name = "PART_SearchBtn", Type = typeof(Button))]
+    [TemplatePart(Name = "PART_ClearBtn", Type = typeof(Button))]
+    [TemplatePart(Name = "PART_SearchTextBox", Type = typeof(TextBox))]
     public class LoadingComboBox : ContentControl
     {
+        #region Fields
         private ListBox PART_ListBox;
         private ScrollViewer PART_ScrollViewer;
         private Button PART_SearchBtn;
+        private Button PART_ClearBtn;
+        private TextBox PART_SearchTextBox;
+        #endregion
 
+        #region DependenceProperties
         public IEnumerable ItemsSource
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
@@ -82,7 +89,15 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             get { return (Style)GetValue(ListBoxItemStyleProperty); }
             set { SetValue(ListBoxItemStyleProperty, value); }
         }
+        //清空按钮样式
+        public Style ClearBtnStyle
+        {
+            get { return (Style)GetValue(ClearBtnStyleProperty); }
+            set { SetValue(ClearBtnStyleProperty, value); }
+        }
 
+        public static readonly DependencyProperty ClearBtnStyleProperty =
+            DependencyProperty.Register(nameof(ClearBtnStyle), typeof(Style), typeof(LoadingComboBox));
         public static readonly DependencyProperty ListBoxItemStyleProperty =
             DependencyProperty.Register(nameof(ListBoxItemStyle), typeof(Style), typeof(LoadingComboBox));
         public static readonly DependencyProperty SearchBtnStyleProperty =
@@ -105,6 +120,7 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             DependencyProperty.Register(nameof(DisplayMemberPath), typeof(string), typeof(LoadingComboBox));
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(LoadingComboBox));
+        #endregion
 
         public LoadingComboBox()
         {
@@ -114,21 +130,12 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if(PART_ListBox != null)
-            {
-                PART_ListBox.SelectionChanged -= PART_ListBox_SelectionChanged;
-            }
-            if(PART_ScrollViewer != null)
-            {
-                PART_ScrollViewer.ScrollChanged -= PART_ScrollViewer_ScrollChanged;
-            }
-            if(PART_SearchBtn != null)
-            {
-                PART_SearchBtn.Click -= PART_SearchBtn_Click;
-            }
+            UnLoadControl();
             PART_ListBox = GetTemplateChild("PART_ListBox") as ListBox;            
             PART_ScrollViewer = GetTemplateChild("PART_ScrollViewer") as ScrollViewer;
             PART_SearchBtn = GetTemplateChild("PART_SearchBtn") as Button;
+            PART_SearchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
+            PART_ClearBtn = GetTemplateChild("PART_ClearBtn") as Button;
             if (PART_ListBox != null)
             {
                 PART_ListBox.SelectionChanged += PART_ListBox_SelectionChanged;
@@ -142,8 +149,46 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             {
                 PART_SearchBtn.Click += PART_SearchBtn_Click;
             }
+            if (PART_SearchTextBox != null)
+            {
+                PART_SearchTextBox.PreviewKeyDown += PART_SearchTextBox_PreviewKeyDown;
+            }
+            if (PART_ClearBtn != null)
+            {
+                PART_ClearBtn.Click += PART_ClearBtn_Click;
+            }
         }
 
+        /// <summary>
+        /// 重置按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PART_ClearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SearchContent = string.Empty;
+            ExecuteSearchCommand();
+        }
+
+        /// <summary>
+        /// 查询文本框回车事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PART_SearchTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                ExecuteSearchCommand();
+            }
+        }
+
+        #region 滚动条
+        /// <summary>
+        /// ListBox滚到事件由外部注册
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PART_ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             var listBox = sender as ListBox;
@@ -155,6 +200,11 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             listBox.RaiseEvent(eventArg);
         }
 
+        /// <summary>
+        /// 滚动条滚动事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PART_ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             double bottomOffset = e.ExtentHeight - e.VerticalOffset - e.ViewportHeight;
@@ -163,12 +213,32 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
                 LoadDataCommand?.Execute(SearchContent);
             }
         }
+        #endregion
 
+        /// <summary>
+        /// 查询按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PART_SearchBtn_Click(object sender, RoutedEventArgs e)
         {
+            ExecuteSearchCommand();
+        }
+
+        /// <summary>
+        /// 执行查询命令
+        /// </summary>
+        private void ExecuteSearchCommand()
+        {
+            PART_ScrollViewer.ScrollToTop();
             SearchCommand?.Execute(SearchContent);
         }
 
+        /// <summary>
+        /// ListBox选中改变事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PART_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var listBox = sender as ListBox;
@@ -198,7 +268,10 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             }
         }
 
-        private void LoadingComboBox_Unloaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Unload控件
+        /// </summary>
+        private void UnLoadControl()
         {
             if (PART_ListBox != null)
             {
@@ -213,6 +286,24 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             {
                 PART_SearchBtn.Click -= PART_SearchBtn_Click;
             }
+            if (PART_SearchTextBox != null)
+            {
+                PART_SearchTextBox.PreviewKeyDown -= PART_SearchTextBox_PreviewKeyDown;
+            }
+            if (PART_ClearBtn != null)
+            {
+                PART_ClearBtn.Click -= PART_ClearBtn_Click;
+            }
+        }
+
+        /// <summary>
+        /// Unloaded事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadingComboBox_Unloaded(object sender, RoutedEventArgs e)
+        {
+            UnLoadControl();
             Unloaded -= LoadingComboBox_Unloaded;
         }
     }

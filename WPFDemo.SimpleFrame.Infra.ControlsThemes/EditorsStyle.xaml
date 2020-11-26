@@ -856,10 +856,11 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Height" Value="20" />
-        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="15" />
+        <Setter Property="Width" Value="15" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="ToolTip" Value="查询" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -869,6 +870,37 @@
                         <Path HorizontalAlignment="Center"
                               VerticalAlignment="Center"
                               Data="M409.4 737C590.3 737 737 590.3 737 409.4S590.3 81.9 409.4 81.9 81.9 228.5 81.9 409.4 228.5 737 409.4 737z m259.1-10.6c-70.6 57.8-160.8 92.4-259.1 92.4C183.3 818.9 0 635.6 0 409.4S183.3 0 409.4 0s409.4 183.3 409.4 409.4c0 98.3-34.7 188.5-92.4 259.1L1024 966.1l-57.9 57.9-297.6-297.6z"
+                              Fill="Black"
+                              Stretch="Uniform" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LoadingComboBox_ClearButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Height" Value="15" />
+        <Setter Property="Width" Value="15" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="ToolTip" Value="重置" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Path HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Data="M591.53 511.744l416.342-416.768a54.613 54.613 0 0 0 0-76.8l-2.304-2.304a54.443 54.443 0 0 0-76.63 0L512.513 433.237 96.256 15.957a54.443 54.443 0 0 0-76.63 0l-2.389 2.134a53.59 53.59 0 0 0 0 76.8l416.427 416.768L17.237 928.512a54.613 54.613 0 0 0 0 76.8l2.304 2.219a54.443 54.443 0 0 0 76.63 0l416.426-416.854 416.342 416.854a54.443 54.443 0 0 0 76.629 0l2.304-2.304a54.613 54.613 0 0 0 0-76.8L591.445 511.659z"
                               Fill="Black"
                               Stretch="Uniform" />
                     </Border>
@@ -920,6 +952,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="ToggleBtnStyle" Value="{StaticResource LoadingComboBox_ToggleButtonStyle}" />
         <Setter Property="SearchBtnStyle" Value="{StaticResource LoadingComboBox_SearchButtonStyle}" />
+        <Setter Property="ClearBtnStyle" Value="{StaticResource LoadingComboBox_ClearButtonStyle}" />
         <Setter Property="ListBoxItemStyle" Value="{StaticResource LoadingComboBox_ListBoxItemSyle}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -942,7 +975,7 @@
                                PopupAnimation="Slide"
                                StaysOpen="False"
                                VerticalOffset="2">
-                            <Grid Width="{TemplateBinding Width}" MaxHeight="350">
+                            <Grid Width="{TemplateBinding Width}" MaxHeight="300">
                                 <Border Background="{TemplateBinding Background}"
                                         BorderBrush="#51BBF0"
                                         BorderThickness="1"
@@ -952,7 +985,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Grid Margin="5">
+                                    <Grid Height="30" Margin="5">
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="1"
@@ -961,16 +994,21 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
                                                 <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBox HorizontalContentAlignment="Left"
+                                            <TextBox x:Name="PART_SearchTextBox"
+                                                     HorizontalContentAlignment="Left"
                                                      VerticalContentAlignment="Center"
                                                      BorderThickness="0"
                                                      FontSize="{TemplateBinding FontSize}"
                                                      Foreground="{TemplateBinding Foreground}"
-                                                     Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SearchContent, Mode=TwoWay}" />
+                                                     Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SearchContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Button x:Name="PART_SearchBtn"
                                                     Grid.Column="1"
                                                     Style="{TemplateBinding SearchBtnStyle}" />
+                                            <Button x:Name="PART_ClearBtn"
+                                                    Grid.Column="2"
+                                                    Style="{TemplateBinding ClearBtnStyle}" />
                                         </Grid>
                                     </Grid>
                                     <ScrollViewer x:Name="PART_ScrollViewer"

@@ -269,29 +269,27 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         {
             IsLoading = true;
             await TaskEx.Delay(1000);
-            LoadingSource = new ObservableCollection<Student>()
-            {
-                new Student(0,arg + "全部", 10),
-                new Student(1,arg + "单发", 20),
-                new Student(2,arg + "成对", 30),
-                new Student(3,arg + "房速", 40),
-                new Student(4,arg + "房早未下传", 50),
-                new Student(0,arg + "全部", 10),
-                new Student(1,arg + "单发", 20),
-                new Student(2,arg + "成对", 30),
-                new Student(3,arg + "房速", 40),
-                new Student(4,arg + "房早未下传", 50),
-                new Student(0,arg + "全部", 10),
-                new Student(1,arg + "单发", 20),
-                new Student(2,arg + "成对", 30),
-                new Student(3,arg + "房速", 40),
-                new Student(4,arg + "房早未下传", 50),
-                new Student(0,arg + "全部", 10),
-                new Student(1,arg + "单发", 20),
-                new Student(2,arg + "成对", 30),
-                new Student(3,arg + "房速", 40),
-                new Student(4,arg + "房早未下传", 50),
-            };
+            LoadingSource.Clear();
+            LoadingSource.Add(new Student(0,arg + "全部", 10));
+            LoadingSource.Add(new Student(1,arg + "单发", 20));
+            LoadingSource.Add(new Student(2,arg + "成对", 30));
+            LoadingSource.Add(new Student(3,arg + "房速", 40));
+            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
+            LoadingSource.Add(new Student(0,arg + "全部", 10));
+            LoadingSource.Add(new Student(1,arg + "单发", 20));
+            LoadingSource.Add(new Student(2,arg + "成对", 30));
+            LoadingSource.Add(new Student(3,arg + "房速", 40));
+            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
+            LoadingSource.Add(new Student(0,arg + "全部", 10));
+            LoadingSource.Add(new Student(1,arg + "单发", 20));
+            LoadingSource.Add(new Student(2,arg + "成对", 30));
+            LoadingSource.Add(new Student(3,arg + "房速", 40));
+            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
+            LoadingSource.Add(new Student(0,arg + "全部", 10));
+            LoadingSource.Add(new Student(1,arg + "单发", 20));
+            LoadingSource.Add(new Student(2,arg + "成对", 30));
+            LoadingSource.Add(new Student(3,arg + "房速", 40));
+            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
             IsLoading = false;
         }
 
