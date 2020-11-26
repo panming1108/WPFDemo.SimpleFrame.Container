@@ -10,6 +10,16 @@ namespace WPFDemo.SimpleFrame.BLL
 {
     public class ButtonGroupBusi : IButtonGroupBusi
     {
+        private static List<Student> _allStudent;
+        static ButtonGroupBusi()
+        {
+            _allStudent = new List<Student>();
+            for (int i = 0; i < 100; i++)
+            {
+                Student student = new Student(i, "test" + i, i * 10);
+                _allStudent.Add(student);
+            }
+        }
         public Task<List<string>> GetCheckBoxsSource()
         {
             return Task.Factory.StartNew(
@@ -59,6 +69,19 @@ namespace WPFDemo.SimpleFrame.BLL
                     };
                     return source;
                 });
+        }       
+
+        public async Task<List<Student>> GetLoadingSource(string searchContent, int pageIndex, int pageSize)
+        {
+            await TaskEx.Delay(1000);
+            if(!string.IsNullOrWhiteSpace(searchContent))
+            {
+                return _allStudent.Where(x => x.Name.Contains(searchContent)).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            }
+            else
+            {
+                return _allStudent.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            }
         }
     }
 }

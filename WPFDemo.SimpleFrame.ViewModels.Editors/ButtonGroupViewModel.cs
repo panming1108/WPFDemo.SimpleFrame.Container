@@ -133,6 +133,8 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
         }
 
         #region LoadingComboBox
+        private int _loadPageSize = 5;
+        private int _defaultPageSize = 23;
         private ObservableCollection<Student> _loadingSource;
         public ObservableCollection<Student> LoadingSource
         {
@@ -223,73 +225,30 @@ namespace WPFDemo.SimpleFrame.ViewModels.Editors
                 new Student(4,"房早未下传", 50),
             };
             InitSelectedItems = new List<Student>() { MultiComboBoxItemsSource[1], MultiComboBoxItemsSource[3] };
-            LoadingSource = new ObservableCollection<Student>() 
-            {
-                new Student(0,"全部", 10),
-                new Student(1,"单发", 20),
-                new Student(2,"成对", 30),
-                new Student(3,"房速", 40),
-                new Student(4,"房早未下传", 50),
-                new Student(0,"全部", 10),
-                new Student(1,"单发", 20),
-                new Student(2,"成对", 30),
-                new Student(3,"房速", 40),
-                new Student(4,"房早未下传", 50),
-                new Student(0,"全部", 10),
-                new Student(1,"单发", 20),
-                new Student(2,"成对", 30),
-                new Student(3,"房速", 40),
-                new Student(4,"房早未下传", 50),
-                new Student(0,"全部", 10),
-                new Student(1,"单发", 20),
-                new Student(2,"成对", 30),
-                new Student(3,"房速", 40),
-                new Student(4,"房早未下传1111111111111111111111111111111111", 50),
-            };
+
+            LoadingSource = new ObservableCollection<Student>(await _buttonGroupBusi.GetLoadingSource(string.Empty, 1, _defaultPageSize));
             SelectedLoadingSource = LoadingSource[0];
         }
 
-        private async Task OnLoadSource(string arg)
+        private async Task OnLoadSource(string searchContent)
         {
-            if(LoadingSource.Count > 50)
-            {
-                return;
-            }
             IsLoading = true;
-            await TaskEx.Delay(1000);
-            LoadingSource.Add(new Student(0, arg + "Load全部", 10));
-            LoadingSource.Add(new Student(1, arg + "Load单发", 20));
-            LoadingSource.Add(new Student(2, arg + "Load成对", 30));
-            LoadingSource.Add(new Student(3, arg + "Load房速", 40));
-            LoadingSource.Add(new Student(4, arg + "Load房早未下传", 50));
+            var needSearchPageNo = (LoadingSource.Count / _loadPageSize) + 1;
+            var result = await _buttonGroupBusi.GetLoadingSource(searchContent, needSearchPageNo, _loadPageSize);
+            foreach (var item in result)
+            {
+                if(!LoadingSource.Any(x => x.ToString() == item.ToString()))
+                {
+                    LoadingSource.Add(item);
+                }
+            }
             IsLoading = false;
         }
 
-        private async Task OnSearchSource(string arg)
+        private async Task OnSearchSource(string searchContent)
         {
             IsLoading = true;
-            await TaskEx.Delay(1000);
-            LoadingSource.Clear();
-            LoadingSource.Add(new Student(0,arg + "全部", 10));
-            LoadingSource.Add(new Student(1,arg + "单发", 20));
-            LoadingSource.Add(new Student(2,arg + "成对", 30));
-            LoadingSource.Add(new Student(3,arg + "房速", 40));
-            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
-            LoadingSource.Add(new Student(0,arg + "全部", 10));
-            LoadingSource.Add(new Student(1,arg + "单发", 20));
-            LoadingSource.Add(new Student(2,arg + "成对", 30));
-            LoadingSource.Add(new Student(3,arg + "房速", 40));
-            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
-            LoadingSource.Add(new Student(0,arg + "全部", 10));
-            LoadingSource.Add(new Student(1,arg + "单发", 20));
-            LoadingSource.Add(new Student(2,arg + "成对", 30));
-            LoadingSource.Add(new Student(3,arg + "房速", 40));
-            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
-            LoadingSource.Add(new Student(0,arg + "全部", 10));
-            LoadingSource.Add(new Student(1,arg + "单发", 20));
-            LoadingSource.Add(new Student(2,arg + "成对", 30));
-            LoadingSource.Add(new Student(3,arg + "房速", 40));
-            LoadingSource.Add(new Student(4,arg + "房早未下传", 50));
+            LoadingSource = new ObservableCollection<Student>(await _buttonGroupBusi.GetLoadingSource(searchContent, 1, _defaultPageSize));
             IsLoading = false;
         }
 

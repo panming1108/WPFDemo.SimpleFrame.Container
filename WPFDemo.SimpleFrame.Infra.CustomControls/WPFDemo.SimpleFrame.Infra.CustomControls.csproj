@@ -129,6 +129,7 @@
     <Compile Include="Editors\EditorsAttachProperty.cs" />
     <Compile Include="Editors\Input\EMCInput.cs" />
     <Compile Include="Editors\Input\ViewTextBlock.cs" />
+    <Compile Include="Editors\LoadingComboBox\DataSourceCountToVisibilityConverter.cs" />
     <Compile Include="Editors\LoadingComboBox\LoadingComboBox.cs" />
     <Compile Include="Editors\RadioButton\RadioButtonGroup.cs" />
     <Compile Include="LayOuts\Menu\EMCMenu.cs" />

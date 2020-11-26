@@ -95,7 +95,15 @@ namespace WPFDemo.SimpleFrame.Infra.CustomControls.Editors
             get { return (Style)GetValue(ClearBtnStyleProperty); }
             set { SetValue(ClearBtnStyleProperty, value); }
         }
+        //暂无数据时的显示模板
+        public DataTemplate NoDataDisplayTemplate
+        {
+            get { return (DataTemplate)GetValue(NoDataDisplayTemplateProperty); }
+            set { SetValue(NoDataDisplayTemplateProperty, value); }
+        }
 
+        public static readonly DependencyProperty NoDataDisplayTemplateProperty =
+            DependencyProperty.Register(nameof(NoDataDisplayTemplate), typeof(DataTemplate), typeof(LoadingComboBox));
         public static readonly DependencyProperty ClearBtnStyleProperty =
             DependencyProperty.Register(nameof(ClearBtnStyle), typeof(Style), typeof(LoadingComboBox));
         public static readonly DependencyProperty ListBoxItemStyleProperty =

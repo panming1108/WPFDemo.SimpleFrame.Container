@@ -12,5 +12,7 @@ namespace WPFDemo.SimpleFrame.IBLL
         Task<List<string>> GetRadioButtonsSource();
         Task<List<Student>> GetRadioButtonsStudentSource();
         Task<List<string>> GetCheckBoxsSource();
+
+        Task<List<Student>> GetLoadingSource(string searchContent, int pageIndex, int pageSize);
     }
 }
