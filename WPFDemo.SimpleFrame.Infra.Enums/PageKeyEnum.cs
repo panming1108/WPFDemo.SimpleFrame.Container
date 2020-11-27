@@ -15,6 +15,9 @@ namespace WPFDemo.SimpleFrame.Infra.Enums
         NaviPage,
 
         [Description("测试页")]
-        TestPage
+        TestPage,
+
+        [Description("测试页2")]
+        TestPage2,
     }
 }

@@ -150,6 +150,7 @@
     <Compile Include="Schedules\TwiceDatePicker\TwiceDatePicker.cs" />
     <Compile Include="UXs\BusyIndicator\EMCBusyIndicator.cs" />
     <Compile Include="UXs\BusyIndicator\IEMCBusyIndicator.cs" />
+    <Compile Include="UXs\BusyIndicator\LoadingIndicator.cs" />
     <Compile Include="UXs\BusyIndicator\UpLoadingIndicator.cs" />
     <Compile Include="UXs\DesktopAlert\EMCPopupNotifyBox.cs" />
     <Compile Include="UXs\DesktopAlert\IPopupNotifyBox.cs" />

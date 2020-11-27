@@ -63,6 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Test2Module1ViewModel.cs" />
+    <Compile Include="Test2Module2ViewModel.cs" />
+    <Compile Include="Test2Module3ViewModel.cs" />
+    <Compile Include="Test2Module4ViewModel.cs" />
+    <Compile Include="Test2ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestViewModel.cs" />
   </ItemGroup>

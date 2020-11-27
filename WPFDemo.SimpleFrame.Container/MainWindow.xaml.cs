@@ -62,17 +62,7 @@ namespace WPFDemo.SimpleFrame.Container
 
         private Uri Mapping(PageKeyEnum naviKey)
         {
-            switch(naviKey)
-            {
-                case PageKeyEnum.HomePage:
-                    return new Uri("HomePage.xaml", UriKind.RelativeOrAbsolute);
-                case PageKeyEnum.NaviPage:
-                    return new Uri("NaviPage.xaml", UriKind.RelativeOrAbsolute);
-                case PageKeyEnum.TestPage:
-                    return new Uri("TestPage.xaml", UriKind.RelativeOrAbsolute);
-                default:
-                    return new Uri("NaviPage.xaml", UriKind.RelativeOrAbsolute);
-            }
+            return new Uri(naviKey.ToString() + ".xaml", UriKind.RelativeOrAbsolute);
         }
 
         private void Close_btn_Click(object sender, RoutedEventArgs e)
