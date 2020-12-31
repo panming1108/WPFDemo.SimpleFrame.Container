@@ -20,6 +20,9 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
         private double _percent;
         private double _total;
         private double _currentValue;
+        private List<UploadInfo> _uploadInfos;
+        private DateTime _startTime;
+        private DateTime _endTime;
         private List<string> _marqueeSource;
         private System.Timers.Timer _timer;
         public double Percent
@@ -60,6 +63,36 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
             }
         }
 
+        public List<UploadInfo> UploadInfos
+        {
+            get => _uploadInfos;
+            set
+            {
+                _uploadInfos = value;
+                OnPropertyChanged(() => UploadInfos);
+            }
+        }
+
+        public DateTime StartTime
+        {
+            get => _startTime;
+            set
+            {
+                _startTime = value;
+                OnPropertyChanged(() => StartTime);
+            }
+        }
+
+        public DateTime EndTime
+        {
+            get => _endTime;
+            set
+            {
+                _endTime = value;
+                OnPropertyChanged(() => EndTime);
+            }
+        }
+
 
         public ICommand StartCommand { get; set; }
         public ICommand ResetCommand { get; set; }
@@ -78,6 +111,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
             CurrentValue = 0;
             Total = 1000;
             Percent = 0;
+            _uploadInfos = new List<UploadInfo>();
             _marqueeSource = new List<string>();
         }
 
@@ -120,6 +154,15 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
                 "这是滚动数据五！！",
                 "这是滚动数据六！！",
             };
+            StartTime = new DateTime(2020, 12, 30, 0, 0, 0);
+            EndTime = new DateTime(2020, 12, 31, 0, 0, 0);
+            UploadInfos = new List<UploadInfo>()
+            {
+                new UploadInfo(){ StartTime = new DateTime(2020, 12, 30, 0, 0, 0), EndTime = new DateTime(2020, 12, 30, 12, 0, 0), IsUploaded = true },
+                new UploadInfo(){ StartTime = new DateTime(2020, 12, 30, 12, 0, 0), EndTime = new DateTime(2020, 12, 30, 18, 0, 0), IsUploaded = false },
+                new UploadInfo(){ StartTime = new DateTime(2020, 12, 30, 18, 0, 0), EndTime = new DateTime(2020, 12, 30, 21, 0, 0), IsUploaded = true },
+                new UploadInfo(){ StartTime = new DateTime(2020, 12, 30, 21, 0, 0), EndTime = new DateTime(2020, 12, 31, 0, 0, 0), IsUploaded = false },
+            };
             await TaskEx.FromResult(0);
         }
 
@@ -128,5 +171,12 @@ namespace WPFDemo.SimpleFrame.ViewModels.UXs
             await TaskEx.FromResult(0);
             _timer.Dispose();
         }
+    }
+
+    public class UploadInfo
+    {
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public bool IsUploaded { get; set; }
     }
 }

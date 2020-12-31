@@ -159,6 +159,9 @@
     <Compile Include="UXs\Dialog\DialogCommands.cs" />
     <Compile Include="UXs\Dialog\IConfirmDialog.cs" />
     <Compile Include="UXs\Marquee\ScrollingMarquee.cs" />
+    <Compile Include="UXs\ProgressBar\DistributionProgressBar\AlternationCountLastIndexConverter.cs" />
+    <Compile Include="UXs\ProgressBar\DistributionProgressBar\DistributionProgressBar.cs" />
+    <Compile Include="UXs\ProgressBar\DistributionProgressBar\DistributionProgressItem.cs" />
     <Compile Include="UXs\ProgressBar\EMCProgressBar.cs" />
     <Compile Include="UXs\ToolTip\CenterToolTipConverter.cs" />
     <Compile Include="UXs\ToolTip\EMCToolTip.cs" />

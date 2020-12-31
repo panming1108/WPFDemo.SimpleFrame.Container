@@ -118,12 +118,12 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10" />
-                    <RowDefinition Height="{Binding ElementName=PART_Content, Path=ActualHeight}" MinHeight="25" />
+                    <RowDefinition Height="Auto" MinHeight="25" />
                     <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="{Binding ElementName=PART_Content, Path=ActualWidth}" MinWidth="25" />
+                    <ColumnDefinition Width="Auto" MinWidth="25" />
                     <ColumnDefinition Width="10" />
                 </Grid.ColumnDefinitions>
                 <Grid x:Name="PART_Top_Angle"
@@ -184,20 +184,16 @@
                         <TranslateTransform X="-1.5" />
                     </Grid.RenderTransform>
                 </Grid>
-                <Path Grid.Row="1"
-                      Grid.Column="1"
-                      Data="M50,0 5,0 A5,5 0,0,0 0,5 L0,55 A5,5 0,0,0 5,60 L115,60 A5,5 0,0,0 120,55 L120,5 A5,5 0,0,0 115,0Z"
-                      Fill="{TemplateBinding Background}"
-                      Stretch="Fill"
-                      Stroke="{TemplateBinding BorderBrush}"
-                      StrokeThickness="1" />
-                <Border x:Name="PART_Content"
-                        Grid.Row="1"
+                <Border Grid.Row="1"
                         Grid.Column="1"
                         Padding="5"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                    <ContentPresenter Content="{TemplateBinding Content}" />
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}" />
                 </Border>
             </Grid>
         </Border>
@@ -511,6 +507,115 @@
                             </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <EMCProgressBar:AlternationCountLastIndexConverter x:Key="AlternationCountLastIndexConverter" />
+    <Style TargetType="EMCProgressBar:DistributionProgressItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="UnUploadBackground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=EMCProgressBar:DistributionProgressBar}, Path=UnUploadBackground}" />
+        <Setter Property="UploadedBackground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=EMCProgressBar:DistributionProgressBar}, Path=UploadedBackground}" />
+        <Setter Property="StartTime" Value="{Binding StartTime}" />
+        <Setter Property="EndTime" Value="{Binding EndTime}" />
+        <Setter Property="IsUploaded" Value="{Binding IsUploaded}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCProgressBar:DistributionProgressItem">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0">
+                        <Border.Resources>
+                            <Style TargetType="ToolTip">
+                                <Setter Property="Placement" Value="Bottom" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToolTip">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Border.Resources>
+                        <Border.ToolTip>
+                            <EMCToolTip:EMCToolTip Background="Black" BorderThickness="0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Foreground="White" Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=StartTime, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                                        <TextBlock Foreground="White" Text="至" />
+                                        <TextBlock Foreground="White" Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=EndTime, StringFormat='yyyy-MM-dd HH:mm:ss'}" />
+                                        <TextBlock x:Name="PART_UploadStatusText"
+                                                   Foreground="White"
+                                                   Text="未上传" />
+                                    </StackPanel>
+                                    <TextBlock x:Name="PART_UploadInfoText"
+                                               HorizontalAlignment="Center"
+                                               Foreground="White"
+                                               Text="等待补传中..."
+                                               Visibility="Visible" />
+                                </StackPanel>
+                            </EMCToolTip:EMCToolTip>
+                        </Border.ToolTip>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsUploaded" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=UploadedBackground}" />
+                            <Setter TargetName="PART_UploadStatusText" Property="Text" Value="已上传" />
+                            <Setter TargetName="PART_UploadInfoText" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsUploaded" Value="False">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=UnUploadBackground}" />
+                            <Setter TargetName="PART_UploadStatusText" Property="Text" Value="未上传" />
+                            <Setter TargetName="PART_UploadInfoText" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter TargetName="PART_Border" Property="CornerRadius" Value="15,0,0,15" />
+                        </Trigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource AlternationCountLastIndexConverter}">
+                                    <Binding Path="Items.Count" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=EMCProgressBar:DistributionProgressBar}" />
+                                    <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource Mode=Self}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter TargetName="PART_Border" Property="CornerRadius" Value="0,15,15,0" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="EMCProgressBar:DistributionProgressBar">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="600" />
+        <Setter Property="CornerRadius" Value="15" />
+        <Setter Property="UploadedBackground" Value="#009688" />
+        <Setter Property="UnUploadBackground" Value="#EBEEF5" />
+        <Setter Property="AlternationCount" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Items.Count}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="EMCProgressBar:DistributionProgressBar">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <ItemsPresenter />
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
