@@ -346,9 +346,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void Dispose()
         {
-            _setFlagMenuItem.Click -= SetStartFlag_Click;
-            _endFlagMenuItem.Click -= EndFlagMenuItem_Click;
-            _clearFlagMenuItem.Click -= ClearFlagMenuItem_Click;
+            if(_setFlagMenuItem != null)
+            {
+                _setFlagMenuItem.Click -= SetStartFlag_Click;
+            }
+            if(_endFlagMenuItem != null)
+            {
+                _endFlagMenuItem.Click -= EndFlagMenuItem_Click;
+            }
+            if(_clearFlagMenuItem != null)
+            {
+                _clearFlagMenuItem.Click -= ClearFlagMenuItem_Click;
+            }
         }
     }
 }
