@@ -43,10 +43,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             PART_SelectMask.DrawingHandler((drawingContext) =>
             {
-                if(geometryDrawing != null)
-                {
-                    drawingContext.DrawDrawing(geometryDrawing);
-                }
+                drawingContext.DrawDrawing(geometryDrawing);
             });
         }
 
