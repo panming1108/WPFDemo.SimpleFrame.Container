@@ -15,5 +15,6 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
+        <local:SelectMaskPaint x:Name="PART_SelectMask" />
     </Grid>
 </UserControl>

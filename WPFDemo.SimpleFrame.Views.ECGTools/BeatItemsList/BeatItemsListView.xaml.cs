@@ -17,60 +17,43 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     /// <summary>
     /// BeatItemsListView.xaml 的交互逻辑
     /// </summary>
-    public partial class BeatItemsListView : UserControl, ISelectItemsContainer
+    public partial class BeatItemsListView : UserControl, ISelectItemsContainer, IDragSelect
     {
         private readonly SelectedItemsCollection _selectedItemsCollection;
-        public bool IsCtrlKeyDown { get; set; }
+        private readonly DragSelectAction _dragSelectAction;
+        public DragSelectAction DragSelectAction => _dragSelectAction;
         public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
         public ItemCollection Items => PART_ItemsControl.Items;
-
-
         public event EventHandler<ItemsControlSelectionChangedEventArgs> ItemsControlSelectionChanged;
+
         public BeatItemsListView()
         {
             _selectedItemsCollection = new SelectedItemsCollection(this);
+            _dragSelectAction = new DragSelectAction(this);
             InitializeComponent();
-            MouseLeftButtonUp += BeatItemsListView_MouseLeftButtonUp;
             Unloaded += BeatItemsListView_Unloaded;
         }
-        private void BeatItemsListView_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        public void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e)
         {
-            var selectItem = GetItemByMouseUpPosition(Mouse.GetPosition(this));
-            if(selectItem == null)
+            ItemsControlSelectionChanged?.Invoke(this, e);
+        }
+
+        public void RenderDragSelectMask(GeometryDrawing geometryDrawing)
+        {
+            PART_SelectMask.DrawingHandler((drawingContext) =>
             {
-                return;
-            }
-            if (IsCtrlKeyDown)
-            {
-                selectItem.IsSelected = !selectItem.IsSelected;
-            }
-            else
-            {
-                _selectedItemsCollection.TryClearItems();
-                selectItem.IsSelected = true;
-            }
-            ItemsControlSelectionChanged?.Invoke(this, new ItemsControlSelectionChangedEventArgs(new List<ISelectItem>() { selectItem }, IsCtrlKeyDown));
+                if(geometryDrawing != null)
+                {
+                    drawingContext.DrawDrawing(geometryDrawing);
+                }
+            });
         }
 
         private void BeatItemsListView_Unloaded(object sender, RoutedEventArgs e)
         {
-            MouseLeftButtonUp -= BeatItemsListView_MouseLeftButtonUp;
+            _dragSelectAction.Dispose();
             Unloaded -= BeatItemsListView_Unloaded;
-        }
-
-        private ISelectItem GetItemByMouseUpPosition(Point point)
-        {
-            foreach (var item in Items)
-            {
-                var itemView = item as BeatItemView;
-                var topLeft = itemView.TranslatePoint(new Point(0, 0), this);
-                var itemBounds = new Rect(topLeft.X, topLeft.Y, itemView.ActualWidth, itemView.ActualHeight);
-                if(itemBounds.Contains(point))
-                {
-                    return itemView;
-                }
-            }
-            return null;
         }
     }
 }

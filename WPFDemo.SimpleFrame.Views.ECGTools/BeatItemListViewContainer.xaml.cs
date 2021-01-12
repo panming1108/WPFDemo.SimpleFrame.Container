@@ -43,7 +43,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
             {
-                PART_ItemsControl.IsCtrlKeyDown = false;
+                PART_ItemsControl.DragSelectAction.IsCtrlKeyDown = false;
             }
         }
 
@@ -51,7 +51,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
             {
-                PART_ItemsControl.IsCtrlKeyDown = true;
+                PART_ItemsControl.DragSelectAction.IsCtrlKeyDown = true;
             }
         }
 
