@@ -100,8 +100,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeatItemListView.xaml.cs">
-      <DependentUpon>BeatItemListView.xaml</DependentUpon>
+    <Compile Include="BeatItemListViewContainer.xaml.cs">
+      <DependentUpon>BeatItemListViewContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatItemsList\BeatItemsControlBar.xaml.cs">
+      <DependentUpon>BeatItemsControlBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatItemsList\BeatItemsListView.xaml.cs">
+      <DependentUpon>BeatItemsListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatItemsList\BeatItemView.xaml.cs">
+      <DependentUpon>BeatItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatItemsList\Collection\SelectedItemsCollection.cs" />
+    <Compile Include="BeatItemsList\EventArgs\BoolEventArgs.cs" />
+    <Compile Include="BeatItemsList\EventArgs\ClickSelectionChangedEventArgs.cs" />
+    <Compile Include="BeatItemsList\EventArgs\LeadSelectionChangedEventArgs.cs" />
+    <Compile Include="BeatItemsList\EventArgs\SortEventArgs.cs" />
+    <Compile Include="BeatItemsList\Interface\ISelectItem.cs" />
+    <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
+    <Compile Include="BeatItemsList\SelectionPopupButton.xaml.cs">
+      <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
@@ -157,7 +176,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BeatItemListView.xaml">
+    <Page Include="BeatItemListViewContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatItemsList\BeatItemsControlBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatItemsList\BeatItemsListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatItemsList\BeatItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatItemsList\SelectionPopupButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +234,7 @@
   <ItemGroup>
     <Resource Include="Images\ScopeView.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

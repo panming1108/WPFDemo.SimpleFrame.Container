@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList.SelectionPopupButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="PART_Root"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid>
+        <ToggleButton x:Name="PART_Button" Content="{Binding ElementName=PART_Root, Path=ButtonContent}" />
+        <Popup Width="85"
+               AllowsTransparency="True"
+               HorizontalOffset="-4"
+               IsOpen="{Binding ElementName=PART_Button, Path=IsChecked, Mode=TwoWay}"
+               Placement="Left"
+               PlacementTarget="{Binding ElementName=PART_Button}"
+               StaysOpen="False"
+               VerticalOffset="-5">
+            <ListBox x:Name="PART_ListBox"
+                     Padding="2"
+                     DisplayMemberPath="{Binding ElementName=PART_Root, Path=DisplayMemberPath}"
+                     ItemContainerStyle="{Binding ElementName=PART_Root, Path=ItemContainerStyle}"
+                     ItemsSource="{Binding ElementName=PART_Root, Path=ItemsSource}"
+                     SelectedItem="{Binding ElementName=PART_Root, Path=SelectedItem, Mode=TwoWay}"
+                     SelectedValue="{Binding ElementName=PART_Root, Path=SelectedValue, Mode=TwoWay}"
+                     SelectedValuePath="{Binding ElementName=PART_Root, Path=SelectedValuePath}"
+                     SelectionChanged="PART_ListBox_SelectionChanged"
+                     SelectionMode="{Binding ElementName=PART_Root, Path=SelectionMode}"
+                     Style="{Binding ElementName=PART_Root, Path=ListBoxStyle}" />
+        </Popup>
+    </Grid>
+</UserControl>

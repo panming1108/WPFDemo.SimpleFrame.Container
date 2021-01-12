@@ -25,12 +25,11 @@
                     <ECGTools:BoxLineMeterView Grid.Column="0" />
                     <ECGTools:ScopeViewerView Grid.Column="1" />
                     <ECGTools:EuqiDistanceMeasureView Grid.Row="1" />
-                    <ECGTools:SwitchView Grid.Row="1"
-                                         Grid.Column="1" />
+                    <ECGTools:SwitchView Grid.Row="1" Grid.Column="1" />
                 </Grid>
             </TabItem>
             <TabItem Header="BeatItemList">
-                <ECGTools:BeatItemListView />
+                <ECGTools:BeatItemListViewContainer />
             </TabItem>
             <TabItem Header="DiagCompleteECG">
                 <ECGTools:DiagCompleteECG />
