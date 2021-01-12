@@ -114,11 +114,12 @@
     </Compile>
     <Compile Include="BeatItemsList\Collection\SelectedItemsCollection.cs" />
     <Compile Include="BeatItemsList\EventArgs\BoolEventArgs.cs" />
-    <Compile Include="BeatItemsList\EventArgs\ClickSelectionChangedEventArgs.cs" />
+    <Compile Include="BeatItemsList\EventArgs\ItemsControlSelectionChangedEventArgs.cs" />
     <Compile Include="BeatItemsList\EventArgs\LeadSelectionChangedEventArgs.cs" />
     <Compile Include="BeatItemsList\EventArgs\SortEventArgs.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItem.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
+    <Compile Include="BeatItemsList\Models\BeatInfoSource.cs" />
     <Compile Include="BeatItemsList\SelectionPopupButton.xaml.cs">
       <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>

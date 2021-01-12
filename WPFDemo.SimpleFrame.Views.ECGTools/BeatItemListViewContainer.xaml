@@ -21,12 +21,12 @@
                                       Height="25"
                                       LeadSelectionChanged="PART_ItemsControlBar_LeadSelectionChanged"
                                       SelectedAll="PART_ItemsControlBar_SelectedAll"
-                                      SelectedCount="{Binding ElementName=PART_Root, Path=SelectedItemsCollection.SelectedItems.Count}"
+                                      SelectedCount="{Binding ElementName=PART_Root, Path=SelectedItems.Count}"
                                       SelectedReverse="PART_ItemsControlBar_SelectedReverse"
                                       SortChanged="PART_ItemsControlBar_SortChanged"
                                       StrechChanged="PART_ItemsControlBar_StrechChanged" />
         <controls:BeatItemsListView x:Name="PART_ItemsControl"
                                     Grid.Row="1"
-                                    ClickSelectionChanged="PART_ItemsControl_ClickSelectionChanged" />
+                                    ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
     </Grid>
 </UserControl>

@@ -10,6 +10,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public interface ISelectItemsContainer
     {
+        bool IsCtrlKeyDown { get; set; }
         SelectedItemsCollection SelectedItemsCollection { get; }
     }
 }

@@ -22,22 +22,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// <summary>
     /// BeatItemListView.xaml 的交互逻辑
     /// </summary>
-    public partial class BeatItemListViewContainer : UserControl, ISelectItemsContainer
+    public partial class BeatItemListViewContainer : UserControl
     {
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
-        private readonly SelectedItemsCollection _selectedItemsCollection;
-        public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
-        private bool _isCtrlKeyDown = false;
+
+        private readonly ObservableCollection<BeatInfo> _selectedItems = new ObservableCollection<BeatInfo>();
+        public ObservableCollection<BeatInfo> SelectedItems => _selectedItems;
 
         public BeatItemListViewContainer()
         {
-            _selectedItemsCollection = new SelectedItemsCollection(this);
             InitializeComponent();
             InitItemsControl();
             InitItemsControlBar();
             KeyDown += BeatItemListViewContainer_KeyDown;
             KeyUp += BeatItemListViewContainer_KeyUp;
-            Loaded += BeatItemListView_Loaded;
             Unloaded += BeatItemListViewContainer_Unloaded;
         }
 
@@ -45,56 +43,45 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
             {
-                _isCtrlKeyDown = false;
+                PART_ItemsControl.IsCtrlKeyDown = false;
             }
         }
 
         private void BeatItemListViewContainer_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
             {
-                _isCtrlKeyDown = true;
+                PART_ItemsControl.IsCtrlKeyDown = true;
             }
         }
 
-        private void InitItemsControl()
+        private void PART_ItemsControl_ItemsControlSelectionChanged(object sender, ItemsControlSelectionChangedEventArgs e)
         {
-            var source = GenerateSource(30);
-            PART_ItemsControlBar.TotalCount = source.Count;
-            foreach (var item in source)
+            if(e.IsCtrlKeyDown)
             {
-                ISelectItem itemView = new BeatItemView(this)
+                foreach (var item in e.SelectedItems)
                 {
-                    DataContext = item,
-                    IsSelected = true,
-                };
-                PART_ItemsControl.Items.Add(itemView);
-            }
-        }
-
-        private void InitItemsControlBar()
-        {
-            PART_ItemsControlBar.LeadSource = LeadSource;
-            PART_ItemsControlBar.LeadSelectedItems.Add(LeadSource[0]);
-            PART_ItemsControlBar.LeadSelectedItems.Add(LeadSource[3]);
-        }
-
-        private void BeatItemListView_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void PART_ItemsControl_ClickSelectionChanged(object sender, ClickSelectionChangedEventArgs e)
-        {
-            var selectItem = e.SelectedItem as ISelectItem;
-            if (_isCtrlKeyDown)
-            {
-                selectItem.IsSelected = !selectItem.IsSelected;
+                    var itemView = item as ISelectItem;
+                    var beatInfo = (BeatInfo)itemView.DataContext;
+                    if(SelectedItems.Contains(beatInfo))
+                    {
+                        SelectedItems.Remove(beatInfo);
+                    }
+                    else
+                    {
+                        SelectedItems.Add(beatInfo);
+                    }
+                }
             }
             else
             {
-                _selectedItemsCollection.TryClearItems();
-                selectItem.IsSelected = true;
+                SelectedItems.Clear();
+                foreach (var item in e.SelectedItems)
+                {
+                    var itemView = item as ISelectItem;
+                    var beatInfo = (BeatInfo)itemView.DataContext;
+                    SelectedItems.Add(beatInfo);
+                }
             }
         }
 
@@ -123,30 +110,38 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         }
 
+        private void InitItemsControl()
+        {
+            PART_ItemsControlBar.TotalCount = BeatInfoSource.AllBeatInfos.Count;
+            //默认全选
+            foreach (var item in BeatInfoSource.AllBeatInfos)
+            {
+                _selectedItems.Add(item);
+            }
+            var source = BeatInfoSource.GetPagerBeatInfo(1, 30);
+            foreach (var item in source)
+            {
+                ISelectItem itemView = new BeatItemView(PART_ItemsControl)
+                {
+                    DataContext = item,
+                    IsSelected = _selectedItems.Contains(item),
+                };
+                PART_ItemsControl.Items.Add(itemView);
+            }
+        }
+
+        private void InitItemsControlBar()
+        {
+            PART_ItemsControlBar.LeadSource = LeadSource;
+            PART_ItemsControlBar.LeadSelectedItems.Add(LeadSource[0]);
+            PART_ItemsControlBar.LeadSelectedItems.Add(LeadSource[3]);
+        }
+
         private void BeatItemListViewContainer_Unloaded(object sender, RoutedEventArgs e)
         {
             KeyDown -= BeatItemListViewContainer_KeyDown;
             KeyUp -= BeatItemListViewContainer_KeyUp;
-            Loaded -= BeatItemListView_Loaded;
             Unloaded -= BeatItemListViewContainer_Unloaded;
-        }
-
-        private List<BeatInfo> GenerateSource(int count)
-        {
-            string[] beatTypes = new string[] { "N", "S", "V" };
-            Random random = new Random();
-            var results = new List<BeatInfo>();
-            for (int i = 0; i < count; i++)
-            {
-                BeatInfo beatInfo = new BeatInfo()
-                {
-                    BeatType = beatTypes[i % 3],
-                    Position = i * 10000,
-                    Interval = random.Next(0, count)
-                };
-                results.Add(beatInfo);
-            }
-            return results;
         }
     }
 }
