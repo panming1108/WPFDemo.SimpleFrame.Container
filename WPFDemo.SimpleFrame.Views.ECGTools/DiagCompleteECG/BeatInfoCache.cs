@@ -34,5 +34,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public string BeatType { get; set; }
         public double Position { get; set; }
         public double Interval { get; set; }
+        public int R { get; set; }
     }
 }

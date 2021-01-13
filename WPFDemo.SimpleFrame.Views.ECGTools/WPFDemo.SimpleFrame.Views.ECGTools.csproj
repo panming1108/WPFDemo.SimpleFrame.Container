@@ -122,6 +122,7 @@
     <Compile Include="BeatItemsList\Interface\ISelectItem.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
     <Compile Include="BeatItemsList\Models\BeatInfoSource.cs" />
+    <Compile Include="BeatItemsList\Models\MessagerKeyEnum.cs" />
     <Compile Include="BeatItemsList\SelectionPopupButton.xaml.cs">
       <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>

@@ -61,10 +61,32 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             }
         }
 
-        public void OnMouseMove(Point currentPoint)
+        public void OnMouseDrag(Point currentPoint)
         {
+            if(_mouseDownPoint == currentPoint)
+            {
+                return;
+            }
             _isDrag = true;
+            var control = _container as FrameworkElement;
+            control.CaptureMouse();
             //鼠标按下拖动
+            if(currentPoint.X < 0)
+            {
+                currentPoint.X = 0;
+            }
+            if(currentPoint.X > control.ActualWidth)
+            {
+                currentPoint.X = control.ActualWidth;
+            }
+            if(currentPoint.Y < 0)
+            {
+                currentPoint.Y = 0;
+            }
+            if (currentPoint.Y > control.ActualHeight)
+            {
+                currentPoint.Y = control.ActualHeight;
+            }
             _selectMaskRect = new Rect(_mouseDownPoint, currentPoint);           
             RenderDragSelect(_selectMaskRect);
             SetDragSelectItems();
@@ -73,6 +95,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public List<ISelectItem> OnDragOver()
         {
             _isDrag = false;
+            var control = _container as UIElement;
+            control.ReleaseMouseCapture();
             RenderDragSelect(Rect.Empty);
             _selectMaskRect = Rect.Empty;
             return _actionSelectItems;
