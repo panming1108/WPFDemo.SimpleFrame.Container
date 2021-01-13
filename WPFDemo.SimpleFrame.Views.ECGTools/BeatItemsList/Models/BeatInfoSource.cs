@@ -31,7 +31,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             return results;
         }
 
-        public static List<BeatInfo> GetPagerBeatInfo(int pageIndex, int pageSize)
+        public static Tuple<List<BeatInfo>, int, int> GetPagerBeatInfo(int pageIndex, int pageSize)
         {
             var totalPage = AllBeatInfos.Count % pageSize == 0 ? AllBeatInfos.Count / pageSize : (AllBeatInfos.Count / pageSize) + 1;
             var pageNo = pageIndex;
@@ -39,7 +39,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 pageNo = totalPage;
             }
-            return AllBeatInfos.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+            return new Tuple<List<BeatInfo>, int, int>(AllBeatInfos.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList(), pageNo, totalPage);
         }
     }
 }

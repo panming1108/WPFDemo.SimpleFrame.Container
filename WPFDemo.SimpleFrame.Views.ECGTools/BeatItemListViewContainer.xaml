@@ -28,5 +28,14 @@
         <controls:BeatItemsListView x:Name="PART_ItemsControl"
                                     Grid.Row="1"
                                     ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <TextBlock Text="共" />
+            <TextBlock x:Name="PART_TotalPage" />
+            <TextBlock Text="页，当前第" />
+            <TextBlock x:Name="PART_CurrentPage" />
+            <TextBlock Text="页" />
+        </StackPanel>
     </Grid>
 </UserControl>

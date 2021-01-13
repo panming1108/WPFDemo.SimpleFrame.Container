@@ -24,6 +24,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// </summary>
     public partial class BeatItemListViewContainer : UserControl
     {
+        private int _pageNo = 1;
+        private int _pageSize = 30;
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
         private readonly ObservableCollection<BeatInfo> _selectedItems = new ObservableCollection<BeatInfo>();
@@ -43,7 +45,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
             {
-                PART_ItemsControl.DragSelectAction.IsCtrlKeyDown = false;
+                PART_ItemsControl.SetCtrlKeyStatus(isKeyDown: false);
             }
         }
 
@@ -51,7 +53,29 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
             {
-                PART_ItemsControl.DragSelectAction.IsCtrlKeyDown = true;
+                PART_ItemsControl.SetCtrlKeyStatus(isKeyDown: true);
+            }
+            else if (e.Key == Key.Up || e.Key == Key.Left)
+            {
+                if(PART_ItemsControl.CanMoveToIndex(PART_ItemsControl.CurrentMoveIndex - 1))
+                {
+                    PART_ItemsControl.MoveToIndex(PART_ItemsControl.CurrentMoveIndex - 1);
+                }
+                else
+                {
+                    ChangePage(_pageNo - 1);
+                }
+            }
+            else if (e.Key == Key.Down || e.Key == Key.Right)
+            {
+                if (PART_ItemsControl.CanMoveToIndex(PART_ItemsControl.CurrentMoveIndex + 1))
+                {
+                    PART_ItemsControl.MoveToIndex(PART_ItemsControl.CurrentMoveIndex + 1);
+                }
+                else
+                {
+                    ChangePage(_pageNo + 1);
+                }
             }
         }
 
@@ -118,8 +142,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _selectedItems.Add(item);
             }
-            var source = BeatInfoSource.GetPagerBeatInfo(1, 30);
-            foreach (var item in source)
+            var source = BeatInfoSource.GetPagerBeatInfo(_pageNo, _pageSize);
+            _pageNo = source.Item2;
+            PART_CurrentPage.Text = source.Item2.ToString();
+            PART_TotalPage.Text = source.Item3.ToString();
+            foreach (var item in source.Item1)
             {
                 ISelectItem itemView = new BeatItemView(PART_ItemsControl)
                 {
@@ -128,6 +155,37 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 };
                 PART_ItemsControl.Items.Add(itemView);
             }
+            PART_ItemsControl.CurrentMoveIndex = 0;
+        }
+
+        private void ChangePage(int pageNo)
+        {
+            if(pageNo < 1)
+            {
+                return;
+            }
+            var source = BeatInfoSource.GetPagerBeatInfo(pageNo, _pageSize);
+            PART_TotalPage.Text = source.Item3.ToString();
+            PART_ItemsControl.ClearItemsSource();
+            foreach (var item in source.Item1)
+            {
+                ISelectItem itemView = new BeatItemView(PART_ItemsControl)
+                {
+                    DataContext = item,
+                    IsSelected = _selectedItems.Contains(item),
+                };
+                PART_ItemsControl.Items.Add(itemView);
+            }
+            if(source.Item2 > _pageNo)
+            {
+                PART_ItemsControl.MoveToIndex(0);
+            }
+            else
+            {
+                PART_ItemsControl.MoveToIndex(source.Item1.Count - 1);
+            }
+            _pageNo = source.Item2;
+            PART_CurrentPage.Text = source.Item2.ToString();
         }
 
         private void InitItemsControlBar()

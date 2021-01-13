@@ -12,6 +12,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     {
         private Rect _selectMaskRect = Rect.Empty;
         private Point _mouseDownPoint;
+        public Point MouseDownPoint => _mouseDownPoint;
         private Brush _maskFillBrush;
         private Brush _maskStrokeBrush;
         private double _maskStrokeThickness;
@@ -39,7 +40,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             _container = container;
             InitBrush();
-            RegisterMouseEvent();
         }
 
         private void InitBrush()
@@ -50,16 +50,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _maskStrokePen = new Pen(_maskStrokeBrush, _maskStrokeThickness);
         }
 
-        private void RegisterMouseEvent()
+        public void OnMouseLeftButtonDown(Point mouseDownPoint)
         {
-            var container = _container as UIElement;
-            container.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnMouseLeftButtonDown));
-            container.AddHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnMouseLeftButtonUp));
-            container.AddHandler(UIElement.MouseMoveEvent, new MouseEventHandler(OnMouseMove));
-        }
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _mouseDownPoint = e.GetPosition(sender as FrameworkElement);
+            _mouseDownPoint = mouseDownPoint;
             _itemsStatusDicWhenMouseDown.Clear();
             foreach (var item in _container.Items)
             {
@@ -68,30 +61,30 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             }
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
+        public void OnMouseMove(Point currentPoint)
         {
-            if(e.LeftButton != MouseButtonState.Pressed)
-            {
-                return;
-            }
             _isDrag = true;
             //鼠标按下拖动
-            var currentPoint = e.GetPosition(sender as FrameworkElement);
             _selectMaskRect = new Rect(_mouseDownPoint, currentPoint);           
             RenderDragSelect(_selectMaskRect);
             SetDragSelectItems();
         }
 
-        private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        public List<ISelectItem> OnDragOver()
         {
             _isDrag = false;
             RenderDragSelect(Rect.Empty);
-            if (_selectMaskRect == Rect.Empty)
-            {
-                SetClickSelectItems();
-            }
-            _container.OnItemsControlSelectionChanged(new ItemsControlSelectionChangedEventArgs(_actionSelectItems, IsCtrlKeyDown));
             _selectMaskRect = Rect.Empty;
+            return _actionSelectItems;
+        }
+
+        public List<ISelectItem> OnClickOver()
+        {
+            _isDrag = false;
+            RenderDragSelect(Rect.Empty);
+            SetClickSelectItems();
+            _selectMaskRect = Rect.Empty;
+            return _actionSelectItems;
         }
 
         private void SetDragSelectItems()
@@ -199,17 +192,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             }
         }
 
-        private void UnRegisterMouseEvent()
-        {
-            var container = _container as UIElement;
-            container.RemoveHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnMouseLeftButtonDown));
-            container.RemoveHandler(UIElement.MouseLeftButtonUpEvent, new MouseButtonEventHandler(OnMouseLeftButtonUp));
-            container.RemoveHandler(UIElement.MouseMoveEvent, new MouseEventHandler(OnMouseMove));
-        }
-
         public void Dispose()
         {
-            UnRegisterMouseEvent();
+
         }
     }
 }

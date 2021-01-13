@@ -12,6 +12,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     {
         ItemCollection Items { get; }
         SelectedItemsCollection SelectedItemsCollection { get; }
+        int CurrentMoveIndex { get; set; }
+        void ClearItemsSource();
         void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e);
+        bool CanMoveToIndex(int index);
+        void MoveToIndex(int index);
     }
 }

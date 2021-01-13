@@ -8,7 +8,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public interface IDragSelect
     {
-        DragSelectAction DragSelectAction { get; }
+        void SetCtrlKeyStatus(bool isKeyDown);
         void RenderDragSelectMask(GeometryDrawing geometryDrawing);
     }
 }
