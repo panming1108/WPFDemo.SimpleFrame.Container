@@ -104,11 +104,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
+            var container = Container as FrameworkElement;
             var beatInfoR = (int)DataContext;
             PART_BeatType.Text = BeatInfoSource.AllBeatInfos[beatInfoR].BeatType;
             PART_Order.Text = BeatInfoSource.AllBeatInfos[beatInfoR].Interval.ToString();
-            Width = 125;
-            Height = 125;
+            Width = container.ActualWidth / 6;
+            Height = container.ActualWidth / 6;
             DrawECG(drawingContext);
         }
 

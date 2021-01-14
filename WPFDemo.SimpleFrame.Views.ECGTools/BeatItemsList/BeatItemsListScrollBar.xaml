@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList"
              mc:Ignorable="d" 
+             x:Name="PART_Root"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <ScrollBar Orientation="{Binding ElementName=PART_Root, Path=Orientation}"
+                   Maximum="{Binding ElementName=PART_Root, Path=TotalPage}"
+                   Minimum="1"
+                   Style="{x:Null}"
+                   Value="{Binding ElementName=PART_Root, Path=PageNo, Mode=TwoWay}"
+                   ViewportSize="1"/>
     </Grid>
 </UserControl>

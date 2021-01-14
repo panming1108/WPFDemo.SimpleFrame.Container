@@ -7,7 +7,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <Grid>
+    <Grid Height="610">
         <ItemsControl x:Name="PART_ItemsControl">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

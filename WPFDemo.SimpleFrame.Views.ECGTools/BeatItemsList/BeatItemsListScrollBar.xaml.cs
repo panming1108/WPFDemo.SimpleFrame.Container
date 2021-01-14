@@ -40,7 +40,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             get { return (int)GetValue(PageSizeProperty); }
             set { SetValue(PageSizeProperty, value); }
         }
+        public Orientation Orientation
+        {
+            get { return (Orientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
 
+        public static readonly DependencyProperty OrientationProperty =
+            DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(BeatItemsListScrollBar));
         public static readonly DependencyProperty PageSizeProperty =
             DependencyProperty.Register(nameof(PageSize), typeof(int), typeof(BeatItemsListScrollBar), new PropertyMetadata(30, OnPageSizeChanged));
         public static readonly DependencyProperty TotalPageProperty =

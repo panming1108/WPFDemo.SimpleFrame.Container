@@ -15,6 +15,7 @@
     <Grid Width="750" Background="#ECF1F4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <controls:BeatItemsControlBar x:Name="PART_ItemsControlBar"
@@ -40,9 +41,10 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <controls:BeatItemsListView x:Name="PART_ItemsControl" ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
+            <controls:BeatItemsListView x:Name="PART_ItemsControl" ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged"/>
             <controls:BeatItemsListScrollBar x:Name="PART_ScrollBar"
                                              Grid.Column="1"
+                                             Orientation="Vertical"
                                              PageNoChanged="PART_ScrollBar_PageNoChanged" />
         </Grid>
     </Grid>
