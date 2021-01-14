@@ -13,6 +13,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         ItemCollection Items { get; }
         SelectedItemsCollection SelectedItemsCollection { get; }
         void ClearItemsSource();
-        void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e);
+        void OnItemsControlSelectionChanged(SelectActionEnum selectActionEnum);
     }
 }

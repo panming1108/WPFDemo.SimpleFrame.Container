@@ -11,10 +11,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public SelectActionEnum SelectActionMode { get; set; }
         public IList SelectedItems { get; set; }
 
-        public ItemsControlSelectionChangedEventArgs(IList selectedItems, SelectActionEnum selectActionMode)
+        public IList UnSelectedItems { get; set; }
+
+        public ItemsControlSelectionChangedEventArgs(IList selectedItems, IList unSelectedItems, SelectActionEnum selectActionMode)
         {
             SelectedItems = selectedItems;
             SelectActionMode = selectActionMode;
+            UnSelectedItems = unSelectedItems;
         }
     }
 }

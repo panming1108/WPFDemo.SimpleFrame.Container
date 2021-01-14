@@ -10,15 +10,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     public class ItemsSourceHandler<T, T1>
     {
         private IBeatItemListViewContainer<T, T1> _beatItemListViewContainer;
-        private readonly ObservableCollection<T> _selectedItems;
-        public ObservableCollection<T> SelectedItems => _selectedItems;
+
+        public ObservableCollection<T> SelectedItems { get; }
         private Dictionary<T,T1> ItemsSource => _beatItemListViewContainer.ItemsSource;
 
 
         public ItemsSourceHandler(IBeatItemListViewContainer<T, T1> beatItemListViewContainer)
         {
             _beatItemListViewContainer = beatItemListViewContainer;
-            _selectedItems = new ObservableCollection<T>();
+            SelectedItems = new ObservableCollection<T>();
         }
 
         public void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e)
@@ -26,33 +26,48 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             switch (e.SelectActionMode)
             {
                 case SelectActionEnum.None:
-                    SelectedItems.Clear();
-                    foreach (var item in e.SelectedItems)
-                    {
-                        var itemView = item as ISelectItem;
-                        var beatInfoR = (T)itemView.DataContext;
-                        SelectedItems.Add(beatInfoR);
-                    }
+                    ResetSelectItemsWithOnlyDisplaySelectedItems(e.SelectedItems);
                     break;
                 case SelectActionEnum.Ctrl:
-                    foreach (var item in e.SelectedItems)
-                    {
-                        var itemView = item as ISelectItem;
-                        var beatInfoR = (T)itemView.DataContext;
-                        if (SelectedItems.Contains(beatInfoR))
-                        {
-                            SelectedItems.Remove(beatInfoR);
-                        }
-                        else
-                        {
-                            SelectedItems.Add(beatInfoR);
-                        }
-                    }
+                    ResetSelectedItemsWithOtherSelectItems(e.SelectedItems, e.UnSelectedItems);
                     break;
                 case SelectActionEnum.Shift:
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void ResetSelectItemsWithOnlyDisplaySelectedItems(IList selectedItems)
+        {
+            SelectedItems.Clear();
+            foreach (var item in selectedItems)
+            {
+                var itemView = item as ISelectItem;
+                var beatInfoR = (T)itemView.DataContext;
+                SelectedItems.Add(beatInfoR);
+            }
+        }
+
+        private void ResetSelectedItemsWithOtherSelectItems(IList selectedItems, IList unSelectedItems)
+        {
+            foreach (var item in selectedItems)
+            {
+                var itemView = item as ISelectItem;
+                var beatInfoR = (T)itemView.DataContext;
+                if (!SelectedItems.Contains(beatInfoR))
+                {
+                    SelectedItems.Add(beatInfoR);
+                }
+            }
+            foreach (var item in unSelectedItems)
+            {
+                var itemView = item as ISelectItem;
+                var beatInfoR = (T)itemView.DataContext;
+                if (SelectedItems.Contains(beatInfoR))
+                {
+                    SelectedItems.Remove(beatInfoR);
+                }
             }
         }
 

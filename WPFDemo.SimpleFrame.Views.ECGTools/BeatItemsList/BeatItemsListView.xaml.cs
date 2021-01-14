@@ -81,10 +81,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 _currentSelectAction.DragOver();
             }
             _isMouseDown = false;
-            if(_currentSelectAction.ActionSelectItems != null && _currentSelectAction.ActionSelectItems.Count > 0)
-            {
-                OnItemsControlSelectionChanged(new ItemsControlSelectionChangedEventArgs(_currentSelectAction.ActionSelectItems, _currentSelectAction.SelectActionMode));
-            }
+            OnItemsControlSelectionChanged(_currentSelectAction.SelectActionMode);
         }
 
         private void OnClickItem(ISelectItem itemView)
@@ -96,9 +93,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             //发送消息，定位诊断图
         }
 
-        public void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e)
+        public void OnItemsControlSelectionChanged(SelectActionEnum selectActionEnum)
         {
-            ItemsControlSelectionChanged?.Invoke(this, e);
+            ItemsControlSelectionChanged?.Invoke(this, new ItemsControlSelectionChangedEventArgs(SelectedItemsCollection.SelectedItems, SelectedItemsCollection.UnSelectedItems, selectActionEnum));
         }
 
         private void BeatItemsListView_Unloaded(object sender, RoutedEventArgs e)
@@ -130,7 +127,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _selectedItemsCollection.TryClearItems();
             var itemView = Items[CurrentMoveIndex] as ISelectItem;
             itemView.IsSelected = true;
-            OnItemsControlSelectionChanged(new ItemsControlSelectionChangedEventArgs(new List<ISelectItem>() { itemView }, SelectActionEnum.None));
+            OnItemsControlSelectionChanged(SelectActionEnum.None);
         }
 
         public bool CanMoveToIndex(int index)

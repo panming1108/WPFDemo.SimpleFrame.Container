@@ -11,17 +11,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public class SelectedItemsCollection
     {
-        private readonly ISelectItemsContainer _container;
-        private readonly ObservableCollection<ISelectItem> _selectedItems;
-        public ObservableCollection<ISelectItem> SelectedItems => _selectedItems;
+        public ObservableCollection<ISelectItem> SelectedItems { get; }
 
-        public ISelectItemsContainer Container => _container;
+        public ObservableCollection<ISelectItem> UnSelectedItems => GetUnSelectedItems();
+
+        public ISelectItemsContainer Container { get; }
 
         public SelectedItemsCollection(ISelectItemsContainer container)
         {
-            _container = container;
-            _selectedItems = new ObservableCollection<ISelectItem>();
-            _selectedItems.CollectionChanged += SelectedItems_CollectionChanged;
+            Container = container;
+            SelectedItems = new ObservableCollection<ISelectItem>();
+            SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
         }
 
         private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -55,22 +55,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         public bool TryAddItem(ISelectItem selectItem)
         {
-            if (_selectedItems.Contains(selectItem))
+            if (SelectedItems.Contains(selectItem))
             {
                 return false;
             }
             else
             {
-                _selectedItems.Add(selectItem);
+                SelectedItems.Add(selectItem);
                 return true;
             }
         }
 
         public bool TryRemoveItem(ISelectItem selectItem)
         {
-            if (_selectedItems.Contains(selectItem))
+            if (SelectedItems.Contains(selectItem))
             {
-                _selectedItems.Remove(selectItem);
+                SelectedItems.Remove(selectItem);
                 return true;
             }
             else
@@ -81,11 +81,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         public void TryClearItems()
         {
-            var count = _selectedItems.Count;
+            var count = SelectedItems.Count;
             for (int i = count; i > 0; i--)
             {
-                _selectedItems.RemoveAt(i - 1);
+                SelectedItems.RemoveAt(i - 1);
             }
+        }
+
+        private ObservableCollection<ISelectItem> GetUnSelectedItems()
+        {
+            ObservableCollection<ISelectItem> result = new ObservableCollection<ISelectItem>();
+            foreach (var item in Container.Items)
+            {
+                var itemView = item as ISelectItem;
+                if(!SelectedItems.Contains(itemView))
+                {
+                    result.Add(itemView);
+                }
+            }
+            return result;
         }
     }
 }

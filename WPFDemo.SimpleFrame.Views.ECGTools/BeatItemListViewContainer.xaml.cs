@@ -30,13 +30,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public Dictionary<int, BeatInfo> ItemsSource => BeatInfoSource.AllBeatInfos;
 
-        private readonly ItemsSourceHandler<int, BeatInfo> _itemsSourceHandler;
-        public ItemsSourceHandler<int, BeatInfo> ItemsSourceHandler => _itemsSourceHandler;
-        public ObservableCollection<int> SelectedItems => _itemsSourceHandler.SelectedItems;
+        public ItemsSourceHandler<int, BeatInfo> ItemsSourceHandler { get; }
+        public ObservableCollection<int> SelectedItems => ItemsSourceHandler.SelectedItems;
 
         public BeatItemListViewContainer()
         {
-            _itemsSourceHandler = new ItemsSourceHandler<int, BeatInfo>(this);
+            ItemsSourceHandler = new ItemsSourceHandler<int, BeatInfo>(this);
             InitializeComponent();
             InitItemsSource();
             InitItemsControlBar();
@@ -50,7 +49,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private async Task OnBeatDeleted(string arg)
         {            
             PART_ScrollBar.TotalCount = BeatInfoSource.AllBeatInfos.Count;
-            var totalPage = _itemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
+            var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
             if(PART_ScrollBar.PageNo > totalPage)
             {
                 PART_ScrollBar.PageNo = totalPage;
@@ -96,7 +95,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControl_ItemsControlSelectionChanged(object sender, ItemsControlSelectionChangedEventArgs e)
         {
-            _itemsSourceHandler.OnItemsControlSelectionChanged(e);
+            ItemsSourceHandler.OnItemsControlSelectionChanged(e);
         }
 
         private void PART_ItemsControlBar_LeadSelectionChanged(object sender, LeadSelectionChangedEventArgs e)
@@ -181,7 +180,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 SelectedItems.Add(item);
             }
-            var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
             InitItemsControl(pagerSource);
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
@@ -194,7 +193,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 SelectedItems.Add(item);
             }
-            var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
             InitItemsControl(pagerSource);
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
@@ -208,7 +207,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+                var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
                 InitItemsControl(pagerSource);
                 if (isMoveToNext)
                 {
@@ -255,7 +254,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ScrollBar_PageNoChanged(object sender, PageNoChangedEventArgs e)
         {
-            var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
             InitItemsControl(pagerSource);
             //如果跳转页大于当前页，则选择第一个
             if (e.NewPageNo > e.OldPageNo)

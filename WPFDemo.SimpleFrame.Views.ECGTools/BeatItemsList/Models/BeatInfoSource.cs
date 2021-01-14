@@ -19,7 +19,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             Random random = new Random();
             var results = new Dictionary<int, BeatInfo>();
-            for (int i = 0; i < 33; i++)
+            for (int i = 0; i < 200000; i++)
             {
                 BeatInfo beatInfo = new BeatInfo()
                 {
