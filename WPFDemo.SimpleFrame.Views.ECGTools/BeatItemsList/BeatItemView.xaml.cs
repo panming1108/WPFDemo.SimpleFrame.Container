@@ -23,6 +23,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         private readonly Brush _hoverBorderBrush;
         private readonly Brush _selectedBorderBrush;
         private readonly Brush _commonBorderBrush;
+        private readonly Pen _pen;
         private bool _isSelected;
         private readonly ISelectItemsContainer _container;
         public ISelectItemsContainer Container => _container;
@@ -61,6 +62,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _hoverBorderBrush = (Brush)_brushConverter.ConvertFromString("#00AAFF");
             _commonBorderBrush = (Brush)_brushConverter.ConvertFromString("#DBE0E3");
             _selectedBorderBrush = (Brush)_brushConverter.ConvertFromString("#00AAFF");
+            _pen = new Pen(Brushes.Black, 1);
             InitializeComponent();
             MouseEnter += BeatItemView_MouseEnter;
             MouseLeave += BeatItemView_MouseLeave;
@@ -105,17 +107,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             base.OnRender(drawingContext);
             var container = Container as FrameworkElement;
-            var beatInfoR = (int)DataContext;
-            PART_BeatType.Text = BeatInfoSource.AllBeatInfos[beatInfoR].BeatType;
-            PART_Order.Text = BeatInfoSource.AllBeatInfos[beatInfoR].Interval.ToString();
+            var beatInfo = (BeatInfo)DataContext;
+            PART_BeatType.Text = beatInfo.BeatType;
+            PART_Order.Text = beatInfo.Interval.ToString();
             Width = container.ActualWidth / 6;
             Height = container.ActualWidth / 6;
-            DrawECG(drawingContext);
+            DrawECG(beatInfo);
         }
 
-        private void DrawECG(DrawingContext drawingContext)
+        private void DrawECG(BeatInfo beatInfo)
         {
-            
+            PART_Canvas.DrawingHandler((d) => 
+            {
+                for (int i = 0; i < beatInfo.Data.Count() - 1; i++)
+                {
+                    var point1 = new Point(i, beatInfo.Data[i]);
+                    var point2 = new Point(i + 1, beatInfo.Data[i + 1]);
+                    d.DrawLine(_pen, point1, point2);
+                }
+            });
         }
     }
 }

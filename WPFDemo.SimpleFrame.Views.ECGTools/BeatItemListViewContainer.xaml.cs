@@ -24,22 +24,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// <summary>
     /// BeatItemListView.xaml 的交互逻辑
     /// </summary>
-    public partial class BeatItemListViewContainer : UserControl, IBeatItemListViewContainer<int, BeatInfo>
+    public partial class BeatItemListViewContainer : UserControl, IBeatItemListViewContainer<BeatInfo>
     {
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
-        public Dictionary<int, BeatInfo> ItemsSource => BeatInfoSource.AllBeatInfos;
+        public List<BeatInfo> ItemsSource { get; set; }
 
-        public ItemsSourceHandler<int, BeatInfo> ItemsSourceHandler { get; }
-        public ObservableCollection<int> SelectedItems => ItemsSourceHandler.SelectedItems;
+        public ItemsSourceHandler<BeatInfo> ItemsSourceHandler { get; }
+        public ObservableCollection<BeatInfo> SelectedItems => ItemsSourceHandler.SelectedItems;
 
         private bool _isNeedToMove;
 
         public BeatItemListViewContainer()
         {
-            ItemsSourceHandler = new ItemsSourceHandler<int, BeatInfo>(this);
+            ItemsSourceHandler = new ItemsSourceHandler<BeatInfo>(this);
             InitializeComponent();
-            InitItemsSource();
+            InitItemsSource(BeatInfoSource.AllBeatInfos.ToList());
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
@@ -68,7 +68,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private async Task OnBeatChanged(string arg)
         {
-            FreshPage(PART_ScrollBar.PageNo, true);
+            FreshPage(PART_ScrollBar.PageNo, _isNeedToMove);
             await TaskEx.FromResult(0);
         }
 
@@ -76,12 +76,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
             {
-                BeatInfoSource.ChangedBeatInfo(SelectedItems, e.Key.ToString());
+                BeatInfoSource.ChangedBeatInfo(ItemsSource, SelectedItems, e.Key.ToString());
+                _isNeedToMove = true;
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
+                _isNeedToMove = false;
             }
             else if(e.Key == Key.D)
             {
-                BeatInfoSource.DeleteBeatInfos(SelectedItems);
+                BeatInfoSource.DeleteBeatInfos(ItemsSource, SelectedItems);
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
             }
         }
@@ -172,8 +174,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsSource()
+        private void InitItemsSource(List<BeatInfo> itemsSource)
         {
+            ItemsSource = itemsSource;
             SelectAllItems();
         }
 
@@ -181,7 +184,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             SelectedItems.Clear();
             //默认全选
-            foreach (var item in BeatInfoSource.AllBeatInfos.Keys)
+            foreach (var item in ItemsSource)
             {
                 SelectedItems.Add(item);
             }
@@ -192,7 +195,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void SelectReverseItems()
         {
-            var reverseSelectedItems = BeatInfoSource.AllBeatInfos.Keys.Except(SelectedItems).ToList();
+            var reverseSelectedItems = ItemsSource.Except(SelectedItems).ToList();
             SelectedItems.Clear();
             foreach (var item in reverseSelectedItems)
             {
@@ -216,6 +219,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
                 InitItemsControl(pagerSource);
+                if(PART_ScrollBar.TotalCount <= 0)
+                {
+                    return;
+                }
                 if(isNeedToMove)
                 {
                     if (isMoveToNext)
@@ -230,7 +237,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsControl(ItemsPager<int> itemsPager)
+        private void InitItemsControl(ItemsPager<BeatInfo> itemsPager)
         {
             PART_ScrollBar.TotalCount = itemsPager.TotalCount;
             PART_ScrollBar.PageNo = itemsPager.PageNo;
@@ -302,6 +309,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 }
                 PART_ScrollBar.PageNo--;
             }
+        }
+
+        private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            InitItemsSource(BeatInfoSource.GetAllBeatInfos(int.Parse(PART_ItemsCount.Text)).ToList());
+        }
+
+        private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)
+        {
+            BeatInfoSource.ChangedBeatInfo(ItemsSource, SelectedItems, PART_Type.Text);
+            MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
         }
     }
 }

@@ -47,5 +47,15 @@
                                              Orientation="Vertical"
                                              PageNoChanged="PART_ScrollBar_PageNoChanged" />
         </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="5,0">
+                <TextBox x:Name="PART_ItemsCount" Text="" Height="30" Width="80" VerticalContentAlignment="Center"/>
+                <Button x:Name="PART_ChangeSourceBtn" Content="换数据源" Height="30" Width="80" Click="PART_ChangeSourceBtn_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5,0">
+                <TextBox x:Name="PART_Type" Text="" Height="30" Width="80" VerticalContentAlignment="Center"/>
+                <Button x:Name="PART_ChangeSourceType" Content="变心博" Height="30" Width="80" Click="PART_ChangeSourceType_Click"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

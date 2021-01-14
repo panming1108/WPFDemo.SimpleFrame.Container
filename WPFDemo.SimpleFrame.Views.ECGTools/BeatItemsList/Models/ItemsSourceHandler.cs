@@ -7,15 +7,15 @@ using System.Text;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public class ItemsSourceHandler<T, T1>
+    public class ItemsSourceHandler<T>
     {
-        private IBeatItemListViewContainer<T, T1> _beatItemListViewContainer;
+        private IBeatItemListViewContainer<T> _beatItemListViewContainer;
 
         public ObservableCollection<T> SelectedItems { get; }
-        private Dictionary<T,T1> ItemsSource => _beatItemListViewContainer.ItemsSource;
+        private List<T> ItemsSource => _beatItemListViewContainer.ItemsSource;
 
 
-        public ItemsSourceHandler(IBeatItemListViewContainer<T, T1> beatItemListViewContainer)
+        public ItemsSourceHandler(IBeatItemListViewContainer<T> beatItemListViewContainer)
         {
             _beatItemListViewContainer = beatItemListViewContainer;
             SelectedItems = new ObservableCollection<T>();
@@ -79,7 +79,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 tempPageNo = totalPage;
             }
-            return new ItemsPager<T>() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count, Source = ItemsSource.Keys.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList() };
+            return new ItemsPager<T>() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count, Source = ItemsSource.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList() };
         }
 
         public int GetTotalPage(int pageSize)

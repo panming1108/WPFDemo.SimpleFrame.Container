@@ -13,7 +13,7 @@
                 BorderBrush="#DBE0E3"
                 BorderThickness="2"
                 CornerRadius="2" />
-        <Canvas x:Name="PART_Canvas" />
+        <local:SelectMaskPaint ClipToBounds="True" x:Name="PART_Canvas" />
         <Border Width="24"
                 Height="24"
                 Margin="5"
