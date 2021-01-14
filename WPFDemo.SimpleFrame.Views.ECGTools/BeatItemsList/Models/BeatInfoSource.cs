@@ -19,7 +19,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             Random random = new Random();
             var results = new Dictionary<int, BeatInfo>();
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 33; i++)
             {
                 BeatInfo beatInfo = new BeatInfo()
                 {
@@ -31,17 +31,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 results.Add(i, beatInfo);
             }
             return results;
-        }
-
-        public static Tuple<List<int>, int> GetPagerBeatInfo(int pageIndex, int pageSize)
-        {
-            var totalPage = AllBeatInfos.Count % pageSize == 0 ? AllBeatInfos.Count / pageSize : (AllBeatInfos.Count / pageSize) + 1;
-            var pageNo = pageIndex;
-            if(pageIndex > totalPage)
-            {
-                pageNo = totalPage;
-            }
-            return new Tuple<List<int>, int>(AllBeatInfos.Keys.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList(), pageNo);
         }
         
         public static void ChangedBeatInfo(IList beatInfoRs, string type)

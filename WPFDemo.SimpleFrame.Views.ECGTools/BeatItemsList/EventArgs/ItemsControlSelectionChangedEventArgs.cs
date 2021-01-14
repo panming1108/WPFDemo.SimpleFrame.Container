@@ -8,13 +8,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public class ItemsControlSelectionChangedEventArgs : EventArgs
     {
-        public bool IsCtrlKeyDown { get; set; }
+        public SelectActionEnum SelectActionMode { get; set; }
         public IList SelectedItems { get; set; }
 
-        public ItemsControlSelectionChangedEventArgs(IList selectedItems, bool isCtrlKeyDown)
+        public ItemsControlSelectionChangedEventArgs(IList selectedItems, SelectActionEnum selectActionMode)
         {
             SelectedItems = selectedItems;
-            IsCtrlKeyDown = isCtrlKeyDown;
+            SelectActionMode = selectActionMode;
         }
     }
 }

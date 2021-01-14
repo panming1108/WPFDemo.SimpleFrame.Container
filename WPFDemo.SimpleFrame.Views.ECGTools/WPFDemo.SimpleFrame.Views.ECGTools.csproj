@@ -103,7 +103,17 @@
     <Compile Include="BeatItemListViewContainer.xaml.cs">
       <DependentUpon>BeatItemListViewContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BeatItemsList\Actions\DragSelectAction.cs" />
+    <Compile Include="BeatItemsList\Actions\BaseSelectAction.cs" />
+    <Compile Include="BeatItemsList\Actions\CommonSelectAction.cs" />
+    <Compile Include="BeatItemsList\Actions\CtrlSelectAction.cs" />
+    <Compile Include="BeatItemsList\Actions\SelectActionFactory.cs" />
+    <Compile Include="BeatItemsList\BeatItemsListScrollBar.xaml.cs">
+      <DependentUpon>BeatItemsListScrollBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatItemsList\EventArgs\PageNoChangedEventArgs.cs" />
+    <Compile Include="BeatItemsList\Interface\IBeatItemListViewContainer.cs" />
+    <Compile Include="BeatItemsList\Interface\IMoveSelectItemAction.cs" />
+    <Compile Include="BeatItemsList\Actions\ShiftSelectAction.cs" />
     <Compile Include="BeatItemsList\BeatItemsControlBar.xaml.cs">
       <DependentUpon>BeatItemsControlBar.xaml</DependentUpon>
     </Compile>
@@ -118,11 +128,15 @@
     <Compile Include="BeatItemsList\EventArgs\ItemsControlSelectionChangedEventArgs.cs" />
     <Compile Include="BeatItemsList\EventArgs\LeadSelectionChangedEventArgs.cs" />
     <Compile Include="BeatItemsList\EventArgs\SortEventArgs.cs" />
-    <Compile Include="BeatItemsList\Interface\IDragSelect.cs" />
+    <Compile Include="BeatItemsList\Interface\ISelectAction.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItem.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
+    <Compile Include="BeatItemsList\Interface\ISelectMaskPaint.cs" />
     <Compile Include="BeatItemsList\Models\BeatInfoSource.cs" />
+    <Compile Include="BeatItemsList\Models\ItemsPager.cs" />
+    <Compile Include="BeatItemsList\Models\ItemsSourceHandler.cs" />
     <Compile Include="BeatItemsList\Models\MessagerKeyEnum.cs" />
+    <Compile Include="BeatItemsList\Models\SelectActionEnum.cs" />
     <Compile Include="BeatItemsList\SelectionPopupButton.xaml.cs">
       <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>
@@ -186,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BeatItemsList\BeatItemsControlBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatItemsList\BeatItemsListScrollBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

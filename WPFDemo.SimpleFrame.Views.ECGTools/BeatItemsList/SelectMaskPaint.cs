@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public class SelectMaskPaint : FrameworkElement
+    public class SelectMaskPaint : FrameworkElement, ISelectMaskPaint
     {
         private readonly DrawingVisual _drawingVisual = new DrawingVisual();
         public SelectMaskPaint()

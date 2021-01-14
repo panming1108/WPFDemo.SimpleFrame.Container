@@ -24,19 +24,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// <summary>
     /// BeatItemListView.xaml 的交互逻辑
     /// </summary>
-    public partial class BeatItemListViewContainer : UserControl
+    public partial class BeatItemListViewContainer : UserControl, IBeatItemListViewContainer<int, BeatInfo>
     {
-        private int _pageNo = 1;
-        private int _pageSize = 30;
-        private int TotalCount => BeatInfoSource.AllBeatInfos.Count;
-        private int TotalPage => BeatInfoSource.AllBeatInfos.Count % _pageSize == 0 ? BeatInfoSource.AllBeatInfos.Count / _pageSize : (BeatInfoSource.AllBeatInfos.Count) / _pageSize + 1;
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
-        private readonly ObservableCollection<int> _selectedItems = new ObservableCollection<int>();
-        public ObservableCollection<int> SelectedItems => _selectedItems;
+        public Dictionary<int, BeatInfo> ItemsSource => BeatInfoSource.AllBeatInfos;
+
+        private readonly ItemsSourceHandler<int, BeatInfo> _itemsSourceHandler;
+        public ItemsSourceHandler<int, BeatInfo> ItemsSourceHandler => _itemsSourceHandler;
+        public ObservableCollection<int> SelectedItems => _itemsSourceHandler.SelectedItems;
 
         public BeatItemListViewContainer()
         {
+            _itemsSourceHandler = new ItemsSourceHandler<int, BeatInfo>(this);
             InitializeComponent();
             InitItemsSource();
             InitItemsControlBar();
@@ -48,24 +48,29 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         }
 
         private async Task OnBeatDeleted(string arg)
-        {
-            FreshPage(_pageNo, false);
+        {            
+            PART_ScrollBar.TotalCount = BeatInfoSource.AllBeatInfos.Count;
+            var totalPage = _itemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
+            if(PART_ScrollBar.PageNo > totalPage)
+            {
+                PART_ScrollBar.PageNo = totalPage;
+            }
+            else
+            {
+                FreshPage(PART_ScrollBar.PageNo, false);
+            }
             await TaskEx.FromResult(0);
         }
 
         private async Task OnBeatChanged(string arg)
         {
-            FreshPage(_pageNo);
+            FreshPage(PART_ScrollBar.PageNo);
             await TaskEx.FromResult(0);
         }
 
         private void BeatItemListViewContainer_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
-            {
-                PART_ItemsControl.SetCtrlKeyStatus(isKeyDown: false);
-            }
-            else if(e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
+            if (e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
             {
                 BeatInfoSource.ChangedBeatInfo(SelectedItems, e.Key.ToString());
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
@@ -79,11 +84,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void BeatItemListViewContainer_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
-            {
-                PART_ItemsControl.SetCtrlKeyStatus(isKeyDown: true);
-            }
-            else if (e.Key == Key.Up || e.Key == Key.Left)
+            if (e.Key == Key.Up || e.Key == Key.Left)
             {
                 ItemsControlMoveToPrev();
             }
@@ -95,32 +96,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControl_ItemsControlSelectionChanged(object sender, ItemsControlSelectionChangedEventArgs e)
         {
-            if(e.IsCtrlKeyDown)
-            {
-                foreach (var item in e.SelectedItems)
-                {
-                    var itemView = item as ISelectItem;
-                    var beatInfoR = (int)itemView.DataContext;
-                    if(SelectedItems.Contains(beatInfoR))
-                    {
-                        SelectedItems.Remove(beatInfoR);
-                    }
-                    else
-                    {
-                        SelectedItems.Add(beatInfoR);
-                    }
-                }
-            }
-            else
-            {
-                SelectedItems.Clear();
-                foreach (var item in e.SelectedItems)
-                {
-                    var itemView = item as ISelectItem;
-                    var beatInfoR = (int)itemView.DataContext;
-                    SelectedItems.Add(beatInfoR);
-                }
-            }
+            _itemsSourceHandler.OnItemsControlSelectionChanged(e);
         }
 
         private void PART_ItemsControlBar_LeadSelectionChanged(object sender, LeadSelectionChangedEventArgs e)
@@ -156,11 +132,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                if(_pageNo + 1 > TotalPage)
+                if(PART_ScrollBar.PageNo + 1 > PART_ScrollBar.TotalPage)
                 {
                     return;
                 }
-                FreshPage(_pageNo + 1);
+                FreshPage(PART_ScrollBar.PageNo + 1);
             }
         }
 
@@ -172,11 +148,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                if(_pageNo - 1 < 1)
+                if(PART_ScrollBar.PageNo - 1 < 1)
                 {
                     return;
                 }
-                FreshPage(_pageNo - 1);
+                FreshPage(PART_ScrollBar.PageNo - 1);
             }
         }
 
@@ -199,66 +175,41 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void SelectAllItems()
         {
-            PART_ItemsControlBar.TotalCount = TotalCount;
             SelectedItems.Clear();
             //默认全选
             foreach (var item in BeatInfoSource.AllBeatInfos.Keys)
             {
                 SelectedItems.Add(item);
             }
-            var source = BeatInfoSource.GetPagerBeatInfo(_pageNo, _pageSize);
-            _pageNo = source.Item2;
-            PART_CurrentPage.Text = source.Item2.ToString();
-            PART_TotalPage.Text = TotalPage.ToString();
-            InitItemsControl(source.Item1);
+            var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            InitItemsControl(pagerSource);
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
 
         private void SelectReverseItems()
         {
-            PART_ItemsControlBar.TotalCount = TotalCount;
             var reverseSelectedItems = BeatInfoSource.AllBeatInfos.Keys.Except(SelectedItems).ToList();
             SelectedItems.Clear();
             foreach (var item in reverseSelectedItems)
             {
                 SelectedItems.Add(item);
             }
-            var source = BeatInfoSource.GetPagerBeatInfo(_pageNo, _pageSize);
-            _pageNo = source.Item2;
-            PART_CurrentPage.Text = source.Item2.ToString();
-            PART_TotalPage.Text = TotalPage.ToString();
-            InitItemsControl(source.Item1);
+            var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            InitItemsControl(pagerSource);
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
 
         private void FreshPage(int pageNo, bool isMoveToNext = true)
         {
             //刷新界面
-            if(pageNo < 1)
+            if(pageNo != PART_ScrollBar.PageNo)
             {
-                return;
+                PART_ScrollBar.PageNo = pageNo;
             }
-            PART_ItemsControlBar.TotalCount = TotalCount;
-            var source = BeatInfoSource.GetPagerBeatInfo(pageNo, _pageSize);
-            PART_TotalPage.Text = TotalPage.ToString();
-            InitItemsControl(source.Item1);
-            //如果跳转页大于当前页，则选择第一个
-            if (source.Item2 > _pageNo)
-            {
-                PART_ItemsControl.MoveToIndex(0);
-                _pageNo = source.Item2;
-                PART_CurrentPage.Text = source.Item2.ToString();
-            }
-            //如果跳转页小于当前页，则选择最后一个
-            else if (source.Item2 < _pageNo)
-            {
-                PART_ItemsControl.MoveToIndex(source.Item1.Count - 1);
-                _pageNo = source.Item2;
-                PART_CurrentPage.Text = source.Item2.ToString();
-            }
-            //如果跳转页等于当前页，则选择下一个
             else
             {
+                var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+                InitItemsControl(pagerSource);
                 if (isMoveToNext)
                 {
                     ItemsControlMoveToNext();
@@ -270,16 +221,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsControl(List<int> beatInfoRs)
+        private void InitItemsControl(ItemsPager<int> itemsPager)
         {
+            PART_ScrollBar.TotalCount = itemsPager.TotalCount;
+            PART_ScrollBar.PageNo = itemsPager.PageNo;
             PART_ItemsControl.ClearItemsSource();
-            foreach (var item in beatInfoRs)
+            foreach (var item in itemsPager.Source)
             {
                 ISelectItem itemView = new BeatItemView(PART_ItemsControl)
                 {
                     DataContext = item,
                     IsSelected = SelectedItems.Contains(item),
-                };
+                };               
                 PART_ItemsControl.Items.Add(itemView);
             }
         }
@@ -298,6 +251,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Unloaded -= BeatItemListViewContainer_Unloaded;
             MessagerInstance.GetMessager().Unregister<string>(this, MessagerKeyEnum.UpdateBeat, OnBeatChanged);
             MessagerInstance.GetMessager().Unregister<string>(this, MessagerKeyEnum.DeleteBeat, OnBeatDeleted);
+        }
+
+        private void PART_ScrollBar_PageNoChanged(object sender, PageNoChangedEventArgs e)
+        {
+            var pagerSource = _itemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            InitItemsControl(pagerSource);
+            //如果跳转页大于当前页，则选择第一个
+            if (e.NewPageNo > e.OldPageNo)
+            {
+                PART_ItemsControl.MoveToIndex(0);
+            }
+            //如果跳转页小于当前页，则选择最后一个
+            else if (e.NewPageNo < e.OldPageNo)
+            {
+                PART_ItemsControl.MoveToIndex(PART_ItemsControl.Items.Count - 1);
+            }
         }
     }
 }

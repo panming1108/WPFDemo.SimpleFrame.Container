@@ -8,14 +8,11 @@ using System.Windows.Controls;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public interface ISelectItemsContainer
+    public interface ISelectItemsContainer : IMoveSelectItemAction
     {
         ItemCollection Items { get; }
         SelectedItemsCollection SelectedItemsCollection { get; }
-        int CurrentMoveIndex { get; set; }
         void ClearItemsSource();
         void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e);
-        bool CanMoveToIndex(int index);
-        void MoveToIndex(int index);
     }
 }

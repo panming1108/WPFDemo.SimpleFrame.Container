@@ -6,9 +6,8 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public interface IDragSelect
+    public interface ISelectMaskPaint
     {
-        void SetCtrlKeyStatus(bool isKeyDown);
-        void RenderDragSelectMask(GeometryDrawing geometryDrawing);
+        void DrawingHandler(Action<DrawingContext> drawingAction);
     }
 }

@@ -24,18 +24,26 @@
                                       SelectedCount="{Binding ElementName=PART_Root, Path=SelectedItems.Count}"
                                       SelectedReverse="PART_ItemsControlBar_SelectedReverse"
                                       SortChanged="PART_ItemsControlBar_SortChanged"
-                                      StrechChanged="PART_ItemsControlBar_StrechChanged" />
-        <controls:BeatItemsListView x:Name="PART_ItemsControl"
-                                    Grid.Row="1"
-                                    ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
+                                      StrechChanged="PART_ItemsControlBar_StrechChanged"
+                                      TotalCount="{Binding ElementName=PART_ScrollBar, Path=TotalCount}" />
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
             <TextBlock Text="共" />
-            <TextBlock x:Name="PART_TotalPage" />
+            <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=TotalPage}" />
             <TextBlock Text="页，当前第" />
-            <TextBlock x:Name="PART_CurrentPage" />
+            <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=PageNo}" />
             <TextBlock Text="页" />
         </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <controls:BeatItemsListView x:Name="PART_ItemsControl" ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
+            <controls:BeatItemsListScrollBar x:Name="PART_ScrollBar"
+                                             Grid.Column="1"
+                                             PageNoChanged="PART_ScrollBar_PageNoChanged" />
+        </Grid>
     </Grid>
 </UserControl>
