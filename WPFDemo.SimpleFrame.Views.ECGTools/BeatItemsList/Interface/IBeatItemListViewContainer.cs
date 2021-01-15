@@ -10,6 +10,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     {
         int[] ItemsSource { get; }
 
+        int SelectedCount { get; set; }
+
         ItemsSourceHandler ItemsSourceHandler { get; }
     }
 }

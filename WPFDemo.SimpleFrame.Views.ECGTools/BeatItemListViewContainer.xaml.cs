@@ -33,6 +33,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public ItemsSourceHandler ItemsSourceHandler { get; }
         public List<int> SelectedItems => ItemsSourceHandler.SelectedItems;
 
+        public int SelectedCount
+        {
+            get { return (int)GetValue(SelectedCountProperty); }
+            set { SetValue(SelectedCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedCountProperty =
+            DependencyProperty.Register(nameof(SelectedCount), typeof(int), typeof(BeatItemListViewContainer));
+
         private bool _isNeedToMove;
 
         public BeatItemListViewContainer()
@@ -103,6 +112,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_ItemsControl_ItemsControlSelectionChanged(object sender, ItemsControlSelectionChangedEventArgs e)
         {
             ItemsSourceHandler.OnItemsControlSelectionChanged(e);
+            SelectedCount = SelectedItems.Count;
         }
 
         private void PART_ItemsControlBar_LeadSelectionChanged(object sender, LeadSelectionChangedEventArgs e)
@@ -176,6 +186,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void InitItemsSource(int[] itemsSource)
         {
+            SelectedItems.Clear();
+            SelectedCount = SelectedItems.Count;
             ItemsSource = itemsSource;
             SelectAllItems();
         }
@@ -252,6 +264,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 };               
                 PART_ItemsControl.Items.Add(itemView);
             }
+            SelectedCount = SelectedItems.Count;
         }
 
         private void InitItemsControlBar()

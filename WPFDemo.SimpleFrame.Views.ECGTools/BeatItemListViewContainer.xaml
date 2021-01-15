@@ -15,14 +15,14 @@
     <Grid Width="750" Background="#ECF1F4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <controls:BeatItemsControlBar x:Name="PART_ItemsControlBar"
                                       Height="25"
                                       LeadSelectionChanged="PART_ItemsControlBar_LeadSelectionChanged"
                                       SelectedAll="PART_ItemsControlBar_SelectedAll"
-                                      SelectedCount="{Binding ElementName=PART_Root, Path=SelectedItems.Count}"
+                                      SelectedCount="{Binding ElementName=PART_Root, Path=SelectedCount}"
                                       SelectedReverse="PART_ItemsControlBar_SelectedReverse"
                                       SortChanged="PART_ItemsControlBar_SortChanged"
                                       StrechChanged="PART_ItemsControlBar_StrechChanged"
@@ -41,20 +41,38 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <controls:BeatItemsListView x:Name="PART_ItemsControl" ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged"/>
+            <controls:BeatItemsListView x:Name="PART_ItemsControl" ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
             <controls:BeatItemsListScrollBar x:Name="PART_ScrollBar"
                                              Grid.Column="1"
                                              Orientation="Vertical"
                                              PageNoChanged="PART_ScrollBar_PageNoChanged" />
         </Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Margin="5,0">
-                <TextBox x:Name="PART_ItemsCount" Text="" Height="30" Width="80" VerticalContentAlignment="Center"/>
-                <Button x:Name="PART_ChangeSourceBtn" Content="换数据源" Height="30" Width="80" Click="PART_ChangeSourceBtn_Click"/>
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <StackPanel Margin="5,0" Orientation="Horizontal">
+                <TextBox x:Name="PART_ItemsCount"
+                         Width="80"
+                         Height="30"
+                         VerticalContentAlignment="Center"
+                         Text="" />
+                <Button x:Name="PART_ChangeSourceBtn"
+                        Width="80"
+                        Height="30"
+                        Click="PART_ChangeSourceBtn_Click"
+                        Content="换数据源" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="5,0">
-                <TextBox x:Name="PART_Type" Text="" Height="30" Width="80" VerticalContentAlignment="Center"/>
-                <Button x:Name="PART_ChangeSourceType" Content="变心博" Height="30" Width="80" Click="PART_ChangeSourceType_Click"/>
+            <StackPanel Margin="5,0" Orientation="Horizontal">
+                <TextBox x:Name="PART_Type"
+                         Width="80"
+                         Height="30"
+                         VerticalContentAlignment="Center"
+                         Text="" />
+                <Button x:Name="PART_ChangeSourceType"
+                        Width="80"
+                        Height="30"
+                        Click="PART_ChangeSourceType_Click"
+                        Content="变心博" />
             </StackPanel>
         </StackPanel>
     </Grid>
