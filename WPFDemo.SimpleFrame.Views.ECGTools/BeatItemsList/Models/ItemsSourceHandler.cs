@@ -9,11 +9,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public class ItemsSourceHandler
     {
-        private IBeatItemListViewContainer _beatItemListViewContainer;
-
+        private readonly IBeatItemListViewContainer _beatItemListViewContainer;
+        private int[] _itemsSource;
         public List<int> SelectedItems { get; }
-        private int[] ItemsSource => _beatItemListViewContainer.ItemsSource;
-
+        public int[] ItemsSource 
+        {
+            get => _itemsSource;
+            set
+            {
+                _itemsSource = value;
+                SelectedItems.Clear();
+                _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
+            }
+        }
 
         public ItemsSourceHandler(IBeatItemListViewContainer beatItemListViewContainer)
         {
@@ -36,6 +44,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 default:
                     break;
             }
+            _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
         }
 
         private void ResetSelectItemsWithOnlyDisplaySelectedItems(IList selectedItems)
@@ -85,6 +94,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 result.Add(BeatInfoSource.AllBeatInfos[item]);
             }
+            _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
             return new ItemsPager() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count(), Source = result };
         }
 

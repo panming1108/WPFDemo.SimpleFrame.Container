@@ -28,10 +28,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
-        public int[] ItemsSource { get; set; }
-
         public ItemsSourceHandler ItemsSourceHandler { get; }
-        public List<int> SelectedItems => ItemsSourceHandler.SelectedItems;
 
         public int SelectedCount
         {
@@ -85,14 +82,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
             {
-                BeatInfoSource.ChangedBeatInfo(SelectedItems, e.Key.ToString());
+                BeatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, e.Key.ToString());
                 _isNeedToMove = true;
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
                 _isNeedToMove = false;
             }
             else if(e.Key == Key.D)
             {
-                BeatInfoSource.DeleteBeatInfos(SelectedItems);
+                BeatInfoSource.DeleteBeatInfos(ItemsSourceHandler.SelectedItems);
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
             }
         }
@@ -112,7 +109,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_ItemsControl_ItemsControlSelectionChanged(object sender, ItemsControlSelectionChangedEventArgs e)
         {
             ItemsSourceHandler.OnItemsControlSelectionChanged(e);
-            SelectedCount = SelectedItems.Count;
         }
 
         private void PART_ItemsControlBar_LeadSelectionChanged(object sender, LeadSelectionChangedEventArgs e)
@@ -186,19 +182,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void InitItemsSource(int[] itemsSource)
         {
-            SelectedItems.Clear();
-            SelectedCount = SelectedItems.Count;
-            ItemsSource = itemsSource;
+            ItemsSourceHandler.ItemsSource = itemsSource;
             SelectAllItems();
         }
 
         private void SelectAllItems()
         {
-            SelectedItems.Clear();
+            ItemsSourceHandler.SelectedItems.Clear();
             //默认全选
-            foreach (var item in ItemsSource)
+            foreach (var item in ItemsSourceHandler.ItemsSource)
             {
-                SelectedItems.Add(item);
+                ItemsSourceHandler.SelectedItems.Add(item);
             }
             var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
             InitItemsControl(pagerSource);
@@ -207,11 +201,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void SelectReverseItems()
         {
-            var reverseSelectedItems = ItemsSource.Except(SelectedItems).ToList();
-            SelectedItems.Clear();
+            var reverseSelectedItems = ItemsSourceHandler.ItemsSource.Except(ItemsSourceHandler.SelectedItems).ToList();
+            ItemsSourceHandler.SelectedItems.Clear();
             foreach (var item in reverseSelectedItems)
             {
-                SelectedItems.Add(item);
+                ItemsSourceHandler.SelectedItems.Add(item);
             }
             var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
             InitItemsControl(pagerSource);
@@ -260,11 +254,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ISelectItem itemView = new BeatItemView(PART_ItemsControl)
                 {
                     DataContext = item,                   
-                    IsSelected = SelectedItems.Contains(beatInfo.R),
+                    IsSelected = ItemsSourceHandler.SelectedItems.Contains(beatInfo.R),
                 };               
                 PART_ItemsControl.Items.Add(itemView);
             }
-            SelectedCount = SelectedItems.Count;
         }
 
         private void InitItemsControlBar()
@@ -332,7 +325,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)
         {
-            BeatInfoSource.ChangedBeatInfo(SelectedItems, PART_Type.Text);
+            BeatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, PART_Type.Text);
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
         }
     }

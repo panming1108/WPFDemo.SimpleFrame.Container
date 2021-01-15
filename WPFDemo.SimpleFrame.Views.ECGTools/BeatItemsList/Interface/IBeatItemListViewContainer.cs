@@ -8,8 +8,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public interface IBeatItemListViewContainer
     {
-        int[] ItemsSource { get; }
-
         int SelectedCount { get; set; }
 
         ItemsSourceHandler ItemsSourceHandler { get; }
