@@ -7,18 +7,18 @@ using System.Text;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public class ItemsSourceHandler<T>
+    public class ItemsSourceHandler
     {
-        private IBeatItemListViewContainer<T> _beatItemListViewContainer;
+        private IBeatItemListViewContainer _beatItemListViewContainer;
 
-        public ObservableCollection<T> SelectedItems { get; }
-        private List<T> ItemsSource => _beatItemListViewContainer.ItemsSource;
+        public List<int> SelectedItems { get; }
+        private int[] ItemsSource => _beatItemListViewContainer.ItemsSource;
 
 
-        public ItemsSourceHandler(IBeatItemListViewContainer<T> beatItemListViewContainer)
+        public ItemsSourceHandler(IBeatItemListViewContainer beatItemListViewContainer)
         {
             _beatItemListViewContainer = beatItemListViewContainer;
-            SelectedItems = new ObservableCollection<T>();
+            SelectedItems = new List<int>();
         }
 
         public void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e)
@@ -44,8 +44,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             foreach (var item in selectedItems)
             {
                 var itemView = item as ISelectItem;
-                var beatInfoR = (T)itemView.DataContext;
-                SelectedItems.Add(beatInfoR);
+                var beatInfo = (BeatInfo)itemView.DataContext;
+                SelectedItems.Add(beatInfo.R);
             }
         }
 
@@ -54,24 +54,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             foreach (var item in selectedItems)
             {
                 var itemView = item as ISelectItem;
-                var beatInfoR = (T)itemView.DataContext;
-                if (!SelectedItems.Contains(beatInfoR))
+                var beatInfo = (BeatInfo)itemView.DataContext;
+                if (!SelectedItems.Contains(beatInfo.R))
                 {
-                    SelectedItems.Add(beatInfoR);
+                    SelectedItems.Add(beatInfo.R);
                 }
             }
             foreach (var item in unSelectedItems)
             {
                 var itemView = item as ISelectItem;
-                var beatInfoR = (T)itemView.DataContext;
-                if (SelectedItems.Contains(beatInfoR))
+                var beatInfo = (BeatInfo)itemView.DataContext;
+                if (SelectedItems.Contains(beatInfo.R))
                 {
-                    SelectedItems.Remove(beatInfoR);
+                    SelectedItems.Remove(beatInfo.R);
                 }
             }
         }
 
-        public ItemsPager<T> GetPagerSource(int pageNo, int pageSize)
+        public ItemsPager GetPagerSource(int pageNo, int pageSize)
         {
             var totalPage = GetTotalPage(pageSize);
             var tempPageNo = pageNo;
@@ -79,16 +79,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 tempPageNo = totalPage;
             }
-            return new ItemsPager<T>() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count, Source = ItemsSource.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList() };
+            var result = new List<BeatInfo>();
+            var rSource = ItemsSource.Skip((pageNo - 1) * pageSize).Take(pageSize);
+            foreach (var item in rSource)
+            {
+                result.Add(BeatInfoSource.AllBeatInfos[item]);
+            }
+            return new ItemsPager() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count(), Source = result };
         }
 
         public int GetTotalPage(int pageSize)
         {
-            if(ItemsSource.Count <= 0)
+            if(ItemsSource.Count() <= 0)
             {
                 return 1;
             }
-            return ItemsSource.Count % pageSize == 0 ? ItemsSource.Count / pageSize : (ItemsSource.Count / pageSize) + 1;
+            return ItemsSource.Count() % pageSize == 0 ? ItemsSource.Count() / pageSize : (ItemsSource.Count() / pageSize) + 1;
         }
     }
 }

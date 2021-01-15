@@ -8,17 +8,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public class BeatInfoSource
     {
+        public static Random random = new Random();
         public static string[] beatTypes = new string[] { "N", "S", "V" };
-        public static IList<BeatInfo> AllBeatInfos { get; set; }
+        public static Dictionary<int, BeatInfo> AllBeatInfos { get; set; }
         static BeatInfoSource()
         {
             AllBeatInfos = GetAllBeatInfos();
         }
 
-        public static IList<BeatInfo> GetAllBeatInfos(int count = 200000)
-        {
-            Random random = new Random();
-            var results = new List<BeatInfo>();
+        public static Dictionary<int, BeatInfo> GetAllBeatInfos(int count = 840000)
+        {          
+            var results = new Dictionary<int, BeatInfo>();
             for (int i = 0; i < count; i++)
             {
                 BeatInfo beatInfo = new BeatInfo()
@@ -29,26 +29,34 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                     Interval = random.Next(0, 2000),
                     Data = GetECGData(random)
                 };
-                results.Add(beatInfo);
+                results.Add(i, beatInfo);
+            }
+            return results;
+        }
+
+        public static List<int> GenerateItemsSource(int count)
+        {
+            var results = new List<int>();
+            for (int i = 0; i < count; i++)
+            {
+                results.Add(random.Next(0, count));
             }
             return results;
         }
         
-        public static void ChangedBeatInfo(List<BeatInfo> beatInfos, IList beatInfoRs, string type)
+        public static void ChangedBeatInfo(List<int> beatInfoRs, string type)
         {
             foreach (var item in beatInfoRs)
             {
-                var beatInfo = (BeatInfo)item;
-                beatInfos[beatInfos.IndexOf(beatInfo)].BeatType = type;
+                AllBeatInfos[item].BeatType = type;
             }
         }
 
-        public static void DeleteBeatInfos(List<BeatInfo> beatInfos, IList beatInfoRs)
+        public static void DeleteBeatInfos(List<int> beatInfoRs)
         {            
             foreach (var item in beatInfoRs)
             {
-                var beatInfo = (BeatInfo)item;
-                beatInfos.Remove(beatInfo);
+                AllBeatInfos.Remove(item);
             }
         }
 

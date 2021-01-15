@@ -6,10 +6,10 @@ using System.Text;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public interface IBeatItemListViewContainer<T>
+    public interface IBeatItemListViewContainer
     {
-        List<T> ItemsSource { get; }
+        int[] ItemsSource { get; }
 
-        ItemsSourceHandler<T> ItemsSourceHandler { get; }
+        ItemsSourceHandler ItemsSourceHandler { get; }
     }
 }

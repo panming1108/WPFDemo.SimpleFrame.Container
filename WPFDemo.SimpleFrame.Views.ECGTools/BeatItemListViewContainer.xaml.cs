@@ -24,22 +24,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// <summary>
     /// BeatItemListView.xaml 的交互逻辑
     /// </summary>
-    public partial class BeatItemListViewContainer : UserControl, IBeatItemListViewContainer<BeatInfo>
+    public partial class BeatItemListViewContainer : UserControl, IBeatItemListViewContainer
     {
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
-        public List<BeatInfo> ItemsSource { get; set; }
+        public int[] ItemsSource { get; set; }
 
-        public ItemsSourceHandler<BeatInfo> ItemsSourceHandler { get; }
-        public ObservableCollection<BeatInfo> SelectedItems => ItemsSourceHandler.SelectedItems;
+        public ItemsSourceHandler ItemsSourceHandler { get; }
+        public List<int> SelectedItems => ItemsSourceHandler.SelectedItems;
 
         private bool _isNeedToMove;
 
         public BeatItemListViewContainer()
         {
-            ItemsSourceHandler = new ItemsSourceHandler<BeatInfo>(this);
+            ItemsSourceHandler = new ItemsSourceHandler(this);
             InitializeComponent();
-            InitItemsSource(BeatInfoSource.AllBeatInfos.ToList());
+            InitItemsSource(BeatInfoSource.AllBeatInfos.Keys.ToArray());
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
@@ -76,14 +76,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
             {
-                BeatInfoSource.ChangedBeatInfo(ItemsSource, SelectedItems, e.Key.ToString());
+                BeatInfoSource.ChangedBeatInfo(SelectedItems, e.Key.ToString());
                 _isNeedToMove = true;
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
                 _isNeedToMove = false;
             }
             else if(e.Key == Key.D)
             {
-                BeatInfoSource.DeleteBeatInfos(ItemsSource, SelectedItems);
+                BeatInfoSource.DeleteBeatInfos(SelectedItems);
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
             }
         }
@@ -174,7 +174,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsSource(List<BeatInfo> itemsSource)
+        private void InitItemsSource(int[] itemsSource)
         {
             ItemsSource = itemsSource;
             SelectAllItems();
@@ -237,17 +237,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsControl(ItemsPager<BeatInfo> itemsPager)
+        private void InitItemsControl(ItemsPager itemsPager)
         {
             PART_ScrollBar.TotalCount = itemsPager.TotalCount;
             PART_ScrollBar.PageNo = itemsPager.PageNo;
             PART_ItemsControl.ClearItemsSource();
             foreach (var item in itemsPager.Source)
             {
+                var beatInfo = item as BeatInfo;
                 ISelectItem itemView = new BeatItemView(PART_ItemsControl)
                 {
-                    DataContext = item,
-                    IsSelected = SelectedItems.Contains(item),
+                    DataContext = item,                   
+                    IsSelected = SelectedItems.Contains(beatInfo.R),
                 };               
                 PART_ItemsControl.Items.Add(itemView);
             }
@@ -313,12 +314,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)
         {
-            InitItemsSource(BeatInfoSource.GetAllBeatInfos(int.Parse(PART_ItemsCount.Text)).ToList());
+            InitItemsSource(BeatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)).ToArray());
         }
 
         private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)
         {
-            BeatInfoSource.ChangedBeatInfo(ItemsSource, SelectedItems, PART_Type.Text);
+            BeatInfoSource.ChangedBeatInfo(SelectedItems, PART_Type.Text);
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
         }
     }
