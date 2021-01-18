@@ -11,14 +11,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     {
         private readonly IBeatItemListViewContainer _beatItemListViewContainer;
         private int[] _itemsSource;
+        private KeyValuePair<int, BeatInfo>[] _itemsRealSource;
         public List<int> SelectedItems { get; }
+        
         public int[] ItemsSource 
         {
             get => _itemsSource;
             set
             {
+                _itemsSource = null;
                 _itemsSource = value;
                 SelectedItems.Clear();
+                _itemsRealSource = null;
+                _itemsRealSource = new KeyValuePair<int, BeatInfo>[_itemsSource.Count()];
+                for (int i = 0; i < _itemsSource.Count(); i++)
+                {
+                    var key = _itemsSource[i];
+                    _itemsRealSource[i] = new KeyValuePair<int, BeatInfo>(key, BeatInfoSource.AllBeatInfos[key]);
+                }
                 _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
             }
         }
@@ -118,6 +128,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 }
             }
             return (index + 1) % pageSize == 0 ? (index + 1) / pageSize : (index + 1) / pageSize + 1;
+        }
+
+        public int[] SortItemsSource(bool isAsc)
+        {
+            if(isAsc)
+            {
+                return _itemsRealSource.OrderBy(x => x.Value.Interval).Select(x => x.Key).ToArray();
+            }
+            else
+            {
+                return _itemsRealSource.OrderByDescending(x => x.Value.Interval).Select(x => x.Key).ToArray();
+            }
         }
     }
 }

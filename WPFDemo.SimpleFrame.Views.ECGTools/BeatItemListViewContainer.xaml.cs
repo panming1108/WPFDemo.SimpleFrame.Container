@@ -174,13 +174,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 return;
             }
             PART_ScrollBar.PageSize = RowCount * ColumnCount;
-            var pageNo = ItemsSourceHandler.GetCurrentItemPageNo(ItemsSourceHandler.SelectedItems.First(), PART_ScrollBar.PageSize);
-            FreshPage(pageNo, false, false);
+            if(ItemsSourceHandler.SelectedItems.Count <= 0)
+            {
+                FreshPage(1, false, false);
+            }
+            else
+            {
+                var pageNo = ItemsSourceHandler.GetCurrentItemPageNo(ItemsSourceHandler.SelectedItems.FirstOrDefault(), PART_ScrollBar.PageSize);
+                FreshPage(pageNo, false, false);
+            }
         }
 
         private void PART_ItemsControlBar_SortChanged(object sender, SortEventArgs e)
         {
-
+            var itemsSource = ItemsSourceHandler.SortItemsSource(e.IsAsc);
+            InitItemsSource(itemsSource);
         }
 
         private void ItemsControlMoveToNext()

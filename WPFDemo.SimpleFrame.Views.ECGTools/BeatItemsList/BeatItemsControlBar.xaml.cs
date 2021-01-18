@@ -79,10 +79,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             StrechChanged?.Invoke(this, new BoolEventArgs(false));
         }
-
+        private bool _isAsc;
         private void PART_SortBtn_Click(object sender, RoutedEventArgs e)
         {
-            SortChanged?.Invoke(this, new SortEventArgs("Interval"));
+            _isAsc = !_isAsc;
+            SortChanged?.Invoke(this, new SortEventArgs("Interval", _isAsc));
         }
     }
 }
