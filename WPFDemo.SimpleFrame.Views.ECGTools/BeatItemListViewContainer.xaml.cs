@@ -35,7 +35,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             get { return (int)GetValue(SelectedCountProperty); }
             set { SetValue(SelectedCountProperty, value); }
         }
+        public int ColumnCount
+        {
+            get { return (int)GetValue(ColumnCountProperty); }
+            set { SetValue(ColumnCountProperty, value); }
+        }
+        public int RowCount
+        {
+            get { return (int)GetValue(RowCountProperty); }
+            set { SetValue(RowCountProperty, value); }
+        }
 
+        public static readonly DependencyProperty RowCountProperty =
+            DependencyProperty.Register(nameof(RowCount), typeof(int), typeof(BeatItemListViewContainer), new PropertyMetadata(OnRowChanged));
+        public static readonly DependencyProperty ColumnCountProperty =
+            DependencyProperty.Register(nameof(ColumnCount), typeof(int), typeof(BeatItemListViewContainer), new PropertyMetadata(OnColumnChanged));
         public static readonly DependencyProperty SelectedCountProperty =
             DependencyProperty.Register(nameof(SelectedCount), typeof(int), typeof(BeatItemListViewContainer));
 
@@ -45,6 +59,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             ItemsSourceHandler = new ItemsSourceHandler(this);
             InitializeComponent();
+            ColumnCount = 6;
+            RowCount = 5;
+            PART_ScrollBar.PageSize = ColumnCount * RowCount;
             InitItemsSource(BeatInfoSource.AllBeatInfos.Keys.ToArray());
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
@@ -128,7 +145,44 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControlBar_StrechChanged(object sender, BoolEventArgs e)
         {
+            if(e.Boolean)
+            {
+                ColumnCount /= 2;
+            }
+            else
+            {
+                ColumnCount = int.Parse(ConfigSource.ConfigDic["ColumnCount"]);
+            }
+        }
 
+        private static void OnRowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as BeatItemListViewContainer;
+            control.ChangeColumnOrRow();
+        }
+
+        private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as BeatItemListViewContainer;
+            control.ChangeColumnOrRow();
+        }
+
+        private void ChangeColumnOrRow()
+        {
+            if(ItemsSourceHandler.ItemsSource == null)
+            {
+                return;
+            }
+            PART_ScrollBar.PageSize = RowCount * ColumnCount;
+            var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
+            if (PART_ScrollBar.PageNo > totalPage)
+            {
+                PART_ScrollBar.PageNo = totalPage;
+            }
+            else
+            {
+                FreshPage(PART_ScrollBar.PageNo, false, false);
+            }
         }
 
         private void PART_ItemsControlBar_SortChanged(object sender, SortEventArgs e)
@@ -253,9 +307,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 var beatInfo = item as BeatInfo;
                 ISelectItem itemView = new BeatItemView(PART_ItemsControl)
                 {
-                    DataContext = item,                   
+                    DataContext = item,
                     IsSelected = ItemsSourceHandler.SelectedItems.Contains(beatInfo.R),
-                };               
+                };
                 PART_ItemsControl.Items.Add(itemView);
             }
         }

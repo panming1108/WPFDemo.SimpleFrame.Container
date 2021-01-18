@@ -110,8 +110,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             var beatInfo = (BeatInfo)DataContext;
             PART_BeatType.Text = beatInfo.BeatType;
             PART_Order.Text = beatInfo.Interval.ToString();
-            Width = container.ActualWidth / 6;
-            Height = container.ActualWidth / 6;
+            Width = container.ActualWidth / _container.ColumnCount;
+            Height = container.ActualHeight / _container.RowCount;
             DrawECG(beatInfo);
         }
 

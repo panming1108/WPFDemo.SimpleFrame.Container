@@ -16,7 +16,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             AllBeatInfos = GetAllBeatInfos();
         }
 
-        public static Dictionary<int, BeatInfo> GetAllBeatInfos(int count = 840000)
+        public static Dictionary<int, BeatInfo> GetAllBeatInfos(int count = 200000)
         {          
             var results = new Dictionary<int, BeatInfo>();
             for (int i = 0; i < count; i++)
