@@ -94,7 +94,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 result.Add(BeatInfoSource.AllBeatInfos[item]);
             }
-            _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
             return new ItemsPager() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count(), Source = result };
         }
 
@@ -105,6 +104,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 return 1;
             }
             return ItemsSource.Count() % pageSize == 0 ? ItemsSource.Count() / pageSize : (ItemsSource.Count() / pageSize) + 1;
+        }
+
+        public int GetCurrentItemPageNo(int item, int pageSize)
+        {
+            var index = 0;
+            for (int i = 0; i < ItemsSource.Count(); i++)
+            {
+                if(ItemsSource[i] == item)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return (index + 1) % pageSize == 0 ? (index + 1) / pageSize : (index + 1) / pageSize + 1;
         }
     }
 }

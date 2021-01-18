@@ -174,15 +174,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 return;
             }
             PART_ScrollBar.PageSize = RowCount * ColumnCount;
-            var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
-            if (PART_ScrollBar.PageNo > totalPage)
-            {
-                PART_ScrollBar.PageNo = totalPage;
-            }
-            else
-            {
-                FreshPage(PART_ScrollBar.PageNo, false, false);
-            }
+            var pageNo = ItemsSourceHandler.GetCurrentItemPageNo(ItemsSourceHandler.SelectedItems.First(), PART_ScrollBar.PageSize);
+            FreshPage(pageNo, false, false);
         }
 
         private void PART_ItemsControlBar_SortChanged(object sender, SortEventArgs e)
@@ -248,8 +241,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 ItemsSourceHandler.SelectedItems.Add(item);
             }
-            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
-            InitItemsControl(pagerSource);
+            InitItemsControl();
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
 
@@ -261,8 +253,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 ItemsSourceHandler.SelectedItems.Add(item);
             }
-            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
-            InitItemsControl(pagerSource);
+            InitItemsControl();
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
 
@@ -277,8 +268,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
-                InitItemsControl(pagerSource);
+                InitItemsControl();
                 if(PART_ScrollBar.TotalCount <= 0)
                 {
                     return;
@@ -297,12 +287,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsControl(ItemsPager itemsPager)
+        private void InitItemsControl()
         {
-            PART_ScrollBar.TotalCount = itemsPager.TotalCount;
-            PART_ScrollBar.PageNo = itemsPager.PageNo;
+            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
+            SelectedCount = ItemsSourceHandler.SelectedItems.Count;
+            PART_ScrollBar.TotalCount = pagerSource.TotalCount;
+            PART_ScrollBar.PageNo = pagerSource.PageNo;
             PART_ItemsControl.ClearItemsSource();
-            foreach (var item in itemsPager.Source)
+            foreach (var item in pagerSource.Source)
             {
                 var beatInfo = item as BeatInfo;
                 ISelectItem itemView = new BeatItemView(PART_ItemsControl)
@@ -333,8 +325,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ScrollBar_PageNoChanged(object sender, PageNoChangedEventArgs e)
         {
-            var pagerSource = ItemsSourceHandler.GetPagerSource(PART_ScrollBar.PageNo, PART_ScrollBar.PageSize);
-            InitItemsControl(pagerSource);
+            InitItemsControl();
             if(_isNeedToMove)
             {
                 //如果跳转页大于当前页，则选择第一个
