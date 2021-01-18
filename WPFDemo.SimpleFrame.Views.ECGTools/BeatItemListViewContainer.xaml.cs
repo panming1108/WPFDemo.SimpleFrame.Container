@@ -26,6 +26,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     /// </summary>
     public partial class BeatItemListViewContainer : UserControl, IBeatItemListViewContainer
     {
+        private readonly BeatInfoSource _beatInfoSource;
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
         public ItemsSourceHandler ItemsSourceHandler { get; }
@@ -57,12 +58,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public BeatItemListViewContainer()
         {
-            ItemsSourceHandler = new ItemsSourceHandler(this);
+            _beatInfoSource = new BeatInfoSource();
+            ItemsSourceHandler = new ItemsSourceHandler(this, _beatInfoSource);
             InitializeComponent();
             ColumnCount = 6;
             RowCount = 5;
             PART_ScrollBar.PageSize = ColumnCount * RowCount;
-            InitItemsSource(BeatInfoSource.AllBeatInfos.Keys.ToArray());
+            InitItemsSource(_beatInfoSource.AllBeatInfos.Keys.ToList());
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
@@ -73,8 +75,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         }
 
         private async Task OnBeatDeleted(string arg)
-        {            
-            PART_ScrollBar.TotalCount = BeatInfoSource.AllBeatInfos.Count;
+        {
+            PART_ScrollBar.TotalCount = _beatInfoSource.AllBeatInfos.Count;
             var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
             if(PART_ScrollBar.PageNo > totalPage)
             {
@@ -99,14 +101,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
             {
-                BeatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, e.Key.ToString());
+                ItemsSourceHandler.ChangeBeatInfo(e.Key.ToString());
                 _isNeedToMove = true;
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
                 _isNeedToMove = false;
             }
             else if(e.Key == Key.D)
             {
-                BeatInfoSource.DeleteBeatInfos(ItemsSourceHandler.SelectedItems);
+                ItemsSourceHandler.DeleteBeatInfo();
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
             }
         }
@@ -235,9 +237,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsSource(int[] itemsSource)
+        private void InitItemsSource(IEnumerable itemsSource)
         {
-            ItemsSourceHandler.ItemsSource = itemsSource;
+            ItemsSourceHandler.SetItemsSource(itemsSource);
             SelectAllItems();
         }
 
@@ -255,14 +257,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void SelectReverseItems()
         {
-            var reverseSelectedItems = ItemsSourceHandler.ItemsSource.Except(ItemsSourceHandler.SelectedItems).ToList();
+            int[] reverseSelectedItems = ItemsSourceHandler.ItemsSource.Except(ItemsSourceHandler.SelectedItems).ToArray();
             ItemsSourceHandler.SelectedItems.Clear();
-            foreach (var item in reverseSelectedItems)
+            foreach (int item in reverseSelectedItems)
             {
                 ItemsSourceHandler.SelectedItems.Add(item);
             }
             InitItemsControl();
-            PART_ItemsControl.CurrentMoveIndex = 0;
+            PART_ItemsControl.CurrentMoveIndex = 0;            
         }
 
         private void FreshPage(int pageNo, bool isNeedToMove, bool isMoveToNext = true)
@@ -312,6 +314,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 };
                 PART_ItemsControl.Items.Add(itemView);
             }
+            GC.Collect();
         }
 
         private void InitItemsControlBar()
@@ -323,6 +326,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void BeatItemListViewContainer_Unloaded(object sender, RoutedEventArgs e)
         {
+            ItemsSourceHandler.Dispose();
             KeyDown -= BeatItemListViewContainer_KeyDown;
             KeyUp -= BeatItemListViewContainer_KeyUp;
             MouseWheel -= BeatItemListViewContainer_MouseWheel;
@@ -373,12 +377,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)
         {
-            InitItemsSource(BeatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)).ToArray());
+            InitItemsSource(_beatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)).ToList());
         }
 
         private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)
         {
-            BeatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, PART_Type.Text);
+            _beatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, PART_Type.Text);
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
         }
     }

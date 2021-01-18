@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
-    public class SelectedItemsCollection
+    public class SelectedItemsCollection : IDisposable
     {
         public ObservableCollection<ISelectItem> SelectedItems { get; }
 
@@ -86,6 +86,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 SelectedItems.RemoveAt(i - 1);
             }
+            SelectedItems.Clear();
         }
 
         private ObservableCollection<ISelectItem> GetUnSelectedItems()
@@ -100,6 +101,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 }
             }
             return result;
+        }
+
+        public void Dispose()
+        {
+            SelectedItems.CollectionChanged -= SelectedItems_CollectionChanged;
+            SelectedItems.Clear();
+            GC.Collect();
         }
     }
 }
