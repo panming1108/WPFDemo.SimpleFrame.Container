@@ -15,8 +15,8 @@
     <Grid Width="750" Background="#ECF1F4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
         </Grid.RowDefinitions>
         <controls:BeatItemsControlBar x:Name="PART_ItemsControlBar"
                                       Height="25"
@@ -44,9 +44,9 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <controls:BeatItemsListView x:Name="PART_ItemsControl"
-                                        ColumnCount="{Binding ElementName=PART_Root, Path=ColumnCount}"
-                                        ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged"
-                                        RowCount="{Binding ElementName=PART_Root, Path=RowCount}" />
+                                        ItemHeight="{Binding ElementName=PART_Root, Path=ItemHeight}"
+                                        ItemWidth="{Binding ElementName=PART_Root, Path=ItemWidth}"
+                                        ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
             <controls:BeatItemsListScrollBar x:Name="PART_ScrollBar"
                                              Grid.Column="1"
                                              Orientation="Vertical"

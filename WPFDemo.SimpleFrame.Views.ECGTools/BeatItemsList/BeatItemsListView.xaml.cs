@@ -31,21 +31,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         public int CurrentMoveIndex { get; set; }
 
-        public int ColumnCount
+        public double ItemHeight
         {
-            get { return (int)GetValue(ColumnCountProperty); }
-            set { SetValue(ColumnCountProperty, value); }
+            get { return (double)GetValue(ItemHeightProperty); }
+            set { SetValue(ItemHeightProperty, value); }
         }
-        public int RowCount
+        public double ItemWidth
         {
-            get { return (int)GetValue(RowCountProperty); }
-            set { SetValue(RowCountProperty, value); }
+            get { return (double)GetValue(ItemWidthProperty); }
+            set { SetValue(ItemWidthProperty, value); }
         }
 
-        public static readonly DependencyProperty RowCountProperty =
-            DependencyProperty.Register(nameof(RowCount), typeof(int), typeof(BeatItemsListView));
-        public static readonly DependencyProperty ColumnCountProperty =
-            DependencyProperty.Register(nameof(ColumnCount), typeof(int), typeof(BeatItemsListView));
+        public static readonly DependencyProperty ItemWidthProperty =
+            DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(BeatItemsListView));
+        public static readonly DependencyProperty ItemHeightProperty =
+            DependencyProperty.Register(nameof(ItemHeight), typeof(double), typeof(BeatItemsListView));
 
         public event EventHandler<ItemsControlSelectionChangedEventArgs> ItemsControlSelectionChanged;
 

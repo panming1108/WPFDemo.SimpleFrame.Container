@@ -68,7 +68,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             get { return (object)GetValue(ButtonContentProperty); }
             set { SetValue(ButtonContentProperty, value); }
         }
+        public int MaxSelectCount
+        {
+            get { return (int)GetValue(MaxSelectCountProperty); }
+            set { SetValue(MaxSelectCountProperty, value); }
+        }
+        public int MinSelectCount
+        {
+            get { return (int)GetValue(MinSelectCountProperty); }
+            set { SetValue(MinSelectCountProperty, value); }
+        }
 
+        public static readonly DependencyProperty MinSelectCountProperty =
+            DependencyProperty.Register(nameof(MinSelectCount), typeof(int), typeof(SelectionPopupButton), new PropertyMetadata(0));
+        public static readonly DependencyProperty MaxSelectCountProperty =
+            DependencyProperty.Register(nameof(MaxSelectCount), typeof(int), typeof(SelectionPopupButton), new PropertyMetadata(-1));
         public static readonly DependencyProperty ButtonContentProperty =
             DependencyProperty.Register(nameof(ButtonContent), typeof(object), typeof(SelectionPopupButton));
         public static readonly DependencyProperty SelectionModeProperty =
@@ -95,6 +109,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         private void PART_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(PART_ListBox.SelectedItems.Count < MinSelectCount)
+            {
+                PART_ListBox.SelectedItems.Add(e.RemovedItems[0]);
+                return;
+            }
+            if(MaxSelectCount != -1 && PART_ListBox.SelectedItems.Count > MaxSelectCount)
+            {
+                PART_ListBox.SelectedItems.RemoveAt(0);
+                return;
+            }
             SelectionChanged?.Invoke(sender, e);
             if (SelectionMode == SelectionMode.Single)
             {

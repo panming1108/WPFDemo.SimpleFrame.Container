@@ -50,6 +50,8 @@
                                         ButtonContent="导联"
                                         ItemContainerStyle="{StaticResource LeadListBoxItemStyle}"
                                         ItemsSource="{Binding ElementName=PART_Root, Path=LeadSource}"
+                                        MaxSelectCount="3"
+                                        MinSelectCount="1"
                                         SelectionChanged="PART_LeadListBox_SelectionChanged"
                                         SelectionMode="Multiple" />
             <Button x:Name="PART_SelectAllBtn"

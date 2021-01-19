@@ -62,16 +62,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public BeatItemsControlBar()
         {
             InitializeComponent();
-            var defaultSort = ConfigSource.ConfigDic["DefaultSort"];
-            var sortEnum = (SortEnum)Enum.Parse(typeof(SortEnum), defaultSort);
-            var isAsc = ConfigSource.ConfigDic[defaultSort] == "asc";
+            var sortEnum = ConfigSource.DefaultSort;
             switch (sortEnum)
             {
                 case SortEnum.RSort:
-                    SortArgs = new SortArgs("R", isAsc);
+                    SortArgs = new SortArgs("R", ConfigSource.RSortAsc);
                     break;
                 case SortEnum.IntervalSort:
-                    SortArgs = new SortArgs("Interval", isAsc);
+                    SortArgs = new SortArgs("Interval", ConfigSource.IntervalSortAsc);
                     break;
                 default:
                     break;

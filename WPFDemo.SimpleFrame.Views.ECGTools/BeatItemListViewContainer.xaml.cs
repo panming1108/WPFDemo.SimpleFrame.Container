@@ -28,6 +28,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private readonly BeatInfoSource _beatInfoSource;
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
+        private IList _selectedLead;
 
         public ItemsSourceHandler ItemsSourceHandler { get; }
 
@@ -36,21 +37,49 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             get { return (int)GetValue(SelectedCountProperty); }
             set { SetValue(SelectedCountProperty, value); }
         }
-        public int ColumnCount
+        public double ItemHeight
         {
-            get { return (int)GetValue(ColumnCountProperty); }
-            set { SetValue(ColumnCountProperty, value); }
+            get { return (double)GetValue(ItemHeightProperty); }
+            set { SetValue(ItemHeightProperty, value); }
         }
-        public int RowCount
+        public double ItemWidth
         {
-            get { return (int)GetValue(RowCountProperty); }
-            set { SetValue(RowCountProperty, value); }
+            get { return (double)GetValue(ItemWidthProperty); }
+            set { SetValue(ItemWidthProperty, value); }
+        }
+        public double ItemBigWidth
+        {
+            get { return (double)GetValue(ItemBigWidthProperty); }
+            set { SetValue(ItemBigWidthProperty, value); }
+        }
+        public double ItemSmallWidth
+        {
+            get { return (double)GetValue(ItemSmallWidthProperty); }
+            set { SetValue(ItemSmallWidthProperty, value); }
+        }
+        public double ItemBigHeight
+        {
+            get { return (double)GetValue(ItemBigHeightProperty); }
+            set { SetValue(ItemBigHeightProperty, value); }
+        }
+        public double ItemSmallHeight
+        {
+            get { return (double)GetValue(ItemSmallHeightProperty); }
+            set { SetValue(ItemSmallHeightProperty, value); }
         }
 
-        public static readonly DependencyProperty RowCountProperty =
-            DependencyProperty.Register(nameof(RowCount), typeof(int), typeof(BeatItemListViewContainer), new PropertyMetadata(OnRowChanged));
-        public static readonly DependencyProperty ColumnCountProperty =
-            DependencyProperty.Register(nameof(ColumnCount), typeof(int), typeof(BeatItemListViewContainer), new PropertyMetadata(OnColumnChanged));
+        public static readonly DependencyProperty ItemSmallHeightProperty =
+            DependencyProperty.Register(nameof(ItemSmallHeight), typeof(double), typeof(BeatItemListViewContainer), new PropertyMetadata(ConfigSource.ItemSmallHeight));
+        public static readonly DependencyProperty ItemBigHeightProperty =
+            DependencyProperty.Register(nameof(ItemBigHeight), typeof(double), typeof(BeatItemListViewContainer), new PropertyMetadata(ConfigSource.ItemBigHeight));
+        public static readonly DependencyProperty ItemSmallWidthProperty =
+            DependencyProperty.Register(nameof(ItemSmallWidth), typeof(double), typeof(BeatItemListViewContainer), new PropertyMetadata(ConfigSource.ItemSmallWidth));
+        public static readonly DependencyProperty ItemBigWidthProperty =
+            DependencyProperty.Register(nameof(ItemBigWidth), typeof(double), typeof(BeatItemListViewContainer), new PropertyMetadata(ConfigSource.ItemBigWidth));
+        public static readonly DependencyProperty ItemWidthProperty =
+            DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(BeatItemListViewContainer));
+        public static readonly DependencyProperty ItemHeightProperty =
+            DependencyProperty.Register(nameof(ItemHeight), typeof(double), typeof(BeatItemListViewContainer));
         public static readonly DependencyProperty SelectedCountProperty =
             DependencyProperty.Register(nameof(SelectedCount), typeof(int), typeof(BeatItemListViewContainer));
 
@@ -61,9 +90,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _beatInfoSource = new BeatInfoSource(840000);
             InitializeComponent();
             ItemsSourceHandler = new ItemsSourceHandler(this, PART_ItemsControlBar, _beatInfoSource);
-            ColumnCount = 6;
-            RowCount = 5;
-            PART_ScrollBar.PageSize = ColumnCount * RowCount;
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
@@ -77,7 +103,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             var newSource = _beatInfoSource.GetCurrentItemsSource(ItemsSourceHandler.ItemsSource);
             ItemsSourceHandler.SetItemsSource(newSource);
-            if(PART_ItemsControlBar.PrevCurrentNextStatus == PrevCurrentNextEnum.Current)
+            if (PART_ItemsControlBar.PrevCurrentNextStatus == PrevCurrentNextEnum.Current)
             {
                 ItemsSourceHandler.SetOriginItemsSource(newSource);
             }
@@ -103,7 +129,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
                 _isNeedToMove = false;
             }
-            else if(e.Key == Key.D)
+            else if (e.Key == Key.D)
             {
                 ItemsSourceHandler.DeleteBeatInfo();
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
@@ -129,7 +155,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControlBar_LeadSelectionChanged(object sender, LeadSelectionChangedEventArgs e)
         {
-
+            _selectedLead = e.LeadSelectionChangedItems;
+            ChangePageSize();
         }
 
         private void PART_ItemsControlBar_SelectedAll(object sender, EventArgs e)
@@ -144,42 +171,34 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControlBar_StrechChanged(object sender, BoolEventArgs e)
         {
-            if(e.Boolean)
-            {
-                ColumnCount /= 2;
-            }
-            else
-            {
-                ColumnCount = int.Parse(ConfigSource.ConfigDic["ColumnCount"]);
-            }
+            ChangePageSize();
         }
 
-        private static void OnRowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void ChangePageSize()
         {
-            var control = d as BeatItemListViewContainer;
-            control.ChangeColumnOrRow();
-        }
-
-        private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = d as BeatItemListViewContainer;
-            control.ChangeColumnOrRow();
-        }
-
-        private void ChangeColumnOrRow()
-        {
-            if(ItemsSourceHandler.ItemsSource == null)
+            var pageSize = GetPageSize(PART_ItemsControlBar.IsStrech, _selectedLead.Count);
+            if (pageSize == PART_ScrollBar.PageSize)
             {
                 return;
             }
-            PART_ScrollBar.PageSize = RowCount * ColumnCount;
-            if(ItemsSourceHandler.SelectedItems.Count <= 0)
+            PART_ScrollBar.PageSize = pageSize;
+            if (PART_ItemsControl.Items.Count <= 0)
             {
                 FreshPage(1, false, false);
             }
             else
             {
-                var pageNo = ItemsSourceHandler.GetCurrentItemPageNo(ItemsSourceHandler.SelectedItems.FirstOrDefault(), PART_ScrollBar.PageSize);
+                ISelectItem itemView;
+                if(PART_ItemsControl.SelectedItemsCollection.SelectedItems.Count > 0)
+                {
+                    itemView = PART_ItemsControl.SelectedItemsCollection.SelectedItems[0];
+                }
+                else
+                {
+                    itemView = PART_ItemsControl.Items[0] as ISelectItem;
+                }
+                var beatInfo = itemView.DataContext as BeatInfo;
+                var pageNo = ItemsSourceHandler.GetCurrentItemPageNo(beatInfo.R, PART_ScrollBar.PageSize);
                 FreshPage(pageNo, false, false);
             }
         }
@@ -197,7 +216,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                if(PART_ScrollBar.PageNo + 1 > PART_ScrollBar.TotalPage)
+                if (PART_ScrollBar.PageNo + 1 > PART_ScrollBar.TotalPage)
                 {
                     return;
                 }
@@ -213,7 +232,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             else
             {
-                if(PART_ScrollBar.PageNo - 1 < 1)
+                if (PART_ScrollBar.PageNo - 1 < 1)
                 {
                     return;
                 }
@@ -266,7 +285,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void FreshPage(int pageNo, bool isNeedToMove, bool isMoveToNext = true)
         {
             //刷新界面
-            if(pageNo != PART_ScrollBar.PageNo)
+            if (pageNo != PART_ScrollBar.PageNo)
             {
                 _isNeedToMove = isNeedToMove;
                 PART_ScrollBar.PageNo = pageNo;
@@ -275,11 +294,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             else
             {
                 InitItemsControl();
-                if(PART_ScrollBar.TotalCount <= 0)
+                if (PART_ScrollBar.TotalCount <= 0)
                 {
                     return;
                 }
-                if(isNeedToMove)
+                if (isNeedToMove)
                 {
                     if (isMoveToNext)
                     {
@@ -334,7 +353,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_ScrollBar_PageNoChanged(object sender, PageNoChangedEventArgs e)
         {
             InitItemsControl();
-            if(_isNeedToMove)
+            if (_isNeedToMove)
             {
                 //如果跳转页大于当前页，则选择第一个
                 if (e.NewPageNo > e.OldPageNo)
@@ -391,8 +410,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
+        private int GetPageSize(bool isStrech, int leadCount)
+        {
+            ItemWidth = isStrech ? ItemBigWidth : ItemSmallWidth;
+            ItemHeight = leadCount >= 3 ? ItemBigHeight : ItemSmallHeight;
+            var columnCount = Convert.ToInt32(PART_ItemsControl.ActualWidth / ItemWidth);
+            var rowCount = Convert.ToInt32(PART_ItemsControl.ActualHeight / ItemHeight);
+            return columnCount * rowCount;
+        }
+
         private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)
         {
+            PART_ScrollBar.PageSize = GetPageSize(PART_ItemsControlBar.IsStrech, _selectedLead.Count);
             PART_ItemsControlBar.PART_Current.IsChecked = false;
             ItemsSourceHandler.SetOriginItemsSource(_beatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)));
             PART_ItemsControlBar.PART_Current.IsChecked = true;

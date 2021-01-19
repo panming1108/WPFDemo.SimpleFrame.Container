@@ -7,15 +7,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public static class ConfigSource
     {
-        public static Dictionary<string, string> ConfigDic = new Dictionary<string, string>();
-
-        static ConfigSource()
-        {
-            ConfigDic.Add("ColumnCount", "6");
-            ConfigDic.Add("RowCount", "5");
-            ConfigDic.Add("RSort", "asc");
-            ConfigDic.Add("IntervalSort", "asc");
-            ConfigDic.Add("DefaultSort", "IntervalSort");
-        }
+        public static double ItemSmallHeight => 122;
+        public static double ItemBigHeight => 150;
+        public static double ItemBigWidth => 240;
+        public static double ItemSmallWidth => 122;
+        public static bool RSortAsc => true;
+        public static bool IntervalSortAsc => true;
+        public static SortEnum DefaultSort => SortEnum.IntervalSort;
     }
 }

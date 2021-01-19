@@ -10,8 +10,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public interface ISelectItemsContainer : IMoveSelectItemAction
     {
-        int ColumnCount { get; set; }
-        int RowCount { get; set; }
+        double ItemWidth { get; set; }
+        double ItemHeight { get; set; }
         ItemCollection Items { get; }
         SelectedItemsCollection SelectedItemsCollection { get; }
         void ClearItemsSource();
