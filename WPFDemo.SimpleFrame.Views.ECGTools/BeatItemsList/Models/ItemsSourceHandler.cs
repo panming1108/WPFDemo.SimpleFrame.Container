@@ -11,34 +11,32 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     {
         private readonly BeatInfoSource _beatInfoSource;
         private readonly IBeatItemListViewContainer _beatItemListViewContainer;
+        private readonly IBeatItemsControlBar _beatItemsControlBar;
         private readonly List<int> _itemsSource;
         private readonly List<int> _originItemsSource;
-        private readonly List<BeatInfo> _itemsDataSource;
         public List<int> SelectedItems { get; }
 
         public List<int> ItemsSource => _itemsSource;
         public List<int> OriginItemsSource => _originItemsSource.ToList();
 
-        public ItemsSourceHandler(IBeatItemListViewContainer beatItemListViewContainer, BeatInfoSource beatInfoSource)
+        public ItemsSourceHandler(IBeatItemListViewContainer beatItemListViewContainer, IBeatItemsControlBar beatItemsControlBar, BeatInfoSource beatInfoSource)
         {
             _beatInfoSource = beatInfoSource;
             _beatItemListViewContainer = beatItemListViewContainer;
+            _beatItemsControlBar = beatItemsControlBar;
             _itemsSource = new List<int>();
             _originItemsSource = new List<int>();
-            _itemsDataSource = new List<BeatInfo>();
             SelectedItems = new List<int>();
         }
 
-        public void SetItemsSource(IEnumerable itemsSource)
+        public void SetItemsSource(List<int> itemsSource)
         {
             _itemsSource.Clear();
-            _itemsDataSource.Clear();
             SelectedItems.Clear();
-            foreach (var item in itemsSource)
+            var result = _beatInfoSource.SortItemsSource(itemsSource, _beatItemsControlBar.SortArgs);
+            foreach (var item in result)
             {
-                int key = (int)item;
-                _itemsSource.Add(key);
-                _itemsDataSource.Add(_beatInfoSource.AllBeatInfoDic[key].First());
+                _itemsSource.Add((int)item);
             }
             _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
         }
@@ -144,18 +142,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             return (index + 1) % pageSize == 0 ? (index + 1) / pageSize : (index + 1) / pageSize + 1;
         }
 
-        public List<int> SortItemsSource(bool isAsc)
-        {
-            if(isAsc)
-            {
-                return _itemsDataSource.OrderBy(x => x.Interval).Select(x => x.R).ToList();
-            }
-            else
-            {
-                return _itemsDataSource.OrderByDescending(x => x.Interval).Select(x => x.R).ToList();
-            }
-        }
-
         public void ChangeBeatInfo(string type)
         {
             if(SelectedItems.Count <= 0)
@@ -172,17 +158,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 return;
             }
             _beatInfoSource.DeleteBeatInfos(SelectedItems);
-            foreach (var item in SelectedItems)
-            {
-                ItemsSource.Remove(item);
-            }
         }
 
         public void Dispose()
         {
             ItemsSource.Clear();
             SelectedItems.Clear();
-            _itemsDataSource.Clear();
             GC.Collect();
         }
     }

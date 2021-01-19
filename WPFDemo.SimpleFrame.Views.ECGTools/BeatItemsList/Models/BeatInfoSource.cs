@@ -109,10 +109,30 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             var result = new List<int>();
             foreach (var item in beatInfoRs)
             {
-                var prevBeat = AllBeatInfoDic[item][2];
-                if (prevBeat != null)
+                if (AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> prevList))
                 {
-                    result.Add(prevBeat.R);
+                    var prevBeat = prevList[2];
+                    if (prevBeat != null)
+                    {
+                        result.Add(prevBeat.R);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public List<int> GetCurrentItemsSource(List<int> beatInfoRs)
+        {
+            var result = new List<int>();
+            foreach (var item in beatInfoRs)
+            {
+                if(AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> currentList))
+                {
+                    var currentBeat = currentList[0];
+                    if (currentBeat != null)
+                    {
+                        result.Add(currentBeat.R);
+                    }
                 }
             }
             return result;
@@ -123,13 +143,36 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             var result = new List<int>();
             foreach (var item in beatInfoRs)
             {
-                var nextBeat = AllBeatInfoDic[item][1];
-                if (nextBeat != null)
+                if (AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> nextList))
                 {
-                    result.Add(nextBeat.R);
+                    var nextBeat = nextList[1];
+                    if (nextBeat != null)
+                    {
+                        result.Add(nextBeat.R);
+                    }
                 }
             }
             return result;
+        }
+
+        public IEnumerable SortItemsSource(List<int> itemRs, SortArgs sortArgs)
+        {
+            var list = new List<BeatInfo>();
+            foreach (var item in itemRs)
+            {
+                if(AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> beatInfos))
+                {
+                    list.Add(beatInfos[0]);
+                }
+            }
+            if (sortArgs.IsAsc)
+            {
+                return list.OrderBy(x => x.Interval).Select(w => w.R);
+            }
+            else
+            {
+                return list.OrderByDescending(x => x.Interval).Select(w => w.R);
+            }
         }
 
         public double[] GetECGData(Random random)

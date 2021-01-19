@@ -18,8 +18,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     /// <summary>
     /// BeatItemsControlBar.xaml 的交互逻辑
     /// </summary>
-    public partial class BeatItemsControlBar : UserControl
+    public partial class BeatItemsControlBar : UserControl, IBeatItemsControlBar
     {
+        private bool _isStrech;
+        private PrevCurrentNextEnum _prevCurrentNextStatus;
         public event EventHandler<LeadSelectionChangedEventArgs> LeadSelectionChanged;
         public event EventHandler<EventArgs> SelectedAll;
         public event EventHandler<EventArgs> SelectedReverse;
@@ -44,6 +46,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             set { SetValue(SelectedCountProperty, value); }
         }
 
+        public bool IsStrech => _isStrech;
+
+        public PrevCurrentNextEnum PrevCurrentNextStatus => _prevCurrentNextStatus;
+
+        public SortArgs SortArgs { get; set; }
+
         public static readonly DependencyProperty SelectedCountProperty =
             DependencyProperty.Register(nameof(SelectedCount), typeof(int), typeof(BeatItemsControlBar));
         public static readonly DependencyProperty TotalCountProperty =
@@ -54,6 +62,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public BeatItemsControlBar()
         {
             InitializeComponent();
+            var defaultSort = ConfigSource.ConfigDic["DefaultSort"];
+            var sortEnum = (SortEnum)Enum.Parse(typeof(SortEnum), defaultSort);
+            var isAsc = ConfigSource.ConfigDic[defaultSort] == "asc";
+            switch (sortEnum)
+            {
+                case SortEnum.RSort:
+                    SortArgs = new SortArgs("R", isAsc);
+                    break;
+                case SortEnum.IntervalSort:
+                    SortArgs = new SortArgs("Interval", isAsc);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void PART_LeadListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -73,32 +95,38 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         private void PART_StrechBtn_Checked(object sender, RoutedEventArgs e)
         {
-            StrechChanged?.Invoke(this, new BoolEventArgs(true));
+            _isStrech = true;
+            StrechChanged?.Invoke(this, new BoolEventArgs(_isStrech));
         }
 
         private void PART_StrechBtn_Unchecked(object sender, RoutedEventArgs e)
         {
-            StrechChanged?.Invoke(this, new BoolEventArgs(false));
+            _isStrech = false;
+            StrechChanged?.Invoke(this, new BoolEventArgs(_isStrech));
         }
-        private bool _isAsc;
+
         private void PART_SortBtn_Click(object sender, RoutedEventArgs e)
         {
-            _isAsc = !_isAsc;
-            SortChanged?.Invoke(this, new SortEventArgs(new SortArgs() { SortFieldName = "Interval", IsAsc = _isAsc }));
+            SortArgs.SortFieldName = "Interval";
+            SortArgs.IsAsc = !SortArgs.IsAsc;
+            SortChanged?.Invoke(this, new SortEventArgs(SortArgs));
         }
 
         private void PART_Prev_Checked(object sender, RoutedEventArgs e)
         {
+            _prevCurrentNextStatus = PrevCurrentNextEnum.Prev;
             PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Prev));
         }
 
         private void PART_Current_Checked(object sender, RoutedEventArgs e)
         {
+            _prevCurrentNextStatus = PrevCurrentNextEnum.Current;
             PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Current));
         }
 
         private void PART_Next_Checked(object sender, RoutedEventArgs e)
         {
+            _prevCurrentNextStatus = PrevCurrentNextEnum.Next;
             PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Next));
         }
     }

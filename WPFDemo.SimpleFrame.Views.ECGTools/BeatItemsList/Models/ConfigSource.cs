@@ -13,6 +13,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             ConfigDic.Add("ColumnCount", "6");
             ConfigDic.Add("RowCount", "5");
+            ConfigDic.Add("RSort", "asc");
+            ConfigDic.Add("IntervalSort", "asc");
+            ConfigDic.Add("DefaultSort", "IntervalSort");
         }
     }
 }

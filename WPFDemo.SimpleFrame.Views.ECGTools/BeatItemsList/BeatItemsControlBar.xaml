@@ -75,7 +75,8 @@
                          VerticalAlignment="Center"
                          Checked="PART_Current_Checked"
                          Content="当前"
-                         GroupName="PrevCurrentNext" />
+                         GroupName="PrevCurrentNext"
+                         IsChecked="True" />
             <RadioButton x:Name="PART_Next"
                          Margin="5,0,0,0"
                          VerticalAlignment="Center"

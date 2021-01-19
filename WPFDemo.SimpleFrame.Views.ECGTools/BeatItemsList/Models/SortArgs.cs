@@ -7,6 +7,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public class SortArgs
     {
+        public SortArgs(string sortFieldName, bool isAsc)
+        {
+            SortFieldName = sortFieldName;
+            IsAsc = isAsc;
+        }
+
         public string SortFieldName { get; set; }
         public bool IsAsc { get; set; }
     }

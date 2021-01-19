@@ -7,6 +7,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public interface IBeatItemsControlBar
     {
+        bool IsStrech { get; }
         PrevCurrentNextEnum PrevCurrentNextStatus { get; }
         SortArgs SortArgs { get; set; }
     }

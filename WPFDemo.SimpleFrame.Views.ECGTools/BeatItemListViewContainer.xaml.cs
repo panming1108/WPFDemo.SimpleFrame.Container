@@ -59,12 +59,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public BeatItemListViewContainer()
         {
             _beatInfoSource = new BeatInfoSource(840000);
-            ItemsSourceHandler = new ItemsSourceHandler(this, _beatInfoSource);
             InitializeComponent();
+            ItemsSourceHandler = new ItemsSourceHandler(this, PART_ItemsControlBar, _beatInfoSource);
             ColumnCount = 6;
             RowCount = 5;
             PART_ScrollBar.PageSize = ColumnCount * RowCount;
-            ItemsSourceHandler.SetOriginItemsSource(_beatInfoSource.GenerateItemsSource(150000));
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
@@ -76,18 +75,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private async Task OnBeatDeleted(string arg)
         {
-            PART_ScrollBar.TotalCount = _beatInfoSource.AllBeatInfoDic.Count;
+            var newSource = _beatInfoSource.GetCurrentItemsSource(ItemsSourceHandler.ItemsSource);
+            ItemsSourceHandler.SetItemsSource(newSource);
+            if(PART_ItemsControlBar.PrevCurrentNextStatus == PrevCurrentNextEnum.Current)
+            {
+                ItemsSourceHandler.SetOriginItemsSource(newSource);
+            }
+            ItemsSourceHandler.SelectedItems.Clear();
+            PART_ScrollBar.TotalCount = newSource.Count;
             var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
-            if(PART_ScrollBar.PageNo > totalPage)
-            {
-                _isNeedToMove = true;
-                PART_ScrollBar.PageNo = totalPage;
-                _isNeedToMove = false;
-            }
-            else
-            {
-                FreshPage(PART_ScrollBar.PageNo, true, false);
-            }
+            FreshPage(PART_ScrollBar.PageNo > totalPage ? totalPage : PART_ScrollBar.PageNo, false, false);
             await TaskEx.FromResult(0);
         }
 
@@ -189,8 +186,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControlBar_SortChanged(object sender, SortEventArgs e)
         {
-            var itemsSource = ItemsSourceHandler.SortItemsSource(e.SortArgs.IsAsc);
-            InitItemsSource(itemsSource);
+            InitItemsSource(ItemsSourceHandler.ItemsSource.ToList());
         }
 
         private void ItemsControlMoveToNext()
@@ -237,7 +233,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void InitItemsSource(IEnumerable itemsSource)
+        private void InitItemsSource(List<int> itemsSource)
         {
             ItemsSourceHandler.SetItemsSource(itemsSource);
             SelectAllItems();
@@ -264,7 +260,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ItemsSourceHandler.SelectedItems.Add(item);
             }
             InitItemsControl();
-            PART_ItemsControl.CurrentMoveIndex = 0;            
+            PART_ItemsControl.CurrentMoveIndex = 0;
         }
 
         private void FreshPage(int pageNo, bool isNeedToMove, bool isMoveToNext = true)
