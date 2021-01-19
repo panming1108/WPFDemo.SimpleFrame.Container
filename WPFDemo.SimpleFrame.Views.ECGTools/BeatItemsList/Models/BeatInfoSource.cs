@@ -8,29 +8,72 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public class BeatInfoSource
     {
+        private readonly int _count;
         public Random random = new Random();
         public string[] beatTypes = new string[] { "N", "S", "V" };
-        public Dictionary<int, BeatInfo> AllBeatInfos { get; set; }
+        private readonly List<BeatInfo> _allBeatInfos;
+        private readonly Dictionary<int, List<BeatInfo>> _allBeatInfoDic;
+        public Dictionary<int, List<BeatInfo>> AllBeatInfoDic => _allBeatInfoDic;
 
-        public BeatInfoSource()
+        public BeatInfoSource(int count)
         {
-            AllBeatInfos = GetAllBeatInfos();
+            _count = count;
+            _allBeatInfos = GetAllBeatInfos();
+            _allBeatInfoDic = GetAllBeatInfoDic();
         }
 
-        public Dictionary<int, BeatInfo> GetAllBeatInfos(int count = 840000)
+        private Dictionary<int, List<BeatInfo>> GetAllBeatInfoDic()
         {
-            var results = new Dictionary<int, BeatInfo>();
-            for (int i = 0; i < count; i++)
+            if (_allBeatInfos != null && !_allBeatInfos.Any())
+                return null;
+
+            var beatInfosDic = new Dictionary<int, List<BeatInfo>>();
+
+            //第一个
+            beatInfosDic[_allBeatInfos[0].R] = new List<BeatInfo>();
+            beatInfosDic[_allBeatInfos[0].R].Add(_allBeatInfos[0]);//当前
+
+            if (_allBeatInfos.Count > 1)
+            {
+                beatInfosDic[_allBeatInfos[0].R].Add(_allBeatInfos[1]);//下一个
+            }
+            beatInfosDic[_allBeatInfos[0].R].Add(null);//上一个
+
+            for (var i = 1; i < _allBeatInfos.Count - 1; i++)
+            {
+                beatInfosDic[_allBeatInfos[i].R] = new List<BeatInfo>();
+                beatInfosDic[_allBeatInfos[i].R].Add(_allBeatInfos[i]);//当前
+                beatInfosDic[_allBeatInfos[i].R].Add(_allBeatInfos[i + 1]);//下一个
+                beatInfosDic[_allBeatInfos[i].R].Add(_allBeatInfos[i - 1]);//上一个
+            }
+
+            //最后一个
+            beatInfosDic[_allBeatInfos[_allBeatInfos.Count - 1].R] = new List<BeatInfo>();
+            beatInfosDic[_allBeatInfos[_allBeatInfos.Count - 1].R].Add(_allBeatInfos[_allBeatInfos.Count - 1]);
+            beatInfosDic[_allBeatInfos[_allBeatInfos.Count - 1].R].Add(null);
+
+            if (_allBeatInfos.Count > 1)
+            {
+                beatInfosDic[_allBeatInfos[_allBeatInfos.Count - 1].R].Add(_allBeatInfos[_allBeatInfos.Count - 2]);
+            }
+
+            return beatInfosDic;
+        }
+
+        public List<BeatInfo> GetAllBeatInfos()
+        {
+            var results = new List<BeatInfo>();
+            for (int i = 0; i < _count; i++)
             {
                 BeatInfo beatInfo = new BeatInfo()
                 {
                     BeatType = beatTypes[i % 3],
                     Position = i,
                     R = i,
-                    Interval = random.Next(0, 2000),
+                    Interval = random.Next(0, _count),
                     Data = GetECGData(random)
                 };
-                results.Add(i, beatInfo);
+                results.Add(beatInfo);
             }
             return results;
         }
@@ -40,25 +83,53 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             var results = new List<int>();
             for (int i = 0; i < count; i++)
             {
-                results.Add(random.Next(0, count));
+                results.Add(i);
             }
             return results;
         }
         
-        public void ChangedBeatInfo(IList beatInfoRs, string type)
+        public void ChangedBeatInfo(List<int> beatInfoRs, string type)
         {
             foreach (var item in beatInfoRs)
             {
-                AllBeatInfos[(int)item].BeatType = type;
+                AllBeatInfoDic[item].First().BeatType = type;
             }
         }
 
-        public void DeleteBeatInfos(IList beatInfoRs)
-        {            
+        public void DeleteBeatInfos(List<int> beatInfoRs)
+        {
             foreach (var item in beatInfoRs)
             {
-                AllBeatInfos.Remove((int)item);
+                AllBeatInfoDic.Remove(item);
             }
+        }
+
+        public List<int> GetPrevItemsSource(List<int> beatInfoRs)
+        {
+            var result = new List<int>();
+            foreach (var item in beatInfoRs)
+            {
+                var prevBeat = AllBeatInfoDic[item][2];
+                if (prevBeat != null)
+                {
+                    result.Add(prevBeat.R);
+                }
+            }
+            return result;
+        }
+
+        public List<int> GetNextItemsSource(List<int> beatInfoRs)
+        {
+            var result = new List<int>();
+            foreach (var item in beatInfoRs)
+            {
+                var nextBeat = AllBeatInfoDic[item][1];
+                if (nextBeat != null)
+                {
+                    result.Add(nextBeat.R);
+                }
+            }
+            return result;
         }
 
         public double[] GetECGData(Random random)

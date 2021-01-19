@@ -111,7 +111,9 @@
       <DependentUpon>BeatItemsListScrollBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="BeatItemsList\EventArgs\PageNoChangedEventArgs.cs" />
+    <Compile Include="BeatItemsList\EventArgs\PrevCurrentNextEventArgs.cs" />
     <Compile Include="BeatItemsList\Interface\IBeatItemListViewContainer.cs" />
+    <Compile Include="BeatItemsList\Interface\IBeatItemsControlBar.cs" />
     <Compile Include="BeatItemsList\Interface\IMoveSelectItemAction.cs" />
     <Compile Include="BeatItemsList\Actions\ShiftSelectAction.cs" />
     <Compile Include="BeatItemsList\BeatItemsControlBar.xaml.cs">
@@ -137,7 +139,9 @@
     <Compile Include="BeatItemsList\Models\ItemsPager.cs" />
     <Compile Include="BeatItemsList\Models\ItemsSourceHandler.cs" />
     <Compile Include="BeatItemsList\Models\MessagerKeyEnum.cs" />
+    <Compile Include="BeatItemsList\Models\PrevCurrentNextEnum.cs" />
     <Compile Include="BeatItemsList\Models\SelectActionEnum.cs" />
+    <Compile Include="BeatItemsList\Models\SortArgs.cs" />
     <Compile Include="BeatItemsList\SelectionPopupButton.xaml.cs">
       <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>

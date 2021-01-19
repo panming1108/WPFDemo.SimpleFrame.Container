@@ -11,33 +11,46 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     {
         private readonly BeatInfoSource _beatInfoSource;
         private readonly IBeatItemListViewContainer _beatItemListViewContainer;
-        private List<int> _itemsSource;
-        private List<KeyValuePair<int, BeatInfo>> _itemsRealSource;
+        private readonly List<int> _itemsSource;
+        private readonly List<int> _originItemsSource;
+        private readonly List<BeatInfo> _itemsDataSource;
         public List<int> SelectedItems { get; }
 
         public List<int> ItemsSource => _itemsSource;
+        public List<int> OriginItemsSource => _originItemsSource.ToList();
 
         public ItemsSourceHandler(IBeatItemListViewContainer beatItemListViewContainer, BeatInfoSource beatInfoSource)
         {
             _beatInfoSource = beatInfoSource;
             _beatItemListViewContainer = beatItemListViewContainer;
             _itemsSource = new List<int>();
-            _itemsRealSource = new List<KeyValuePair<int, BeatInfo>>();
+            _originItemsSource = new List<int>();
+            _itemsDataSource = new List<BeatInfo>();
             SelectedItems = new List<int>();
         }
 
         public void SetItemsSource(IEnumerable itemsSource)
         {
             _itemsSource.Clear();
-            _itemsRealSource.Clear();
+            _itemsDataSource.Clear();
             SelectedItems.Clear();
             foreach (var item in itemsSource)
             {
                 int key = (int)item;
                 _itemsSource.Add(key);
-                _itemsRealSource.Add(new KeyValuePair<int, BeatInfo>(key, _beatInfoSource.AllBeatInfos[key]));
+                _itemsDataSource.Add(_beatInfoSource.AllBeatInfoDic[key].First());
             }
             _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
+        }
+
+        public void SetOriginItemsSource(IEnumerable itemsSource)
+        {
+            _originItemsSource.Clear();
+            foreach (var item in itemsSource)
+            {
+                int key = (int)item;
+                _originItemsSource.Add(key);
+            }
         }
 
         public void OnItemsControlSelectionChanged(ItemsControlSelectionChangedEventArgs e)
@@ -103,7 +116,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             var rSource = ItemsSource.Skip((pageNo - 1) * pageSize).Take(pageSize);
             foreach (var item in rSource)
             {
-                result.Add(_beatInfoSource.AllBeatInfos[item]);
+                result.Add(_beatInfoSource.AllBeatInfoDic[item].First());
             }
             return new ItemsPager() { PageNo = tempPageNo, PageSize = pageSize, TotalCount = ItemsSource.Count(), Source = result };
         }
@@ -135,11 +148,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             if(isAsc)
             {
-                return _itemsRealSource.OrderBy(x => x.Value.Interval).Select(x => x.Key).ToList();
+                return _itemsDataSource.OrderBy(x => x.Interval).Select(x => x.R).ToList();
             }
             else
             {
-                return _itemsRealSource.OrderByDescending(x => x.Value.Interval).Select(x => x.Key).ToList();
+                return _itemsDataSource.OrderByDescending(x => x.Interval).Select(x => x.R).ToList();
             }
         }
 
@@ -169,7 +182,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             ItemsSource.Clear();
             SelectedItems.Clear();
-            _itemsRealSource.Clear();
+            _itemsDataSource.Clear();
             GC.Collect();
         }
     }

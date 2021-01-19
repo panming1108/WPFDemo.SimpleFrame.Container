@@ -58,13 +58,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public BeatItemListViewContainer()
         {
-            _beatInfoSource = new BeatInfoSource();
+            _beatInfoSource = new BeatInfoSource(840000);
             ItemsSourceHandler = new ItemsSourceHandler(this, _beatInfoSource);
             InitializeComponent();
             ColumnCount = 6;
             RowCount = 5;
             PART_ScrollBar.PageSize = ColumnCount * RowCount;
-            InitItemsSource(_beatInfoSource.AllBeatInfos.Keys.ToList());
+            ItemsSourceHandler.SetOriginItemsSource(_beatInfoSource.GenerateItemsSource(150000));
             InitItemsControlBar();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
@@ -76,7 +76,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private async Task OnBeatDeleted(string arg)
         {
-            PART_ScrollBar.TotalCount = _beatInfoSource.AllBeatInfos.Count;
+            PART_ScrollBar.TotalCount = _beatInfoSource.AllBeatInfoDic.Count;
             var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
             if(PART_ScrollBar.PageNo > totalPage)
             {
@@ -189,7 +189,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControlBar_SortChanged(object sender, SortEventArgs e)
         {
-            var itemsSource = ItemsSourceHandler.SortItemsSource(e.IsAsc);
+            var itemsSource = ItemsSourceHandler.SortItemsSource(e.SortArgs.IsAsc);
             InitItemsSource(itemsSource);
         }
 
@@ -353,6 +353,26 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
+        private void PART_ItemsControlBar_PrevCurrentNextChanged(object sender, PrevCurrentNextEventArgs e)
+        {
+            switch (e.PrevCurrentNext)
+            {
+                case PrevCurrentNextEnum.Prev:
+                    var prevList = _beatInfoSource.GetPrevItemsSource(ItemsSourceHandler.OriginItemsSource);
+                    InitItemsSource(prevList);
+                    break;
+                case PrevCurrentNextEnum.Current:
+                    InitItemsSource(ItemsSourceHandler.OriginItemsSource);
+                    break;
+                case PrevCurrentNextEnum.Next:
+                    var nextList = _beatInfoSource.GetNextItemsSource(ItemsSourceHandler.OriginItemsSource);
+                    InitItemsSource(nextList);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void BeatItemListViewContainer_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta <= 0)
@@ -377,7 +397,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)
         {
-            InitItemsSource(_beatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)).ToList());
+            PART_ItemsControlBar.PART_Current.IsChecked = false;
+            ItemsSourceHandler.SetOriginItemsSource(_beatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)));
+            PART_ItemsControlBar.PART_Current.IsChecked = true;
         }
 
         private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)

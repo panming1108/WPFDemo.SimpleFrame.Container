@@ -25,6 +25,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public event EventHandler<EventArgs> SelectedReverse;
         public event EventHandler<BoolEventArgs> StrechChanged;
         public event EventHandler<SortEventArgs> SortChanged;
+        public event EventHandler<PrevCurrentNextEventArgs> PrevCurrentNextChanged;
         public IList LeadSelectedItems => PART_LeadSwitch.SelectedItems;
 
         public IEnumerable LeadSource
@@ -83,7 +84,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         private void PART_SortBtn_Click(object sender, RoutedEventArgs e)
         {
             _isAsc = !_isAsc;
-            SortChanged?.Invoke(this, new SortEventArgs("Interval", _isAsc));
+            SortChanged?.Invoke(this, new SortEventArgs(new SortArgs() { SortFieldName = "Interval", IsAsc = _isAsc }));
+        }
+
+        private void PART_Prev_Checked(object sender, RoutedEventArgs e)
+        {
+            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Prev));
+        }
+
+        private void PART_Current_Checked(object sender, RoutedEventArgs e)
+        {
+            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Current));
+        }
+
+        private void PART_Next_Checked(object sender, RoutedEventArgs e)
+        {
+            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Next));
         }
     }
 }

@@ -21,13 +21,15 @@
         <controls:BeatItemsControlBar x:Name="PART_ItemsControlBar"
                                       Height="25"
                                       LeadSelectionChanged="PART_ItemsControlBar_LeadSelectionChanged"
+                                      PrevCurrentNextChanged="PART_ItemsControlBar_PrevCurrentNextChanged"
                                       SelectedAll="PART_ItemsControlBar_SelectedAll"
                                       SelectedCount="{Binding ElementName=PART_Root, Path=SelectedCount}"
                                       SelectedReverse="PART_ItemsControlBar_SelectedReverse"
                                       SortChanged="PART_ItemsControlBar_SortChanged"
                                       StrechChanged="PART_ItemsControlBar_StrechChanged"
                                       TotalCount="{Binding ElementName=PART_ScrollBar, Path=TotalCount}" />
-        <StackPanel HorizontalAlignment="Center"
+        <StackPanel Margin="200,0,0,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
             <TextBlock Text="共" />
