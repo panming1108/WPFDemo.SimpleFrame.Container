@@ -41,7 +41,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             get { return (double)GetValue(ItemWidthProperty); }
             set { SetValue(ItemWidthProperty, value); }
         }
+        public IEnumerable<MenuItem> SingleSelectContextMenuItems
+        {
+            get { return (IEnumerable<MenuItem>)GetValue(SingleSelectContextMenuItemsProperty); }
+            set { SetValue(SingleSelectContextMenuItemsProperty, value); }
+        }
+        public IEnumerable<MenuItem> BatchSelectContextMenuItems
+        {
+            get { return (IEnumerable<MenuItem>)GetValue(BatchSelectContextMenuItemsProperty); }
+            set { SetValue(BatchSelectContextMenuItemsProperty, value); }
+        }
 
+        public static readonly DependencyProperty BatchSelectContextMenuItemsProperty =
+            DependencyProperty.Register(nameof(BatchSelectContextMenuItems), typeof(IEnumerable<MenuItem>), typeof(BeatItemsListView));
+        public static readonly DependencyProperty SingleSelectContextMenuItemsProperty =
+            DependencyProperty.Register(nameof(SingleSelectContextMenuItems), typeof(IEnumerable<MenuItem>), typeof(BeatItemsListView));
         public static readonly DependencyProperty ItemWidthProperty =
             DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(BeatItemsListView));
         public static readonly DependencyProperty ItemHeightProperty =
@@ -62,7 +76,38 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _selectActionFactory = new SelectActionFactory(this, PART_SelectMask);
             MouseLeftButtonDown += BeatItemsListView_MouseLeftButtonDown;
             MouseLeftButtonUp += BeatItemsListView_MouseLeftButtonUp;
+            MouseRightButtonUp += BeatItemsListView_MouseRightButtonUp;
             Unloaded += BeatItemsListView_Unloaded;
+        }
+
+        private void BeatItemsListView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SetSelectActionMode();
+            var currentPoint = e.GetPosition(this);
+            var itemView = _currentSelectAction.GetItemsByMouseUpPosition(currentPoint).SingleOrDefault();
+            if(itemView == null)
+            {
+                return;
+            }
+            if (SelectedItemsCollection.SelectedItems.Count > 1 && SelectedItemsCollection.SelectedItems.Contains(itemView))
+            {
+                if(BatchSelectContextMenuItems != null && BatchSelectContextMenuItems.Count() > 0)
+                {
+                    ContextMenu = new ContextMenu() { ItemsSource = BatchSelectContextMenuItems };
+                }
+            }
+            else
+            {
+                _currentSelectAction.MouseDown(currentPoint);
+                _currentSelectAction.Click();
+                CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last());
+                _isMouseDown = false;
+                OnItemsControlSelectionChanged(_currentSelectAction.SelectActionMode);
+                if(SingleSelectContextMenuItems != null && SingleSelectContextMenuItems.Count() > 0)
+                {
+                    ContextMenu = new ContextMenu() { ItemsSource = SingleSelectContextMenuItems };
+                }
+            }
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -78,7 +123,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             _isMouseDown = true;
             SetSelectActionMode();
-            _currentSelectAction.MouseDown(e.GetPosition(this));
+            var currentPoint = e.GetPosition(this);
+            if (e.ClickCount == 2)
+            {
+                var itemView = _currentSelectAction.GetItemsByMouseUpPosition(currentPoint).SingleOrDefault();
+                if (itemView != null)
+                {
+                    OnDoubleClick(itemView);
+                }
+            }
+            _currentSelectAction.MouseDown(currentPoint);
         }
 
         private void BeatItemsListView_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -96,17 +150,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 _currentSelectAction.DragOver();
             }
+            if(_isMouseDown)
+            {
+                CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last());
+            }
             _isMouseDown = false;
             OnItemsControlSelectionChanged(_currentSelectAction.SelectActionMode);
         }
 
+        private void OnDoubleClick(ISelectItem itemView)
+        {
+            //弹窗诊断图弹窗
+            Console.WriteLine("双击");
+        }
+
         private void OnClickItem(ISelectItem itemView)
         {
-            if (_currentSelectAction.SelectActionMode == SelectActionEnum.None)
-            {
-                CurrentMoveIndex = Items.IndexOf(itemView);
-            }
             //发送消息，定位诊断图
+            Console.WriteLine("单击");
         }
 
         public void OnItemsControlSelectionChanged(SelectActionEnum selectActionEnum)

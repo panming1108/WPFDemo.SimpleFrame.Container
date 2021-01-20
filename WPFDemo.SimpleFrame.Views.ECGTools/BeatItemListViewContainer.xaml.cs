@@ -37,16 +37,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             get { return (int)GetValue(SelectedCountProperty); }
             set { SetValue(SelectedCountProperty, value); }
         }
-        public double ItemHeight
-        {
-            get { return (double)GetValue(ItemHeightProperty); }
-            set { SetValue(ItemHeightProperty, value); }
-        }
-        public double ItemWidth
-        {
-            get { return (double)GetValue(ItemWidthProperty); }
-            set { SetValue(ItemWidthProperty, value); }
-        }
         public double ItemBigWidth
         {
             get { return (double)GetValue(ItemBigWidthProperty); }
@@ -76,10 +66,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DependencyProperty.Register(nameof(ItemSmallWidth), typeof(double), typeof(BeatItemListViewContainer), new PropertyMetadata(ConfigSource.ItemSmallWidth));
         public static readonly DependencyProperty ItemBigWidthProperty =
             DependencyProperty.Register(nameof(ItemBigWidth), typeof(double), typeof(BeatItemListViewContainer), new PropertyMetadata(ConfigSource.ItemBigWidth));
-        public static readonly DependencyProperty ItemWidthProperty =
-            DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(BeatItemListViewContainer));
-        public static readonly DependencyProperty ItemHeightProperty =
-            DependencyProperty.Register(nameof(ItemHeight), typeof(double), typeof(BeatItemListViewContainer));
         public static readonly DependencyProperty SelectedCountProperty =
             DependencyProperty.Register(nameof(SelectedCount), typeof(int), typeof(BeatItemListViewContainer));
 
@@ -91,6 +77,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             InitializeComponent();
             ItemsSourceHandler = new ItemsSourceHandler(this, PART_ItemsControlBar, _beatInfoSource);
             InitItemsControlBar();
+            InitContextMenuItems();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
             KeyDown += BeatItemListViewContainer_KeyDown;
             KeyUp += BeatItemListViewContainer_KeyUp;
@@ -189,7 +176,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             else
             {
                 ISelectItem itemView;
-                if(PART_ItemsControl.SelectedItemsCollection.SelectedItems.Count > 0)
+                if (PART_ItemsControl.SelectedItemsCollection.SelectedItems.Count > 0)
                 {
                     itemView = PART_ItemsControl.SelectedItemsCollection.SelectedItems[0];
                 }
@@ -412,11 +399,52 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private int GetPageSize(bool isStrech, int leadCount)
         {
-            ItemWidth = isStrech ? ItemBigWidth : ItemSmallWidth;
-            ItemHeight = leadCount >= 3 ? ItemBigHeight : ItemSmallHeight;
-            var columnCount = Convert.ToInt32(PART_ItemsControl.ActualWidth / ItemWidth);
-            var rowCount = Convert.ToInt32(PART_ItemsControl.ActualHeight / ItemHeight);
+            var itemWidth = isStrech ? ItemBigWidth : ItemSmallWidth;
+            var itemHeight = leadCount >= 3 ? ItemBigHeight : ItemSmallHeight;
+            PART_ItemsControl.ItemWidth = itemWidth;
+            PART_ItemsControl.ItemHeight = itemHeight;
+            var columnCount = Convert.ToInt32(PART_ItemsControl.ActualWidth / itemWidth);
+            var rowCount = Convert.ToInt32(PART_ItemsControl.ActualHeight / itemHeight);
             return columnCount * rowCount;
+        }
+
+        private void InitContextMenuItems()
+        {
+            MenuItem updateMenuItem = new MenuItem()
+            {
+                Header = "修改心搏(N)",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            updateMenuItem.Click += (s, e) =>
+            {
+                ItemsSourceHandler.ChangeBeatInfo("N");
+                _isNeedToMove = true;
+                MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
+                _isNeedToMove = false;
+            };
+
+            MenuItem deleteMenuItem = new MenuItem()
+            {
+                Header = "删除心搏",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            deleteMenuItem.Click += (s, e) =>
+            {
+                ItemsSourceHandler.DeleteBeatInfo();
+                MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
+            };
+
+            MenuItem jumpMenuItem = new MenuItem()
+            {
+                Header = "跳转",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            jumpMenuItem.Click += (s, e) => { Console.WriteLine("跳转"); };
+            PART_ItemsControl.SingleSelectContextMenuItems = new MenuItem[] { jumpMenuItem, updateMenuItem, deleteMenuItem };
+            PART_ItemsControl.BatchSelectContextMenuItems = new MenuItem[] { updateMenuItem, deleteMenuItem };
         }
 
         private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)

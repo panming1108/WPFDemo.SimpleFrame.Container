@@ -43,10 +43,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <controls:BeatItemsListView x:Name="PART_ItemsControl"
-                                        ItemHeight="{Binding ElementName=PART_Root, Path=ItemHeight}"
-                                        ItemWidth="{Binding ElementName=PART_Root, Path=ItemWidth}"
-                                        ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
+            <controls:BeatItemsListView x:Name="PART_ItemsControl" ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
             <controls:BeatItemsListScrollBar x:Name="PART_ScrollBar"
                                              Grid.Column="1"
                                              Orientation="Vertical"

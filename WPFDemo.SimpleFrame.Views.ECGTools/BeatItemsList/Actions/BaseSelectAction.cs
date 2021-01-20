@@ -141,7 +141,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         protected abstract void SetItemsSelectStatus();
 
-        private List<ISelectItem> GetItemsByDragArea(Rect rect)
+        public List<ISelectItem> GetItemsByDragArea(Rect rect)
         {
             var result = new List<ISelectItem>();
             foreach (var item in _selectItemsContainer.Items)
@@ -155,7 +155,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             return result;
         }
 
-        private List<ISelectItem> GetItemsByMouseUpPosition(Point point)
+        public List<ISelectItem> GetItemsByMouseUpPosition(Point point)
         {
             var result = new List<ISelectItem>();
             foreach (var item in _selectItemsContainer.Items)
