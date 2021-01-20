@@ -28,16 +28,6 @@
                                       SortChanged="PART_ItemsControlBar_SortChanged"
                                       StrechChanged="PART_ItemsControlBar_StrechChanged"
                                       TotalCount="{Binding ElementName=PART_ScrollBar, Path=TotalCount}" />
-        <StackPanel Margin="200,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-            <TextBlock Text="共" />
-            <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=TotalPage}" />
-            <TextBlock Text="页，当前第" />
-            <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=PageNo}" />
-            <TextBlock Text="页" />
-        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -54,6 +44,15 @@
         <StackPanel Grid.Row="2"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBlock Text="共" />
+                <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=TotalPage}" />
+                <TextBlock Text="页，当前第" />
+                <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=PageNo}" />
+                <TextBlock Text="页" />
+            </StackPanel>
             <StackPanel Margin="5,0" Orientation="Horizontal">
                 <TextBox x:Name="PART_ItemsCount"
                          Width="80"

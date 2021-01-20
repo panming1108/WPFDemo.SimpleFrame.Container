@@ -274,15 +274,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// <param name="moveIndex">要移动的序号，当需要移动时才参数才有效</param>
         private void FreshPage(int pageNo, bool isNeedToMove, int moveIndex)
         {
-            //刷新界面
+            //判断刷新的页码是否是当前页码
             if (pageNo != PART_ScrollBar.PageNo)
             {
+                //页码不同，跳转到入参页码
                 PART_ScrollBar.PageNo = pageNo;
             }
             else
             {
-                if(!isNeedToMove || PART_ItemsControl.CanMoveToIndex(moveIndex))
+                //页码相同
+                if (!isNeedToMove || PART_ItemsControl.CanMoveToIndex(moveIndex))
                 {
+                    //不需要移动或者可以移动到序号，直接刷新
                     InitItemsControl();
                 }
             }
