@@ -62,6 +62,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                     ResetSelectedItemsWithOtherSelectItems(e.SelectedItems, e.UnSelectedItems);
                     break;
                 case SelectActionEnum.Shift:
+                    ResetSelectItemsWithOnlyDisplaySelectedItems(e.SelectedItems);
                     break;
                 default:
                     break;

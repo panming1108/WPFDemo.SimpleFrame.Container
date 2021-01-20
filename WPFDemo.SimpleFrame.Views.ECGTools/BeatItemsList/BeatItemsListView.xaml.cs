@@ -22,6 +22,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     public partial class BeatItemsListView : UserControl, ISelectItemsContainer
     {
         private bool _isMouseDown;
+        private Point _mouseDownPoint;
+        private Point _lastMouseDownPoint;
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly SelectedItemsCollection _selectedItemsCollection;
         private BaseSelectAction _currentSelectAction;
@@ -83,8 +85,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         private void BeatItemsListView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            SetSelectActionMode();
             var currentPoint = e.GetPosition(this);
+            _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None, currentPoint);
             var itemView = _currentSelectAction.GetItemsByMouseUpPosition(currentPoint).SingleOrDefault();
             if(itemView == null)
             {
@@ -125,6 +127,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _isMouseDown = true;
             SetSelectActionMode();
             var currentPoint = e.GetPosition(this);
+            _mouseDownPoint = currentPoint;
             if (e.ClickCount == 2)
             {
                 var itemView = _currentSelectAction.GetItemsByMouseUpPosition(currentPoint).SingleOrDefault();
@@ -156,6 +159,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last());
             }
             _isMouseDown = false;
+            if(!(_currentSelectAction is ShiftSelectAction))
+            {
+                _lastMouseDownPoint = _mouseDownPoint;
+            }
             OnItemsControlSelectionChanged(_currentSelectAction.SelectActionMode);
         }
 
@@ -188,15 +195,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             if(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Ctrl); 
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Ctrl, new Point()); 
             }
             else if(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Shift);
+            {                
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Shift, _lastMouseDownPoint);
             }
             else
             {
-                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None);
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None, new Point());
             }
         }
 

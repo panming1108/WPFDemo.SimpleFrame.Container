@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
@@ -15,7 +16,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _selectMaskPaint = selectMaskPaint;
         }
 
-        public BaseSelectAction GetSelectActionInstance(SelectActionEnum selectAction)
+        public BaseSelectAction GetSelectActionInstance(SelectActionEnum selectAction, Point lastMouseDownPoint)
         {
             switch (selectAction)
             {
@@ -24,7 +25,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 case SelectActionEnum.Ctrl:
                     return new CtrlSelectAction(_selectItemsContainer, _selectMaskPaint);
                 case SelectActionEnum.Shift:
-                    return new ShiftSelectAction(_selectItemsContainer, _selectMaskPaint);
+                    return new ShiftSelectAction(_selectItemsContainer, _selectMaskPaint, lastMouseDownPoint);
                 default:
                     return new CommonSelectAction(_selectItemsContainer, _selectMaskPaint);
             }
