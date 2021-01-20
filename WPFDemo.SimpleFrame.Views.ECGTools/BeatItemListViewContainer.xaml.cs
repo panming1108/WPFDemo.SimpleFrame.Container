@@ -97,13 +97,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             ItemsSourceHandler.SelectedItems.Clear();
             PART_ScrollBar.TotalCount = newSource.Count;
             var totalPage = ItemsSourceHandler.GetTotalPage(PART_ScrollBar.PageSize);
-            FreshPage(PART_ScrollBar.PageNo > totalPage ? totalPage : PART_ScrollBar.PageNo, false, false);
+            FreshPage(PART_ScrollBar.PageNo > totalPage ? totalPage : PART_ScrollBar.PageNo, false, 0);
             await TaskEx.FromResult(0);
         }
 
         private async Task OnBeatChanged(string arg)
         {
-            FreshPage(PART_ScrollBar.PageNo, _isNeedToMove);
+            FreshPage(PART_ScrollBar.PageNo, _isNeedToMove, PART_ItemsControl.CurrentMoveIndex + 1);
             await TaskEx.FromResult(0);
         }
 
@@ -124,14 +124,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         }
 
         private void BeatItemListViewContainer_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Up || e.Key == Key.Left)
+        {            
+            if (e.Key == Key.Up)
             {
-                ItemsControlMoveToPrev();
+                ItemsControlMoveToIndex(PART_ItemsControl.CurrentMoveIndex - PART_ItemsControl.ColumnCount);
             }
-            else if (e.Key == Key.Down || e.Key == Key.Right)
+            else if(e.Key == Key.Left)
             {
-                ItemsControlMoveToNext();
+                ItemsControlMoveToIndex(PART_ItemsControl.CurrentMoveIndex - 1);
+            }
+            else if (e.Key == Key.Down)
+            {
+                ItemsControlMoveToIndex(PART_ItemsControl.CurrentMoveIndex + PART_ItemsControl.ColumnCount);
+            }
+            else if(e.Key == Key.Right)
+            {
+                ItemsControlMoveToIndex(PART_ItemsControl.CurrentMoveIndex + 1);
             }
         }
 
@@ -171,7 +179,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             PART_ScrollBar.PageSize = pageSize;
             if (PART_ItemsControl.Items.Count <= 0)
             {
-                FreshPage(1, false, false);
+                FreshPage(1, false, 0);
             }
             else
             {
@@ -186,7 +194,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 }
                 var beatInfo = itemView.DataContext as BeatInfo;
                 var pageNo = ItemsSourceHandler.GetCurrentItemPageNo(beatInfo.R, PART_ScrollBar.PageSize);
-                FreshPage(pageNo, false, false);
+                FreshPage(pageNo, false, 0);
             }
         }
 
@@ -195,47 +203,36 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             InitItemsSource(ItemsSourceHandler.ItemsSource.ToList());
         }
 
-        private void ItemsControlMoveToNext()
+        private void ItemsControlMoveToIndex(int index)
         {
-            if (PART_ItemsControl.CanMoveToIndex(PART_ItemsControl.CurrentMoveIndex + 1))
-            {
-                PART_ItemsControl.MoveToIndex(PART_ItemsControl.CurrentMoveIndex + 1);
-            }
-            else
-            {
-                if (PART_ScrollBar.PageNo + 1 > PART_ScrollBar.TotalPage)
-                {
-                    return;
-                }
-                FreshPage(PART_ScrollBar.PageNo + 1, true);
-            }
-        }
-
-        private void ItemsControlMoveToPrev()
-        {
-            if (PART_ItemsControl.CanMoveToIndex(PART_ItemsControl.CurrentMoveIndex - 1))
-            {
-                PART_ItemsControl.MoveToIndex(PART_ItemsControl.CurrentMoveIndex - 1);
-            }
-            else
-            {
-                if (PART_ScrollBar.PageNo - 1 < 1)
-                {
-                    return;
-                }
-                FreshPage(PART_ScrollBar.PageNo - 1, true);
-            }
-        }
-
-        private void ItemsControlMoveToCurrentPageIndex(int index)
-        {
-            if (PART_ItemsControl.CanMoveToIndex(index))
+            if(PART_ItemsControl.CanMoveToIndex(index))
             {
                 PART_ItemsControl.MoveToIndex(index);
             }
             else
             {
-                ItemsControlMoveToCurrentPageIndex(index - 1);
+                int newPageNo;
+                if(index < 0)
+                {
+                    if (PART_ScrollBar.PageNo <= 1)
+                    {
+                        return;
+                    }
+                    index = PART_ItemsControl.Items.Count + index;
+                    //向前翻一页
+                    newPageNo = PART_ScrollBar.PageNo - 1;
+                }
+                else
+                {
+                    if (PART_ScrollBar.PageNo >= PART_ScrollBar.TotalPage)
+                    {
+                        return;
+                    }
+                    index = index - PART_ItemsControl.Items.Count;
+                    //向后翻一页
+                    newPageNo = PART_ScrollBar.PageNo + 1;
+                }
+                FreshPage(newPageNo, true, index);
             }
         }
 
@@ -269,33 +266,29 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             PART_ItemsControl.CurrentMoveIndex = 0;
         }
 
-        private void FreshPage(int pageNo, bool isNeedToMove, bool isMoveToNext = true)
+        /// <summary>
+        /// 刷新页面
+        /// </summary>
+        /// <param name="pageNo">要刷新的页码</param>
+        /// <param name="isNeedToMove">是否需要移动</param>
+        /// <param name="moveIndex">要移动的序号，当需要移动时才参数才有效</param>
+        private void FreshPage(int pageNo, bool isNeedToMove, int moveIndex)
         {
             //刷新界面
             if (pageNo != PART_ScrollBar.PageNo)
             {
-                _isNeedToMove = isNeedToMove;
                 PART_ScrollBar.PageNo = pageNo;
-                _isNeedToMove = false;
             }
             else
             {
-                InitItemsControl();
-                if (PART_ScrollBar.TotalCount <= 0)
+                if(!isNeedToMove || PART_ItemsControl.CanMoveToIndex(moveIndex))
                 {
-                    return;
+                    InitItemsControl();
                 }
-                if (isNeedToMove)
-                {
-                    if (isMoveToNext)
-                    {
-                        ItemsControlMoveToNext();
-                    }
-                    else
-                    {
-                        ItemsControlMoveToCurrentPageIndex(PART_ItemsControl.CurrentMoveIndex);
-                    }
-                }
+            }
+            if (PART_ScrollBar.TotalCount > 0 && isNeedToMove)
+            {
+                ItemsControlMoveToIndex(moveIndex);
             }
         }
 
@@ -340,19 +333,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_ScrollBar_PageNoChanged(object sender, PageNoChangedEventArgs e)
         {
             InitItemsControl();
-            if (_isNeedToMove)
-            {
-                //如果跳转页大于当前页，则选择第一个
-                if (e.NewPageNo > e.OldPageNo)
-                {
-                    PART_ItemsControl.MoveToIndex(0);
-                }
-                //如果跳转页小于当前页，则选择最后一个
-                else if (e.NewPageNo < e.OldPageNo)
-                {
-                    PART_ItemsControl.MoveToIndex(PART_ItemsControl.Items.Count - 1);
-                }
-            }
         }
 
         private void PART_ItemsControlBar_PrevCurrentNextChanged(object sender, PrevCurrentNextEventArgs e)
@@ -403,9 +383,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var itemHeight = leadCount >= 3 ? ItemBigHeight : ItemSmallHeight;
             PART_ItemsControl.ItemWidth = itemWidth;
             PART_ItemsControl.ItemHeight = itemHeight;
-            var columnCount = Convert.ToInt32(PART_ItemsControl.ActualWidth / itemWidth);
-            var rowCount = Convert.ToInt32(PART_ItemsControl.ActualHeight / itemHeight);
-            return columnCount * rowCount;
+            return PART_ItemsControl.ColumnCount * PART_ItemsControl.RowCount;
         }
 
         private void InitContextMenuItems()
