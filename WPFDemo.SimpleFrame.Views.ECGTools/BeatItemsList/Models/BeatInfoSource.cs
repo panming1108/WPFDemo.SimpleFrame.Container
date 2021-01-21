@@ -165,14 +165,28 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                     list.Add(beatInfos[0]);
                 }
             }
-            if (sortArgs.IsAsc)
+            switch (sortArgs.SortType)
             {
-                return list.OrderBy(x => x.Interval).Select(w => w.R);
-            }
-            else
-            {
-                return list.OrderByDescending(x => x.Interval).Select(w => w.R);
-            }
+                case SortEnum.IntervalSort:
+                    if (sortArgs.IsAsc)
+                    {
+                        return list.OrderBy(x => x.Interval).Select(w => w.R);
+                    }
+                    else
+                    {
+                        return list.OrderByDescending(x => x.Interval).Select(w => w.R);
+                    }
+                case SortEnum.RSort:
+                default:
+                    if (sortArgs.IsAsc)
+                    {
+                        return list.OrderBy(x => x.R).Select(w => w.R);
+                    }
+                    else
+                    {
+                        return list.OrderByDescending(x => x.R).Select(w => w.R);
+                    }
+            }         
         }
 
         public double[] GetECGData(Random random)

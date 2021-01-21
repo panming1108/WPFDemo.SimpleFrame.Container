@@ -30,6 +30,70 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="local:SortButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="#6FB6EC" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="5,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:SortButton">
+                        <Border x:Name="PART_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid VerticalAlignment="Center">
+                                <ContentPresenter Margin="10,0"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                                <Grid HorizontalAlignment="Right">
+                                    <TextBlock x:Name="PART_Desc"
+                                               VerticalAlignment="Center"
+                                               Foreground="{TemplateBinding Foreground}"
+                                               Text="↓"
+                                               Visibility="Collapsed" />
+                                    <TextBlock x:Name="PART_Asc"
+                                               VerticalAlignment="Center"
+                                               Foreground="{TemplateBinding Foreground}"
+                                               Text="↑"
+                                               Visibility="Collapsed" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True" />
+                                    <Condition Property="IsAsc" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Border" Property="Background" Value="#6FB6EC" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter TargetName="PART_Asc" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="PART_Desc" Property="Visibility" Value="Collapsed" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True" />
+                                    <Condition Property="IsAsc" Value="false" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Border" Property="Background" Value="#6FB6EC" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter TargetName="PART_Asc" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="PART_Desc" Property="Visibility" Value="Visible" />
+                            </MultiTrigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="PART_Border" Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="#6FB6EC" />
+                                <Setter TargetName="PART_Asc" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="PART_Desc" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <StackPanel HorizontalAlignment="Left"
@@ -69,35 +133,44 @@
             <RadioButton x:Name="PART_Prev"
                          Margin="5,0,0,0"
                          VerticalAlignment="Center"
-                         Checked="PART_Prev_Checked"
+                         Checked="PART_PrevCurrentNext_Checked"
                          Content="上一个"
-                         GroupName="PrevCurrentNext" />
+                         GroupName="PrevCurrentNext"
+                         Tag="Prev" />
             <RadioButton x:Name="PART_Current"
                          Margin="5,0,0,0"
                          VerticalAlignment="Center"
-                         Checked="PART_Current_Checked"
+                         Checked="PART_PrevCurrentNext_Checked"
                          Content="当前"
                          GroupName="PrevCurrentNext"
-                         IsChecked="True" />
+                         Tag="Current" />
             <RadioButton x:Name="PART_Next"
                          Margin="5,0,0,0"
                          VerticalAlignment="Center"
-                         Checked="PART_Next_Checked"
+                         Checked="PART_PrevCurrentNext_Checked"
                          Content="下一个"
-                         GroupName="PrevCurrentNext" />
+                         GroupName="PrevCurrentNext"
+                         Tag="Next" />
             <ToggleButton x:Name="PART_StrechBtn"
                           Width="40"
                           Height="20"
                           Margin="5,0,0,0"
-                          Checked="PART_StrechBtn_Checked"
+                          Checked="PART_StrechBtn_CheckStatusSwitch"
                           Content="拉伸"
-                          Unchecked="PART_StrechBtn_Unchecked" />
-            <Button x:Name="PART_SortBtn"
-                    Width="40"
-                    Height="20"
-                    Margin="5,0,0,0"
-                    Click="PART_SortBtn_Click"
-                    Content="排序" />
+                          Unchecked="PART_StrechBtn_CheckStatusSwitch" />
+            <local:SortButton x:Name="PART_RSort"
+                              Width="30"
+                              Content="R"
+                              DefaultAsc="True"
+                              GroupName="SortType"
+                              SortArgsChanged="SortButton_SortArgsChanged"
+                              SortType="RSort" />
+            <local:SortButton x:Name="PART_IntervalSort"
+                              Content="Interval"
+                              DefaultAsc="True"
+                              GroupName="SortType"
+                              SortArgsChanged="SortButton_SortArgsChanged"
+                              SortType="IntervalSort" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -317,6 +317,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void InitItemsControlBar()
         {
+            PART_ItemsControlBar.PART_IntervalSort.IsChecked = true;
             PART_ItemsControlBar.LeadSource = LeadSource;
             PART_ItemsControlBar.LeadSelectedItems.Add(LeadSource[0]);
             PART_ItemsControlBar.LeadSelectedItems.Add(LeadSource[3]);

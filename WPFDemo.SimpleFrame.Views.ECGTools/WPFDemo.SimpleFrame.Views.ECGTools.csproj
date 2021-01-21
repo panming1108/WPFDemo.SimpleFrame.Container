@@ -147,6 +147,7 @@
       <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="BeatItemsList\SelectMaskPaint.cs" />
+    <Compile Include="BeatItemsList\SortButton.cs" />
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>

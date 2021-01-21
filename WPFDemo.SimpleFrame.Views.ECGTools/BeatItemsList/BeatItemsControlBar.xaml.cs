@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -62,18 +63,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public BeatItemsControlBar()
         {
             InitializeComponent();
-            var sortEnum = ConfigSource.DefaultSort;
-            switch (sortEnum)
-            {
-                case SortEnum.RSort:
-                    SortArgs = new SortArgs("R", ConfigSource.RSortAsc);
-                    break;
-                case SortEnum.IntervalSort:
-                    SortArgs = new SortArgs("Interval", ConfigSource.IntervalSortAsc);
-                    break;
-                default:
-                    break;
-            }
         }
 
         private void PART_LeadListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -91,41 +80,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             SelectedReverse?.Invoke(this, EventArgs.Empty);
         }
 
-        private void PART_StrechBtn_Checked(object sender, RoutedEventArgs e)
+        private void SortButton_SortArgsChanged(object sender, SortEventArgs e)
         {
-            _isStrech = true;
+            SortArgs = e.SortArgs;
+            SortChanged?.Invoke(this, e);
+        }
+
+        private void PART_PrevCurrentNext_Checked(object sender, RoutedEventArgs e)
+        {
+            var control = sender as RadioButton;
+            var prevCurrentNextEnum = (PrevCurrentNextEnum)Enum.Parse(typeof(PrevCurrentNextEnum), control.Tag.ToString());
+            _prevCurrentNextStatus = prevCurrentNextEnum;
+            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(_prevCurrentNextStatus));
+        }
+
+        private void PART_StrechBtn_CheckStatusSwitch(object sender, RoutedEventArgs e)
+        {
+            var control = sender as ToggleButton;
+            _isStrech = control.IsChecked.Value;
             StrechChanged?.Invoke(this, new BoolEventArgs(_isStrech));
-        }
-
-        private void PART_StrechBtn_Unchecked(object sender, RoutedEventArgs e)
-        {
-            _isStrech = false;
-            StrechChanged?.Invoke(this, new BoolEventArgs(_isStrech));
-        }
-
-        private void PART_SortBtn_Click(object sender, RoutedEventArgs e)
-        {
-            SortArgs.SortFieldName = "Interval";
-            SortArgs.IsAsc = !SortArgs.IsAsc;
-            SortChanged?.Invoke(this, new SortEventArgs(SortArgs));
-        }
-
-        private void PART_Prev_Checked(object sender, RoutedEventArgs e)
-        {
-            _prevCurrentNextStatus = PrevCurrentNextEnum.Prev;
-            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Prev));
-        }
-
-        private void PART_Current_Checked(object sender, RoutedEventArgs e)
-        {
-            _prevCurrentNextStatus = PrevCurrentNextEnum.Current;
-            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Current));
-        }
-
-        private void PART_Next_Checked(object sender, RoutedEventArgs e)
-        {
-            _prevCurrentNextStatus = PrevCurrentNextEnum.Next;
-            PrevCurrentNextChanged?.Invoke(this, new PrevCurrentNextEventArgs(PrevCurrentNextEnum.Next));
         }
     }
 }
