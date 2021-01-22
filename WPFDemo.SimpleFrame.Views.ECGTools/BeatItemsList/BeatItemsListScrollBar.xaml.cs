@@ -85,6 +85,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 TotalPage = TotalCount % PageSize == 0 ? TotalCount / PageSize : (TotalCount / PageSize) + 1;
             }
+            PART_ScrollBar.ViewportSize = TotalPage / 5d < 1 ? 1 : TotalPage / 5;
             if(PageNo > TotalPage)
             {
                 PageNo = TotalPage;

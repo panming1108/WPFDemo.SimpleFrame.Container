@@ -182,7 +182,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             ItemsSource.Clear();
             SelectedItems.Clear();
-            GC.Collect();
         }
     }
 }

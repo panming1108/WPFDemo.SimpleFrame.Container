@@ -107,7 +107,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             SelectedItems.CollectionChanged -= SelectedItems_CollectionChanged;
             SelectedItems.Clear();
-            GC.Collect();
         }
     }
 }
