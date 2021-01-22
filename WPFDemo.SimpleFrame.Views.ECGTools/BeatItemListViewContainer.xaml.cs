@@ -88,7 +88,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private async Task OnBeatDeleted(string arg)
         {
-            var newSource = _beatInfoSource.GetCurrentItemsSource(ItemsSourceHandler.ItemsSource);
+            var newSource = ItemsSourceHandler.GetItemsSourceByBeatType(ItemsSourceHandler.ItemsSource, PrevCurrentNextEnum.Current);
             ItemsSourceHandler.SetItemsSource(newSource);
             if (PART_ItemsControlBar.PrevCurrentNextStatus == PrevCurrentNextEnum.Current)
             {
@@ -344,14 +344,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             switch (e.PrevCurrentNext)
             {
                 case PrevCurrentNextEnum.Prev:
-                    var prevList = _beatInfoSource.GetPrevItemsSource(ItemsSourceHandler.OriginItemsSource);
+                    var prevList = ItemsSourceHandler.GetItemsSourceByBeatType(ItemsSourceHandler.OriginItemsSource, PrevCurrentNextEnum.Prev);
                     InitItemsSource(prevList);
                     break;
                 case PrevCurrentNextEnum.Current:
                     InitItemsSource(ItemsSourceHandler.OriginItemsSource);
                     break;
                 case PrevCurrentNextEnum.Next:
-                    var nextList = _beatInfoSource.GetNextItemsSource(ItemsSourceHandler.OriginItemsSource);
+                    var nextList = ItemsSourceHandler.GetItemsSourceByBeatType(ItemsSourceHandler.OriginItemsSource, PrevCurrentNextEnum.Next);
                     InitItemsSource(nextList);
                     break;
                 default:

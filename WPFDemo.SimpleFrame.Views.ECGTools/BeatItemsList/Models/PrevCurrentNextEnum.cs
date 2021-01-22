@@ -7,8 +7,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 {
     public enum PrevCurrentNextEnum
     {
-        Prev,
         Current,
-        Next
+        Next,
+        Prev,
     }
 }

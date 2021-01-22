@@ -161,6 +161,23 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             _beatInfoSource.DeleteBeatInfos(SelectedItems);
         }
 
+        public List<int> GetItemsSourceByBeatType(List<int> originSource, PrevCurrentNextEnum prevCurrentNext)
+        {
+            var result = new List<int>();
+            foreach (var item in originSource)
+            {
+                if (_beatInfoSource.AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> beatList))
+                {
+                    var beat = beatList[(int)prevCurrentNext];
+                    if (beat != null)
+                    {
+                        result.Add(beat.R);
+                    }
+                }
+            }
+            return result;
+        }
+
         public void Dispose()
         {
             ItemsSource.Clear();

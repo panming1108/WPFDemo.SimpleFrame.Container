@@ -104,57 +104,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             }
         }
 
-        public List<int> GetPrevItemsSource(List<int> beatInfoRs)
-        {
-            var result = new List<int>();
-            foreach (var item in beatInfoRs)
-            {
-                if (AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> prevList))
-                {
-                    var prevBeat = prevList[2];
-                    if (prevBeat != null)
-                    {
-                        result.Add(prevBeat.R);
-                    }
-                }
-            }
-            return result;
-        }
-
-        public List<int> GetCurrentItemsSource(List<int> beatInfoRs)
-        {
-            var result = new List<int>();
-            foreach (var item in beatInfoRs)
-            {
-                if(AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> currentList))
-                {
-                    var currentBeat = currentList[0];
-                    if (currentBeat != null)
-                    {
-                        result.Add(currentBeat.R);
-                    }
-                }
-            }
-            return result;
-        }
-
-        public List<int> GetNextItemsSource(List<int> beatInfoRs)
-        {
-            var result = new List<int>();
-            foreach (var item in beatInfoRs)
-            {
-                if (AllBeatInfoDic.TryGetValue(item, out List<BeatInfo> nextList))
-                {
-                    var nextBeat = nextList[1];
-                    if (nextBeat != null)
-                    {
-                        result.Add(nextBeat.R);
-                    }
-                }
-            }
-            return result;
-        }
-
         public IEnumerable SortItemsSource(List<int> itemRs, SortArgs sortArgs)
         {
             var list = new List<BeatInfo>();
