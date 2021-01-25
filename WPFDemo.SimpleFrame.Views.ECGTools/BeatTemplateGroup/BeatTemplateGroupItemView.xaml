@@ -7,13 +7,66 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <Grid>
-        <ItemsControl x:Name="PART_GroupItemItemsControl" FocusVisualStyle="{x:Null}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+    <Grid Margin="0,5,0,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Border Height="32"
+                Margin="0,2"
+                Background="#F0F6FA"
+                BorderBrush="#A9BBC8"
+                BorderThickness="1"
+                CornerRadius="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Padding="10,0"
+                        Background="#849AA9"
+                        CornerRadius="2,0,0,2">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   Text="N" />
+                        <TextBlock Margin="4,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Text="窦性" />
+                    </StackPanel>
+                </Border>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Margin="6,0,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Black"
+                               Text="85.69%" />
+                    <TextBlock Margin="14,0,0,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="Black"
+                               Foreground="#00AAFF"
+                               Text="78954" />
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="14"
+                               FontWeight="Black"
+                               Text="个心搏" />
+                </StackPanel>
+                <Grid Grid.Column="1">
+                    <Button HorizontalAlignment="Right" Content="全选" />
+                </Grid>
+            </Grid>
+        </Border>
+        <WrapPanel x:Name="PART_GroupItemWrapPanel"
+                   Grid.Row="1"
+                   Orientation="Horizontal" />
     </Grid>
 </UserControl>

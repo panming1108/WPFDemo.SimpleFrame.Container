@@ -1,12 +1,101 @@
 ﻿<UserControl x:Class="WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup.BeatTemplateItemView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Width="142"
+             Height="132"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <Grid Margin="2">
+        <Border Background="White" CornerRadius="2" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <local:SelectMaskPaint x:Name="PART_Paint" />
+                <WrapPanel VerticalAlignment="Top" Orientation="Horizontal">
+                    <Border Margin="0,0,4,0"
+                            Padding="4,2"
+                            BorderBrush="#AEBFCC"
+                            BorderThickness="0,0,1,1"
+                            CornerRadius="2">
+                        <TextBlock x:Name="PART_TypeName"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Foreground="Black"
+                                   Text="N"
+                                   TextWrapping="Wrap" />
+                    </Border>
+                    <Border x:Name="PART_AddFlag"
+                            Width="16"
+                            Height="20"
+                            Background="#00AAFF"
+                            Visibility="Collapsed">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Text="+" />
+                    </Border>
+                </WrapPanel>
+                <Ellipse x:Name="PART_CheckFlag"
+                         Grid.Column="1"
+                         Width="16"
+                         Height="16"
+                         Margin="4"
+                         VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <DrawingBrush>
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#00AAFF">
+                                        <GeometryDrawing.Geometry>
+                                            <EllipseGeometry Center="25,25"
+                                                             RadiusX="25"
+                                                             RadiusY="25" />
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                    <GeometryDrawing Geometry="M12,25 L22,35 38,15">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="White" Thickness="3" />
+                                        </GeometryDrawing.Pen>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+            <Border Grid.Row="1"
+                    Height="24"
+                    VerticalAlignment="Bottom"
+                    Background="#D8E2EB"
+                    BorderBrush="#AEBFCC"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,2,2">
+                <Grid Margin="6,0">
+                    <TextBlock x:Name="PART_Count"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Text="3355" />
+                    <TextBlock x:Name="PART_Percent"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Text="4.37%" />
+                </Grid>
+            </Border>
+        </Grid>
+        <Border x:Name="PART_Border"
+                BorderBrush="#AEBFCC"
+                BorderThickness="1"
+                CornerRadius="2" />
     </Grid>
 </UserControl>

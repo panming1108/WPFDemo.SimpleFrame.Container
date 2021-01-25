@@ -6,16 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             Background="White"
              mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <Grid>
-            <ItemsControl x:Name="PART_GroupItemsControl" FocusVisualStyle="{x:Null}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+            <ItemsControl x:Name="PART_GroupItemsControl" FocusVisualStyle="{x:Null}" />
             <local:SelectMaskPaint x:Name="PART_GroupSelectMask" />
         </Grid>
     </ScrollViewer>

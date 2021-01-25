@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -19,9 +21,23 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     /// </summary>
     public partial class BeatTemplateGroupItemView : UserControl
     {
+        public UIElementCollection Items => PART_GroupItemWrapPanel.Children;
         public BeatTemplateGroupItemView()
         {
             InitializeComponent();
+        }
+
+        public void SetGroupItemItemsSource(IList groupItemItemsSource)
+        {
+            foreach (var item in groupItemItemsSource)
+            {
+                var data = item as BeatTemplate;
+                BeatTemplateItemView itemView = new BeatTemplateItemView
+                {
+                    DataContext = data
+                };
+                Items.Add(itemView);
+            }
         }
     }
 }

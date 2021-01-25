@@ -22,6 +22,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public BeatTemplateGroupView()
         {
             InitializeComponent();
+            for (int i = 0; i < 5; i++)
+            {
+                BeatTemplateGroupItemView groupItemView = new BeatTemplateGroupItemView();
+                var source = new List<BeatTemplate>();
+                for (int j = 0; j < 5; j++)
+                {
+                    BeatTemplate beatTemplate = new BeatTemplate() { TypeName = ((BeatTypeEnum)(j % 3)).ToString() };
+                    source.Add(beatTemplate);
+                }
+                groupItemView.SetGroupItemItemsSource(source);
+                PART_GroupItemsControl.Items.Add(groupItemView);
+            }
         }
     }
 }

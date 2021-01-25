@@ -135,6 +135,7 @@
     <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectMaskPaint.cs" />
     <Compile Include="Models\BeatInfoSource.cs" />
+    <Compile Include="Models\BeatTemplateGroup\BeatTemplate.cs" />
     <Compile Include="Models\BeatTypeEnum.cs" />
     <Compile Include="Models\ConfigSource.cs" />
     <Compile Include="Models\BeatItemsList\ItemsPager.cs" />

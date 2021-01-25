@@ -24,5 +24,7 @@ namespace WPFDemo.SimpleFrame.Infra.Enums
         UXs,
         [Description("ECGToolsPage.xaml")]
         ECGTools,
+        [Description("CardiosPage.xaml")]
+        Cardios,
     }
 }

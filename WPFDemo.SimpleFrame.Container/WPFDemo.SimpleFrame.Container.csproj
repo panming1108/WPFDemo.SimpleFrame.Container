@@ -171,6 +171,9 @@
     <Compile Include="NaviPage.xaml.cs">
       <DependentUpon>NaviPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NaviPages\CardiosPage.xaml.cs">
+      <DependentUpon>CardiosPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NaviPages\DMsPage.xaml.cs">
       <DependentUpon>DMsPage.xaml</DependentUpon>
     </Compile>
@@ -227,6 +230,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NaviPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NaviPages\CardiosPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
