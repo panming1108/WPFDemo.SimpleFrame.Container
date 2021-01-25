@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList;
 
-namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
+namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class BeatInfoSource
     {
         private readonly int _count;
         public Random random = new Random();
-        public string[] beatTypes = new string[] { "N", "S", "V" };
         private readonly List<BeatInfo> _allBeatInfos;
         private readonly Dictionary<int, List<BeatInfo>> _allBeatInfoDic;
         public Dictionary<int, List<BeatInfo>> AllBeatInfoDic => _allBeatInfoDic;
@@ -67,7 +67,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 BeatInfo beatInfo = new BeatInfo()
                 {
-                    BeatType = beatTypes[i % 3],
+                    BeatType = ((BeatTypeEnum)(i % 3)).ToString(),
                     Position = i,
                     R = i,
                     Interval = random.Next(0, _count),
@@ -88,11 +88,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             return results;
         }
         
-        public void ChangedBeatInfo(List<int> beatInfoRs, string type)
+        public void ChangedBeatInfo(List<int> beatInfoRs, BeatTypeEnum type)
         {
             foreach (var item in beatInfoRs)
             {
-                AllBeatInfoDic[item].First().BeatType = type;
+                AllBeatInfoDic[item].First().BeatType = type.ToString();
             }
         }
 

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList;
 
-namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
+namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public static class ConfigSource
     {

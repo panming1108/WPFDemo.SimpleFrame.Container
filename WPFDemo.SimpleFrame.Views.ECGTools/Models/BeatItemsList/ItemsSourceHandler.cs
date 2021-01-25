@@ -143,7 +143,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             return (index + 1) % pageSize == 0 ? (index + 1) / pageSize : (index + 1) / pageSize + 1;
         }
 
-        public void ChangeBeatInfo(string type)
+        public void ChangeBeatInfo(BeatTypeEnum type)
         {
             if(SelectedItems.Count <= 0)
             {

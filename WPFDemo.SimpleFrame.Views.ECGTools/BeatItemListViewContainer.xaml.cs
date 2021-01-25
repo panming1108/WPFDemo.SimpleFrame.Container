@@ -118,7 +118,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             if (e.Key == Key.N || e.Key == Key.S || e.Key == Key.V)
             {
-                ItemsSourceHandler.ChangeBeatInfo(e.Key.ToString());
+                ItemsSourceHandler.ChangeBeatInfo((BeatTypeEnum)Enum.Parse(typeof(BeatTypeEnum), e.Key.ToString()));
                 _isNeedToMove = true;
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
                 _isNeedToMove = false;
@@ -440,7 +440,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             };
             updateMenuItem.Click += (s, e) =>
             {
-                ItemsSourceHandler.ChangeBeatInfo("N");
+                ItemsSourceHandler.ChangeBeatInfo(BeatTypeEnum.N);
                 _isNeedToMove = true;
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
                 _isNeedToMove = false;
@@ -484,7 +484,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)
         {
-            _beatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, PART_Type.Text);
+            var result = Enum.TryParse(PART_Type.Text, out BeatTypeEnum type);
+            if(!result)
+            {
+                return;
+            }
+            _beatInfoSource.ChangedBeatInfo(ItemsSourceHandler.SelectedItems, type);
             MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
         }
     }

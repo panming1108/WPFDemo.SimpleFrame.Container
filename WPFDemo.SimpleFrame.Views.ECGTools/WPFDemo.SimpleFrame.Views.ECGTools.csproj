@@ -134,20 +134,32 @@
     <Compile Include="BeatItemsList\Interface\ISelectItem.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectMaskPaint.cs" />
-    <Compile Include="BeatItemsList\Models\BeatInfoSource.cs" />
-    <Compile Include="BeatItemsList\Models\ConfigSource.cs" />
-    <Compile Include="BeatItemsList\Models\ItemsPager.cs" />
-    <Compile Include="BeatItemsList\Models\ItemsSourceHandler.cs" />
-    <Compile Include="BeatItemsList\Models\MessagerKeyEnum.cs" />
-    <Compile Include="BeatItemsList\Models\PrevCurrentNextEnum.cs" />
-    <Compile Include="BeatItemsList\Models\SelectActionEnum.cs" />
-    <Compile Include="BeatItemsList\Models\SortArgs.cs" />
-    <Compile Include="BeatItemsList\Models\SortEnum.cs" />
+    <Compile Include="Models\BeatInfoSource.cs" />
+    <Compile Include="Models\BeatTypeEnum.cs" />
+    <Compile Include="Models\ConfigSource.cs" />
+    <Compile Include="Models\BeatItemsList\ItemsPager.cs" />
+    <Compile Include="Models\BeatItemsList\ItemsSourceHandler.cs" />
+    <Compile Include="Models\MessagerKeyEnum.cs" />
+    <Compile Include="Models\BeatItemsList\PrevCurrentNextEnum.cs" />
+    <Compile Include="Models\BeatItemsList\SelectActionEnum.cs" />
+    <Compile Include="Models\BeatItemsList\SortArgs.cs" />
+    <Compile Include="Models\BeatItemsList\SortEnum.cs" />
     <Compile Include="BeatItemsList\SelectionPopupButton.xaml.cs">
       <DependentUpon>SelectionPopupButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="BeatItemsList\SelectMaskPaint.cs" />
     <Compile Include="BeatItemsList\SortButton.cs" />
+    <Compile Include="BeatTemplateGroup\BeatTemplateGroupItemView.xaml.cs">
+      <DependentUpon>BeatTemplateGroupItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatTemplateGroup\BeatTemplateGroupView.xaml.cs">
+      <DependentUpon>BeatTemplateGroupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatTemplateGroup\BeatTemplateItemView.xaml.cs">
+      <DependentUpon>BeatTemplateItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BeatTemplateGroup\Interfaces\ISelectMaskPaint.cs" />
+    <Compile Include="BeatTemplateGroup\SelectMaskPaint.cs" />
     <Compile Include="BoxLineMeterView.xaml.cs">
       <DependentUpon>BoxLineMeterView.xaml</DependentUpon>
     </Compile>
@@ -226,6 +238,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BeatTemplateGroup\BeatTemplateGroupItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatTemplateGroup\BeatTemplateGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BeatTemplateGroup\BeatTemplateItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BoxLineMeterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -264,7 +288,9 @@
   <ItemGroup>
     <Resource Include="Images\ScopeView.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BeatTemplateGroup\Actions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
