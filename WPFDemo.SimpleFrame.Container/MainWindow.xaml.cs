@@ -19,6 +19,7 @@ using WPFDemo.SimpleFrame.Infra.Enums;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Messager;
 using WPFDemo.SimpleFrame.Infra.MVVM;
+using WPFDemo.SimpleFrame.Views.ECGTools;
 
 namespace WPFDemo.SimpleFrame.Container
 {
@@ -41,8 +42,9 @@ namespace WPFDemo.SimpleFrame.Container
 
             _busyIndicatorConsumer = IocManagerInstance.ResolveType<IBusyIndicatorConsumer>();
             _popupNotifyBoxConsumer = IocManagerInstance.ResolveType<IPopupNotifyBoxConsumer>();
-            MessagerInstance.GetMessager().Register<PageKeyEnum>(this, MessagerKeyEnum.MainPageNavi, Navi);
+            MessagerInstance.GetMessager().Register<PageKeyEnum>(this, Infra.Enums.MessagerKeyEnum.MainPageNavi, Navi);
             DataContext = IocManagerInstance.ResolveType<IMainViewModel>();
+            new BeatInfoSource(840000).SetBeatSource();
         }
 
         private Uri _historyPage;
@@ -79,12 +81,12 @@ namespace WPFDemo.SimpleFrame.Container
         {
             _busyIndicatorConsumer.Init(this);
             _popupNotifyBoxConsumer.Init(this);
-            MessagerInstance.GetMessager().Send(MessagerKeyEnum.MainPageNavi, PageKeyEnum.NaviPage);
+            MessagerInstance.GetMessager().Send(Infra.Enums.MessagerKeyEnum.MainPageNavi, PageKeyEnum.NaviPage);
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            MessagerInstance.GetMessager().Unregister<PageKeyEnum>(this, MessagerKeyEnum.MainPageNavi, Navi);
+            MessagerInstance.GetMessager().Unregister<PageKeyEnum>(this, Infra.Enums.MessagerKeyEnum.MainPageNavi, Navi);
             Loaded -= Window_Loaded;
             Unloaded -= Window_Unloaded;
         }

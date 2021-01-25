@@ -73,7 +73,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public BeatItemListViewContainer()
         {
-            _beatInfoSource = new BeatInfoSource(840000);
+            _beatInfoSource = BeatInfoSource.BeatSource;
             InitializeComponent();
             ItemsSourceHandler = new ItemsSourceHandler(this, PART_ItemsControlBar, _beatInfoSource);
             InitControl();

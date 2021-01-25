@@ -17,5 +17,6 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <beatTemplateGroup:BeatTemplateGroupView Width="458" />
+        <beatItemList:BeatItemListViewContainer Grid.Column="1" />
     </Grid>
 </Page>

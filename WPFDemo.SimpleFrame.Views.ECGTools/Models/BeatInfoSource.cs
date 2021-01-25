@@ -15,11 +15,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly Dictionary<int, List<BeatInfo>> _allBeatInfoDic;
         public Dictionary<int, List<BeatInfo>> AllBeatInfoDic => _allBeatInfoDic;
 
+        public static BeatInfoSource BeatSource;
+
         public BeatInfoSource(int count)
         {
             _count = count;
             _allBeatInfos = GetAllBeatInfos();
             _allBeatInfoDic = GetAllBeatInfoDic();
+        }
+
+        public void SetBeatSource()
+        {
+            BeatSource = this;
         }
 
         private Dictionary<int, List<BeatInfo>> GetAllBeatInfoDic()
