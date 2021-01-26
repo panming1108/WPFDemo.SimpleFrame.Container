@@ -23,7 +23,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     {
         public UIElementCollection Items => PART_GroupItemWrapPanel.Children;
         private BeatTemplateGroupView _groupView;
-        internal BeatTemplateGroupView GroupView => _groupView;
+        public BeatTemplateGroupView GroupView => _groupView;
         public BeatTemplateGroupItemView(BeatTemplateGroupView groupView)
         {
             _groupView = groupView;
@@ -54,6 +54,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                     beatTemplateItemView = Items[i] as BeatTemplateItemView;
                     return true;
                 }
+            }
+            return false;
+        }
+
+        public bool IsBeatTemplateGroupItemHeader(Point currentPoint, out BeatTemplateGroupItemView beatTemplateGroupItemView)
+        {
+            beatTemplateGroupItemView = null;
+            var rect = GetItemBound(PART_AddMask);
+            if (rect.Contains(currentPoint))
+            {
+                beatTemplateGroupItemView = this;
+                return true;
             }
             return false;
         }

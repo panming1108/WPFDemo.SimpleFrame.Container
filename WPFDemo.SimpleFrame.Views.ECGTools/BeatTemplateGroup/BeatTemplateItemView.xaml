@@ -4,11 +4,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="PART_Root"
              Width="142"
              Height="132"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid Margin="2">
         <Border Background="White" CornerRadius="2" />
         <Grid>
@@ -93,9 +97,23 @@
                 </Grid>
             </Border>
         </Grid>
+        <Border x:Name="PART_MergeMask"
+                Grid.ColumnSpan="2"
+                Background="#80000000"
+                CornerRadius="2"
+                Visibility="{Binding ElementName=PART_Root, Path=IsPrepareMerge, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Path Width="30"
+                  Height="30"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="M704 256H160a64 64 0 0 0-64 64v544a64 64 0 0 0 64 64H704a64 64 0 0 0 64-64V320a64 64 0 0 0-64-64zM160 320H704v544H160V320z M800 128a96 96 0 0 1 95.552 86.784L896 224V768a64 64 0 0 1-56.512 63.552L832 832h-64v-64h64V224a32 32 0 0 0-26.24-31.488L800 192H256v64H192V192a64 64 0 0 1 56.512-63.552L256 128h544z"
+                  Fill="White"
+                  Stretch="Uniform" />
+        </Border>
         <Border x:Name="PART_Border"
                 BorderBrush="#AEBFCC"
                 BorderThickness="1"
                 CornerRadius="2" />
+
     </Grid>
 </UserControl>

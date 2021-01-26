@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WPFDemo.SimpleFrame.Infra.Helper;
 using WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList;
+using WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
@@ -16,12 +18,33 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public Dictionary<int, List<BeatInfo>> AllBeatInfoDic => _allBeatInfoDic;
 
         public static BeatInfoSource BeatSource;
+        public static List<ParentBeatTemplate> ParentBeatTemplates;
 
         public BeatInfoSource(int count)
         {
             _count = count;
             _allBeatInfos = GetAllBeatInfos();
             _allBeatInfoDic = GetAllBeatInfoDic();
+            ParentBeatTemplates = GetParentBeatTemplates();
+        }
+
+        private List<ParentBeatTemplate> GetParentBeatTemplates()
+        {
+            var result = new List<ParentBeatTemplate>();
+            foreach (var item in EnumHelper.GetSelectList(typeof(BeatTypeEnum)))
+            {
+                var count = _allBeatInfos.Where(x => x.BeatType == item.Name).Count();
+                ParentBeatTemplate parentBeatTemplate = new ParentBeatTemplate()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CategortEn = item.Name,
+                    CategoryName = item.Description,
+                    Count = count,
+                    Percent = count * 100d / _allBeatInfos.Count
+                };
+                result.Add(parentBeatTemplate);
+            }
+            return result;
         }
 
         public void SetBeatSource()
@@ -69,12 +92,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public List<BeatInfo> GetAllBeatInfos()
         {
+            var count = EnumHelper.GetSelectList(typeof(BeatTypeEnum)).Count;
             var results = new List<BeatInfo>();
             for (int i = 0; i < _count; i++)
             {
                 BeatInfo beatInfo = new BeatInfo()
                 {
-                    BeatType = ((BeatTypeEnum)(i % 3)).ToString(),
+                    BeatType = ((BeatTypeEnum)(i % count)).ToString(),
                     Position = i,
                     R = i,
                     Interval = random.Next(0, _count),

@@ -20,7 +20,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     public partial class BeatTemplateItemView : UserControl
     {
         private readonly BeatTemplateGroupItemView _groupItemView;
-        internal BeatTemplateGroupItemView GroupItemView => _groupItemView;
+        public BeatTemplateGroupItemView GroupItemView => _groupItemView;
+
+        public bool IsPrepareMerge
+        {
+            get { return (bool)GetValue(IsPrepareMergeProperty); }
+            set { SetValue(IsPrepareMergeProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsPrepareMergeProperty =
+            DependencyProperty.Register(nameof(IsPrepareMerge), typeof(bool), typeof(BeatTemplateItemView));
+
         private readonly BrushConverter _brushConverter;
         private readonly Brush _hoverBorderBrush;
         private readonly Brush _selectedBorderBrush;
@@ -74,6 +84,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void BeatTemplateItemView_MouseLeave(object sender, MouseEventArgs e)
         {
+            IsPrepareMerge = false;
+            GroupItemView.GroupView.SetCurrentMoveBeatTemplateItemView(null);
             if (IsSelected)
             {
                 PART_Border.BorderBrush = _selectedBorderBrush;
@@ -87,13 +99,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private void BeatTemplateItemView_MouseEnter(object sender, MouseEventArgs e)
         {
             PART_Border.BorderBrush = _hoverBorderBrush;
+            GroupItemView.GroupView.SetCurrentMoveBeatTemplateItemView(this);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
             var data = (BeatTemplate)DataContext;
-            PART_TypeName.Text = data.TypeName;
+            PART_TypeName.Text = data.CategoryName;
             PART_AddFlag.Visibility = Visibility.Visible;
             PART_CheckFlag.Visibility = Visibility.Visible;
             PART_Count.Text = "3355";

@@ -13,6 +13,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         [Description("房性")]
         S,
         [Description("室性")]
-        V
+        V,
+        [Description("伪差")]
+        X,
+        [Description("其他")]
+        Q,
     }
 }
