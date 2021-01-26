@@ -23,5 +23,10 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            PART_BeatTemplateGroupView.GenerateData();
+        }
     }
 }

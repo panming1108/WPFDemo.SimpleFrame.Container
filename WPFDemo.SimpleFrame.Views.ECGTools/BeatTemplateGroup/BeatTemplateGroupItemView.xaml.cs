@@ -22,8 +22,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     public partial class BeatTemplateGroupItemView : UserControl
     {
         public UIElementCollection Items => PART_GroupItemWrapPanel.Children;
-        public BeatTemplateGroupItemView()
+        private BeatTemplateGroupView _groupView;
+        internal BeatTemplateGroupView GroupView => _groupView;
+        public BeatTemplateGroupItemView(BeatTemplateGroupView groupView)
         {
+            _groupView = groupView;
             InitializeComponent();
         }
 
@@ -32,11 +35,39 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             foreach (var item in groupItemItemsSource)
             {
                 var data = item as BeatTemplate;
-                BeatTemplateItemView itemView = new BeatTemplateItemView
+                BeatTemplateItemView itemView = new BeatTemplateItemView(this)
                 {
                     DataContext = data
                 };
                 Items.Add(itemView);
+            }
+        }
+
+        public bool IsBeatTemplateItemView(Point currentPoint, out BeatTemplateItemView beatTemplateItemView)
+        {
+            beatTemplateItemView = null;
+            for (int i = 0; i < Items.Count; i++)
+            {
+                var rect = GetItemBound(Items[i]);
+                if(rect.Contains(currentPoint))
+                {
+                    beatTemplateItemView = Items[i] as BeatTemplateItemView;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private Rect GetItemBound(object item)
+        {
+            if (!(item is FrameworkElement itemView))
+            {
+                return Rect.Empty;
+            }
+            else
+            {
+                var topLeft = itemView.TranslatePoint(new Point(0, 0), GroupView);
+                return new Rect(topLeft.X, topLeft.Y, itemView.ActualWidth, itemView.ActualHeight);
             }
         }
     }
