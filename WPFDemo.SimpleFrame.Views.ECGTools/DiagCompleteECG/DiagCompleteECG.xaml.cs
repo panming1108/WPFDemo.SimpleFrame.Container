@@ -16,10 +16,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private Point _originPoint;
         private DispatcherTimer _dispatcherTimer;
         private readonly DragAreaAction _dragArea;
-        private readonly EquiDistanceAction _equiDistance = new EquiDistanceAction(0, 30);
-        private readonly BoxLineMeterAction _boxLineMeter = new BoxLineMeterAction(0, 30);
+        private readonly EquiDistanceAction _equiDistance;
+        private readonly BoxLineMeterAction _boxLineMeter;
         private readonly BeatMarkAction _beatMark;
-        private readonly AFAreaAction _aFArea = new AFAreaAction(0, 30);
+        private readonly AFAreaAction _aFArea;
         private bool _isMouseDown;
         private double _currentPosition;
         private readonly MaskActionCollection _maskList;
@@ -44,13 +44,15 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             KeyUp += DiagCompleteECG_KeyUp;
 
             RegisterMessages();
-
-            _dragArea = new DragAreaAction(true, 0, 30)
+            _equiDistance = new EquiDistanceAction(PART_Paint, 0, 30);
+            _boxLineMeter = new BoxLineMeterAction(PART_Paint, 0, 30);
+            _aFArea = new AFAreaAction(PART_Paint, 0, 30);
+            _dragArea = new DragAreaAction(PART_Paint, true, 0, 30)
             {
                 DragPriority = 0,
                 MouseUpPriority = 0,
             };
-            _beatMark = new BeatMarkAction(false, 0, 0)
+            _beatMark = new BeatMarkAction(PART_Paint, false, 0, 0)
             {
                 BeatInfos = BeatInfoCache.GetBeats()
             };
@@ -58,7 +60,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _boxLineMeter.DragPriority = 1;
             _equiDistance.MouseUpPriority = 1;
 
-            _maskList = new MaskActionCollection();
+            _maskList = new MaskActionCollection(PART_Paint);
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
             _maskList.Add(_aFArea);
@@ -113,7 +115,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 {
                     item.DrawingMouseWheel(delta);
                 }
-                RenderMaskPaint();
             }
             return TaskEx.FromResult(0);
         }
@@ -132,14 +133,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 _aFArea.OnRenderAFMask(afArea.Item1 - _currentPosition, afArea.Item2 - _currentPosition);
                 _dragArea.OnClearFlag();
             }
-            RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
 
         private Task OnDragAreaMouseUp(double resultX)
         {
             _beatMark.OnDragAreaMouseUp(resultX);
-            RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
 
@@ -147,28 +146,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _beatMark.OnStartDragArea();
             _aFArea.OnClearAfArea();
-            RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
 
         private Task OnSetStartFlag(double contextMenuX)
         {
             _dragArea.OnSetStartFlag(contextMenuX);
-            RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
 
         private Task OnSetEndFlag(double contextMenuX)
         {
             _dragArea.OnSetEndFlag(contextMenuX);
-            RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
 
         private Task OnClearFlag(string arg)
         {
             _dragArea.OnClearFlag();
-            RenderMaskPaint();
             return TaskEx.FromResult(0);
         }
 
@@ -196,7 +191,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                         item.DrawingMouseWheel(delta);
                     }
                 }
-                RenderMaskPaint();
             }
         }
 
@@ -241,7 +235,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void MouseDragHandler(Point currentPoint)
         {
             _maskList.DragMask?.DrawingDrag(currentPoint);
-            RenderMaskPaint();
         }
 
         private void MouseMoveHandler(Point currentPoint)
@@ -252,7 +245,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 item.DrawingMouseOver(currentPoint);
             }
             Cursor = _maskList.MouseOverMask?.Cursor;
-            RenderMaskPaint();
         }
 
         private void DiagCompleteECG_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -273,13 +265,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void DragOverHandler(Point currentPoint)
         {
             _maskList.DragMask?.DrawingDragOver(currentPoint);
-            RenderMaskPaint();
         }
 
         private void MouseLeftButtonUpHandler(Point currentPoint)
         {
             _maskList.MouseUpMask?.DrawingMouseUp(currentPoint);
-            RenderMaskPaint();
         }
 
         private void DiagCompleteECG_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -323,50 +313,27 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _boxLineMeter.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
             _beatMark.RenderMaskSize(ActualHeight, ActualWidth);
             _aFArea.RenderMaskSize(PART_ECG.ActualHeight, PART_ECG.ActualWidth);
-            RenderMaskPaint();
-        }
-
-        private void RenderMaskPaint()
-        {
-            PART_Paint.DrawingHandler((drawingContext) => 
-            {
-                foreach (var item in _maskList.Masks)
-                {
-                    foreach (var drawing in item.DrawingChildren)
-                    {
-                        drawingContext.DrawDrawing(drawing);
-                    }
-                    foreach (var text in item.DrawingTexts)
-                    {
-                        drawingContext.DrawText(text.Text, text.Position);
-                    }
-                }
-            });
         }
 
         #region 工具开关
         private void PART_Equi_Checked(object sender, RoutedEventArgs e)
         {
             _maskList.Add(_equiDistance);
-            RenderMaskPaint();
         }
 
         private void PART_Equi_Unchecked(object sender, RoutedEventArgs e)
         {
             _maskList.Remove(_equiDistance);
-            RenderMaskPaint();
         }
 
         private void PART_Box_Checked(object sender, RoutedEventArgs e)
         {
             _maskList.Add(_boxLineMeter);
-            RenderMaskPaint();
         }
 
         private void PART_Box_Unchecked(object sender, RoutedEventArgs e)
         {
             _maskList.Remove(_boxLineMeter);
-            RenderMaskPaint();
         }
 
         private void PART_Changed_Checked(object sender, RoutedEventArgs e)

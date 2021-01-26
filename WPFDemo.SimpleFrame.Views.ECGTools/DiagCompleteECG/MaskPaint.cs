@@ -9,28 +9,36 @@ using System.Windows.Media;
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class MaskPaint : FrameworkElement
-    {
-        private readonly DrawingVisual _drawingVisual = new DrawingVisual();
-        public MaskPaint()
+    {        
+        private readonly List<DrawingVisual> _visualCollection = new List<DrawingVisual>();
+
+        public void AddDrawingVisual(DrawingVisual drawingVisual)
         {
-            AddVisualChild(_drawingVisual);
+            AddVisualChild(drawingVisual);
+            _visualCollection.Add(drawingVisual);
         }
 
-        public void DrawingHandler(Action<DrawingContext> drawingAction)
+        public void RemoveDrawingVisual(DrawingVisual drawingVisual)
         {
-            var drawingContext = _drawingVisual.RenderOpen();
+            RemoveVisualChild(drawingVisual);
+            _visualCollection.Remove(drawingVisual);
+        }
+
+        public void DrawingHandler(DrawingVisual drawingVisual, Action<DrawingContext> drawingAction)
+        {
+            var drawingContext = drawingVisual.RenderOpen();
             drawingAction(drawingContext);
             drawingContext.Close();
         }
 
         protected override int VisualChildrenCount
         {
-            get { return 1; }
+            get { return _visualCollection.Count; }
         }
 
         protected override Visual GetVisualChild(int index)
         {
-            return _drawingVisual;
+            return _visualCollection[index];
         }
     }
 }

@@ -12,6 +12,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public abstract class MaskActionBase : IDisposable
     {
+        private readonly MaskPaint _maskPaint;
+        public DrawingVisual Visual { get; }
         /// <summary>
         /// 工具面板高度
         /// </summary>
@@ -54,8 +56,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         protected BrushConverter _brushConverter = new BrushConverter();
 
-        public MaskActionBase(double leftOffset, double topOffset)
+        public MaskActionBase(MaskPaint maskPaint, double leftOffset, double topOffset)
         {
+            Visual = new DrawingVisual();
+            _maskPaint = maskPaint;
             LeftOffset = leftOffset;
             TopOffset = topOffset;
         }
@@ -88,7 +92,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// 鼠标悬浮
         /// </summary>
         /// <param name="currentPoint"></param>
-        public virtual void DrawingMouseOver(Point currentPoint) 
+        public virtual void DrawingMouseOver(Point currentPoint)
         {
             Cursor = SetMouseOverCursor(currentPoint);
         }
@@ -96,7 +100,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         /// <summary>
         /// 鼠标右击
         /// </summary>
-        public virtual void DrawingMouseRightButtonDown(Point currentPoint) 
+        public virtual void DrawingMouseRightButtonDown(Point currentPoint)
         {
             ContextMenuItems = SetContextMenuItems(currentPoint);
         }
@@ -162,6 +166,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         protected virtual IEnumerable SetContextMenuItems(Point currentPoint)
         {
             return null;
+        }
+
+        public virtual void RenderMaskPaint()
+        {
+            _maskPaint.DrawingHandler(Visual, (drawingContext) =>
+            {
+                foreach (var drawing in DrawingChildren)
+                {
+                    drawingContext.DrawDrawing(drawing);
+                }
+                foreach (var text in DrawingTexts)
+                {
+                    drawingContext.DrawText(text.Text, text.Position);
+                }
+            });
+            Console.WriteLine(Visual);
         }
     }
 }

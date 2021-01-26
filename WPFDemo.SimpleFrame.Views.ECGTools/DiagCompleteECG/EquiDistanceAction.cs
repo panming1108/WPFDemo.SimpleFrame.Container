@@ -22,7 +22,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public int MouseUpPriority { get; set; }
 
-        public EquiDistanceAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        public EquiDistanceAction(MaskPaint maskPaint, double leftOffset, double topOffset) : base(maskPaint, leftOffset, topOffset)
         {
             
         }
@@ -95,6 +95,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 GeometryDrawing otherLineDrawing = new GeometryDrawing(_otherPen.Brush, _otherPen, otherLineGeometry);
                 DrawingChildren.Add(otherLineDrawing);
             }
+            RenderMaskPaint();
         }
 
         public override void ResetMask()
@@ -103,6 +104,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _interval = 100;
             _equiStatus = EquiStatusEnum.None;
             _currentMultiple = 0;
+            RenderMaskPaint();
         }
 
         public override void PrepareMask(Point current)

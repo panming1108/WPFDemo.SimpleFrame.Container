@@ -31,7 +31,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private MenuItem _rectMenuItem;
 
-        public AFAreaAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        public AFAreaAction(MaskPaint maskPaint, double leftOffset, double topOffset) : base(maskPaint, leftOffset, topOffset)
         {
             
         }
@@ -54,6 +54,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public void OnClearAfArea()
         {
             DrawingChildren.Clear();
+            RenderMaskPaint();
         }
 
         public override void DrawingMouseWheel(double offset)
@@ -127,6 +128,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 DrawingRightCircleButton();
             }
+
+            RenderMaskPaint();
         }
 
         public override void DrawingMouseOver(Point currentPoint)
@@ -158,6 +161,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             DrawingChildren.Add(_toolTipRectDrawing);
             DrawingTexts.Add(_toolTipContent);
+
+            RenderMaskPaint();
         }
 
         private void DrawingLeftCircleButton()

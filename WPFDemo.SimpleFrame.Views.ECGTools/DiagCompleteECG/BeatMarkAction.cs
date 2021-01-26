@@ -58,7 +58,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public List<BeatInfo> BeatInfos { get; set; }
 
-        public BeatMarkAction(bool canClick, double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        public BeatMarkAction(MaskPaint maskPaint, bool canClick, double leftOffset, double topOffset) : base(maskPaint, leftOffset, topOffset)
         {
             _canClick = canClick;
         }
@@ -124,6 +124,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 drawings.Add(item);
             }
             DrawingChildren = drawings;
+            RenderMaskPaint();
         }
 
         private void DrawingBeatMark()
@@ -266,7 +267,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public override void ResetMask()
         {
-            _selectBeat = 0;           
+            _selectBeat = 0;
         }
 
         public override void DrawingMouseRightButtonDown(Point currentPoint)

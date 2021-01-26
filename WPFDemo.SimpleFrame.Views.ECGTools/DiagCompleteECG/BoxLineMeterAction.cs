@@ -37,7 +37,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public int DragPriority { get; set; }
 
-        public BoxLineMeterAction(double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        public BoxLineMeterAction(MaskPaint maskPaint, double leftOffset, double topOffset) : base(maskPaint, leftOffset, topOffset)
         {
         }
 
@@ -81,6 +81,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     break;
             }
             DrawingRect(_originRect.TopLeft, _originRect.Height, _originRect.Width, isMeasuring);
+
         }
 
         private void DragRender(Point currentPoint)
@@ -377,6 +378,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             DrawingTexts.Add(new MaskText() { Text = vText, Position = vTextPosition });
             DrawingTexts.Add(new MaskText() { Text = tText, Position = tTextPosition });
             #endregion
+
+            RenderMaskPaint();
         }
 
         private string GetTText()

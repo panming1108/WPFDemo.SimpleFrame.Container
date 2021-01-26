@@ -36,7 +36,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public int DragPriority { get; set; }
         public int MouseUpPriority { get; set; }
 
-        public DragAreaAction(bool canDrag, double leftOffset, double topOffset) : base(leftOffset, topOffset)
+        public DragAreaAction(MaskPaint maskPaint, bool canDrag, double leftOffset, double topOffset) : base(maskPaint, leftOffset, topOffset)
         {
             _canDrag = canDrag;
         }
@@ -191,6 +191,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 DrawingChildren.Add(item);
             }
+            RenderMaskPaint();
         }
 
         public override void InitMask()

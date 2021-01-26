@@ -7,6 +7,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
     public class MaskActionCollection : IDisposable
     {
+        private readonly MaskPaint _maskPaint;
         private Dictionary<MaskActionBase, int> _screenDragMasksDic;
         private Dictionary<MaskActionBase, int> _screenMouseUpMasksDic;
 
@@ -22,8 +23,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private MaskActionBase _mouseUpMask;
         public MaskActionBase MouseUpMask => _mouseUpMask;
 
-        public MaskActionCollection()
+        public MaskActionCollection(MaskPaint maskPaint)
         {
+            _maskPaint = maskPaint;
             _masks = new List<MaskActionBase>();
             _screenDragMasksDic = new Dictionary<MaskActionBase, int>();
             _screenMouseUpMasksDic = new Dictionary<MaskActionBase, int>();
@@ -76,6 +78,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public void Add(MaskActionBase maskAction)
         {
+            _maskPaint.AddDrawingVisual(maskAction.Visual);
             _masks.Insert(0, maskAction);
             if(maskAction is IScreenDragAction)
             {
@@ -86,9 +89,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 _screenMouseUpMasksDic.Add(maskAction, ((IScreenMouseUpAction)maskAction).MouseUpPriority);
             }
             maskAction.InitMask();
+            maskAction.RenderMaskPaint();
         }
         public void Remove(MaskActionBase maskAction)
         {
+            _maskPaint.RemoveDrawingVisual(maskAction.Visual);
             maskAction.ResetMask();
             _masks.Remove(maskAction);
             if (maskAction is IScreenDragAction)
@@ -99,6 +104,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 _screenMouseUpMasksDic.Remove(maskAction);
             }
+            maskAction.RenderMaskPaint();
         }
 
         public bool Contains(MaskActionBase maskAction)
