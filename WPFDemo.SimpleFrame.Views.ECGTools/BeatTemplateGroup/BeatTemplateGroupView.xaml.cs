@@ -32,7 +32,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private SelectActionFactory _selectActionFactory;
         private BaseSelectAction _currentSelectAction;
         private MergeAction _mergeAction;
-
+        public bool IsAtrialPattern { get; set; }
         public bool IsEditMode
         {
             get { return (bool)GetValue(IsEditModeProperty); }
@@ -65,6 +65,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void BeatTemplateGroupView_Loaded(object sender, RoutedEventArgs e)
         {
+            IsAtrialPattern = false;//是事件
             GenerateData();
         }
 
@@ -138,6 +139,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "点击"));
         }
 
+        public void OnGroupItemsSelectAll()
+        {
+            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "全选结束：" + SelectedItemsCollection.SelectedItems.Count));
+        }
+
         private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
         {
             MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "合并"));
@@ -150,12 +156,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public void GenerateData()
         {
-            var groupCount = _random.Next(5, 8);
             var itemCount = _random.Next(5, 8);
             PART_GroupItemsControl.Items.Clear();
-            for (int i = 0; i < groupCount; i++)
+            for (int i = 0; i < 5; i++)
             {
-                BeatTemplateGroupItemView groupItemView = new BeatTemplateGroupItemView(this);
+                BeatTemplateGroupItemView groupItemView = new BeatTemplateGroupItemView(this)
+                {
+                    CategoryNameEn = ((BeatTypeEnum)(i % 5)).ToString()
+                };
                 var source = new List<BeatTemplate>();
                 for (int j = 0; j < itemCount; j++)
                 {
