@@ -112,7 +112,7 @@
         </Border>
         <Border x:Name="PART_Border"
                 BorderBrush="#AEBFCC"
-                BorderThickness="1"
+                BorderThickness="2"
                 CornerRadius="2" />
 
     </Grid>

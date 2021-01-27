@@ -54,10 +54,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         {
             if (newSelectedValue)
             {
+                GroupItemView.GroupView.SelectedItemsCollection.TryAddItem(this);
                 PART_Border.BorderBrush = _selectedBorderBrush;
             }
             else
             {
+                GroupItemView.GroupView.SelectedItemsCollection.TryRemoveItem(this);
                 PART_Border.BorderBrush = _commonBorderBrush;
             }
         }

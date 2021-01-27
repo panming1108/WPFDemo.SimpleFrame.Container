@@ -27,6 +27,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private BeatTemplateItemView _startItemView;
         private BeatTemplateItemView _currentMoveItemView;
         private BeatTemplateGroupItemView _endBeatTemplateGroupItemView;
+        public ItemCollection GroupItems => PART_GroupItemsControl.Items;
+        private readonly SelectedItemsCollection _selectedItemsCollection;
+        public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
+        private BaseSelectAction _currentSelectAction;
+        private SelectActionFactory _selectActionFactory;
 
         public bool IsEditMode
         {
@@ -46,22 +51,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
             InitializeComponent();
+            _selectedItemsCollection = new SelectedItemsCollection(this);
+            _selectActionFactory = new SelectActionFactory(this, PART_GroupSelectMask);
             Loaded += BeatTemplateGroupView_Loaded;
             Unloaded += BeatTemplateGroupView_Unloaded;
             MouseLeftButtonDown += BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp += BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp += BeatTemplateGroupView_MouseRightButtonUp;
-            KeyDown += BeatTemplateGroupView_KeyDown;
         }
 
         private void BeatTemplateGroupView_Loaded(object sender, RoutedEventArgs e)
         {
             GenerateData();
-        }
-
-        private void BeatTemplateGroupView_KeyDown(object sender, KeyEventArgs e)
-        {
-            
         }
 
         private void BeatTemplateGroupView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -72,6 +73,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private void BeatTemplateGroupView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMouseDown = true;
+            IsEditMode = false;
             var currentPoint = Mouse.GetPosition(this);
             _mouseDownPoint = currentPoint;
             _startItemView = null;
@@ -85,34 +87,32 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 }
             }
 
-            if(_startItemView != null)
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                //拖动模板
-                IsEditMode = true;
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Ctrl);
             }
             else
             {
-                //框选
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None);
             }
+            _currentSelectAction.MouseDown(currentPoint);
         }
 
         private DragDropAdorner _tempAdorner;
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             var currentPoint = Mouse.GetPosition(this);
-            if (_mouseDownPoint == currentPoint)
-            {
-                //鼠标没有移动
-                return;
-            }
-            //鼠标移动了
             if(!_isMouseDown)
             {
                 return;
             }
-            //鼠标移动且左键按下 拖动
+            if (_startItemView != null && _mouseDownPoint != currentPoint)
+            {
+                IsEditMode = true;
+            }
             if (IsEditMode)
             {
+                //编辑模式
                 var mAdornerLayer = AdornerLayer.GetAdornerLayer(this);
                 if(_tempAdorner != null)
                 {
@@ -140,32 +140,58 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             }
             else
             {
-
+                _currentSelectAction.Draging(Mouse.GetPosition(this));
             }
         }
 
         private void BeatTemplateGroupView_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            IsEditMode = false;
-            var mAdornerLayer = AdornerLayer.GetAdornerLayer(this);
-            if (_tempAdorner != null)
+            if(IsEditMode)
             {
-                mAdornerLayer.Remove(_tempAdorner);
-                _tempAdorner = null;
-            }
-            if (_currentMoveItemView != null)
-            {
-                MergeBeatTemplate(_currentMoveItemView, _startItemView);
+                var mAdornerLayer = AdornerLayer.GetAdornerLayer(this);
+                if (_tempAdorner != null)
+                {
+                    mAdornerLayer.Remove(_tempAdorner);
+                    _tempAdorner = null;
+                }
+                if (_currentMoveItemView != null)
+                {
+                    _currentMoveItemView.IsPrepareMerge = false;
+                    MergeBeatTemplate(_currentMoveItemView, _startItemView);
+                }
+                else
+                {
+                    if (_endBeatTemplateGroupItemView == null)
+                    {
+                        return;
+                    }
+                    AddCategory(_endBeatTemplateGroupItemView, _startItemView);
+                    _endBeatTemplateGroupItemView = null;
+                }
             }
             else
             {
-                if (_endBeatTemplateGroupItemView == null)
+                if (_currentSelectAction.MouseDownPoint == e.GetPosition(this))
                 {
-                    return;
+                    _currentSelectAction.Click();
+                    var itemView = _currentSelectAction.ActionSelectItems.SingleOrDefault();
+                    if (itemView != null)
+                    {
+                        OnClickItem(itemView);
+                    }
                 }
-                AddCategory(_endBeatTemplateGroupItemView, _startItemView);
-                _endBeatTemplateGroupItemView = null;
+                else
+                {
+                    _currentSelectAction.DragOver();
+                }
             }
+            _isMouseDown = false;
+            IsEditMode = false;            
+        }
+
+        private void OnClickItem(BeatTemplateItemView itemView)
+        {
+            Console.WriteLine("单击");
         }
 
         private void MergeBeatTemplate(BeatTemplateItemView currentMoveItemView, BeatTemplateItemView startItemView)
@@ -210,7 +236,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseLeftButtonDown -= BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp -= BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp -= BeatTemplateGroupView_MouseRightButtonUp;
-            KeyDown -= BeatTemplateGroupView_KeyDown;
         }
     }
 }
