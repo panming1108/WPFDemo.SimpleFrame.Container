@@ -6,12 +6,11 @@ using System.Windows;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
-    public interface ISelectAction
+    public interface IWorkAction
     {
-        ISelectMaskPaint SelectMaskPaint { get; }
         void Click();
         void MouseDown(Point currentPoint);
-        void Draging(Point currentPoint);
+        bool Draging(Point currentPoint);
         void DragOver();
     }
 }

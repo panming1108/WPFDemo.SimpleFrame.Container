@@ -134,13 +134,16 @@
     <Compile Include="BeatItemsList\Interface\ISelectItem.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectItemsContainer.cs" />
     <Compile Include="BeatItemsList\Interface\ISelectMaskPaint.cs" />
-    <Compile Include="BeatTemplateGroup\Actions\BaseSelectAction.cs" />
-    <Compile Include="BeatTemplateGroup\Actions\CommonSelectAction.cs" />
-    <Compile Include="BeatTemplateGroup\Actions\CtrlSelectAction.cs" />
-    <Compile Include="BeatTemplateGroup\Actions\DragDropAdorner.cs" />
-    <Compile Include="BeatTemplateGroup\Actions\SelectActionFactory.cs" />
+    <Compile Include="BeatTemplateGroup\EditActions\MergeAction.cs" />
+    <Compile Include="BeatTemplateGroup\EventArgs\AddCategoryEventArgs.cs" />
+    <Compile Include="BeatTemplateGroup\EventArgs\MergeTemplateEventArgs.cs" />
+    <Compile Include="BeatTemplateGroup\SelectActions\BaseSelectAction.cs" />
+    <Compile Include="BeatTemplateGroup\SelectActions\CommonSelectAction.cs" />
+    <Compile Include="BeatTemplateGroup\SelectActions\CtrlSelectAction.cs" />
+    <Compile Include="BeatTemplateGroup\EditActions\DragDropAdorner.cs" />
+    <Compile Include="BeatTemplateGroup\SelectActions\SelectActionFactory.cs" />
     <Compile Include="BeatTemplateGroup\Collections\SelectedItemsCollection.cs" />
-    <Compile Include="BeatTemplateGroup\Interfaces\ISelectAction.cs" />
+    <Compile Include="BeatTemplateGroup\Interfaces\IWorkAction.cs" />
     <Compile Include="Models\BeatInfoSource.cs" />
     <Compile Include="Models\BeatTemplateGroup\BeatTemplate.cs" />
     <Compile Include="Models\BeatTemplateGroup\ParentBeatTemplate.cs" />
@@ -289,6 +292,14 @@
     <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.CustomControls\WPFDemo.SimpleFrame.Infra.CustomControls.csproj">
       <Project>{22cdffbf-e20f-42ff-b638-ff54dd3c7105}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Enums\WPFDemo.SimpleFrame.Infra.Enums.csproj">
+      <Project>{1EFDA8F3-F261-4C04-B069-67DACAE8BBE5}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFDemo.SimpleFrame.Infra.Models\WPFDemo.SimpleFrame.Infra.Models.csproj">
+      <Project>{c9ad9862-4539-4eea-ba4d-1b01301263eb}</Project>
+      <Name>WPFDemo.SimpleFrame.Infra.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFDemo.SimpleFrame.IViewModels.ECGTools\WPFDemo.SimpleFrame.IViewModels.ECGTools.csproj">
       <Project>{2BAD1895-C3B3-474D-AA0B-987F62A0195F}</Project>

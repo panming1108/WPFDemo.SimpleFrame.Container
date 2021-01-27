@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
-    public abstract class BaseSelectAction : ISelectAction
+    public abstract class BaseSelectAction : IWorkAction
     {
         private bool _isDrag;
         private Rect _selectMaskRect = Rect.Empty;
@@ -56,9 +56,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             OnMouseDown(currentPoint);
         }
 
-        public void Draging(Point currentPoint)
+        public bool Draging(Point currentPoint)
         {
             OnDraging(currentPoint);
+            return true;
         }
 
         public void DragOver()

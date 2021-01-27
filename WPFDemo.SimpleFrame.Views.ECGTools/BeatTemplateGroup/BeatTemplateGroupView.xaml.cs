@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WPFDemo.SimpleFrame.Infra.Messager;
+using WPFDemo.SimpleFrame.Infra.Models;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
@@ -24,14 +26,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private bool _isMouseDown;
         private Point _mouseDownPoint;
         private readonly DispatcherTimer _dispatcherTimer;
-        private BeatTemplateItemView _startItemView;
-        private BeatTemplateItemView _currentMoveItemView;
-        private BeatTemplateGroupItemView _endBeatTemplateGroupItemView;
         public ItemCollection GroupItems => PART_GroupItemsControl.Items;
         private readonly SelectedItemsCollection _selectedItemsCollection;
         public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
-        private BaseSelectAction _currentSelectAction;
         private SelectActionFactory _selectActionFactory;
+        private BaseSelectAction _currentSelectAction;
+        private MergeAction _mergeAction;
 
         public bool IsEditMode
         {
@@ -51,8 +51,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
             InitializeComponent();
+            _mergeAction = new MergeAction(this);
             _selectedItemsCollection = new SelectedItemsCollection(this);
             _selectActionFactory = new SelectActionFactory(this, PART_GroupSelectMask);
+            _mergeAction.CategoryAdded += MergeAction_CategoryAdded;
+            _mergeAction.TemplateMerged += MergeAction_TemplateMerged;
             Loaded += BeatTemplateGroupView_Loaded;
             Unloaded += BeatTemplateGroupView_Unloaded;
             MouseLeftButtonDown += BeatTemplateGroupView_MouseLeftButtonDown;
@@ -76,29 +79,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             IsEditMode = false;
             var currentPoint = Mouse.GetPosition(this);
             _mouseDownPoint = currentPoint;
-            _startItemView = null;
-            foreach (var item in PART_GroupItemsControl.Items)
-            {
-                var groupItemView = item as BeatTemplateGroupItemView;
-                var result = groupItemView.IsBeatTemplateItemView(currentPoint, out _startItemView);
-                if(result)
-                {
-                    break;
-                }
-            }
 
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-            {
-                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Ctrl);
-            }
-            else
-            {
-                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None);
-            }
+            _mergeAction.MouseDown(_mouseDownPoint);
+
+            SetCurrentSelectActionMode();
             _currentSelectAction.MouseDown(currentPoint);
         }
 
-        private DragDropAdorner _tempAdorner;
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             var currentPoint = Mouse.GetPosition(this);
@@ -106,68 +93,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 return;
             }
-            if (_startItemView != null && _mouseDownPoint != currentPoint)
+            IsEditMode = _mergeAction.Draging(currentPoint);
+            if(IsEditMode)
             {
-                IsEditMode = true;
+                return;
             }
-            if (IsEditMode)
-            {
-                //编辑模式
-                var mAdornerLayer = AdornerLayer.GetAdornerLayer(this);
-                if(_tempAdorner != null)
-                {
-                    mAdornerLayer.Remove(_tempAdorner);
-                }
-                _tempAdorner = new DragDropAdorner(_startItemView);
-                mAdornerLayer.Add(_tempAdorner);
-
-                if (_currentMoveItemView != null)
-                {
-                    _currentMoveItemView.IsPrepareMerge = true;
-                }
-                else
-                {
-                    foreach (var item in PART_GroupItemsControl.Items)
-                    {
-                        var groupItemView = item as BeatTemplateGroupItemView;
-                        var result = groupItemView.IsBeatTemplateGroupItemHeader(currentPoint, out _endBeatTemplateGroupItemView);
-                        if (result)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                _currentSelectAction.Draging(Mouse.GetPosition(this));
-            }
+            _currentSelectAction.Draging(Mouse.GetPosition(this));
         }
 
         private void BeatTemplateGroupView_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if(IsEditMode)
             {
-                var mAdornerLayer = AdornerLayer.GetAdornerLayer(this);
-                if (_tempAdorner != null)
-                {
-                    mAdornerLayer.Remove(_tempAdorner);
-                    _tempAdorner = null;
-                }
-                if (_currentMoveItemView != null)
-                {
-                    _currentMoveItemView.IsPrepareMerge = false;
-                    MergeBeatTemplate(_currentMoveItemView, _startItemView);
-                }
-                else
-                {
-                    if (_endBeatTemplateGroupItemView == null)
-                    {
-                        return;
-                    }
-                    AddCategory(_endBeatTemplateGroupItemView, _startItemView);
-                    _endBeatTemplateGroupItemView = null;
-                }
+                _mergeAction.DragOver();
             }
             else
             {
@@ -183,25 +121,31 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 else
                 {
                     _currentSelectAction.DragOver();
+                    OnDragOver();
                 }
             }
             _isMouseDown = false;
-            IsEditMode = false;            
+            IsEditMode = false;
+        }
+
+        private void OnDragOver()
+        {
+            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "框选结束：" + SelectedItemsCollection.SelectedItems.Count));
         }
 
         private void OnClickItem(BeatTemplateItemView itemView)
-        {
-            Console.WriteLine("单击");
+        {            
+            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "点击"));
         }
 
-        private void MergeBeatTemplate(BeatTemplateItemView currentMoveItemView, BeatTemplateItemView startItemView)
+        private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
         {
-            Console.WriteLine("合并");
+            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "合并"));
         }
 
-        private void AddCategory(BeatTemplateGroupItemView endBeatTemplateGroupItemView, BeatTemplateItemView startItemView)
+        private void MergeAction_CategoryAdded(object sender, AddCategoryEventArgs e)
         {
-            Console.WriteLine("新增分类");
+            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "新增分类"));
         }
 
         public void GenerateData()
@@ -225,7 +169,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         internal void SetCurrentMoveBeatTemplateItemView(BeatTemplateItemView itemView)
         {
-            _currentMoveItemView = itemView;
+            _mergeAction._currentMoveItemView = itemView;
+        }
+
+        private void SetCurrentSelectActionMode()
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.Ctrl);
+            }
+            else
+            {
+                _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None);
+            }
         }
 
         private void BeatTemplateGroupView_Unloaded(object sender, RoutedEventArgs e)
@@ -236,6 +192,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseLeftButtonDown -= BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp -= BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp -= BeatTemplateGroupView_MouseRightButtonUp;
+            _mergeAction.CategoryAdded -= MergeAction_CategoryAdded;
+            _mergeAction.TemplateMerged -= MergeAction_TemplateMerged;
         }
     }
 }
