@@ -113,7 +113,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             PART_CheckFlag.Visibility = Visibility.Visible;
             PART_Count.Text = "3355";
             PART_Percent.Text = "43.9%";
-            Height = 132;
+            Height = GroupItemView.GroupView.ItemHeight;
+            Width = GroupItemView.GroupView.ItemWidth;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -38,7 +40,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             get { return (bool)GetValue(IsEditModeProperty); }
             set { SetValue(IsEditModeProperty, value); }
         }
+        public double ItemHeight
+        {
+            get { return (double)GetValue(ItemHeightProperty); }
+            set { SetValue(ItemHeightProperty, value); }
+        }
+        public double ItemWidth
+        {
+            get { return (double)GetValue(ItemWidthProperty); }
+            set { SetValue(ItemWidthProperty, value); }
+        }
 
+        public static readonly DependencyProperty ItemWidthProperty =
+            DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(BeatTemplateGroupView), new PropertyMetadata(OnItemSizeChanged));
+        public static readonly DependencyProperty ItemHeightProperty =
+            DependencyProperty.Register(nameof(ItemHeight), typeof(double), typeof(BeatTemplateGroupView), new PropertyMetadata(OnItemSizeChanged));
         public static readonly DependencyProperty IsEditModeProperty =
             DependencyProperty.Register(nameof(IsEditMode), typeof(bool), typeof(BeatTemplateGroupView));
 
@@ -61,11 +77,42 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseLeftButtonDown += BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp += BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp += BeatTemplateGroupView_MouseRightButtonUp;
+            MessagerInstance.GetMessager().Register<IList>(this, "LeadChanged", OnLeadChanged);
+        }
+        private static void OnItemSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var groupView = d as BeatTemplateGroupView;
+            foreach (var groupItem in groupView.GroupItems)
+            {
+                var groupItemView = groupItem as BeatTemplateGroupItemView;
+                foreach (var item in groupItemView.Items)
+                {
+                    var itemView = item as BeatTemplateItemView;
+                    itemView.InvalidateVisual();
+                }
+            }
+        }
+
+        private async Task OnLeadChanged(IList leadSource)
+        {
+            if(leadSource.Count >= 3)
+            {
+                ItemHeight = 213;
+                ItemWidth = 142;
+            }
+            else
+            {
+                ItemHeight = 132;
+                ItemWidth = 142;
+            }
+            await TaskEx.FromResult(0);
         }
 
         private void BeatTemplateGroupView_Loaded(object sender, RoutedEventArgs e)
         {
             IsAtrialPattern = false;//是事件
+            ItemWidth = 142;
+            ItemHeight = 132;
             GenerateData();
         }
 
@@ -202,6 +249,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseRightButtonUp -= BeatTemplateGroupView_MouseRightButtonUp;
             _mergeAction.CategoryAdded -= MergeAction_CategoryAdded;
             _mergeAction.TemplateMerged -= MergeAction_TemplateMerged;
+            MessagerInstance.GetMessager().Unregister<IList>(this, "LeadChanged", OnLeadChanged);
         }
     }
 }

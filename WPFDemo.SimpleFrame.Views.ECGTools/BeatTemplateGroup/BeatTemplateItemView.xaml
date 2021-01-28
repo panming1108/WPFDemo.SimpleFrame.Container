@@ -5,8 +5,6 @@
              xmlns:local="clr-namespace:WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="PART_Root"
-             Width="142"
-             Height="132"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">

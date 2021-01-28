@@ -163,6 +163,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 return;
             }
+            MessagerInstance.GetMessager().Send("LeadChanged", PART_ItemsControlBar.LeadSelectedItems);
             ChangePageSize();
         }
 
