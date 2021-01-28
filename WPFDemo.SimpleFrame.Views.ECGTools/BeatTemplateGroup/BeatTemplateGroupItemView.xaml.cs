@@ -27,7 +27,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public UIElementCollection Items => PART_GroupItemWrapPanel.Children;
         private BeatTemplateGroupView _groupView;
         public BeatTemplateGroupView GroupView => _groupView;
-        public bool IsSType { get; set; }//是否房性
 
         public string CategoryNameEn
         {
@@ -57,38 +56,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public static readonly DependencyProperty CategoryNameProperty =
             DependencyProperty.Register(nameof(CategoryName), typeof(string), typeof(BeatTemplateGroupItemView));
         public static readonly DependencyProperty CategoryNameEnProperty =
-            DependencyProperty.Register(nameof(CategoryNameEn), typeof(string), typeof(BeatTemplateGroupItemView), new PropertyMetadata(OnCategoryNameEnChanged));
-
-        private static void OnCategoryNameEnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var groupItem = d as BeatTemplateGroupItemView;
-            var type = (BeatTypeEnum)Enum.Parse(typeof(BeatTypeEnum), groupItem.CategoryNameEn);
-            groupItem.CategoryName = EnumHelper.GetDescription(type);
-            if (type == BeatTypeEnum.S)
-            {
-                groupItem.IsSType = true;
-                if (groupItem.GroupView.IsAtrialPattern)
-                {
-                    groupItem.PART_FormRadioBtn.IsChecked = true;
-                }
-                else
-                {
-                    groupItem.PART_EventRadioBtn.IsChecked = true;
-                }
-                groupItem.PART_FormRadioBtn.Visibility = Visibility.Visible;
-                groupItem.PART_EventRadioBtn.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                groupItem.PART_FormRadioBtn.Visibility = Visibility.Collapsed;
-                groupItem.PART_EventRadioBtn.Visibility = Visibility.Collapsed;
-            }
-        }
+            DependencyProperty.Register(nameof(CategoryNameEn), typeof(string), typeof(BeatTemplateGroupItemView));
 
         public BeatTemplateGroupItemView(BeatTemplateGroupView groupView)
         {
             _groupView = groupView;
-            IsSType = false;
             InitializeComponent();
         }
 
@@ -97,7 +69,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             foreach (var item in groupItemItemsSource)
             {
                 var data = item as BeatTemplate;
-                BeatTemplateItemView itemView = new BeatTemplateItemView(this)
+                BeatTemplateItemView itemView = new BeatTemplateItemView(data.Id, this)
                 {
                     DataContext = data
                 };
@@ -143,16 +115,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 var topLeft = itemView.TranslatePoint(new Point(0, 0), GroupView);
                 return new Rect(topLeft.X, topLeft.Y, itemView.ActualWidth, itemView.ActualHeight);
             }
-        }
-
-        private void PART_FormEventRadioBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            if(Items.Count <= 0 || !IsSType)
-            {
-                return;
-            }
-            var btn = sender as RadioButton;
-            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "切换成" + btn.Name));
         }
 
         private void PART_SelectAllBtn_Click(object sender, RoutedEventArgs e)

@@ -26,7 +26,7 @@ namespace WPFDemo.SimpleFrame.Container.NaviPages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            PART_BeatTemplateGroupView.GenerateData();
+            PART_BeatTemplateGroupView.InitGroupView();
         }
     }
 }

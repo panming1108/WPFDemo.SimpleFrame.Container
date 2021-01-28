@@ -70,13 +70,11 @@
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="PART_FormRadioBtn"
                                      VerticalAlignment="Center"
-                                     Checked="PART_FormEventRadioBtn_Checked"
                                      Content="形态"
                                      GroupName="{Binding ElementName=PART_Root, Path=CategoryNameEn}"
                                      Visibility="Collapsed" />
                         <RadioButton x:Name="PART_EventRadioBtn"
                                      VerticalAlignment="Center"
-                                     Checked="PART_FormEventRadioBtn_Checked"
                                      Content="事件"
                                      GroupName="{Binding ElementName=PART_Root, Path=CategoryNameEn}"
                                      Visibility="Collapsed" />

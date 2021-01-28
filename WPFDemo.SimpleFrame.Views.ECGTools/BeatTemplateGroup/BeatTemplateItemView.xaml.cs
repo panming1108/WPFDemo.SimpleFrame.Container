@@ -19,6 +19,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     /// </summary>
     public partial class BeatTemplateItemView : UserControl
     {
+        public string Id { get; }
         private readonly BeatTemplateGroupItemView _groupItemView;
         public BeatTemplateGroupItemView GroupItemView => _groupItemView;
 
@@ -63,8 +64,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 PART_Border.BorderBrush = _commonBorderBrush;
             }
         }
-        public BeatTemplateItemView(BeatTemplateGroupItemView groupItemView)
+        public BeatTemplateItemView(string id, BeatTemplateGroupItemView groupItemView)
         {
+            Id = id;
             _groupItemView = groupItemView;
             _brushConverter = new BrushConverter();
             _hoverBorderBrush = (Brush)_brushConverter.ConvertFromString("#00AAFF");
