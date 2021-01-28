@@ -95,7 +95,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private async Task OnLeadChanged(IList leadSource)
         {
-            if(leadSource.Count >= 3)
+            if (leadSource.Count >= 3)
             {
                 ItemHeight = 213;
                 ItemWidth = 142;
@@ -113,6 +113,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             IsAtrialPattern = false;//是事件
             ItemWidth = 142;
             ItemHeight = 132;
+            SelectedItemsCollection.SelectedItems.Add(BeatInfoSource.BeatTemplates[1].Id);
             InitGroupView();
         }
 
@@ -137,12 +138,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             var currentPoint = Mouse.GetPosition(this);
-            if(!_isMouseDown)
+            if (!_isMouseDown)
             {
                 return;
             }
             IsEditMode = _mergeAction.Draging(currentPoint);
-            if(IsEditMode)
+            if (IsEditMode)
             {
                 return;
             }
@@ -151,7 +152,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void BeatTemplateGroupView_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if(IsEditMode)
+            if (IsEditMode)
             {
                 _mergeAction.DragOver();
             }
@@ -178,60 +179,61 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void OnDragOver()
         {
-            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "框选结束：" + SelectedItemsCollection.SelectedItems.Count));
+            foreach (var item in SelectedItemsCollection.SelectedItems)
+            {
+                GetItemViewById(item).IsChecked = true;
+            }
+            BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
         }
 
         private void OnClickItem(BeatTemplateItemView itemView)
-        {            
-            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "点击"));
+        {
+            itemView.IsChecked = true;
+            BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
         }
 
         public void OnGroupItemsSelectAll()
         {
-            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "全选结束：" + SelectedItemsCollection.SelectedItems.Count));
+            foreach (var item in SelectedItemsCollection.SelectedItems)
+            {
+                GetItemViewById(item).IsChecked = true;
+            }
+            BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
         }
 
         private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
         {
-            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "合并"));
+            BeatInfoSource.BeatSource.MergeBeats(e.OriginBeatTemplateItemView.Id, e.TargetBeatTemplateItemView.Id);
             InitGroupView();
         }
 
         private void MergeAction_CategoryAdded(object sender, AddCategoryEventArgs e)
         {
-            MessagerInstance.GetMessager().Send("PopupNotifyBox", new PopupNotifyObject("通知", "新增分类"));
+            BeatInfoSource.BeatSource.AddCategory(e.OriginItemView.Id, e.TargetBeatTemplateGroupItemView.Id);
             InitGroupView();
         }
 
         public void InitGroupView()
         {
-            var itemCount = _random.Next(5, 8);
+            var groupItemsSource = BeatInfoSource.BeatTemplates.GroupBy(x => x.BeatType).ToList();
             PART_GroupItemsControl.Items.Clear();
-            for (int i = 0; i < 5; i++)
+            foreach (var groupItem in groupItemsSource)
             {
-                var categoryNameEn = ((BeatTypeEnum)(i % 5)).ToString();
+                var groupItemSource = BeatInfoSource.ParentBeatTemplateDic[groupItem.Key];
                 BeatTemplateGroupItemView groupItemView;
-                if (categoryNameEn == BeatTypeEnum.S.ToString())
+                if (groupItemSource.CategoryNameEn == BeatTypeEnum.S.ToString())
                 {
-                    groupItemView = new SBeatTemplateGroupItemView(this)
-                    {
-                        CategoryNameEn = categoryNameEn
-                    };
+                    groupItemView = new SBeatTemplateGroupItemView(groupItemSource.Id, this);
                 }
                 else
                 {
-                    groupItemView = new BeatTemplateGroupItemView(this)
-                    {
-                        CategoryNameEn = categoryNameEn
-                    };
+                    groupItemView = new BeatTemplateGroupItemView(groupItemSource.Id, this);
                 }
-                var source = new List<BeatTemplate>();
-                for (int j = 0; j < itemCount; j++)
-                {
-                    BeatTemplate beatTemplate = new BeatTemplate() { Id = Guid.NewGuid().ToString(), CategoryName = ((BeatTypeEnum)(j % 5)).ToString() };
-                    source.Add(beatTemplate);
-                }
-                groupItemView.SetGroupItemItemsSource(source);
+                groupItemView.CategoryNameEn = groupItemSource.CategoryNameEn;
+                groupItemView.Percent = groupItemSource.Percent;
+                groupItemView.Count = groupItemSource.Count;
+                groupItemView.CategoryName = groupItemSource.CategoryName;
+                groupItemView.SetGroupItemItemsSource(groupItem.Select(x => x).ToList(), SelectedItemsCollection.SelectedItems);
                 PART_GroupItemsControl.Items.Add(groupItemView);
             }
         }
@@ -239,6 +241,16 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         internal void SetCurrentMoveBeatTemplateItemView(BeatTemplateItemView itemView)
         {
             _mergeAction._currentMoveItemView = itemView;
+        }
+
+        internal void ResetIsAtrialPattern(bool isAtrialPattern, UIElementCollection oldItemViews)
+        {
+            IsAtrialPattern = isAtrialPattern;
+            foreach (var item in oldItemViews)
+            {
+                var itemView = item as BeatTemplateItemView;
+                SelectedItemsCollection.TryRemoveItem(itemView.Id);
+            }
         }
 
         private void SetCurrentSelectActionMode()
@@ -251,6 +263,23 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None);
             }
+        }
+
+        public BeatTemplateItemView GetItemViewById(string id)
+        {
+            foreach (var groupItem in GroupItems)
+            {
+                var groupItemView = groupItem as BeatTemplateGroupItemView;
+                foreach (var item in groupItemView.Items)
+                {
+                    var itemView = item as BeatTemplateItemView;
+                    if (itemView.Id == id)
+                    {
+                        return itemView;
+                    }
+                }
+            }
+            return null;
         }
 
         private void BeatTemplateGroupView_Unloaded(object sender, RoutedEventArgs e)

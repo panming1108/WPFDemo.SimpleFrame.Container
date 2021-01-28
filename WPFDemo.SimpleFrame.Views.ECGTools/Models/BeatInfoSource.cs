@@ -14,37 +14,70 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private readonly int _count;
         public Random random = new Random();
         private readonly List<BeatInfo> _allBeatInfos;
-        private readonly Dictionary<int, List<BeatInfo>> _allBeatInfoDic;
+        private Dictionary<int, List<BeatInfo>> _allBeatInfoDic;
         public Dictionary<int, List<BeatInfo>> AllBeatInfoDic => _allBeatInfoDic;
 
         public static BeatInfoSource BeatSource;
-        public static List<ParentBeatTemplate> ParentBeatTemplates;
+        public static Dictionary<int, ParentBeatTemplate> ParentBeatTemplateDic;
+        public static List<BeatTemplate> BeatTemplates;
+        private Dictionary<string, BeatTemplate> OriginBeatTemplates = new Dictionary<string, BeatTemplate>();
 
         public BeatInfoSource(int count)
         {
             _count = count;
             _allBeatInfos = GetAllBeatInfos();
-            _allBeatInfoDic = GetAllBeatInfoDic();
-            ParentBeatTemplates = GetParentBeatTemplates();
+            ResetSource();
+            OriginBeatTemplates = BeatTemplates.ToDictionary(k => GetDicKey(k.BeatType, k.SubType));
         }
 
-        private List<ParentBeatTemplate> GetParentBeatTemplates()
+        private void SetBeatReferId()
         {
-            var result = new List<ParentBeatTemplate>();
-            foreach (var item in EnumHelper.GetSelectList(typeof(BeatTypeEnum)))
+            var dic = BeatTemplates.ToDictionary(k => GetDicKey(k.BeatType, k.SubType), v => v.Id);
+            foreach (var item in _allBeatInfos)
             {
-                var count = _allBeatInfos.Where(x => x.BeatType == item.Name).Count();
-                ParentBeatTemplate parentBeatTemplate = new ParentBeatTemplate()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    CategortEn = item.Name,
-                    CategoryName = item.Description,
-                    Count = count,
-                    Percent = count * 100d / _allBeatInfos.Count
-                };
-                result.Add(parentBeatTemplate);
+                item.BeatReferId = dic[GetDicKey(item.BeatType, item.SubType)];
             }
-            return result;
+        }
+
+        private string GetDicKey(int beatType, int subType)
+        {
+            return beatType + "_" + subType;
+        }
+
+        private List<BeatTemplate> GetBeatTemplates()
+        {
+            return _allBeatInfos.GroupBy(x => new { x.BeatType, x.SubType }).Select(w =>
+            new BeatTemplate()
+            {
+                Id = OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)) ? OriginBeatTemplates[GetDicKey(w.Key.BeatType, w.Key.SubType)].Id : Guid.NewGuid().ToString(),
+                CategoryEn = ((BeatTypeEnum)w.Key.BeatType).ToString(),
+                CategoryName = ((BeatTypeEnum)w.Key.BeatType).GetDescription(),
+                DataCount = w.Count(),
+                IsAdd = !OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)),
+                IsChecked = OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)) ? OriginBeatTemplates[GetDicKey(w.Key.BeatType, w.Key.SubType)].IsChecked : false,
+                BeatType = w.Key.BeatType,
+                SubType = w.Key.SubType,
+                Percent = w.Count() * 1d / _allBeatInfos.Count,
+                ParentID = ParentBeatTemplateDic[w.Key.BeatType].Id,
+                ParentCategoryEn = ParentBeatTemplateDic[w.Key.BeatType].CategoryNameEn,
+                ParentCategoryName = ParentBeatTemplateDic[w.Key.BeatType].CategoryName,
+                ParentCount = ParentBeatTemplateDic[w.Key.BeatType].Count,
+                WaveList = w.Select(s => s.Data).ToList(),
+            }).OrderBy(a => a.BeatType).ToList();
+        }
+
+        private Dictionary<int, ParentBeatTemplate> GetParentBeatTemplates()
+        {
+            return _allBeatInfos.GroupBy(x => new { x.BeatType }).Select(w =>
+            new ParentBeatTemplate()
+            {
+                Id = Guid.NewGuid().ToString(),
+                CategoryNameEn = ((BeatTypeEnum)w.Key.BeatType).ToString(),
+                CategoryName = ((BeatTypeEnum)w.Key.BeatType).GetDescription(),
+                Count = w.Count(),
+                BeatType = w.Key.BeatType,
+                Percent = w.Count() * 1d / _allBeatInfos.Count,
+            }).OrderBy(a => a.BeatType).ToDictionary(k => k.BeatType);
         }
 
         public void SetBeatSource()
@@ -90,19 +123,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             return beatInfosDic;
         }
 
+        private int _maxSubType = 10;
         public List<BeatInfo> GetAllBeatInfos()
         {
             var count = EnumHelper.GetSelectList(typeof(BeatTypeEnum)).Count;
             var results = new List<BeatInfo>();
             for (int i = 0; i < _count; i++)
             {
+                var beatType = random.Next(0, count);
                 BeatInfo beatInfo = new BeatInfo()
                 {
-                    BeatType = ((BeatTypeEnum)(i % count)).ToString(),
                     Position = i,
+                    BeatType = beatType,
                     R = i,
                     Interval = random.Next(0, _count),
-                    Data = GetECGData(random)
+                    Data = GetECGData(random),
+                    SubType = random.Next(0, _maxSubType),
                 };
                 results.Add(beatInfo);
             }
@@ -123,16 +159,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             foreach (var item in beatInfoRs)
             {
-                AllBeatInfoDic[item].First().BeatType = type.ToString();
+                AllBeatInfoDic[item].First().BeatType = (int)type;
             }
+            ResetSource();
         }
 
         public void DeleteBeatInfos(List<int> beatInfoRs)
         {
             foreach (var item in beatInfoRs)
             {
-                AllBeatInfoDic.Remove(item);
+                _allBeatInfos.Remove(AllBeatInfoDic[item].First());
             }
+            ResetSource();
         }
 
         public IEnumerable SortItemsSource(List<int> itemRs, SortArgs sortArgs)
@@ -167,6 +205,29 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                         return list.OrderByDescending(x => x.R).Select(w => w.R);
                     }
             }         
+        }
+
+        public void MergeBeats(string originBeatReferId, string targetBeatReferId)
+        {
+            var beatTemplate = BeatTemplates.Single(x => x.Id == targetBeatReferId);
+            beatTemplate.IsChecked = true;
+            _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList().ForEach(t => { t.BeatType = beatTemplate.BeatType; t.SubType = beatTemplate.SubType; });
+            ResetSource();
+        }
+
+        public void AddCategory(string originBeatReferId, string targetParentId)
+        {
+            var beatTemplate = BeatTemplates.FirstOrDefault(x => x.ParentID == targetParentId);
+            _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList().ForEach(t => { t.BeatType = beatTemplate.BeatType; });
+            ResetSource();
+        }
+
+        private void ResetSource()
+        {
+            _allBeatInfoDic = GetAllBeatInfoDic();
+            ParentBeatTemplateDic = GetParentBeatTemplates();
+            BeatTemplates = GetBeatTemplates();
+            SetBeatReferId();
         }
 
         public double[] GetECGData(Random random)

@@ -158,7 +158,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     #region 画心搏类型文字
                     Typeface beatTypeFace = new Typeface(new FontFamily("Klavika"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
                     Brush beatTypeForground = (Brush)_brushConverter.ConvertFromString("#299EE3");
-                    FormattedText beatTypeText = new FormattedText(item.BeatType, _culture, FlowDirection.LeftToRight, beatTypeFace, 15d, beatTypeForground);
+                    FormattedText beatTypeText = new FormattedText(item.BeatTypeName, _culture, FlowDirection.LeftToRight, beatTypeFace, 15d, beatTypeForground);
                     double beatTypeTextXOffset = beatRect.X + (beatRect.Width - beatTypeText.Width) / 2;
                     double beatTypeTextYOffset = beatRect.Y + (beatRect.Height - beatTypeText.Height) / 2;
                     Point beatTypePosition = new Point(beatTypeTextXOffset, beatTypeTextYOffset);

@@ -41,7 +41,7 @@
                             Width="16"
                             Height="20"
                             Background="#00AAFF"
-                            Visibility="Collapsed">
+                            Visibility="{Binding ElementName=PART_Root, Path=IsAdded, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="White"
@@ -53,7 +53,8 @@
                          Width="16"
                          Height="16"
                          Margin="4"
-                         VerticalAlignment="Top">
+                         VerticalAlignment="Top"
+                         Visibility="{Binding ElementName=PART_Root, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Ellipse.Fill>
                         <DrawingBrush>
                             <DrawingBrush.Drawing>

@@ -20,7 +20,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 }
                 beats.Add(new BeatInfo()
                 {
-                    BeatType = beatType,
+                    BeatTypeName = beatType,
                     Position = 50 + i * 100,
                     Interval = 100,
                 });
@@ -31,11 +31,22 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
     public class BeatInfo
     {
-        public string BeatType { get; set; }
+        public string BeatTypeName { get; set; }
+        private int _beatType;
+        public int BeatType 
+        {
+            get => _beatType;
+            set
+            {
+                _beatType = value;
+                BeatTypeName = ((BeatTypeEnum)_beatType).ToString();
+            }
+        }
+        public int SubType { get; set; }
         public double Position { get; set; }
         public double Interval { get; set; }
         public int R { get; set; }
-
+        public string BeatReferId { get; set; }
         public double[] Data { get; set; }
     }
 }

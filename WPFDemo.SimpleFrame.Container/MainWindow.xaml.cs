@@ -44,7 +44,7 @@ namespace WPFDemo.SimpleFrame.Container
             _popupNotifyBoxConsumer = IocManagerInstance.ResolveType<IPopupNotifyBoxConsumer>();
             MessagerInstance.GetMessager().Register<PageKeyEnum>(this, Infra.Enums.MessagerKeyEnum.MainPageNavi, Navi);
             DataContext = IocManagerInstance.ResolveType<IMainViewModel>();
-            new BeatInfoSource(840000).SetBeatSource();
+            new BeatInfoSource(110000).SetBeatSource();
         }
 
         private Uri _historyPage;

@@ -28,7 +28,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             get { return (bool)GetValue(IsPrepareMergeProperty); }
             set { SetValue(IsPrepareMergeProperty, value); }
         }
+        public bool IsChecked
+        {
+            get { return (bool)GetValue(IsCheckedProperty); }
+            set { SetValue(IsCheckedProperty, value); }
+        }
+        public bool IsAdded
+        {
+            get { return (bool)GetValue(IsAddedProperty); }
+            set { SetValue(IsAddedProperty, value); }
+        }
 
+        public static readonly DependencyProperty IsAddedProperty =
+            DependencyProperty.Register(nameof(IsAdded), typeof(bool), typeof(BeatTemplateItemView));
+        public static readonly DependencyProperty IsCheckedProperty =
+            DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BeatTemplateItemView));
         public static readonly DependencyProperty IsPrepareMergeProperty =
             DependencyProperty.Register(nameof(IsPrepareMerge), typeof(bool), typeof(BeatTemplateItemView));
 
@@ -55,12 +69,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         {
             if (newSelectedValue)
             {
-                GroupItemView.GroupView.SelectedItemsCollection.TryAddItem(this);
+                GroupItemView.GroupView.SelectedItemsCollection.TryAddItem(Id);
                 PART_Border.BorderBrush = _selectedBorderBrush;
             }
             else
             {
-                GroupItemView.GroupView.SelectedItemsCollection.TryRemoveItem(this);
+                GroupItemView.GroupView.SelectedItemsCollection.TryRemoveItem(Id);
                 PART_Border.BorderBrush = _commonBorderBrush;
             }
         }
@@ -110,11 +124,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         {
             base.OnRender(drawingContext);
             var data = (BeatTemplate)DataContext;
-            PART_TypeName.Text = data.CategoryName;
-            PART_AddFlag.Visibility = Visibility.Visible;
-            PART_CheckFlag.Visibility = Visibility.Visible;
-            PART_Count.Text = "3355";
-            PART_Percent.Text = "43.9%";
+            PART_TypeName.Text = data.CategoryEn;
+            PART_Count.Text = data.DataCount.ToString();
+            PART_Percent.Text = data.Percent.ToString("p");
             Height = GroupItemView.GroupView.ItemHeight;
             Width = GroupItemView.GroupView.ItemWidth;
         }

@@ -9,16 +9,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
     public class SelectedItemsCollection : IDisposable
     {
-        public ObservableCollection<BeatTemplateItemView> SelectedItems { get; }
-
-        public ObservableCollection<BeatTemplateItemView> UnSelectedItems => GetUnSelectedItems();
+        public ObservableCollection<string> SelectedItems { get; }
 
         public BeatTemplateGroupView Container { get; }
 
         public SelectedItemsCollection(BeatTemplateGroupView container)
         {
             Container = container;
-            SelectedItems = new ObservableCollection<BeatTemplateItemView>();
+            SelectedItems = new ObservableCollection<string>();
             SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
         }
 
@@ -29,15 +27,23 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 case NotifyCollectionChangedAction.Add:
                     foreach (var item in e.NewItems)
                     {
-                        var itemView = item as BeatTemplateItemView;
-                        itemView.IsSelected = true;
+                        var id = item as string;
+                        var itemView = Container.GetItemViewById(id);
+                        if (itemView != null)
+                        {
+                            itemView.IsSelected = true;
+                        }
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach (var item in e.OldItems)
                     {
-                        var itemView = item as BeatTemplateItemView;
-                        itemView.IsSelected = false;
+                        var id = item as string;
+                        var itemView = Container.GetItemViewById(id);
+                        if (itemView != null)
+                        {
+                            itemView.IsSelected = false;
+                        }
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
@@ -51,24 +57,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             }
         }
 
-        public bool TryAddItem(BeatTemplateItemView selectItem)
+        public bool TryAddItem(string id)
         {
-            if (SelectedItems.Contains(selectItem))
+            if (SelectedItems.Contains(id))
             {
                 return false;
             }
             else
             {
-                SelectedItems.Add(selectItem);
+                SelectedItems.Add(id);
                 return true;
             }
         }
 
-        public bool TryRemoveItem(BeatTemplateItemView selectItem)
+        public bool TryRemoveItem(string id)
         {
-            if (SelectedItems.Contains(selectItem))
+            if (SelectedItems.Contains(id))
             {
-                SelectedItems.Remove(selectItem);
+                SelectedItems.Remove(id);
                 return true;
             }
             else
@@ -85,24 +91,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 SelectedItems.RemoveAt(i - 1);
             }
             SelectedItems.Clear();
-        }
-
-        private ObservableCollection<BeatTemplateItemView> GetUnSelectedItems()
-        {
-            ObservableCollection<BeatTemplateItemView> result = new ObservableCollection<BeatTemplateItemView>();
-            foreach (var groupItem in Container.GroupItems)
-            {
-                var groupItemView = groupItem as BeatTemplateGroupItemView;
-                foreach (var item in groupItemView.Items)
-                {
-                    var itemView = item as BeatTemplateItemView;
-                    if (!SelectedItems.Contains(itemView))
-                    {
-                        result.Add(itemView);
-                    }
-                }
-            }
-            return result;
         }
 
         public void Dispose()

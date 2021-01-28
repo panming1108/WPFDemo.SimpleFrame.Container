@@ -19,6 +19,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public string CategoryName { get; set; }
 
+        public int BeatType { get; set; }
+
+        public int SubType { get; set; }
+
         public int DataCount { get; set; }
 
         public double Percent { get; set; }
@@ -27,6 +31,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public bool IsChecked { get; set; }
 
-        public List<byte[]> WaveList { get; set; }
+        public List<double[]> WaveList { get; set; }
     }
 }

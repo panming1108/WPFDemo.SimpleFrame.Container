@@ -27,6 +27,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public UIElementCollection Items => PART_GroupItemWrapPanel.Children;
         private BeatTemplateGroupView _groupView;
         public BeatTemplateGroupView GroupView => _groupView;
+        private readonly string _id;
+        public string Id => _id;
 
         public string CategoryNameEn
         {
@@ -48,7 +50,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             get { return (double)GetValue(PercentProperty); }
             set { SetValue(PercentProperty, value); }
         }
-
         public static readonly DependencyProperty PercentProperty =
             DependencyProperty.Register(nameof(Percent), typeof(double), typeof(BeatTemplateGroupItemView));
         public static readonly DependencyProperty CountProperty =
@@ -58,20 +59,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public static readonly DependencyProperty CategoryNameEnProperty =
             DependencyProperty.Register(nameof(CategoryNameEn), typeof(string), typeof(BeatTemplateGroupItemView));
 
-        public BeatTemplateGroupItemView(BeatTemplateGroupView groupView)
+        public BeatTemplateGroupItemView(string id, BeatTemplateGroupView groupView)
         {
+            _id = id;
             _groupView = groupView;
             InitializeComponent();
         }
 
-        public void SetGroupItemItemsSource(IList groupItemItemsSource)
+        public void SetGroupItemItemsSource(IList groupItemItemsSource, IList<string> selectedIds)
         {
+            Items.Clear();
             foreach (var item in groupItemItemsSource)
             {
                 var data = item as BeatTemplate;
                 BeatTemplateItemView itemView = new BeatTemplateItemView(data.Id, this)
                 {
-                    DataContext = data
+                    DataContext = data,
+                    IsChecked = data.IsChecked || selectedIds.Contains(data.Id),
+                    IsAdded = data.IsAdd,
+                    IsSelected = selectedIds.Contains(data.Id),
                 };
                 Items.Add(itemView);
             }

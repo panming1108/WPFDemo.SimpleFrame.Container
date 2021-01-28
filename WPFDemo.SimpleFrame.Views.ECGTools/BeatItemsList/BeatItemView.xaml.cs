@@ -107,7 +107,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         {
             base.OnRender(drawingContext);
             var beatInfo = (BeatInfo)DataContext;
-            PART_BeatType.Text = beatInfo.BeatType;
+            PART_BeatType.Text = beatInfo.BeatTypeName;
             PART_Order.Text = beatInfo.Interval.ToString();
             Width = _container.ItemWidth;
             Height = _container.ItemHeight;

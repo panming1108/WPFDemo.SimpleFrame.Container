@@ -9,7 +9,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     {
         public string Id { get; set; }
         public string CategoryName { get; set; }
-        public string CategortEn { get; set; }
+        public string CategoryNameEn { get; set; }
+        public int BeatType { get; set; }
         public int Count { get; set; }
         public double Percent { get; set; }
     }
