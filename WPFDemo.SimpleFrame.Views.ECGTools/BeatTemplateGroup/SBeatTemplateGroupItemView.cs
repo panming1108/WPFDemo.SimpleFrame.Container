@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     {
         private readonly List<string> _formSelectedItemsIds = new List<string>();
         private readonly List<string> _eventSelectedItemsIds = new List<string>();
-        public SBeatTemplateGroupItemView(string id, BeatTemplateGroupView groupView) : base(id, groupView)
+        private readonly IList _eventSource;
+        public IList EventSource => _eventSource;
+        public SBeatTemplateGroupItemView(string id, IList formSource, IList eventSource, BeatTemplateGroupView groupView) : base(id, formSource, groupView)
         {
+            _eventSource = eventSource;
             PART_FormRadioBtn.Visibility = Visibility.Visible;
             PART_EventRadioBtn.Visibility = Visibility.Visible;
             if (GroupView.IsAtrialPattern)
@@ -31,29 +35,48 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             Unloaded += SBeatTemplateGroupItemView_Unloaded;
         }
 
+        public override void SetGroupItemItemsSource(IList<string> selectedIds)
+        {
+            List<string> tempIds = GroupView.IsAtrialPattern ? _formSelectedItemsIds : _eventSelectedItemsIds;
+            tempIds.Clear();
+            foreach (var item in selectedIds)
+            {
+                tempIds.Add(item);
+            }
+            SetGroupItemItemsSource(GroupView.IsAtrialPattern);
+        }
+
+        private void SetGroupItemItemsSource(bool isAtrialPattern)
+        {
+            if (isAtrialPattern)
+            {
+                SetGroupItemItemsSource(FormSource, _formSelectedItemsIds);//重置显示
+            }
+            else
+            {
+                SetGroupItemItemsSource(EventSource, _eventSelectedItemsIds);//重置显示
+            }
+        }
+
         private void PART_FormEventRadioBtn_Checked(object sender, RoutedEventArgs e)
         {
             var isAtrialPattern = PART_FormRadioBtn.IsChecked == true;//形态被选中
             ResetSelectedItemsIds(isAtrialPattern);
-            //TODO 对数据进行处理，房性事件形态切换，得到新的数据源
-            var source = new List<BeatTemplate>();
-            for (int j = 0; j < 3; j++)
-            {
-                BeatTemplate beatTemplate = new BeatTemplate() { Id = Guid.NewGuid().ToString(), CategoryName = ((BeatTypeEnum)(j % 5)).GetDescription() };
-                source.Add(beatTemplate);
-            }
-            SetGroupItemItemsSource(source, isAtrialPattern ? _formSelectedItemsIds : _eventSelectedItemsIds);//重置显示
+            GroupView.ResetIsAtrialPattern(isAtrialPattern, Items);
+            SetGroupItemItemsSource(isAtrialPattern);
         }
 
         private void ResetSelectedItemsIds(bool isAtrialPattern)
         {
-            GroupView.ResetIsAtrialPattern(isAtrialPattern, Items);
             List<string> tempIds = isAtrialPattern ? _eventSelectedItemsIds : _formSelectedItemsIds;
             tempIds.Clear();
             foreach (var item in Items)
             {
                 var itemView = item as BeatTemplateItemView;
-                tempIds.Add(itemView.Id);
+                if(itemView.IsSelected)
+                {
+                    tempIds.Add(itemView.Id);
+                }
             }
         }
 

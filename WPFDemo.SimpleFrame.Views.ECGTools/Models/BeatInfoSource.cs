@@ -21,13 +21,19 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public static Dictionary<int, ParentBeatTemplate> ParentBeatTemplateDic;
         public static List<BeatTemplate> BeatTemplates;
         private Dictionary<string, BeatTemplate> OriginBeatTemplates = new Dictionary<string, BeatTemplate>();
+        private Dictionary<string, BeatTemplate> OriginEventBeatTemplates = new Dictionary<string, BeatTemplate>();
 
         public BeatInfoSource(int count)
         {
             _count = count;
             _allBeatInfos = GetAllBeatInfos();
-            ResetSource();
+            _allBeatInfoDic = GetAllBeatInfoDic();
+            ParentBeatTemplateDic = GetParentBeatTemplates();
+            BeatTemplates = GetBeatTemplates();
+            SetBeatReferId();
             OriginBeatTemplates = BeatTemplates.ToDictionary(k => GetDicKey(k.BeatType, k.SubType));
+            AddEventTemplates();
+            OriginEventBeatTemplates = BeatTemplates.Where(x => x.IsEvent).ToDictionary(k => k.Id);
         }
 
         private void SetBeatReferId()
@@ -51,9 +57,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 Id = OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)) ? OriginBeatTemplates[GetDicKey(w.Key.BeatType, w.Key.SubType)].Id : Guid.NewGuid().ToString(),
                 CategoryEn = ((BeatTypeEnum)w.Key.BeatType).ToString(),
-                CategoryName = ((BeatTypeEnum)w.Key.BeatType).GetDescription(),
+                CategoryName = ((BeatTypeEnum)w.Key.BeatType).ToString(),
                 DataCount = w.Count(),
-                IsAdd = !OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)),
+                IsAdd = OriginBeatTemplates.Count > 0 ? !OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)) : false,
                 IsChecked = OriginBeatTemplates.ContainsKey(GetDicKey(w.Key.BeatType, w.Key.SubType)) ? OriginBeatTemplates[GetDicKey(w.Key.BeatType, w.Key.SubType)].IsChecked : false,
                 BeatType = w.Key.BeatType,
                 SubType = w.Key.SubType,
@@ -211,14 +217,44 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             var beatTemplate = BeatTemplates.Single(x => x.Id == targetBeatReferId);
             beatTemplate.IsChecked = true;
-            _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList().ForEach(t => { t.BeatType = beatTemplate.BeatType; t.SubType = beatTemplate.SubType; });
+            List<BeatInfo> needChangeSource;
+            var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
+            if(originBeatReferId.Length <= 3)
+            {
+                //房性事件合并
+                needChangeSource = _allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == originBeatReferId).ToList();
+            }
+            else
+            {
+                needChangeSource = _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList();
+            }
+            if(targetBeatReferId.Length <= 3)
+            {
+                //事件合并
+                needChangeSource.ForEach(t => { t.BeatType = beatTemplate.BeatType; t.Interval = eventCount * random.Next(0, _count) + int.Parse(targetBeatReferId); });
+            }
+            else
+            {
+                needChangeSource.ForEach(t => { t.BeatType = beatTemplate.BeatType; t.SubType = beatTemplate.SubType; });
+            }
             ResetSource();
         }
 
         public void AddCategory(string originBeatReferId, string targetParentId)
         {
             var beatTemplate = BeatTemplates.FirstOrDefault(x => x.ParentID == targetParentId);
-            _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList().ForEach(t => { t.BeatType = beatTemplate.BeatType; });
+            List<BeatInfo> needChangeSource;
+            if (originBeatReferId.Length <= 3)
+            {
+                var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
+                //房性事件合并
+                needChangeSource = _allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == originBeatReferId).ToList();
+            }
+            else
+            {
+                needChangeSource = _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList();
+            }
+            needChangeSource.ForEach(t => { t.BeatType = beatTemplate.BeatType; });
             ResetSource();
         }
 
@@ -228,6 +264,31 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             ParentBeatTemplateDic = GetParentBeatTemplates();
             BeatTemplates = GetBeatTemplates();
             SetBeatReferId();
+            AddEventTemplates();
+        }
+
+        private void AddEventTemplates()
+        {
+            var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
+            var eventSource = _allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S).GroupBy(x => x.Interval % eventCount).Select(x => 
+            new BeatTemplate() 
+            {
+                Id = x.Key.ToString(),
+                IsEvent = true,
+                CategoryEn = x.Key.ToString(),
+                CategoryName = ((EventCodeEnum)x.Key).GetDescription(),
+                DataCount = x.Count(),
+                BeatType = (int)BeatTypeEnum.S,
+                IsAdd = OriginEventBeatTemplates.Count > 0 ? !OriginEventBeatTemplates.ContainsKey(x.Key.ToString()) : false,
+                IsChecked = OriginEventBeatTemplates.ContainsKey(x.Key.ToString()) ? OriginEventBeatTemplates[x.Key.ToString()].IsChecked : false,
+                Percent = x.Count() * 1d / _allBeatInfos.Count,
+                ParentID = ParentBeatTemplateDic[(int)BeatTypeEnum.S].Id,
+                ParentCategoryEn = ParentBeatTemplateDic[(int)BeatTypeEnum.S].CategoryNameEn,
+                ParentCategoryName = ParentBeatTemplateDic[(int)BeatTypeEnum.S].CategoryName,
+                ParentCount = ParentBeatTemplateDic[(int)BeatTypeEnum.S].Count,
+                WaveList = x.Select(s => s.Data).ToList(),
+            }).OrderBy(a => a.CategoryEn).ToList();
+            BeatTemplates.AddRange(eventSource);
         }
 
         public double[] GetECGData(Random random)

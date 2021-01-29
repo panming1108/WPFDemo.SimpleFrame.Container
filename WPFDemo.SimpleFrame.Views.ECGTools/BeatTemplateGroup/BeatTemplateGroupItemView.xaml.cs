@@ -27,6 +27,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public UIElementCollection Items => PART_GroupItemWrapPanel.Children;
         private BeatTemplateGroupView _groupView;
         public BeatTemplateGroupView GroupView => _groupView;
+        private readonly IList _formSource;
+        public IList FormSource => _formSource;
         private readonly string _id;
         public string Id => _id;
 
@@ -59,14 +61,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         public static readonly DependencyProperty CategoryNameEnProperty =
             DependencyProperty.Register(nameof(CategoryNameEn), typeof(string), typeof(BeatTemplateGroupItemView));
 
-        public BeatTemplateGroupItemView(string id, BeatTemplateGroupView groupView)
+        public BeatTemplateGroupItemView(string id, IList formSource, BeatTemplateGroupView groupView)
         {
             _id = id;
             _groupView = groupView;
+            _formSource = formSource;
             InitializeComponent();
         }
 
-        public void SetGroupItemItemsSource(IList groupItemItemsSource, IList<string> selectedIds)
+        public virtual void SetGroupItemItemsSource(IList<string> selectedIds)
+        {
+            SetGroupItemItemsSource(_formSource, selectedIds);
+        }
+
+        protected void SetGroupItemItemsSource(IList groupItemItemsSource, IList<string> selectedIds)
         {
             Items.Clear();
             foreach (var item in groupItemItemsSource)

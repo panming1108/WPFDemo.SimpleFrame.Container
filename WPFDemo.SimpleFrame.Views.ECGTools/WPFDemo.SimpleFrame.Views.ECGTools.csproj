@@ -152,6 +152,7 @@
     <Compile Include="Models\ConfigSource.cs" />
     <Compile Include="Models\BeatItemsList\ItemsPager.cs" />
     <Compile Include="Models\BeatItemsList\ItemsSourceHandler.cs" />
+    <Compile Include="Models\EventCodeEnum.cs" />
     <Compile Include="Models\MessagerKeyEnum.cs" />
     <Compile Include="Models\BeatItemsList\PrevCurrentNextEnum.cs" />
     <Compile Include="Models\BeatItemsList\SelectActionEnum.cs" />

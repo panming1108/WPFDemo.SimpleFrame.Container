@@ -31,6 +31,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public bool IsChecked { get; set; }
 
+        public bool IsEvent { get; set; }
+
         public List<double[]> WaveList { get; set; }
     }
 }

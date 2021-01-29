@@ -124,7 +124,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         {
             base.OnRender(drawingContext);
             var data = (BeatTemplate)DataContext;
-            PART_TypeName.Text = data.CategoryEn;
+            PART_TypeName.Text = data.CategoryName;
             PART_Count.Text = data.DataCount.ToString();
             PART_Percent.Text = data.Percent.ToString("p");
             Height = GroupItemView.GroupView.ItemHeight;

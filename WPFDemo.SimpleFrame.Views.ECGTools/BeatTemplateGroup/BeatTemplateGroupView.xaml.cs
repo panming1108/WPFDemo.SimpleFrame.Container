@@ -215,25 +215,26 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public void InitGroupView()
         {
-            var groupItemsSource = BeatInfoSource.BeatTemplates.GroupBy(x => x.BeatType).ToList();
+            var groupItemsAtrialSource = BeatInfoSource.BeatTemplates.Where(x => !x.IsEvent).GroupBy(x => x.BeatType).ToList();
+            var groupItemsEventSource = BeatInfoSource.BeatTemplates.Where(x => x.IsEvent).ToList();
             PART_GroupItemsControl.Items.Clear();
-            foreach (var groupItem in groupItemsSource)
+            foreach (var groupItem in BeatInfoSource.ParentBeatTemplateDic)
             {
-                var groupItemSource = BeatInfoSource.ParentBeatTemplateDic[groupItem.Key];
                 BeatTemplateGroupItemView groupItemView;
-                if (groupItemSource.CategoryNameEn == BeatTypeEnum.S.ToString())
+                var formSource = groupItemsAtrialSource.Single(x => x.Key == groupItem.Key).ToList();
+                if (groupItem.Key == (int)BeatTypeEnum.S)
                 {
-                    groupItemView = new SBeatTemplateGroupItemView(groupItemSource.Id, this);
+                    groupItemView = new SBeatTemplateGroupItemView(groupItem.Value.Id, formSource, groupItemsEventSource, this);
                 }
                 else
                 {
-                    groupItemView = new BeatTemplateGroupItemView(groupItemSource.Id, this);
+                    groupItemView = new BeatTemplateGroupItemView(groupItem.Value.Id, formSource.ToList(), this);
                 }
-                groupItemView.CategoryNameEn = groupItemSource.CategoryNameEn;
-                groupItemView.Percent = groupItemSource.Percent;
-                groupItemView.Count = groupItemSource.Count;
-                groupItemView.CategoryName = groupItemSource.CategoryName;
-                groupItemView.SetGroupItemItemsSource(groupItem.Select(x => x).ToList(), SelectedItemsCollection.SelectedItems);
+                groupItemView.SetGroupItemItemsSource(SelectedItemsCollection.SelectedItems);
+                groupItemView.CategoryNameEn = groupItem.Value.CategoryNameEn;
+                groupItemView.Percent = groupItem.Value.Percent;
+                groupItemView.Count = groupItem.Value.Count;
+                groupItemView.CategoryName = groupItem.Value.CategoryName;
                 PART_GroupItemsControl.Items.Add(groupItemView);
             }
         }
