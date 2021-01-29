@@ -137,6 +137,7 @@
     <Compile Include="BeatTemplateGroup\EditActions\MergeAction.cs" />
     <Compile Include="BeatTemplateGroup\EventArgs\AddCategoryEventArgs.cs" />
     <Compile Include="BeatTemplateGroup\EventArgs\MergeTemplateEventArgs.cs" />
+    <Compile Include="BeatTemplateGroup\PipeLineRender.cs" />
     <Compile Include="BeatTemplateGroup\SBeatTemplateGroupItemView.cs" />
     <Compile Include="BeatTemplateGroup\SelectActions\BaseSelectAction.cs" />
     <Compile Include="BeatTemplateGroup\SelectActions\CommonSelectAction.cs" />

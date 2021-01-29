@@ -1,158 +1,74 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
-    /// <summary>
-    /// BeatTemplateItemView.xaml 的交互逻辑
-    /// </summary>
-    public partial class BeatTemplateItemView : UserControl
+    public class PipeLineRender : Image
     {
-        public string Id { get; }
-        private readonly BeatTemplateGroupItemView _groupItemView;
-        public BeatTemplateGroupItemView GroupItemView => _groupItemView;
-
-        public bool IsPrepareMerge
+        public IList<double[]> ItemsSource
         {
-            get { return (bool)GetValue(IsPrepareMergeProperty); }
-            set { SetValue(IsPrepareMergeProperty, value); }
+            get { return (IList<double[]>)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
         }
-        public bool IsChecked
+        public Color Color
         {
-            get { return (bool)GetValue(IsCheckedProperty); }
-            set { SetValue(IsCheckedProperty, value); }
-        }
-        public bool IsAdded
-        {
-            get { return (bool)GetValue(IsAddedProperty); }
-            set { SetValue(IsAddedProperty, value); }
+            get { return (Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
         }
 
-        public static readonly DependencyProperty IsAddedProperty =
-            DependencyProperty.Register(nameof(IsAdded), typeof(bool), typeof(BeatTemplateItemView));
-        public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BeatTemplateItemView));
-        public static readonly DependencyProperty IsPrepareMergeProperty =
-            DependencyProperty.Register(nameof(IsPrepareMerge), typeof(bool), typeof(BeatTemplateItemView));
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register(nameof(Color), typeof(Color), typeof(PipeLineRender), new PropertyMetadata(Colors.Black));
+        public static readonly DependencyProperty ItemsSourceProperty =
+            DependencyProperty.Register(nameof(ItemsSource), typeof(IList<double[]>), typeof(PipeLineRender), new PropertyMetadata(OnItemsSourceChanged));
 
-        private readonly BrushConverter _brushConverter;
-        private readonly Brush _hoverBorderBrush;
-        private readonly Brush _selectedBorderBrush;
-        private readonly Brush _commonBorderBrush;
-        private readonly Pen _pen;
-        private bool _isSelected;
-        public bool IsSelected
+        private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get => _isSelected;
-            set
+            var img = d as PipeLineRender;
+            if (img.ActualWidth <= 0 || img.ActualHeight <= 0)
             {
-                if (_isSelected != value)
-                {
-                    _isSelected = value;
-                    OnSelectedChanged(value);
-                }
+                return;
             }
+            img.OnRenderLine((int)img.ActualWidth, (int)img.ActualHeight);
         }
 
-        private void OnSelectedChanged(bool newSelectedValue)
+        private void OnRenderLine(int width, int height)
         {
-            if (newSelectedValue)
-            {
-                GroupItemView.GroupView.SelectedItemsCollection.TryAddItem(Id);
-                PART_Border.BorderBrush = _selectedBorderBrush;
-            }
-            else
-            {
-                GroupItemView.GroupView.SelectedItemsCollection.TryRemoveItem(Id);
-                PART_Border.BorderBrush = _commonBorderBrush;
-            }
-        }
-        public BeatTemplateItemView(string id, BeatTemplateGroupItemView groupItemView)
-        {
-            Id = id;
-            _groupItemView = groupItemView;
-            _brushConverter = new BrushConverter();
-            _hoverBorderBrush = (Brush)_brushConverter.ConvertFromString("#00AAFF");
-            _commonBorderBrush = (Brush)_brushConverter.ConvertFromString("#AEBFCC");
-            _selectedBorderBrush = (Brush)_brushConverter.ConvertFromString("#00AAFF");
-            _pen = new Pen(Brushes.Black, 1);
-            InitializeComponent();
-            MouseEnter += BeatTemplateItemView_MouseEnter;
-            MouseLeave += BeatTemplateItemView_MouseLeave;
-            Unloaded += BeatTemplateItemView_Unloaded;
-        }
-
-        private void BeatTemplateItemView_Unloaded(object sender, RoutedEventArgs e)
-        {
-            MouseEnter -= BeatTemplateItemView_MouseEnter;
-            MouseLeave -= BeatTemplateItemView_MouseLeave;
-            Unloaded -= BeatTemplateItemView_Unloaded;
-        }
-
-        private void BeatTemplateItemView_MouseLeave(object sender, MouseEventArgs e)
-        {
-            IsPrepareMerge = false;
-            GroupItemView.GroupView.SetCurrentMoveBeatTemplateItemView(null);
-            if (IsSelected)
-            {
-                PART_Border.BorderBrush = _selectedBorderBrush;
-            }
-            else
-            {
-                PART_Border.BorderBrush = _commonBorderBrush;
-            }
-        }
-
-        private void BeatTemplateItemView_MouseEnter(object sender, MouseEventArgs e)
-        {
-            PART_Border.BorderBrush = _hoverBorderBrush;
-            GroupItemView.GroupView.SetCurrentMoveBeatTemplateItemView(this);
-        }
-
-        protected override void OnRender(DrawingContext drawingContext)
-        {
-            base.OnRender(drawingContext);
-            var data = (BeatTemplate)DataContext;
-            PART_TypeName.Text = data.CategoryName;
-            PART_Count.Text = data.DataCount.ToString();
-            PART_Percent.Text = data.Percent.ToString("p");
-            Height = GroupItemView.GroupView.ItemHeight;
-            Width = GroupItemView.GroupView.ItemWidth;
-        }
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            base.OnRenderSizeChanged(sizeInfo);
-            var data = (BeatTemplate)DataContext;
-            int width = (int)sizeInfo.NewSize.Width;
-            int height = (int)sizeInfo.NewSize.Height - 24;
             WriteableBitmap bitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Pbgra32, null);
             Int32Rect rect = new Int32Rect(0, 0, width, height);
             int[] pixels = new int[width * height * bitmap.Format.BitsPerPixel / 8];
-            int color = ConvertColor(Colors.Black);
-            foreach (var waveData in data.WaveList)
+            foreach (var waveData in ItemsSource)
             {
                 for (int i = 0; i < waveData.Count() - 1; i++)
                 {
                     var point1 = new Point(i, waveData[i]);
                     var point2 = new Point(i + 1, waveData[i + 1]);
-                    DrawLine(pixels, width, height, (int)point1.X, (int)point1.Y, (int)point2.X, (int)point2.Y, color);
+                    DrawLine(pixels, width, height, (int)point1.X, (int)point1.Y, (int)point2.X, (int)point2.Y, ConvertColor(Color));
                 }
             }
             int stride = bitmap.PixelWidth * bitmap.Format.BitsPerPixel / 8;
             bitmap.WritePixels(rect, pixels, stride, 0);
-            PART_Image.Source = bitmap;
+            Source = bitmap;
+        }
+
+        protected override void OnRender(DrawingContext dc)
+        {
+            base.OnRender(dc);
+            if(ItemsSource == null || ItemsSource.Count <= 0)
+            {
+                return;
+            }
+            if (ActualWidth <= 0 || ActualHeight <= 0)
+            {
+                return;
+            }
+            OnRenderLine((int)ActualWidth, (int)ActualHeight);
         }
 
         private int ConvertColor(Color color)
