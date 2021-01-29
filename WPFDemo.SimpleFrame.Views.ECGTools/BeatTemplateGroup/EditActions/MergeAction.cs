@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
@@ -12,18 +13,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private Point _mouseDownPoint;
         private BeatTemplateItemView _startItemView;
         private BeatTemplateGroupItemView _endBeatTemplateGroupItemView;
-        private DragDropAdorner _tempAdorner;
         private readonly BeatTemplateGroupView _groupView;
+        private readonly ISelectMaskPaint _selectMaskPaint;
 
-        private AdornerLayer GroupViewAdornerLayer => AdornerLayer.GetAdornerLayer(_groupView);
         public BeatTemplateItemView _currentMoveItemView;
 
         public event EventHandler<AddCategoryEventArgs> CategoryAdded;
         public event EventHandler<MergeTemplateEventArgs> TemplateMerged;
 
-        public MergeAction(BeatTemplateGroupView groupView)
+        public MergeAction(BeatTemplateGroupView groupView, ISelectMaskPaint selectMaskPaint)
         {
             _groupView = groupView;
+            _selectMaskPaint = selectMaskPaint;
         }
 
         public void Click()
@@ -37,12 +38,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 return false;
             }
-            if (_tempAdorner != null)
-            {
-                GroupViewAdornerLayer.Remove(_tempAdorner);
-            }
-            _tempAdorner = new DragDropAdorner(_startItemView);
-            GroupViewAdornerLayer.Add(_tempAdorner);
+
+            RenderDragItemShadow(_startItemView, currentPoint);
 
             if (_currentMoveItemView != null)
             {
@@ -65,11 +62,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public void DragOver()
         {
-            if (_tempAdorner != null)
-            {
-                GroupViewAdornerLayer.Remove(_tempAdorner);
-                _tempAdorner = null;
-            }
+            RenderDragItemShadow(null, new Point());
 
             if (_currentMoveItemView != null)
             {
@@ -118,6 +111,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                     break;
                 }
             }
+        }
+
+        private void RenderDragItemShadow(BeatTemplateItemView startItemView, Point currentPoint)
+        {
+            _selectMaskPaint.DrawingHandler(drawingContext =>
+            {
+                if(startItemView == null)
+                {
+                    return;
+                }
+                drawingContext.PushOpacity(0.6);
+                Rect rect = new Rect(currentPoint.X - startItemView.ActualWidth / 4, currentPoint.Y - startItemView.ActualHeight / 4, startItemView.ActualWidth / 2, startItemView.ActualHeight / 2);
+                drawingContext.DrawRectangle(new VisualBrush(startItemView), new Pen(Brushes.Transparent, 0), rect);
+            });
         }
     }
 }

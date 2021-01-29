@@ -12,6 +12,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private readonly DrawingVisual _drawingVisual = new DrawingVisual();
         public SelectMaskPaint()
         {
+            ClipToBounds = true;
             AddVisualChild(_drawingVisual);
             IsHitTestVisible = false;
         }

@@ -141,7 +141,6 @@
     <Compile Include="BeatTemplateGroup\SelectActions\BaseSelectAction.cs" />
     <Compile Include="BeatTemplateGroup\SelectActions\CommonSelectAction.cs" />
     <Compile Include="BeatTemplateGroup\SelectActions\CtrlSelectAction.cs" />
-    <Compile Include="BeatTemplateGroup\EditActions\DragDropAdorner.cs" />
     <Compile Include="BeatTemplateGroup\SelectActions\SelectActionFactory.cs" />
     <Compile Include="BeatTemplateGroup\Collections\SelectedItemsCollection.cs" />
     <Compile Include="BeatTemplateGroup\Interfaces\IWorkAction.cs" />

@@ -67,8 +67,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
             InitializeComponent();
-            _mergeAction = new MergeAction(this);
             _selectedItemsCollection = new SelectedItemsCollection(this);
+            _mergeAction = new MergeAction(this, PART_GroupSelectMask);
             _selectActionFactory = new SelectActionFactory(this, PART_GroupSelectMask);
             _mergeAction.CategoryAdded += MergeAction_CategoryAdded;
             _mergeAction.TemplateMerged += MergeAction_TemplateMerged;
