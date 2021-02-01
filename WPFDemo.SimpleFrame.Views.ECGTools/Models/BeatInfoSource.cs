@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
 using WPFDemo.SimpleFrame.Infra.Helper;
 using WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList;
 using WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup;
@@ -22,6 +24,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public static List<BeatTemplate> BeatTemplates;
         private Dictionary<string, BeatTemplate> OriginBeatTemplates = new Dictionary<string, BeatTemplate>();
         private Dictionary<string, BeatTemplate> OriginEventBeatTemplates = new Dictionary<string, BeatTemplate>();
+        public static Dictionary<int, RenderPen> RenderPens;
 
         public BeatInfoSource(int count)
         {
@@ -34,6 +37,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             OriginBeatTemplates = BeatTemplates.ToDictionary(k => GetDicKey(k.BeatType, k.SubType));
             AddEventTemplates();
             OriginEventBeatTemplates = BeatTemplates.Where(x => x.IsEvent).ToDictionary(k => k.Id);
+            RenderPens = GetRenderPens();
+        }
+
+        private Dictionary<int, RenderPen> GetRenderPens()
+        {
+            var result = new Dictionary<int, RenderPen>();
+            var beatTypeSource = EnumHelper.GetSelectList(typeof(BeatTypeEnum));
+            foreach (var item in beatTypeSource)
+            {
+                result.Add(int.Parse(item.Id), new RenderPen(1, ConvertColor(Colors.Black)));
+            }
+            return result;
+        }
+
+        private int ConvertColor(Color color)
+        {
+            int num = color.A + 1;
+            return (color.A << 24) | ((byte)(color.R * num >> 8) << 16) | ((byte)(color.G * num >> 8) << 8) | (byte)(color.B * num >> 8);
         }
 
         private void SetBeatReferId()
@@ -68,7 +89,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ParentCategoryEn = ParentBeatTemplateDic[w.Key.BeatType].CategoryNameEn,
                 ParentCategoryName = ParentBeatTemplateDic[w.Key.BeatType].CategoryName,
                 ParentCount = ParentBeatTemplateDic[w.Key.BeatType].Count,
-                WaveList = w.Select(s => s.Data).ToList(),
+                WaveList = new ObservableCollection<PixelPointArrayEx>(w.Select(s => new PixelPointArrayEx((int)BeatTypeEnum.S, GetPixelPointArrayEx(s.Data))).ToList()),
             }).OrderBy(a => a.BeatType).ToList();
         }
 
@@ -286,9 +307,20 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ParentCategoryEn = ParentBeatTemplateDic[(int)BeatTypeEnum.S].CategoryNameEn,
                 ParentCategoryName = ParentBeatTemplateDic[(int)BeatTypeEnum.S].CategoryName,
                 ParentCount = ParentBeatTemplateDic[(int)BeatTypeEnum.S].Count,
-                WaveList = x.Select(s => s.Data).ToList(),
+                WaveList = new ObservableCollection<PixelPointArrayEx>(x.Select(s => new PixelPointArrayEx((int)BeatTypeEnum.S, GetPixelPointArrayEx(s.Data))).ToList()),
             }).OrderBy(a => a.CategoryEn).ToList();
             BeatTemplates.AddRange(eventSource);
+        }
+
+        private List<PixelPoint> GetPixelPointArrayEx(double[] data)
+        {
+            var result = new List<PixelPoint>();
+            for (int i = 0; i < data.Count(); i++)
+            {
+                PixelPoint pixelPoint = new PixelPoint(i, (int)data[i]);
+                result.Add(pixelPoint);
+            }
+            return result;
         }
 
         public double[] GetECGData(Random random)

@@ -26,7 +26,9 @@
                 <!--<local:PipeLineRender x:Name="PART_LineRender"
                                       ItemsSource="{Binding WaveList}"
                                       Stretch="Fill" />-->
-                <Image x:Name="PART_Image" Grid.ColumnSpan="2" />
+                <local:RenderWABitmapWriteLine x:Name="PART_RenderLine"
+                                               Grid.ColumnSpan="2"
+                                               LineMode="DDA" />
                 <WrapPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <Border Margin="0,0,4,0"
                             Padding="4,2"

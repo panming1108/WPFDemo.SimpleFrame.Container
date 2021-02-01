@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -33,6 +34,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public bool IsEvent { get; set; }
 
-        public List<double[]> WaveList { get; set; }
+        public ObservableCollection<PixelPointArrayEx> WaveList { get; set; }
     }
 }
