@@ -75,7 +75,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _beatInfoSource = BeatInfoSource.BeatSource;
             InitializeComponent();
-            ItemsSourceHandler = new ItemsSourceHandler(this, PART_ItemsControlBar, _beatInfoSource);
+            ItemsSourceHandler = new ItemsSourceHandler(PART_ItemsControlBar, _beatInfoSource);
             InitControl();
             InitContextMenuItems();
             MouseWheel += BeatItemListViewContainer_MouseWheel;
@@ -90,6 +90,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             var newSource = ItemsSourceHandler.GetItemsSourceByBeatType(ItemsSourceHandler.ItemsSource, PrevCurrentNextEnum.Current);
             ItemsSourceHandler.SetItemsSource(newSource);
+            SelectedCount = ItemsSourceHandler.SelectedItems.Count;
             if (PART_ItemsControlBar.PrevCurrentNextStatus == PrevCurrentNextEnum.Current)
             {
                 ItemsSourceHandler.SetOriginItemsSource(newSource);
@@ -154,6 +155,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void PART_ItemsControl_ItemsControlSelectionChanged(object sender, ItemsControlSelectionChangedEventArgs e)
         {
             ItemsSourceHandler.OnItemsControlSelectionChanged(e);
+            SelectedCount = ItemsSourceHandler.SelectedItems.Count;
         }
 
         #region ControlBar，ScrollBar事件
@@ -295,6 +297,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         private void InitItemsSource(List<int> itemsSource)
         {
             ItemsSourceHandler.SetItemsSource(itemsSource);
+            SelectedCount = ItemsSourceHandler.SelectedItems.Count;
             SelectAllItems();
         }
 

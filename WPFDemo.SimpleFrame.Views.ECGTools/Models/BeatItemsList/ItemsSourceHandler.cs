@@ -10,7 +10,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
     public class ItemsSourceHandler : IDisposable
     {
         private readonly BeatInfoSource _beatInfoSource;
-        private readonly IBeatItemListViewContainer _beatItemListViewContainer;
         private readonly IBeatItemsControlBar _beatItemsControlBar;
         private readonly List<int> _itemsSource;
         private readonly List<int> _originItemsSource;
@@ -19,10 +18,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         public List<int> ItemsSource => _itemsSource;
         public List<int> OriginItemsSource => _originItemsSource.ToList();
 
-        public ItemsSourceHandler(IBeatItemListViewContainer beatItemListViewContainer, IBeatItemsControlBar beatItemsControlBar, BeatInfoSource beatInfoSource)
+        public ItemsSourceHandler(IBeatItemsControlBar beatItemsControlBar, BeatInfoSource beatInfoSource)
         {
             _beatInfoSource = beatInfoSource;
-            _beatItemListViewContainer = beatItemListViewContainer;
             _beatItemsControlBar = beatItemsControlBar;
             _itemsSource = new List<int>();
             _originItemsSource = new List<int>();
@@ -38,7 +36,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 _itemsSource.Add((int)item);
             }
-            _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
         }
 
         public void SetOriginItemsSource(IEnumerable itemsSource)
@@ -67,7 +64,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 default:
                     break;
             }
-            _beatItemListViewContainer.SelectedCount = SelectedItems.Count;
         }
 
         private void ResetSelectItemsWithOnlyDisplaySelectedItems(IList selectedItems)
