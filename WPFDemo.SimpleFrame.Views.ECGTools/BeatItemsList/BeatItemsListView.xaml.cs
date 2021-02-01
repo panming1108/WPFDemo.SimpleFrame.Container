@@ -30,8 +30,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         private readonly SelectActionFactory _selectActionFactory;
         public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
         public ItemCollection Items => PART_ItemsControl.Items;
-        public int ColumnCount => Convert.ToInt32(ActualWidth / ItemWidth);
-        public int RowCount => Convert.ToInt32(ActualHeight / ItemHeight);
+        public int ColumnCount => (int)(ActualWidth / ItemWidth);
+        public int RowCount => (int)(ActualHeight / ItemHeight);
         public int CurrentMoveIndex { get; set; }
 
         public double ItemHeight
