@@ -24,7 +24,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
     /// </summary>
     public partial class BeatTemplateGroupView : UserControl
     {
-        private Random _random = new Random();
         private bool _isMouseDown;
         private Point _mouseDownPoint;
         private readonly DispatcherTimer _dispatcherTimer;
@@ -34,6 +33,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private readonly SelectActionFactory _selectActionFactory;
         private BaseSelectAction _currentSelectAction;
         private readonly MergeAction _mergeAction;
+        private IEnumerable<MenuItem> _menuItems;
         public bool IsAtrialPattern { get; set; }
         public bool IsEditMode
         {
@@ -67,6 +67,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
             InitializeComponent();
+            InitContextMenuItems();
             _selectedItemsCollection = new SelectedItemsCollection(this);
             _mergeAction = new MergeAction(this, PART_GroupSelectMask);
             _selectActionFactory = new SelectActionFactory(this, PART_GroupSelectMask);
@@ -79,6 +80,47 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseRightButtonUp += BeatTemplateGroupView_MouseRightButtonUp;
             MessagerInstance.GetMessager().Register<IList>(this, "LeadChanged", OnLeadChanged);
         }
+
+        private void InitContextMenuItems()
+        {
+            MenuItem updateMenuItem = new MenuItem()
+            {
+                Header = "合并",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            updateMenuItem.Click += (s, e) =>
+            {
+                if(SelectedItemsCollection.SelectedItems.Count < 2)
+                {
+                    return;
+                }
+                var targetId = SelectedItemsCollection.SelectedItems.First();
+                BeatInfoSource.BeatSource.MergeBeats(SelectedItemsCollection.SelectedItems.Except(new string[] { targetId }).ToList(), targetId);
+                InitGroupView();
+            };
+
+            MenuItem deleteMenuItem = new MenuItem()
+            {
+                Header = "删除心搏",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            deleteMenuItem.Click += (s, e) =>
+            {
+                Console.WriteLine("删除心搏");
+            };
+
+            MenuItem jumpMenuItem = new MenuItem()
+            {
+                Header = "跳转",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+            jumpMenuItem.Click += (s, e) => { Console.WriteLine("跳转"); };
+            _menuItems = new MenuItem[] { jumpMenuItem, updateMenuItem, deleteMenuItem };
+        }
+
         private static void OnItemSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var groupView = d as BeatTemplateGroupView;
@@ -119,7 +161,26 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void BeatTemplateGroupView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //右击菜单
+            var currentPoint = e.GetPosition(this);
+            _currentSelectAction = _selectActionFactory.GetSelectActionInstance(SelectActionEnum.None);
+            var itemView = _currentSelectAction.GetItemsByMouseUpPosition(currentPoint).SingleOrDefault();
+            if (itemView == null)
+            {
+                ContextMenu = null;
+                return;
+            }
+            if (_menuItems != null && _menuItems.Count() > 0)
+            {
+                ContextMenu = new ContextMenu() { ItemsSource = _menuItems };
+            }
+            if (SelectedItemsCollection.SelectedItems.Count <= 0 || !SelectedItemsCollection.SelectedItems.Contains(itemView.Id))
+            {
+                //没选中，则右击选中
+                _currentSelectAction.MouseDown(currentPoint);
+                _currentSelectAction.Click();
+                OnClickItem(itemView);
+                _isMouseDown = false;
+            }
         }
 
         private void BeatTemplateGroupView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -203,7 +264,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
         {
-            BeatInfoSource.BeatSource.MergeBeats(e.OriginBeatTemplateItemView.Id, e.TargetBeatTemplateItemView.Id);
+            BeatInfoSource.BeatSource.MergeBeats(new List<string>() { e.OriginBeatTemplateItemView.Id }, e.TargetBeatTemplateItemView.Id);
             InitGroupView();
         }
 

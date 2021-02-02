@@ -90,7 +90,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ParentCategoryName = ParentBeatTemplateDic[w.Key.BeatType].CategoryName,
                 ParentCount = ParentBeatTemplateDic[w.Key.BeatType].Count,
                 WaveList = GetWaveList(w.Key.BeatType, w.ToList()),
-            }).OrderBy(a => a.BeatType).ToList();
+            }).OrderBy(a => a.BeatType).ThenBy(a => a.SubType).ToList();
         }
 
         private Dictionary<int, ParentBeatTemplate> GetParentBeatTemplates()
@@ -234,21 +234,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }         
         }
 
-        public void MergeBeats(string originBeatReferId, string targetBeatReferId)
+        public void MergeBeats(List<string> originBeatReferIds, string targetBeatReferId)
         {
             var beatTemplate = BeatTemplates.Single(x => x.Id == targetBeatReferId);
             beatTemplate.IsChecked = true;
-            List<BeatInfo> needChangeSource;
+            List<BeatInfo> needChangeSource = new List<BeatInfo>();
             var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
-            if(originBeatReferId.Length <= 3)
+            foreach (var originBeatReferId in originBeatReferIds)
             {
-                //房性事件合并
-                needChangeSource = _allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == originBeatReferId).ToList();
+                if(originBeatReferId.Length <= 3)
+                {
+                    //房性事件合并
+                    needChangeSource.AddRange(_allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == originBeatReferId).ToList());
+                }
+                else
+                {
+                    needChangeSource.AddRange(_allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList());
+                }
             }
-            else
-            {
-                needChangeSource = _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList();
-            }
+
             if(targetBeatReferId.Length <= 3)
             {
                 //事件合并
