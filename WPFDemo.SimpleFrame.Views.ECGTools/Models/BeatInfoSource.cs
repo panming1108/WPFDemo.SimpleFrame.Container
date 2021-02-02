@@ -323,7 +323,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 var usePointDatas = useBeatInfos[i].Data;
                 for (int j = 0; j < usePointDatas.Count(); j++)
                 {
-                    PixelPoint pixelPoint = new PixelPoint(j, (int)usePointDatas[j]);
+                    PixelPoint pixelPoint = new PixelPoint(j * 10, (int)usePointDatas[j]);
                     points.Add(pixelPoint);
                 }
                 PixelPointArrayEx pixelPointArrayEx = new PixelPointArrayEx(type, points);
@@ -334,8 +334,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         public double[] GetECGData(Random random)
         {
-            double[] data = new double[200];
-            for (int i = 0; i < 200; i++)
+            double[] data = new double[20];
+            for (int i = 0; i < 20; i++)
             {
                 data[i] = random.NextDouble() * 60 + 30;
             }

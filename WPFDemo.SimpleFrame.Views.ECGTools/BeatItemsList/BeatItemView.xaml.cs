@@ -120,8 +120,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 for (int i = 0; i < beatInfo.Data.Count() - 1; i++)
                 {
-                    var point1 = new Point(i, beatInfo.Data[i]);
-                    var point2 = new Point(i + 1, beatInfo.Data[i + 1]);
+                    var point1 = new Point(i * 10, beatInfo.Data[i]);
+                    var point2 = new Point((i + 1) * 10, beatInfo.Data[i + 1]);
                     d.DrawLine(_pen, point1, point2);
                 }
             });
