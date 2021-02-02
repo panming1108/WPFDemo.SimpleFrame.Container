@@ -135,7 +135,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private void OnRenderSizeChanged(PixelRect obj)
         {
             var data = (BeatTemplate)DataContext;
-            PART_RenderLine.ItemsSource = data.WaveList;
+            //PART_RenderLine.ItemsSource = data.WaveList;
         }
 
         //protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)

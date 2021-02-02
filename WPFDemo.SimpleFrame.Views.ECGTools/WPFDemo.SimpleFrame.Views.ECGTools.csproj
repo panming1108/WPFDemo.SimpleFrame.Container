@@ -173,13 +173,14 @@
     <Compile Include="BeatTemplateGroup\Collections\SelectedItemsCollection.cs" />
     <Compile Include="BeatTemplateGroup\Interfaces\IWorkAction.cs" />
     <Compile Include="Models\BeatInfoSource.cs" />
+    <Compile Include="Models\BeatItemsList\BeatDetailAction.cs" />
+    <Compile Include="Models\BeatItemsList\IBeatDetailAction.cs" />
     <Compile Include="Models\BeatTemplateGroup\BeatTemplate.cs" />
     <Compile Include="Models\BeatTemplateGroup\ParentBeatTemplate.cs" />
     <Compile Include="Models\BeatTemplateGroup\SelectActionEnum.cs" />
     <Compile Include="Models\BeatTypeEnum.cs" />
     <Compile Include="Models\ConfigSource.cs" />
     <Compile Include="Models\BeatItemsList\ItemsPager.cs" />
-    <Compile Include="Models\BeatItemsList\ItemsSourceHandler.cs" />
     <Compile Include="Models\EventCodeEnum.cs" />
     <Compile Include="Models\MessagerKeyEnum.cs" />
     <Compile Include="Models\BeatItemsList\PrevCurrentNextEnum.cs" />
