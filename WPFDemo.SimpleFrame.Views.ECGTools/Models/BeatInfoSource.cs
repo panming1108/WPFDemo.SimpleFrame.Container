@@ -46,7 +46,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             var beatTypeSource = EnumHelper.GetSelectList(typeof(BeatTypeEnum));
             foreach (var item in beatTypeSource)
             {
-                result.Add(int.Parse(item.Id), new RenderPen(1, ConvertColor(Colors.Black)));
+                result.Add(int.Parse(item.Id), new RenderPen(ConvertColor(ConfigSource.PenColors[int.Parse(item.Id)]), 1));
             }
             return result;
         }
@@ -89,7 +89,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ParentCategoryEn = ParentBeatTemplateDic[w.Key.BeatType].CategoryNameEn,
                 ParentCategoryName = ParentBeatTemplateDic[w.Key.BeatType].CategoryName,
                 ParentCount = ParentBeatTemplateDic[w.Key.BeatType].Count,
-                WaveList = new ObservableCollection<PixelPointArrayEx>(w.Select(s => new PixelPointArrayEx((int)BeatTypeEnum.S, GetPixelPointArrayEx(s.Data))).ToList()),
+                WaveList = GetWaveList(w.Key.BeatType, w.ToList()),
             }).OrderBy(a => a.BeatType).ToList();
         }
 
@@ -307,18 +307,27 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 ParentCategoryEn = ParentBeatTemplateDic[(int)BeatTypeEnum.S].CategoryNameEn,
                 ParentCategoryName = ParentBeatTemplateDic[(int)BeatTypeEnum.S].CategoryName,
                 ParentCount = ParentBeatTemplateDic[(int)BeatTypeEnum.S].Count,
-                WaveList = new ObservableCollection<PixelPointArrayEx>(x.Select(s => new PixelPointArrayEx((int)BeatTypeEnum.S, GetPixelPointArrayEx(s.Data))).ToList()),
+                WaveList = GetWaveList((int)BeatTypeEnum.S, x.ToList()),
             }).OrderBy(a => a.CategoryEn).ToList();
             BeatTemplates.AddRange(eventSource);
         }
 
-        private List<PixelPoint> GetPixelPointArrayEx(double[] data)
+        private ObservableCollection<PixelPointArrayEx> GetWaveList(int type, List<BeatInfo> beatInfos)
         {
-            var result = new List<PixelPoint>();
-            for (int i = 0; i < data.Count(); i++)
+            var result = new ObservableCollection<PixelPointArrayEx>();
+            var count = Math.Min(beatInfos.Count(), 10);
+            var useBeatInfos = beatInfos.Take(count).ToList();
+            for (int i = 0; i < useBeatInfos.Count; i++)
             {
-                PixelPoint pixelPoint = new PixelPoint(i, (int)data[i]);
-                result.Add(pixelPoint);
+                var points = new List<PixelPoint>();
+                var usePointDatas = useBeatInfos[i].Data;
+                for (int j = 0; j < usePointDatas.Count(); j++)
+                {
+                    PixelPoint pixelPoint = new PixelPoint(j, (int)usePointDatas[j]);
+                    points.Add(pixelPoint);
+                }
+                PixelPointArrayEx pixelPointArrayEx = new PixelPointArrayEx(type, points);
+                result.Add(pixelPointArrayEx);
             }
             return result;
         }
