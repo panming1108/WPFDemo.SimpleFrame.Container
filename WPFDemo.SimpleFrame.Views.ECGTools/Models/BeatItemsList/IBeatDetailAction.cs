@@ -11,7 +11,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         //排序
         void SortItemsSource(SortArgs sortArgs);
         //切换前一个，当前，下一个
-        void PrevCurrentNextChaned(int prevCurrentNext);
+        void PrevCurrentNextChanged(int prevCurrentNext);
         //改变心搏
         void ChangeBeatInfo(string key);
         //获取分页显示项

@@ -179,7 +179,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
 
         private void PART_ItemsControlBar_PrevCurrentNextChanged(object sender, PrevCurrentNextEventArgs e)
         {
-            _beatDetailAction.PrevCurrentNextChaned((int)e.PrevCurrentNext);
+            _beatDetailAction.PrevCurrentNextChanged((int)e.PrevCurrentNext);
             if (_isLoadControl)
             {
                 return;
@@ -456,7 +456,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _isLoadControl = false;
 
             _beatDetailAction.SortItemsSource(PART_ItemsControlBar.SortArgs);
-            _beatDetailAction.PrevCurrentNextChaned((int)PrevCurrentNextEnum.Current);
+            _beatDetailAction.PrevCurrentNextChanged((int)PrevCurrentNextEnum.Current);
             SelectAllItems();
         }
 

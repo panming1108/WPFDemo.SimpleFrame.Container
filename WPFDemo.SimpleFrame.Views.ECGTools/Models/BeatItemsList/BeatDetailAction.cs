@@ -94,7 +94,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             return _itemsSource.Count() % pageSize == 0 ? _itemsSource.Count() / pageSize : (_itemsSource.Count() / pageSize) + 1;
         }
 
-        public void PrevCurrentNextChaned(int prevCurrentNext)
+        public void PrevCurrentNextChanged(int prevCurrentNext)
         {
             _itemsSource.Clear();
             foreach (var item in _originItemsSource)

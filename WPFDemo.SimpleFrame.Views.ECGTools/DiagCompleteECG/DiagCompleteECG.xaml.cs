@@ -14,7 +14,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     public partial class DiagCompleteECG : UserControl
     {
         private Point _originPoint;
-        private DispatcherTimer _dispatcherTimer;
+        //private DispatcherTimer _dispatcherTimer;
         private readonly DragAreaAction _dragArea;
         private readonly EquiDistanceAction _equiDistance;
         private readonly BoxLineMeterAction _boxLineMeter;
@@ -27,12 +27,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             InitializeComponent();
 
-            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Send)
-            {
-                Interval = TimeSpan.FromMilliseconds(20)
-            };
-            _dispatcherTimer.Tick += DispatcherTimer_Tick;
-            _dispatcherTimer.Start();
+            //_dispatcherTimer = new DispatcherTimer(DispatcherPriority.Send)
+            //{
+            //    Interval = TimeSpan.FromMilliseconds(20)
+            //};
+            //_dispatcherTimer.Tick += DispatcherTimer_Tick;
+            //_dispatcherTimer.Start();
 
             Loaded += DiagCompleteECG_Loaded;
             Unloaded += DiagCompleteECG_Unloaded;
@@ -40,6 +40,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseLeftButtonUp += DiagCompleteECG_MouseLeftButtonUp;
             MouseRightButtonDown += DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick += DiagCompleteECG_MouseDoubleClick;
+            MouseMove += DiagCompleteECG_MouseMove;
             MouseWheel += DiagCompleteECG_MouseWheel;
             KeyUp += DiagCompleteECG_KeyUp;
 
@@ -64,6 +65,24 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _maskList.Add(_dragArea);
             _maskList.Add(_beatMark);
             _maskList.Add(_aFArea);
+        }
+
+        private void DiagCompleteECG_MouseMove(object sender, MouseEventArgs e)
+        {
+            var currentPoint = Mouse.GetPosition(this);
+            //鼠标是否移动了
+            if (currentPoint == _originPoint)
+            {
+                return;
+            }
+            if (!_isMouseDown)
+            {
+                MouseMoveHandler(currentPoint);
+            }
+            else
+            {
+                MouseDragHandler(currentPoint);
+            }
         }
 
         private void DiagCompleteECG_KeyUp(object sender, KeyEventArgs e)
@@ -214,23 +233,23 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
         }
 
-        private void DispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            var currentPoint = Mouse.GetPosition(this);
-            //鼠标是否移动了
-            if(currentPoint == _originPoint)
-            {
-                return;
-            }
-            if (!_isMouseDown)
-            {
-                MouseMoveHandler(currentPoint);
-            }
-            else
-            {
-                MouseDragHandler(currentPoint);
-            }
-        }
+        //private void DispatcherTimer_Tick(object sender, EventArgs e)
+        //{
+        //    var currentPoint = Mouse.GetPosition(this);
+        //    //鼠标是否移动了
+        //    if(currentPoint == _originPoint)
+        //    {
+        //        return;
+        //    }
+        //    if (!_isMouseDown)
+        //    {
+        //        MouseMoveHandler(currentPoint);
+        //    }
+        //    else
+        //    {
+        //        MouseDragHandler(currentPoint);
+        //    }
+        //}
 
         private void MouseDragHandler(Point currentPoint)
         {
@@ -298,10 +317,11 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             MouseRightButtonDown -= DiagCompleteECG_MouseRightButtonDown;
             MouseDoubleClick -= DiagCompleteECG_MouseDoubleClick;
             MouseWheel -= DiagCompleteECG_MouseWheel;
+            MouseMove -= DiagCompleteECG_MouseMove;
             KeyUp -= DiagCompleteECG_KeyUp;
-            _dispatcherTimer.Stop();
-            _dispatcherTimer.IsEnabled = false;
-            _dispatcherTimer = null;
+            //_dispatcherTimer.Stop();
+            //_dispatcherTimer.IsEnabled = false;
+            //_dispatcherTimer = null;
             _maskList.Dispose();
         }        
 
