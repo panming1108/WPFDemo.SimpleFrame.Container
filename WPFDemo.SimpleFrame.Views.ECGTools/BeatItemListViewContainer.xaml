@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary Source="/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/ECGToolsStyle.xaml" />
     </UserControl.Resources>
-    <Grid Width="750" Background="#ECF1F4">
+    <Grid Width="750">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

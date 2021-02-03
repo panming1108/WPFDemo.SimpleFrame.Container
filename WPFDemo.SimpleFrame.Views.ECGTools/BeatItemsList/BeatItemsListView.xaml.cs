@@ -29,7 +29,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         private BaseSelectAction _currentSelectAction;
         private readonly SelectActionFactory _selectActionFactory;
         public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
-        public ItemCollection Items => PART_ItemsControl.Items;
+        public UIElementCollection Items => PART_ItemsControl.Children;
         public int ColumnCount => (int)(ActualWidth / ItemWidth);
         public int RowCount => (int)(ActualHeight / ItemHeight);
         public int CurrentMoveIndex { get; set; }
@@ -103,7 +103,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 _currentSelectAction.MouseDown(currentPoint);
                 _currentSelectAction.Click();
-                CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last());
+                CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last() as UIElement);
                 _isMouseDown = false;
                 OnItemsControlSelectionChanged(_currentSelectAction.SelectActionMode);
                 if(SingleSelectContextMenuItems != null && SingleSelectContextMenuItems.Count() > 0)
@@ -124,6 +124,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         private void BeatItemsListView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            PART_ItemsControl.Focus();
             _isMouseDown = true;
             SetSelectActionMode();
             var currentPoint = e.GetPosition(this);
@@ -156,7 +157,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             }
             if(_isMouseDown)
             {
-                CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last());
+                CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last() as UIElement);
             }
             _isMouseDown = false;
             if(!(_currentSelectAction is ShiftSelectAction))

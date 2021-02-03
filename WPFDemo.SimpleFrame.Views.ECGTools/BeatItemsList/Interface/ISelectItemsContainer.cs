@@ -14,7 +14,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
         double ItemHeight { get; set; }
         int ColumnCount { get; }
         int RowCount { get; }
-        ItemCollection Items { get; }
+        UIElementCollection Items { get; }
         SelectedItemsCollection SelectedItemsCollection { get; }
         void ClearItemsSource();
         void OnItemsControlSelectionChanged(SelectActionEnum selectActionEnum);

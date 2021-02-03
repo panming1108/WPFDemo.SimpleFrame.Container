@@ -336,7 +336,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                     foreach (var item in pagerSource.Source)
                     {
                         var beatInfo = item as BeatInfo;
-                        ISelectItem itemView = new BeatItemView(PART_ItemsControl)
+                        BeatItemView itemView = new BeatItemView(PART_ItemsControl)
                         {
                             DataContext = item,
                             IsSelected = _beatDetailAction.SelectedItemsContainsR(beatInfo.R),

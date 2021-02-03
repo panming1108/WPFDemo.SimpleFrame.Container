@@ -29,8 +29,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             {
                 return;
             }
-            var lastIndex = SelectItemsContainer.Items.IndexOf(lastItemView);
-            var currentIndex = SelectItemsContainer.Items.IndexOf(currentItemView);
+            var lastIndex = SelectItemsContainer.Items.IndexOf(lastItemView as UIElement);
+            var currentIndex = SelectItemsContainer.Items.IndexOf(currentItemView as UIElement);
             var startIndex = Math.Min(lastIndex, currentIndex);
             var endIndex = Math.Max(lastIndex, currentIndex);
             SelectItemsContainer.SelectedItemsCollection.TryClearItems();
