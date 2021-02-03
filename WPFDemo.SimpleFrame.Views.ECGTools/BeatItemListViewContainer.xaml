@@ -33,7 +33,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Background="Transparent" BorderThickness="0" />
             <controls:BeatItemsListView x:Name="PART_ItemsControl"
                                         FocusVisualStyle="{x:Null}"
                                         ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
