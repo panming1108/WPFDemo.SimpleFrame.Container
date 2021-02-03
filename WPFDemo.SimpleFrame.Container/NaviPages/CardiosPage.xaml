@@ -20,10 +20,6 @@
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <beatTemplateGroup:BeatTemplateGroupView x:Name="PART_BeatTemplateGroupView" Width="458" />
         </ScrollViewer>
-        <Button Grid.Column="1"
-                Height="30"
-                Click="Button_Click"
-                Content="改变模板" />
         <beatItemList:BeatItemListViewContainer Grid.Column="2" />
     </Grid>
 </Page>

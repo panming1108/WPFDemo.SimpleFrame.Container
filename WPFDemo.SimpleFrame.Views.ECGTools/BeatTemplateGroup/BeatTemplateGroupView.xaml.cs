@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WPFDemo.SimpleFrame.Infra.Helper;
 using WPFDemo.SimpleFrame.Infra.Messager;
 using WPFDemo.SimpleFrame.Infra.Models;
 
@@ -78,7 +79,28 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseLeftButtonDown += BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp += BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp += BeatTemplateGroupView_MouseRightButtonUp;
+            KeyUp += BeatTemplateGroupView_KeyUp;
             MessagerInstance.GetMessager().Register<IList>(this, "LeadChanged", OnLeadChanged);
+        }
+
+        private void BeatTemplateGroupView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(SelectedItemsCollection.SelectedItems.Count <= 0)
+            {
+                return;
+            }
+            var typeList = EnumHelper.GetSelectList(typeof(BeatTypeEnum)).Select(x => x.Name).ToList();
+            if(typeList.Contains(e.Key.ToString()))
+            {
+                var beatType = (BeatTypeEnum)Enum.Parse(typeof(BeatTypeEnum), e.Key.ToString());
+                BeatInfoSource.BeatSource.ChangedBeatInfo(SelectedItemsCollection.SelectedItems, beatType);
+                InitGroupView();
+            }
+            if(e.Key == Key.D)
+            {
+                BeatInfoSource.BeatSource.DeleteBeatInfos(SelectedItemsCollection.SelectedItems);
+                InitGroupView();
+            }
         }
 
         private void InitContextMenuItems()
@@ -108,7 +130,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             };
             deleteMenuItem.Click += (s, e) =>
             {
-                Console.WriteLine("删除心搏");
+                BeatInfoSource.BeatSource.DeleteBeatInfos(SelectedItemsCollection.SelectedItems);
+                InitGroupView();
             };
 
             MenuItem jumpMenuItem = new MenuItem()
@@ -352,6 +375,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             MouseLeftButtonDown -= BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp -= BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp -= BeatTemplateGroupView_MouseRightButtonUp;
+            KeyUp -= BeatTemplateGroupView_KeyUp;
             _mergeAction.CategoryAdded -= MergeAction_CategoryAdded;
             _mergeAction.TemplateMerged -= MergeAction_TemplateMerged;
             MessagerInstance.GetMessager().Unregister<IList>(this, "LeadChanged", OnLeadChanged);

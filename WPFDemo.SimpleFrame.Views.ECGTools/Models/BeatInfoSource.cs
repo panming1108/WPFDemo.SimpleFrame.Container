@@ -182,7 +182,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             return results;
         }
         
-        public void ChangedBeatInfo(List<int> beatInfoRs, BeatTypeEnum type)
+        public void ChangedBeatInfo(IList<int> beatInfoRs, BeatTypeEnum type)
         {
             foreach (var item in beatInfoRs)
             {
@@ -191,7 +191,41 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             ResetSource();
         }
 
-        public void DeleteBeatInfos(List<int> beatInfoRs)
+        public void ChangedBeatInfo(IList<string> referIds, BeatTypeEnum type)
+        {
+            foreach (var referId in referIds)
+            {
+                if (referId.Length <= 3)
+                {
+                    var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
+                    _allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == referId).ToList().ForEach(x => x.BeatType = (int)type);
+                }
+                else
+                {
+                    _allBeatInfos.Where(x => x.BeatReferId == referId).ToList().ForEach(x => x.BeatType = (int)type);
+                }
+            }
+            ResetSource();
+        }
+
+        public void DeleteBeatInfos(IList<string> referIds)
+        {
+            foreach (var referId in referIds)
+            {
+                if (referId.Length <= 3)
+                {
+                    var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
+                    _allBeatInfos.RemoveAll(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == referId);
+                }
+                else
+                {
+                    _allBeatInfos.RemoveAll(x => x.BeatReferId == referId);
+                }
+            }
+            ResetSource();
+        }
+
+        public void DeleteBeatInfos(IList<int> beatInfoRs)
         {
             foreach (var item in beatInfoRs)
             {
