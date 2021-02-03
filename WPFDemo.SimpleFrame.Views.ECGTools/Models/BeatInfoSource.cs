@@ -272,21 +272,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             var beatTemplate = BeatTemplates.Single(x => x.Id == targetBeatReferId);
             beatTemplate.IsChecked = true;
-            List<BeatInfo> needChangeSource = new List<BeatInfo>();
             var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
-            foreach (var originBeatReferId in originBeatReferIds)
-            {
-                if(originBeatReferId.Length <= 3)
-                {
-                    //房性事件合并
-                    needChangeSource.AddRange(_allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == originBeatReferId).ToList());
-                }
-                else
-                {
-                    needChangeSource.AddRange(_allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList());
-                }
-            }
-
+            List<BeatInfo> needChangeSource = GetBeatInfosByReferIds(originBeatReferIds);
             if(targetBeatReferId.Length <= 3)
             {
                 //事件合并
@@ -302,17 +289,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         public void AddCategory(string originBeatReferId, string targetParentId)
         {
             var beatTemplate = BeatTemplates.FirstOrDefault(x => x.ParentID == targetParentId);
-            List<BeatInfo> needChangeSource;
-            if (originBeatReferId.Length <= 3)
-            {
-                var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
-                //房性事件合并
-                needChangeSource = _allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == originBeatReferId).ToList();
-            }
-            else
-            {
-                needChangeSource = _allBeatInfos.Where(x => x.BeatReferId == originBeatReferId).ToList();
-            }
+            List<BeatInfo> needChangeSource = GetBeatInfosByReferIds(new List<string>() { originBeatReferId });
             needChangeSource.ForEach(t => { t.BeatType = beatTemplate.BeatType; });
             ResetSource();
         }
@@ -366,6 +343,25 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
                 }
                 PixelPointArrayEx pixelPointArrayEx = new PixelPointArrayEx(type, points);
                 result.Add(pixelPointArrayEx);
+            }
+            return result;
+        }
+
+        public List<BeatInfo> GetBeatInfosByReferIds(List<string> referIds)
+        {
+            var result = new List<BeatInfo>();
+            foreach (var referId in referIds)
+            {
+                if (referId.Length <= 3)
+                {
+                    var eventCount = EnumHelper.GetSelectList(typeof(EventCodeEnum)).Count;
+                    //房性事件合并
+                    result.AddRange(_allBeatInfos.Where(x => x.BeatType == (int)BeatTypeEnum.S && (x.Interval % eventCount).ToString() == referId).ToList());
+                }
+                else
+                {
+                    result.AddRange(_allBeatInfos.Where(x => x.BeatReferId == referId).ToList());
+                }
             }
             return result;
         }

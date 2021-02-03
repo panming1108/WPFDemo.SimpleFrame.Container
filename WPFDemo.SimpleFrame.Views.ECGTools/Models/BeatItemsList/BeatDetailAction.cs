@@ -18,15 +18,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         public BeatDetailAction()
         {
-            MessagerInstance.GetMessager().Register<List<int>>(this, "SetBeatDetailItemsSource", OnSetBeatDetailItemsSource);
+            MessagerInstance.GetMessager().Register<List<string>>(this, "SetBeatDetailItemsSource", OnSetBeatDetailItemsSource);
         }
 
-        private async Task OnSetBeatDetailItemsSource(List<int> source)
+        private async Task OnSetBeatDetailItemsSource(List<string> referIds)
         {
+            _originItemsSource.Clear();
+            var source = BeatInfoSource.BeatSource.GetBeatInfosByReferIds(referIds).Select(x => x.R);
             foreach (var item in source)
             {
                 _originItemsSource.Add(item);
             }
+            MessagerInstance.GetMessager().Send("FreshItemsControl", string.Empty);
             await TaskEx.FromResult(0);
         }
 
@@ -194,7 +197,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         public void Dispose()
         {
-            MessagerInstance.GetMessager().Unregister<List<int>>(this, "SetBeatDetailItemsSource", OnSetBeatDetailItemsSource);
+            MessagerInstance.GetMessager().Unregister<List<string>>(this, "SetBeatDetailItemsSource", OnSetBeatDetailItemsSource);
         }
     }
 }

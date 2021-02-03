@@ -98,6 +98,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             if(e.Key == Key.D)
             {
                 BeatInfoSource.BeatSource.DeleteBeatInfos(SelectedItemsCollection.SelectedItems);
+                SelectedItemsCollection.SelectedItems.Clear();
                 InitGroupView();
             }
         }
@@ -267,12 +268,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 GetItemViewById(item).IsChecked = true;
             }
             BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
+            MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
         private void OnClickItem(BeatTemplateItemView itemView)
         {
             itemView.IsChecked = true;
             BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
+            MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
         public void OnGroupItemsSelectAll()
@@ -282,6 +285,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 GetItemViewById(item).IsChecked = true;
             }
             BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
+            MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
         private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
@@ -320,6 +324,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 groupItemView.CategoryName = groupItem.Value.CategoryName;
                 PART_GroupItemsControl.Children.Add(groupItemView);
             }
+            MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
         internal void SetCurrentMoveBeatTemplateItemView(BeatTemplateItemView itemView)

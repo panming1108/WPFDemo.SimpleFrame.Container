@@ -85,6 +85,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             Unloaded += BeatItemListViewContainer_Unloaded;
             MessagerInstance.GetMessager().Register<string>(this, MessagerKeyEnum.UpdateBeat, OnBeatChanged);
             MessagerInstance.GetMessager().Register<string>(this, MessagerKeyEnum.DeleteBeat, OnBeatDeleted);
+            MessagerInstance.GetMessager().Register<string>(this, "FreshItemsControl", OnFreshItemsControl);
         }
 
         private async Task OnBeatDeleted(string arg)
@@ -444,10 +445,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             PART_ItemsControl.BatchSelectContextMenuItems = new MenuItem[] { updateMenuItem, deleteMenuItem };
         }
 
-        private void PART_ChangeSourceBtn_Click(object sender, RoutedEventArgs e)
+        private async Task OnFreshItemsControl(string arg)
         {
-            MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", _beatInfoSource.GenerateItemsSource(int.Parse(PART_ItemsCount.Text)));
-
             _isLoadControl = true;
             PART_ItemsControlBar.PART_StrechBtn.IsChecked = false;
             PART_ItemsControlBar.PART_Current.IsChecked = true;
@@ -458,11 +457,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             _beatDetailAction.SortItemsSource(PART_ItemsControlBar.SortArgs);
             _beatDetailAction.PrevCurrentNextChanged((int)PrevCurrentNextEnum.Current);
             SelectAllItems();
-        }
-
-        private void PART_ChangeSourceType_Click(object sender, RoutedEventArgs e)
-        {
-            _beatDetailAction.ChangeBeatInfo(Key.N.ToString());
+            await TaskEx.FromResult(0);
         }
     }
 }

@@ -33,6 +33,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Button Background="Transparent" BorderThickness="0" />
             <controls:BeatItemsListView x:Name="PART_ItemsControl"
                                         FocusVisualStyle="{x:Null}"
                                         ItemsControlSelectionChanged="PART_ItemsControl_ItemsControlSelectionChanged" />
@@ -52,32 +53,6 @@
                 <TextBlock Text="页，当前第" />
                 <TextBlock Text="{Binding ElementName=PART_ScrollBar, Path=PageNo}" />
                 <TextBlock Text="页" />
-            </StackPanel>
-            <StackPanel Margin="5,0" Orientation="Horizontal">
-                <TextBox x:Name="PART_ItemsCount"
-                         Width="80"
-                         Height="30"
-                         VerticalContentAlignment="Center"
-                         IsTabStop="False"
-                         Text="" />
-                <Button x:Name="PART_ChangeSourceBtn"
-                        Width="80"
-                        Height="30"
-                        Click="PART_ChangeSourceBtn_Click"
-                        Content="换数据源" />
-            </StackPanel>
-            <StackPanel Margin="5,0" Orientation="Horizontal">
-                <TextBox x:Name="PART_Type"
-                         Width="80"
-                         Height="30"
-                         VerticalContentAlignment="Center"
-                         IsTabStop="False"
-                         Text="" />
-                <Button x:Name="PART_ChangeSourceType"
-                        Width="80"
-                        Height="30"
-                        Click="PART_ChangeSourceType_Click"
-                        Content="变心博" />
             </StackPanel>
         </StackPanel>
     </Grid>
