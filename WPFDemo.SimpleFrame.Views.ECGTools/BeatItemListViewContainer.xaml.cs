@@ -116,6 +116,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }
             _beatDetailAction.ChangeBeatInfo(e.Key.ToString());
             _isNeedToMove = false;
+            e.Handled = true;
         }
 
         private void BeatItemListViewContainer_KeyDown(object sender, KeyEventArgs e)
@@ -136,6 +137,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             {
                 ItemsControlMoveToIndex(PART_ItemsControl.CurrentMoveIndex + 1);
             }
+            e.Handled = true;
         }
         #endregion
 
