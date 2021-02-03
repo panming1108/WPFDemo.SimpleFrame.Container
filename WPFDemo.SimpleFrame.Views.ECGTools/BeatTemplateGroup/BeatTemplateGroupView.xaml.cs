@@ -28,7 +28,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private bool _isMouseDown;
         private Point _mouseDownPoint;
         private readonly DispatcherTimer _dispatcherTimer;
-        public ItemCollection GroupItems => PART_GroupItemsControl.Items;
+        public UIElementCollection GroupItems => PART_GroupItemsControl.Children;
         private readonly SelectedItemsCollection _selectedItemsCollection;
         public SelectedItemsCollection SelectedItemsCollection => _selectedItemsCollection;
         private readonly SelectActionFactory _selectActionFactory;
@@ -76,7 +76,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _mergeAction.TemplateMerged += MergeAction_TemplateMerged;
             Loaded += BeatTemplateGroupView_Loaded;
             Unloaded += BeatTemplateGroupView_Unloaded;
-            MouseLeftButtonDown += BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp += BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp += BeatTemplateGroupView_MouseRightButtonUp;
             KeyUp += BeatTemplateGroupView_KeyUp;
@@ -301,7 +300,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         {
             var groupItemsAtrialSource = BeatInfoSource.BeatTemplates.Where(x => !x.IsEvent).GroupBy(x => x.BeatType).ToList();
             var groupItemsEventSource = BeatInfoSource.BeatTemplates.Where(x => x.IsEvent).ToList();
-            PART_GroupItemsControl.Items.Clear();
+            PART_GroupItemsControl.Children.Clear();
             foreach (var groupItem in BeatInfoSource.ParentBeatTemplateDic)
             {
                 BeatTemplateGroupItemView groupItemView;
@@ -319,7 +318,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 groupItemView.Percent = groupItem.Value.Percent;
                 groupItemView.Count = groupItem.Value.Count;
                 groupItemView.CategoryName = groupItem.Value.CategoryName;
-                PART_GroupItemsControl.Items.Add(groupItemView);
+                PART_GroupItemsControl.Children.Add(groupItemView);
             }
         }
 
@@ -372,7 +371,6 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _dispatcherTimer.Tick -= DispatcherTimer_Tick;
             Loaded -= BeatTemplateGroupView_Loaded;
             Unloaded -= BeatTemplateGroupView_Unloaded;
-            MouseLeftButtonDown -= BeatTemplateGroupView_MouseLeftButtonDown;
             MouseLeftButtonUp -= BeatTemplateGroupView_MouseLeftButtonUp;
             MouseRightButtonUp -= BeatTemplateGroupView_MouseRightButtonUp;
             KeyUp -= BeatTemplateGroupView_KeyUp;

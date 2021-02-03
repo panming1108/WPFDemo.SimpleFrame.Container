@@ -6,10 +6,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="#F0F6FA"
              mc:Ignorable="d">
     <Grid>
-        <ItemsControl x:Name="PART_GroupItemsControl" FocusVisualStyle="{x:Null}" />
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      InputMethod.IsInputMethodEnabled="False"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="PART_GroupItemsControl"
+                        Background="#F0F6FA"
+                        FocusVisualStyle="{x:Null}"
+                        MouseLeftButtonDown="BeatTemplateGroupView_MouseLeftButtonDown" />
+        </ScrollViewer>
         <local:SelectMaskPaint x:Name="PART_GroupSelectMask" />
     </Grid>
 </UserControl>

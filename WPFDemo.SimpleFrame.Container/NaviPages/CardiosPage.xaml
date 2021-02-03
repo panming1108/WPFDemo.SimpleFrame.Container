@@ -17,9 +17,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <beatTemplateGroup:BeatTemplateGroupView x:Name="PART_BeatTemplateGroupView" Width="458" />
-        </ScrollViewer>
+        <beatTemplateGroup:BeatTemplateGroupView x:Name="PART_BeatTemplateGroupView" Width="458" />
         <beatItemList:BeatItemListViewContainer Grid.Column="2" />
     </Grid>
 </Page>
