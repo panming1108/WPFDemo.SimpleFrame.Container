@@ -176,6 +176,8 @@
     <Compile Include="Models\BeatItemsList\BeatDetailAction.cs" />
     <Compile Include="Models\BeatItemsList\IBeatDetailAction.cs" />
     <Compile Include="Models\BeatTemplateGroup\BeatTemplate.cs" />
+    <Compile Include="Models\BeatTemplateGroup\BeatTemplateAction.cs" />
+    <Compile Include="Models\BeatTemplateGroup\IBeatTemplateAction.cs" />
     <Compile Include="Models\BeatTemplateGroup\ParentBeatTemplate.cs" />
     <Compile Include="Models\BeatTemplateGroup\SelectActionEnum.cs" />
     <Compile Include="Models\BeatTypeEnum.cs" />

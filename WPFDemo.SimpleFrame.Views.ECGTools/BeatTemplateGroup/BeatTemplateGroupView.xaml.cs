@@ -35,6 +35,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private BaseSelectAction _currentSelectAction;
         private readonly MergeAction _mergeAction;
         private IEnumerable<MenuItem> _menuItems;
+        private IBeatTemplateAction _beatTemplateAction;
         public bool IsAtrialPattern { get; set; }
         public bool IsEditMode
         {
@@ -67,6 +68,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             };
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
+            _beatTemplateAction = new BeatTemplateAction();
             InitializeComponent();
             InitContextMenuItems();
             _selectedItemsCollection = new SelectedItemsCollection(this);
@@ -88,19 +90,12 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 return;
             }
-            var typeList = EnumHelper.GetSelectList(typeof(BeatTypeEnum)).Select(x => x.Name).ToList();
-            if(typeList.Contains(e.Key.ToString()))
-            {
-                var beatType = (BeatTypeEnum)Enum.Parse(typeof(BeatTypeEnum), e.Key.ToString());
-                BeatInfoSource.BeatSource.ChangedBeatInfo(SelectedItemsCollection.SelectedItems, beatType);
-                InitGroupView();
-            }
+            _beatTemplateAction.ChangeBeatInfo(e.Key.ToString(), SelectedItemsCollection.SelectedItems);
             if(e.Key == Key.D)
             {
-                BeatInfoSource.BeatSource.DeleteBeatInfos(SelectedItemsCollection.SelectedItems);
-                SelectedItemsCollection.SelectedItems.Clear();
-                InitGroupView();
+                SelectedItemsCollection.TryClearItems();
             }
+            InitGroupView();
         }
 
         private void InitContextMenuItems()
@@ -118,7 +113,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                     return;
                 }
                 var targetId = SelectedItemsCollection.SelectedItems.First();
-                BeatInfoSource.BeatSource.MergeBeats(SelectedItemsCollection.SelectedItems.Except(new string[] { targetId }).ToList(), targetId);
+                _beatTemplateAction.MergeBeatTemplate(SelectedItemsCollection.SelectedItems.Except(new string[] { targetId }).ToList(), targetId);
                 InitGroupView();
             };
 
@@ -130,7 +125,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             };
             deleteMenuItem.Click += (s, e) =>
             {
-                BeatInfoSource.BeatSource.DeleteBeatInfos(SelectedItemsCollection.SelectedItems);
+                _beatTemplateAction.ChangeBeatInfo(Key.D.ToString(), SelectedItemsCollection.SelectedItems);
+                SelectedItemsCollection.TryClearItems();
                 InitGroupView();
             };
 
@@ -178,7 +174,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             IsAtrialPattern = false;//是事件
             ItemWidth = 142;
             ItemHeight = 132;
-            SelectedItemsCollection.SelectedItems.Add(BeatInfoSource.BeatTemplates[1].Id);
+            SelectedItemsCollection.SelectedItems.Add(_beatTemplateAction.GetReferIdByBeatTemplateIndex(1));
             InitGroupView();
         }
 
@@ -267,14 +263,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 GetItemViewById(item).IsChecked = true;
             }
-            BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
+            _beatTemplateAction.UpdateIsCheckedStatus(SelectedItemsCollection.SelectedItems);
             MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
         private void OnClickItem(BeatTemplateItemView itemView)
         {
             itemView.IsChecked = true;
-            BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
+            _beatTemplateAction.UpdateIsCheckedStatus(SelectedItemsCollection.SelectedItems);
             MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
@@ -284,44 +280,45 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 GetItemViewById(item).IsChecked = true;
             }
-            BeatInfoSource.BeatTemplates.Where(x => SelectedItemsCollection.SelectedItems.Contains(x.Id)).ToList().ForEach(t => t.IsChecked = true);
+            _beatTemplateAction.UpdateIsCheckedStatus(SelectedItemsCollection.SelectedItems);
             MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
         }
 
         private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
         {
-            BeatInfoSource.BeatSource.MergeBeats(new List<string>() { e.OriginBeatTemplateItemView.Id }, e.TargetBeatTemplateItemView.Id);
+            _beatTemplateAction.MergeBeatTemplate(new List<string>() { e.OriginBeatTemplateItemView.Id }, e.TargetBeatTemplateItemView.Id);
             InitGroupView();
         }
 
         private void MergeAction_CategoryAdded(object sender, AddCategoryEventArgs e)
         {
-            BeatInfoSource.BeatSource.AddCategory(e.OriginItemView.Id, e.TargetBeatTemplateGroupItemView.Id);
+            _beatTemplateAction.AddBeatTemplate(e.OriginItemView.Id, e.TargetBeatTemplateGroupItemView.Id);
             InitGroupView();
         }
 
         public void InitGroupView()
         {
-            var groupItemsAtrialSource = BeatInfoSource.BeatTemplates.Where(x => !x.IsEvent).GroupBy(x => x.BeatType).ToList();
-            var groupItemsEventSource = BeatInfoSource.BeatTemplates.Where(x => x.IsEvent).ToList();
+            var groupItemsAtrialSource = _beatTemplateAction.GetAtrialBeatTemplate().GroupBy(x => x.BeatType).ToList();
+            var groupItemsEventSource = _beatTemplateAction.GetEventBeatTemplate();
+            var parentTemplate = _beatTemplateAction.GetParentBeatTemplate();
             PART_GroupItemsControl.Children.Clear();
-            foreach (var groupItem in BeatInfoSource.ParentBeatTemplateDic)
+            foreach (var groupItem in parentTemplate)
             {
                 BeatTemplateGroupItemView groupItemView;
-                var formSource = groupItemsAtrialSource.Single(x => x.Key == groupItem.Key).ToList();
-                if (groupItem.Key == (int)BeatTypeEnum.S)
+                var formSource = groupItemsAtrialSource.Single(x => x.Key == groupItem.BeatType).ToList();
+                if (groupItem.BeatType == (int)BeatTypeEnum.S)
                 {
-                    groupItemView = new SBeatTemplateGroupItemView(groupItem.Value.Id, formSource, groupItemsEventSource, this);
+                    groupItemView = new SBeatTemplateGroupItemView(groupItem.Id, formSource, groupItemsEventSource, this);
                 }
                 else
                 {
-                    groupItemView = new BeatTemplateGroupItemView(groupItem.Value.Id, formSource.ToList(), this);
+                    groupItemView = new BeatTemplateGroupItemView(groupItem.Id, formSource.ToList(), this);
                 }
                 groupItemView.SetGroupItemItemsSource(SelectedItemsCollection.SelectedItems);
-                groupItemView.CategoryNameEn = groupItem.Value.CategoryNameEn;
-                groupItemView.Percent = groupItem.Value.Percent;
-                groupItemView.Count = groupItem.Value.Count;
-                groupItemView.CategoryName = groupItem.Value.CategoryName;
+                groupItemView.CategoryNameEn = groupItem.CategoryNameEn;
+                groupItemView.Percent = groupItem.Percent;
+                groupItemView.Count = groupItem.Count;
+                groupItemView.CategoryName = groupItem.CategoryName;
                 PART_GroupItemsControl.Children.Add(groupItemView);
             }
             MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());

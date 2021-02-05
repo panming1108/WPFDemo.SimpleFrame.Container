@@ -268,7 +268,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             }         
         }
 
-        public void MergeBeats(List<string> originBeatReferIds, string targetBeatReferId)
+        public void MergeBeats(IList<string> originBeatReferIds, string targetBeatReferId)
         {
             var beatTemplate = BeatTemplates.Single(x => x.Id == targetBeatReferId);
             beatTemplate.IsChecked = true;
@@ -347,7 +347,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             return result;
         }
 
-        public List<BeatInfo> GetBeatInfosByReferIds(List<string> referIds)
+        public List<BeatInfo> GetBeatInfosByReferIds(IList<string> referIds)
         {
             var result = new List<BeatInfo>();
             foreach (var referId in referIds)
