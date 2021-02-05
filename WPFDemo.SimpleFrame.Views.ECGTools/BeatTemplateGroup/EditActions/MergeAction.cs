@@ -86,7 +86,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 return;
             }
-            CategoryAdded?.Invoke(this, new AddCategoryEventArgs(endBeatTemplateGroupItemView, startItemView));
+            CategoryAdded?.Invoke(this, new AddCategoryEventArgs(endBeatTemplateGroupItemView.Id, startItemView.Id));
         }
 
         private void OnMergeBeatTemplate(BeatTemplateItemView currentMoveItemView, BeatTemplateItemView startItemView)
@@ -95,7 +95,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 return;
             }
-            TemplateMerged?.Invoke(this, new MergeTemplateEventArgs(currentMoveItemView, startItemView));
+            TemplateMerged?.Invoke(this, new MergeTemplateEventArgs(currentMoveItemView.Id, startItemView.Id));
         }
 
         public void MouseDown(Point currentPoint)

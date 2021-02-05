@@ -286,13 +286,13 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         private void MergeAction_TemplateMerged(object sender, MergeTemplateEventArgs e)
         {
-            _beatTemplateAction.MergeBeatTemplate(new List<string>() { e.OriginBeatTemplateItemView.Id }, e.TargetBeatTemplateItemView.Id);
+            _beatTemplateAction.MergeBeatTemplate(new List<string>() { e.OriginBeatTemplateItemViewId }, e.TargetBeatTemplateItemViewId);
             InitGroupView();
         }
 
         private void MergeAction_CategoryAdded(object sender, AddCategoryEventArgs e)
         {
-            _beatTemplateAction.AddBeatTemplate(e.OriginItemView.Id, e.TargetBeatTemplateGroupItemView.Id);
+            _beatTemplateAction.AddBeatTemplate(e.OriginItemViewId, e.TargetBeatTemplateGroupItemViewId);
             InitGroupView();
         }
 

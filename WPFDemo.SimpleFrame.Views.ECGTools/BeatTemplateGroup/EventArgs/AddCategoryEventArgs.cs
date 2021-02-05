@@ -7,14 +7,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
     public class AddCategoryEventArgs : EventArgs
     {
-        public AddCategoryEventArgs(BeatTemplateGroupItemView targetBeatTemplateGroupItemView, BeatTemplateItemView originItemView)
+        public AddCategoryEventArgs(string targetBeatTemplateGroupItemViewId, string originItemViewId)
         {
-            TargetBeatTemplateGroupItemView = targetBeatTemplateGroupItemView;
-            OriginItemView = originItemView;
+            TargetBeatTemplateGroupItemViewId = targetBeatTemplateGroupItemViewId;
+            OriginItemViewId = originItemViewId;
         }
 
-        public BeatTemplateGroupItemView TargetBeatTemplateGroupItemView { get; set; }
-        public BeatTemplateItemView OriginItemView { get; set; }
+        public string TargetBeatTemplateGroupItemViewId { get; set; }
+        public string OriginItemViewId { get; set; }
 
         
     }

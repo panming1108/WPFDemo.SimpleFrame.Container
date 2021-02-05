@@ -7,14 +7,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 {
     public class MergeTemplateEventArgs : EventArgs
     {
-        public MergeTemplateEventArgs(BeatTemplateItemView targetBeatTemplateItemView, BeatTemplateItemView originBeatTemplateItemView)
+        public MergeTemplateEventArgs(string targetBeatTemplateItemViewId, string originBeatTemplateItemViewId)
         {
-            TargetBeatTemplateItemView = targetBeatTemplateItemView;
-            OriginBeatTemplateItemView = originBeatTemplateItemView;
+            TargetBeatTemplateItemViewId = targetBeatTemplateItemViewId;
+            OriginBeatTemplateItemViewId = originBeatTemplateItemViewId;
         }
 
-        public BeatTemplateItemView TargetBeatTemplateItemView { get; set; }
-        public BeatTemplateItemView OriginBeatTemplateItemView { get; set; }
+        public string TargetBeatTemplateItemViewId { get; set; }
+        public string OriginBeatTemplateItemViewId { get; set; }
 
 
     }
