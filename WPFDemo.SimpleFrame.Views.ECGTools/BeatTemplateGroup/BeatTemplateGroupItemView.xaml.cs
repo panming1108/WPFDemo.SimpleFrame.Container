@@ -87,6 +87,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                     IsAdded = data.IsAdd,
                     IsSelected = selectedIds.Contains(data.Id),
                 };
+                GroupView.AllItemsIdList.Add(data.Id);
                 Items.Add(itemView);
             }
         }

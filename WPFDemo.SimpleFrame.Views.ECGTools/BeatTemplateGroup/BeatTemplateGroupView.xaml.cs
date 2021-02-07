@@ -36,6 +36,8 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private readonly MergeAction _mergeAction;
         private IEnumerable<MenuItem> _menuItems;
         private IBeatTemplateAction _beatTemplateAction;
+        private readonly List<string> _allItemsIdList = new List<string>();
+        public List<string> AllItemsIdList => _allItemsIdList;
         public bool IsAtrialPattern { get; set; }
         public bool IsEditMode
         {
@@ -90,12 +92,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 return;
             }
-            _beatTemplateAction.ChangeBeatInfo(e.Key.ToString(), SelectedItemsCollection.SelectedItems);
+            var typeList = EnumHelper.GetSelectList(typeof(BeatTypeEnum)).Select(x => x.Name).ToList();
+            if (typeList.Contains(e.Key.ToString()))
+            {
+                _beatTemplateAction.ChangeBeatInfo(e.Key.ToString(), SelectedItemsCollection.SelectedItems);
+                InitGroupView();
+            }          
             if(e.Key == Key.D)
             {
                 SelectedItemsCollection.TryClearItems();
+                InitGroupView();
             }
-            InitGroupView();
         }
 
         private void InitContextMenuItems()
@@ -298,6 +305,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
 
         public void InitGroupView()
         {
+            AllItemsIdList.Clear();
             var groupItemsAtrialSource = _beatTemplateAction.GetAtrialBeatTemplate().GroupBy(x => x.BeatType).ToList();
             var groupItemsEventSource = _beatTemplateAction.GetEventBeatTemplate();
             var parentTemplate = _beatTemplateAction.GetParentBeatTemplate();
@@ -321,7 +329,17 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
                 groupItemView.CategoryName = groupItem.CategoryName;
                 PART_GroupItemsControl.Children.Add(groupItemView);
             }
+            ReSetSelectedItems();
             MessagerInstance.GetMessager().Send("SetBeatDetailItemsSource", SelectedItemsCollection.SelectedItems.ToList());
+        }
+
+        private void ReSetSelectedItems()
+        {
+            var notExistIds = SelectedItemsCollection.SelectedItems.Where(x => !AllItemsIdList.Contains(x)).ToList();
+            foreach (var id in notExistIds)
+            {
+                SelectedItemsCollection.TryRemoveItem(id);
+            }
         }
 
         internal void SetCurrentMoveBeatTemplateItemView(BeatTemplateItemView itemView)
