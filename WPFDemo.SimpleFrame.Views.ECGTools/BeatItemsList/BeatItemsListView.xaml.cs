@@ -44,21 +44,21 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             get { return (double)GetValue(ItemWidthProperty); }
             set { SetValue(ItemWidthProperty, value); }
         }
-        public IEnumerable<MenuItem> SingleSelectContextMenuItems
+        public IEnumerable SingleSelectContextMenuItems
         {
-            get { return (IEnumerable<MenuItem>)GetValue(SingleSelectContextMenuItemsProperty); }
+            get { return (IEnumerable)GetValue(SingleSelectContextMenuItemsProperty); }
             set { SetValue(SingleSelectContextMenuItemsProperty, value); }
         }
-        public IEnumerable<MenuItem> BatchSelectContextMenuItems
+        public IEnumerable BatchSelectContextMenuItems
         {
-            get { return (IEnumerable<MenuItem>)GetValue(BatchSelectContextMenuItemsProperty); }
+            get { return (IEnumerable)GetValue(BatchSelectContextMenuItemsProperty); }
             set { SetValue(BatchSelectContextMenuItemsProperty, value); }
         }
 
         public static readonly DependencyProperty BatchSelectContextMenuItemsProperty =
-            DependencyProperty.Register(nameof(BatchSelectContextMenuItems), typeof(IEnumerable<MenuItem>), typeof(BeatItemsListView));
+            DependencyProperty.Register(nameof(BatchSelectContextMenuItems), typeof(IEnumerable), typeof(BeatItemsListView));
         public static readonly DependencyProperty SingleSelectContextMenuItemsProperty =
-            DependencyProperty.Register(nameof(SingleSelectContextMenuItems), typeof(IEnumerable<MenuItem>), typeof(BeatItemsListView));
+            DependencyProperty.Register(nameof(SingleSelectContextMenuItems), typeof(IEnumerable), typeof(BeatItemsListView));
         public static readonly DependencyProperty ItemWidthProperty =
             DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(BeatItemsListView));
         public static readonly DependencyProperty ItemHeightProperty =
@@ -94,7 +94,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
             }
             if (SelectedItemsCollection.SelectedItems.Count > 1 && SelectedItemsCollection.SelectedItems.Contains(itemView))
             {
-                if(BatchSelectContextMenuItems != null && BatchSelectContextMenuItems.Count() > 0)
+                if(BatchSelectContextMenuItems != null)
                 {
                     ContextMenu = new ContextMenu() { ItemsSource = BatchSelectContextMenuItems };
                 }
@@ -106,7 +106,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                 CurrentMoveIndex = Items.IndexOf(SelectedItemsCollection.SelectedItems.Last() as UIElement);
                 _isMouseDown = false;
                 OnItemsControlSelectionChanged(_currentSelectAction.SelectActionMode);
-                if(SingleSelectContextMenuItems != null && SingleSelectContextMenuItems.Count() > 0)
+                if(SingleSelectContextMenuItems != null)
                 {
                     ContextMenu = new ContextMenu() { ItemsSource = SingleSelectContextMenuItems };
                 }

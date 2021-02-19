@@ -18,6 +18,7 @@ using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.Infra.Messager;
 using WPFDemo.SimpleFrame.IViewModels.ECGTools;
 using WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList;
+using WPFDemo.SimpleFrame.Views.ECGTools.ContextMenuHelper;
 
 namespace WPFDemo.SimpleFrame.Views.ECGTools
 {
@@ -28,6 +29,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
     {
         private bool _isLoadControl;
         private readonly BeatInfoSource _beatInfoSource;
+        private readonly BeatDetailViewContextMenuHelpler _beatDetailViewContextMenuHelpler;
         private string[] LeadSource => new string[] { "I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6" };
 
         public int SelectedCount
@@ -76,6 +78,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
         {
             _beatInfoSource = BeatInfoSource.BeatSource;
             _beatDetailAction = new BeatDetailAction();
+            _beatDetailViewContextMenuHelpler = new BeatDetailViewContextMenuHelpler(OnUpdateBeatHandler, OnDeleteBeatHandler, OnInsertBeatToPrevHandler, OnInsertBeatToNextHandler, OnUnConfuseHandler, OnSetLongestRRHandler, OnSignAFHandler);
             InitializeComponent();
             InitControl();
             InitContextMenuItems();
@@ -370,6 +373,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             KeyUp -= BeatItemListViewContainer_KeyUp;
             MouseWheel -= BeatItemListViewContainer_MouseWheel;
             Unloaded -= BeatItemListViewContainer_Unloaded;
+            _beatDetailViewContextMenuHelpler.Dispose();
             MessagerInstance.GetMessager().Unregister<string>(this, MessagerKeyEnum.UpdateBeat, OnBeatChanged);
             MessagerInstance.GetMessager().Unregister<string>(this, MessagerKeyEnum.DeleteBeat, OnBeatDeleted);
         }
@@ -408,43 +412,67 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools
             return PART_ItemsControl.ColumnCount * PART_ItemsControl.RowCount;
         }
 
+        private void OnUpdateBeatHandler(object sender, RoutedEventArgs e)
+        {
+            _beatDetailAction.ChangeBeatInfo(Key.N.ToString());
+            _isNeedToMove = true;
+            MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
+            _isNeedToMove = false;
+        }
+
+        private void OnInsertBeatToPrevHandler(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            Console.WriteLine("往前插入心搏" + menuItem.Header.ToString());
+        }
+
+        private void OnInsertBeatToNextHandler(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            Console.WriteLine("往后插入心搏" + menuItem.Header.ToString());
+        }
+
+        private void OnUnConfuseHandler(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            if(menuItem.Header.ToString() == "叠加反混淆")
+            {
+                Console.WriteLine("叠加反混淆");
+            }
+            else
+            {
+                Console.WriteLine("P波反混淆");
+            }
+        }
+
+        private void OnSetLongestRRHandler(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("设置最长RR间期");
+        }
+
+        private void OnSignAFHandler(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            if(menuItem.InputGestureText.ToString() == "(F)")
+            {
+                Console.WriteLine("标记为房颤");
+            }
+            else
+            {
+                Console.WriteLine("标记为房扑");
+            }
+        }
+
+        private void OnDeleteBeatHandler(object sender, RoutedEventArgs e)
+        {
+            _beatDetailAction.ChangeBeatInfo(Key.D.ToString());
+            MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
+        }
+
         private void InitContextMenuItems()
         {
-            MenuItem updateMenuItem = new MenuItem()
-            {
-                Header = "修改心搏(N)",
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-            };
-            updateMenuItem.Click += (s, e) =>
-            {
-                _beatDetailAction.ChangeBeatInfo(Key.N.ToString());
-                _isNeedToMove = true;
-                MessagerInstance.GetMessager().Send(MessagerKeyEnum.UpdateBeat, string.Empty);
-                _isNeedToMove = false;
-            };
-
-            MenuItem deleteMenuItem = new MenuItem()
-            {
-                Header = "删除心搏",
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-            };
-            deleteMenuItem.Click += (s, e) =>
-            {
-                _beatDetailAction.ChangeBeatInfo(Key.D.ToString());
-                MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
-            };
-
-            MenuItem jumpMenuItem = new MenuItem()
-            {
-                Header = "跳转",
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-            };
-            jumpMenuItem.Click += (s, e) => { Console.WriteLine("跳转"); };
-            PART_ItemsControl.SingleSelectContextMenuItems = new MenuItem[] { jumpMenuItem, updateMenuItem, deleteMenuItem };
-            PART_ItemsControl.BatchSelectContextMenuItems = new MenuItem[] { updateMenuItem, deleteMenuItem };
+            PART_ItemsControl.SingleSelectContextMenuItems = _beatDetailViewContextMenuHelpler.GetSingleSelectMenuItems();
+            PART_ItemsControl.BatchSelectContextMenuItems = _beatDetailViewContextMenuHelpler.GetBatchSelectMenuItems();
         }
 
         private async Task OnFreshItemsControl(string arg)

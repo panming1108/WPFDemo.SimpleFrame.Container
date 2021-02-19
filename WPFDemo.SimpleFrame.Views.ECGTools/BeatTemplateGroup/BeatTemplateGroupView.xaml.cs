@@ -34,9 +34,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private readonly SelectActionFactory _selectActionFactory;
         private BaseSelectAction _currentSelectAction;
         private readonly MergeAction _mergeAction;
-        private IEnumerable<MenuItem> _menuItems;
+        private IEnumerable<Control> _menuItems;
         private IBeatTemplateAction _beatTemplateAction;
         private readonly List<string> _allItemsIdList = new List<string>();
+        private readonly BeatTemplateGroupContextMenuHelper _beatTemplateGroupContextMenuHelper;
         public List<string> AllItemsIdList => _allItemsIdList;
         public bool IsAtrialPattern { get; set; }
         public bool IsEditMode
@@ -71,8 +72,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             _dispatcherTimer.Start();
             _beatTemplateAction = new BeatTemplateAction();
+            _beatTemplateGroupContextMenuHelper = new BeatTemplateGroupContextMenuHelper(OnUpdateBeatHandler, OnDeleteBeatHandler, OnMergeBeatHandler, OnUnConfuseHandler, OnSignAFHandler, OnCancelSignAfOrAFHandler);
             InitializeComponent();
-            InitContextMenuItems();
+            _menuItems = _beatTemplateGroupContextMenuHelper.GetMenuItems();
             _selectedItemsCollection = new SelectedItemsCollection(this);
             _mergeAction = new MergeAction(this, PART_GroupSelectMask);
             _selectActionFactory = new SelectActionFactory(this, PART_GroupSelectMask);
@@ -105,46 +107,59 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             }
         }
 
-        private void InitContextMenuItems()
+        private void OnCancelSignAfOrAFHandler(object sender, RoutedEventArgs e)
         {
-            MenuItem updateMenuItem = new MenuItem()
-            {
-                Header = "合并",
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-            };
-            updateMenuItem.Click += (s, e) =>
-            {
-                if(SelectedItemsCollection.SelectedItems.Count < 2)
-                {
-                    return;
-                }
-                var targetId = SelectedItemsCollection.SelectedItems.First();
-                _beatTemplateAction.MergeBeatTemplate(SelectedItemsCollection.SelectedItems.Except(new string[] { targetId }).ToList(), targetId);
-                InitGroupView();
-            };
+            Console.WriteLine("取消标记房颤/房扑");
+        }
 
-            MenuItem deleteMenuItem = new MenuItem()
+        private void OnSignAFHandler(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            if(menuItem.InputGestureText == "(F)")
             {
-                Header = "删除心搏",
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-            };
-            deleteMenuItem.Click += (s, e) =>
+                Console.WriteLine("标记为房颤");
+            }
+            else
             {
-                _beatTemplateAction.ChangeBeatInfo(Key.D.ToString(), SelectedItemsCollection.SelectedItems);
-                SelectedItemsCollection.TryClearItems();
-                InitGroupView();
-            };
+                Console.WriteLine("标记为房扑");
+            }
+        }
 
-            MenuItem jumpMenuItem = new MenuItem()
+        private void OnUnConfuseHandler(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem.Header.ToString() == "叠加反混淆")
             {
-                Header = "跳转",
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-            };
-            jumpMenuItem.Click += (s, e) => { Console.WriteLine("跳转"); };
-            _menuItems = new MenuItem[] { jumpMenuItem, updateMenuItem, deleteMenuItem };
+                Console.WriteLine("叠加反混淆");
+            }
+            else
+            {
+                Console.WriteLine("P波反混淆");
+            }
+        }
+
+        private void OnMergeBeatHandler(object sender, RoutedEventArgs e)
+        {
+            if (SelectedItemsCollection.SelectedItems.Count < 2)
+            {
+                return;
+            }
+            var targetId = SelectedItemsCollection.SelectedItems.First();
+            _beatTemplateAction.MergeBeatTemplate(SelectedItemsCollection.SelectedItems.Except(new string[] { targetId }).ToList(), targetId);
+            InitGroupView();
+        }
+
+        private void OnDeleteBeatHandler(object sender, RoutedEventArgs e)
+        {
+            _beatTemplateAction.ChangeBeatInfo(Key.D.ToString(), SelectedItemsCollection.SelectedItems);
+            SelectedItemsCollection.TryClearItems();
+            InitGroupView();
+        }
+
+        private void OnUpdateBeatHandler(object sender, RoutedEventArgs e)
+        {
+            _beatTemplateAction.ChangeBeatInfo(Key.N.ToString(), SelectedItemsCollection.SelectedItems);
+            InitGroupView();
         }
 
         private static void OnItemSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

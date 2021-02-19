@@ -172,11 +172,20 @@
     <Compile Include="BeatTemplateGroup\SelectActions\SelectActionFactory.cs" />
     <Compile Include="BeatTemplateGroup\Collections\SelectedItemsCollection.cs" />
     <Compile Include="BeatTemplateGroup\Interfaces\IWorkAction.cs" />
+    <Compile Include="ContextMenuHelper\AFContextMenuSource.cs" />
+    <Compile Include="ContextMenuHelper\DiagECGContextMenuSource.cs" />
+    <Compile Include="ContextMenuHelper\MenuItemHelper.cs" />
+    <Compile Include="ContextMenuHelper\NavigationContextMenuSource.cs" />
+    <Compile Include="ContextMenuHelper\InsertBeatContextMenuSource.cs" />
+    <Compile Include="ContextMenuHelper\OperateContextMenuSource.cs" />
+    <Compile Include="ContextMenuHelper\UpdateBeatContextMenuSource.cs" />
     <Compile Include="Models\BeatInfoSource.cs" />
     <Compile Include="Models\BeatItemsList\BeatDetailAction.cs" />
+    <Compile Include="Models\BeatItemsList\BeatDetailViewContextMenuHelpler.cs" />
     <Compile Include="Models\BeatItemsList\IBeatDetailAction.cs" />
     <Compile Include="Models\BeatTemplateGroup\BeatTemplate.cs" />
     <Compile Include="Models\BeatTemplateGroup\BeatTemplateAction.cs" />
+    <Compile Include="Models\BeatTemplateGroup\BeatTemplateGroupContextMenuHelper.cs" />
     <Compile Include="Models\BeatTemplateGroup\IBeatTemplateAction.cs" />
     <Compile Include="Models\BeatTemplateGroup\ParentBeatTemplate.cs" />
     <Compile Include="Models\BeatTemplateGroup\SelectActionEnum.cs" />
@@ -341,9 +350,7 @@
   <ItemGroup>
     <Resource Include="Images\ScopeView.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ContextMenuHelper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
