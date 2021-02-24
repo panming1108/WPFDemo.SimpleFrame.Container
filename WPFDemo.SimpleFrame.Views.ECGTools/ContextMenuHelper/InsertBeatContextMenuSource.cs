@@ -29,18 +29,18 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.ContextMenuHelper
         {
             var wItem1 = MenuItemHelper.GetMenuItem("窦性", "N(W)", _routedEventHandler);
             var wItem2 = MenuItemHelper.GetMenuItem("房性", "S(W)", _routedEventHandler);
-            var wItem = MenuItemHelper.GetMenuItem("预激波", "W", new MenuItem[] { wItem1, wItem2 });
+            var wItem = MenuItemHelper.GetMenuItem("预激波", "W", _routedEventHandler, null, new MenuItem[] { wItem1, wItem2 });
             DoubleLevelMenuItems.Add(wItem);
 
             var bItem1 = MenuItemHelper.GetMenuItem("窦性", "N(B)", _routedEventHandler);
             var bItem2 = MenuItemHelper.GetMenuItem("房性", "S(B)", _routedEventHandler);
-            var bItem = MenuItemHelper.GetMenuItem("束支传导阻滞", "B", new MenuItem[] { bItem1, bItem2 });
+            var bItem = MenuItemHelper.GetMenuItem("束支传导阻滞", "B", _routedEventHandler, null, new MenuItem[] { bItem1, bItem2 });
             DoubleLevelMenuItems.Add(bItem);
 
             var pItem1 = MenuItemHelper.GetMenuItem("心房起搏", "F1", _routedEventHandler);
             var pItem2 = MenuItemHelper.GetMenuItem("心室起搏", "F2", _routedEventHandler);
             var pItem3 = MenuItemHelper.GetMenuItem("双腔起搏", "F3", _routedEventHandler);
-            var pItem = MenuItemHelper.GetMenuItem("起搏", "P", new MenuItem[] { pItem1, pItem2, pItem3 });
+            var pItem = MenuItemHelper.GetMenuItem("起搏", "P", _routedEventHandler, null, new MenuItem[] { pItem1, pItem2, pItem3 });
             DoubleLevelMenuItems.Add(pItem);
         }
 

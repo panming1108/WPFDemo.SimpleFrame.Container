@@ -14,7 +14,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.ContextMenuHelper
         private readonly MenuItem _otherMenuItem;
         public UpdateBeatContextMenuSource(RoutedEventHandler routedEventHandler) : base(routedEventHandler)
         {
-            _shishangxingMenuItem = MenuItemHelper.GetMenuItem("室上性", "自动归类N/S/Af/AF", RoutedEventHandler);
+            _shishangxingMenuItem = MenuItemHelper.GetMenuItem("室上性(自动归类N/S/Af/AF)", string.Empty, RoutedEventHandler);
             _xMenuItem = MenuItemHelper.GetMenuItem("伪差", "X", RoutedEventHandler);
 
             var yiwenxinboItem = MenuItemHelper.GetMenuItem("疑问心搏", "Q", RoutedEventHandler);

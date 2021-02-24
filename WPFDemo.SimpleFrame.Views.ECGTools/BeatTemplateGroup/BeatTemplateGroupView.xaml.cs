@@ -110,6 +110,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
         private void OnCancelSignAfOrAFHandler(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("取消标记房颤/房扑");
+            e.Handled = true;
         }
 
         private void OnSignAFHandler(object sender, RoutedEventArgs e)
@@ -123,6 +124,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 Console.WriteLine("标记为房扑");
             }
+            e.Handled = true;
         }
 
         private void OnUnConfuseHandler(object sender, RoutedEventArgs e)
@@ -136,6 +138,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             {
                 Console.WriteLine("P波反混淆");
             }
+            e.Handled = true;
         }
 
         private void OnMergeBeatHandler(object sender, RoutedEventArgs e)
@@ -147,6 +150,7 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             var targetId = SelectedItemsCollection.SelectedItems.First();
             _beatTemplateAction.MergeBeatTemplate(SelectedItemsCollection.SelectedItems.Except(new string[] { targetId }).ToList(), targetId);
             InitGroupView();
+            e.Handled = true;
         }
 
         private void OnDeleteBeatHandler(object sender, RoutedEventArgs e)
@@ -154,12 +158,14 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatTemplateGroup
             _beatTemplateAction.ChangeBeatInfo(Key.D.ToString(), SelectedItemsCollection.SelectedItems);
             SelectedItemsCollection.TryClearItems();
             InitGroupView();
+            e.Handled = true;
         }
 
         private void OnUpdateBeatHandler(object sender, RoutedEventArgs e)
         {
             _beatTemplateAction.ChangeBeatInfo(Key.N.ToString(), SelectedItemsCollection.SelectedItems);
             InitGroupView();
+            e.Handled = true;
         }
 
         private static void OnItemSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
