@@ -110,9 +110,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.ContextMenuHelper
                 return;
             }
             menuItem.RemoveHandler(MenuItem.ClickEvent, routedEventHandler);
-            menuItem.RemoveHandler(MenuItem.PreviewMouseLeftButtonUpEvent, new MouseButtonEventHandler(OnMultiLevelMenuItemHeaderClick));
             if (menuItem.Items.Count > 0)
             {
+                menuItem.RemoveHandler(MenuItem.PreviewMouseLeftButtonUpEvent, new MouseButtonEventHandler(OnMultiLevelMenuItemHeaderClick));
                 ClearMultiLevelMenuItems(menuItem.Items, routedEventHandler);
             }
         }
