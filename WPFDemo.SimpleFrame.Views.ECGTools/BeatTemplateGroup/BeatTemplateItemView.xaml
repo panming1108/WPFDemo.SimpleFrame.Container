@@ -46,6 +46,7 @@
                             Width="16"
                             Height="20"
                             Background="#00AAFF"
+                            ToolTip="新增的分类"
                             Visibility="{Binding ElementName=PART_Root, Path=IsAdded, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
