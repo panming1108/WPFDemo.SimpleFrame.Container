@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using WPFDemo.SimpleFrame.Infra.Application;
+using WPFDemo.SimpleFrame.Infra.Models;
 
 namespace WPFDemo.SimpleFrame.Container
 {
@@ -18,6 +19,7 @@ namespace WPFDemo.SimpleFrame.Container
                 "/WPFDemo.SimpleFrame.Infra.ControlsThemes;component/UXsStyle.xaml"
             };
             LoadResources(lists);
+            Globalization.Init(LangueageEnum.English);
             Application.Current.MainWindow = new MainWindow();
             Application.Current.MainWindow.ShowDialog();
         }

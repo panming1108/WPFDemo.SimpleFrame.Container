@@ -43,10 +43,21 @@
   <ItemGroup>
     <Compile Include="DataGridModel.cs" />
     <Compile Include="FlushModel.cs" />
+    <Compile Include="Globalization.cs" />
     <Compile Include="IconModel.cs" />
     <Compile Include="ListBoxModel.cs" />
     <Compile Include="PopupNotifyObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Chinese.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Chinese.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\English.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>English.resx</DependentUpon>
+    </Compile>
     <Compile Include="QueryResult.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="TreeViewNode.cs" />
@@ -56,6 +67,16 @@
       <Project>{1EFDA8F3-F261-4C04-B069-67DACAE8BBE5}</Project>
       <Name>WPFDemo.SimpleFrame.Infra.Enums</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Chinese.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Chinese.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\English.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>English.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
