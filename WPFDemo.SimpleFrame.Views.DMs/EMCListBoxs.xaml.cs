@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFDemo.SimpleFrame.Infra.CustomControls.DMs.ListBox;
 using WPFDemo.SimpleFrame.Infra.Ioc;
 using WPFDemo.SimpleFrame.IViewModels.DMs;
 

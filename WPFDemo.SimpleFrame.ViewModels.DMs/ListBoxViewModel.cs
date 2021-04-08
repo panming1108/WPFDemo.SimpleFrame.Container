@@ -93,6 +93,16 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
                 OnPropertyChanged(() => TreeText);
             }
         }
+        private List<string> _testSource;
+        public List<string> TestSource
+        {
+            get => _testSource;
+            set
+            {
+                _testSource = value;
+                OnPropertyChanged(() => TestSource);
+            }
+        }
 
         public ICommand InsertCommand { get; set; }
         public ICommand LazyLoadCommand { get; set; }
@@ -112,6 +122,7 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
             SelectedItemsAnalysisCommand = new AsyncDelegateCommand<object>(OnSelectedItemsAnalysis);
             SelectionChangedCommand = new AsyncDelegateCommand<IList>(OnSelectionChanged);
             //_selectedFiles = new List<object>() { "999" };
+            _testSource = new List<string>();
         }
 
         private async Task OnSelectionChanged(IList selectedItems)
@@ -210,6 +221,18 @@ namespace WPFDemo.SimpleFrame.ViewModels.DMs
 
             var tree = new List<TreeNode<Student>>() { node1, node2, node3, node4 };
             TreeSource = tree;
+            TestSource = new List<string>()
+            {
+                "111",
+                "222",
+                "333",
+                "444",
+                "555",
+                "666",
+                "777",
+                "888",
+                "999",
+            };
         }
 
         protected async override Task UnLoaded()
