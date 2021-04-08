@@ -51,8 +51,9 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
                     _originItemsSource.Remove(item);
                     _itemsSource.Remove(item);
                 }
+                var tempList = _selectedItems.ToList();
                 _selectedItems.Clear();
-                BeatInfoSource.BeatSource.DeleteBeatInfos(_selectedItems);
+                BeatInfoSource.BeatSource.DeleteBeatInfos(tempList);
                 MessagerInstance.GetMessager().Send(MessagerKeyEnum.DeleteBeat, string.Empty);
             }
         }

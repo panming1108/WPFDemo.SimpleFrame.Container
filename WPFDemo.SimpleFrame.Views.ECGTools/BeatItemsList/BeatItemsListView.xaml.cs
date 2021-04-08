@@ -142,6 +142,10 @@ namespace WPFDemo.SimpleFrame.Views.ECGTools.BeatItemsList
 
         private void BeatItemsListView_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if(_currentSelectAction == null)
+            {
+                return;
+            }
             if(_currentSelectAction.MouseDownPoint == e.GetPosition(this))
             {
                 _currentSelectAction.Click();

@@ -56,6 +56,7 @@
                             HorizontalAlignment="Left"
                             Command="{Binding RefreshCommand}"
                             Content="{x:Static global:Globalization.TestString}" />
+                    <ScrollBar Maximum="40000" Orientation="Horizontal" />
                 </StackPanel>
             </Border>
             <Grid Grid.Column="1">
